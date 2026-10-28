@@ -153,7 +153,7 @@ def download_guest_logos(ids):
         if not info or not info.get('logo'):
             continue
         file = LOGOS / f"{slugify(info['name'])}.png"
-        if file.exists():
+        if file.exists() or file.with_suffix('.webp').exists():
             continue
         try:
             body, _ = http_get(info['logo'], binary=True)
@@ -280,7 +280,7 @@ def download_logos(sources, latest):
         for x in read_json(teams).get('response', []):
             info = x['team']
             file = LOGOS / f"{slugify(hints.get(info['id'], info['name']))}.png"
-            if file.exists() or not info.get('logo'):
+            if file.exists() or file.with_suffix('.webp').exists() or not info.get('logo'):
                 continue
             try:
                 body, _ = http_get(info['logo'], binary=True)

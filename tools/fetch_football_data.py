@@ -64,7 +64,7 @@ def download_crests(teams, refresh):
             continue
         ext = Path(url.split('?')[0]).suffix or '.png'
         file = LOGOS / f"{team_id_from_name(team['name'])}{ext}"
-        if file.exists() and not refresh:
+        if (file.exists() or file.with_suffix('.webp').exists()) and not refresh:  # WebP: optimize_logos.py로 바꾼 것
             continue
         try:
             body, _ = http_get(url, binary=True)

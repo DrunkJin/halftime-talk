@@ -1,6 +1,7 @@
 // 진입점: 데이터 로드 → 앱 시작
 import { DataError, loadDataset } from './data/loader.js';
 import { loadSlots } from './state/save.js';
+import { warmUp } from './state/simulation.js';
 import { createApp } from './ui/app.js';
 import { h } from './ui/dom.js';
 
@@ -9,6 +10,7 @@ const root = document.getElementById('app');
 try {
   const [dataset, slots] = await Promise.all([loadDataset(), loadSlots()]);
   createApp(root, dataset, slots);
+  (window.requestIdleCallback ?? ((fn) => setTimeout(fn, 1500)))(warmUp);
 } catch (err) {
   console.error(err);
   const details = err instanceof DataError ? err.details.slice(0, 20) : [];

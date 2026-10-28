@@ -79,3 +79,10 @@ export const advanceCup = (dataset, game, userResult) => run('cupWeek', dataset,
 export const simulateRest = (dataset, game) => run('simulateRest', dataset, game);
 // 다음 시즌 시작 (base: 원본 데이터) → { game, summary }
 export const advanceSeason = (base, game, options = {}) => run('newSeason', base, game, options);
+
+// 시작 화면이 뜬 뒤 Worker를 미리 띄워 데이터를 읽어 둔다: 첫 '라운드 진행'이 Worker의 데이터 읽기(5MB)를 기다리지 않게.
+// 같은 파일을 방금 화면이 받았으므로 네트워크는 브라우저 캐시에서 끝난다
+export function warmUp() {
+  if (typeof Worker === 'undefined') return;
+  postToWorker('warm', null).catch(() => {});
+}

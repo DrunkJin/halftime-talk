@@ -572,10 +572,14 @@ function renderLive(ctx, show) {
       let inId = null;
       const confirm = h('button', { class: 'btn primary', type: 'button', disabled: true }, '교체');
       const refreshConfirm = () => (confirm.disabled = outSlot === null || inId === null);
+      // 줄 어디를 눌러도 고르고, 이름 칸은 버튼이라 키보드(Tab·Enter)로도 고른다
       const pickRows = (rows, onPick) => {
         rows.forEach(({ tr, value }) =>
           tr.addEventListener('click', () => {
-            rows.forEach((r) => r.tr.classList.toggle('is-selected', r.tr === tr));
+            rows.forEach((r) => {
+              r.tr.classList.toggle('is-selected', r.tr === tr);
+              r.tr.querySelector('.pick-btn').setAttribute('aria-pressed', String(r.tr === tr));
+            });
             onPick(value);
             refreshConfirm();
           }),
@@ -587,7 +591,7 @@ function renderLive(ctx, show) {
           'tr',
           {},
           h('td', {}, h('span', { class: pos ? 'slot-tag' : 'pos-tag' }, pos ?? p.position)),
-          h('td', {}, p.name),
+          h('td', {}, h('button', { type: 'button', class: 'link pick-btn', 'aria-pressed': 'false' }, p.name)),
           h('td', {}, conditionMeter(snap.condition(p.id))),
           h('td', { class: `num ${attrClass(overall(p))}` }, pos ? Math.round(positionRating(p, pos) * positionFit(p, pos)) : overall(p)),
         );

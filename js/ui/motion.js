@@ -172,9 +172,17 @@ export function openModal(content, { onClose } = {}) {
   modal.className = 't-modal modal';
   modal.setAttribute('role', 'dialog');
   modal.setAttribute('aria-modal', 'true');
+  modal.tabIndex = -1;
   modal.append(content);
+  // 창 이름: 안의 첫 제목
+  const heading = modal.querySelector('h1, h2, h3');
+  if (heading) {
+    heading.id ||= `modal-title-${++modalSeq}`;
+    modal.setAttribute('aria-labelledby', heading.id);
+  }
   backdrop.append(modal);
   document.body.append(backdrop);
+  const opener = document.activeElement;
 
   const closeMs = cssMs('--modal-close-dur', 150);
   let closed = false;
@@ -185,13 +193,34 @@ export function openModal(content, { onClose } = {}) {
     modal.classList.add('is-closing');
     backdrop.classList.remove('is-open');
     document.removeEventListener('keydown', onKey);
+    // 연 버튼으로 포커스를 돌려준다 (그 버튼이 다시 그려져 없어졌으면 그대로)
+    if (modal.contains(document.activeElement) && opener?.isConnected) opener.focus();
     setTimeout(() => {
       modal.classList.remove('is-closing');
       backdrop.remove();
       onClose?.();
     }, closeMs);
   }
-  const onKey = (e) => e.key === 'Escape' && closeModal();
+  const onKey = (e) => {
+    if (backdrop !== document.querySelector('.modal-backdrop:last-of-type')) return; // 겹친 창은 맨 위 창만
+    if (e.key === 'Escape') return closeModal();
+    if (e.key !== 'Tab') return;
+    // Tab이 창 밖(뒤 화면)으로 빠져나가지 않게 창 안에서 돈다
+    const items = focusables(modal);
+    if (!items.length) return e.preventDefault();
+    const first = items[0];
+    const last = items.at(-1);
+    if (!modal.contains(document.activeElement)) {
+      e.preventDefault();
+      first.focus();
+    } else if (e.shiftKey && (document.activeElement === first || document.activeElement === modal)) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  };
   document.addEventListener('keydown', onKey);
   backdrop.addEventListener('click', (e) => e.target === backdrop && closeModal());
 
@@ -199,8 +228,14 @@ export function openModal(content, { onClose } = {}) {
   backdrop.classList.add('is-open');
   modal.classList.remove('is-closing');
   modal.classList.add('is-open');
+  // 포커스를 창 안으로: 창이 정한 대상이 있으면 그것, 없으면 창 자체(제목부터 읽히고 Tab으로 첫 조작 요소)
+  (modal.querySelector('[autofocus]') ?? modal).focus({ preventScroll: true });
   return closeModal;
 }
+
+let modalSeq = 0;
+const focusables = (root) =>
+  [...root.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter((el) => !el.disabled && el.getClientRects().length);
 
 // ── Tooltip (17) ──────────────────────────────────────
 // group: .t-tt-group (안에 .t-tt 하나). 안의 [data-tooltip] 요소가 트리거

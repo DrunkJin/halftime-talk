@@ -1,5 +1,5 @@
 // 무거운 진행(모든 리그 라운드 진행, 시즌 끝까지 시뮬레이션)을 메인 스레드 밖에서 돌린다.
-// 메시지: { id, type: 'completeRound' | 'cupWeek' | 'newSeason' | 'simulateRest', dataUrl, game, userResult? }
+// 메시지: { id, type: 'completeRound' | 'cupWeek' | 'newSeason' | 'simulateRest' | 'warm', dataUrl, game, userResult? }
 // 응답:   { id, ok, game, otherFixtureIds?, aiTransfers?, newOffers?, cups?, error? } — game은 진행이 반영된 새 사본
 import { loadDataset } from '../data/loader.js';
 import { playCupWeek, playWeek, simulateRestOfSeason, startNextSeason } from '../state/season.js';
@@ -12,6 +12,7 @@ self.onmessage = async ({ data }) => {
   try {
     datasetPromise ??= loadDataset(dataUrl);
     const base = await datasetPromise;
+    if (type === 'warm') return self.postMessage({ id, ok: true }); // 데이터만 미리 읽어 둔다
     const dataset = worldDataset(base, game);
     let week = null;
     if (type === 'completeRound') {

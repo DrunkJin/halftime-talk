@@ -94,7 +94,7 @@ def team_code(tla, *names):
 
 
 def logo_file(team_id):
-    for ext in ('.svg', '.png', '.webp'):
+    for ext in ('.svg', '.webp', '.png'):  # optimize_logos.py가 PNG를 WebP로 바꾼다
         if (LOGOS / f'{team_id}{ext}').exists():
             return f'{team_id}{ext}'
     return None

@@ -11,7 +11,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Emirates Stadium",
-      "logo": "arsenal.png",
+      "logo": "arsenal.webp",
       "leagueId": "epl"
     },
     {
@@ -24,7 +24,7 @@
         "secondary": "#95BFE5"
       },
       "stadium": "Villa Park",
-      "logo": "aston-villa.png",
+      "logo": "aston-villa.webp",
       "leagueId": "epl"
     },
     {
@@ -37,7 +37,7 @@
         "secondary": "#000000"
       },
       "stadium": "Vitality Stadium",
-      "logo": "bournemouth.png",
+      "logo": "bournemouth.webp",
       "leagueId": "epl"
     },
     {
@@ -50,7 +50,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Gtech Community Stadium",
-      "logo": "brentford.png",
+      "logo": "brentford.webp",
       "leagueId": "epl"
     },
     {
@@ -63,7 +63,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "American Express Stadium",
-      "logo": "brighton-hove-albion.png",
+      "logo": "brighton-hove-albion.webp",
       "leagueId": "epl"
     },
     {
@@ -76,7 +76,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stamford Bridge",
-      "logo": "chelsea.png",
+      "logo": "chelsea.webp",
       "leagueId": "epl"
     },
     {
@@ -89,7 +89,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Coventry Building Society Arena",
-      "logo": "coventry-city.png",
+      "logo": "coventry-city.webp",
       "leagueId": "epl"
     },
     {
@@ -102,7 +102,7 @@
         "secondary": "#C4122E"
       },
       "stadium": "Selhurst Park",
-      "logo": "crystal-palace.png",
+      "logo": "crystal-palace.webp",
       "leagueId": "epl"
     },
     {
@@ -115,7 +115,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Hill Dickinson Stadium",
-      "logo": "everton.png",
+      "logo": "everton.webp",
       "leagueId": "epl"
     },
     {
@@ -128,7 +128,7 @@
         "secondary": "#000000"
       },
       "stadium": "Craven Cottage",
-      "logo": "fulham.png",
+      "logo": "fulham.webp",
       "leagueId": "epl"
     },
     {
@@ -141,7 +141,7 @@
         "secondary": "#000000"
       },
       "stadium": "MKM Stadium",
-      "logo": "hull-city.png",
+      "logo": "hull-city.webp",
       "leagueId": "epl"
     },
     {
@@ -154,7 +154,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Portman Road",
-      "logo": "ipswich-town.png",
+      "logo": "ipswich-town.webp",
       "leagueId": "epl"
     },
     {
@@ -167,7 +167,7 @@
         "secondary": "#1D428A"
       },
       "stadium": "Elland Road",
-      "logo": "leeds-united.png",
+      "logo": "leeds-united.webp",
       "leagueId": "epl"
     },
     {
@@ -180,7 +180,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Anfield",
-      "logo": "liverpool.png",
+      "logo": "liverpool.webp",
       "leagueId": "epl"
     },
     {
@@ -193,7 +193,7 @@
         "secondary": "#1C2C5B"
       },
       "stadium": "Etihad Stadium",
-      "logo": "manchester-city.png",
+      "logo": "manchester-city.webp",
       "leagueId": "epl"
     },
     {
@@ -206,7 +206,7 @@
         "secondary": "#FBE122"
       },
       "stadium": "Old Trafford",
-      "logo": "manchester-united.png",
+      "logo": "manchester-united.webp",
       "leagueId": "epl"
     },
     {
@@ -219,7 +219,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "St James' Park",
-      "logo": "newcastle-united.png",
+      "logo": "newcastle-united.webp",
       "leagueId": "epl"
     },
     {
@@ -232,7 +232,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "City Ground",
-      "logo": "nottingham-forest.png",
+      "logo": "nottingham-forest.webp",
       "leagueId": "epl"
     },
     {
@@ -245,7 +245,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stadium of Light",
-      "logo": "sunderland.png",
+      "logo": "sunderland.webp",
       "leagueId": "epl"
     },
     {
@@ -258,7 +258,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Tottenham Hotspur Stadium",
-      "logo": "tottenham-hotspur.png",
+      "logo": "tottenham-hotspur.webp",
       "leagueId": "epl"
     },
     {
@@ -271,7 +271,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "St Andrew's Trillion Trophy Stadium",
-      "logo": "birmingham-city.png",
+      "logo": "birmingham-city.webp",
       "leagueId": "championship"
     },
     {
@@ -284,7 +284,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Ewood Park",
-      "logo": "blackburn-rovers.png",
+      "logo": "blackburn-rovers.webp",
       "leagueId": "championship"
     },
     {
@@ -297,7 +297,7 @@
         "secondary": "#132257"
       },
       "stadium": "University of Bolton Stadium",
-      "logo": "bolton-wanderers.png",
+      "logo": "bolton-wanderers.webp",
       "leagueId": "championship"
     },
     {
@@ -310,7 +310,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Ashton Gate Stadium",
-      "logo": "bristol-city.png",
+      "logo": "bristol-city.webp",
       "leagueId": "championship"
     },
     {
@@ -323,7 +323,7 @@
         "secondary": "#6CABDD"
       },
       "stadium": "Turf Moor",
-      "logo": "burnley.png",
+      "logo": "burnley.webp",
       "leagueId": "championship"
     },
     {
@@ -336,7 +336,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Cardiff City Stadium",
-      "logo": "cardiff-city.png",
+      "logo": "cardiff-city.webp",
       "leagueId": "championship"
     },
     {
@@ -349,7 +349,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "The Valley",
-      "logo": "charlton-athletic.png",
+      "logo": "charlton-athletic.webp",
       "leagueId": "championship"
     },
     {
@@ -362,7 +362,7 @@
         "secondary": "#111111"
       },
       "stadium": "iPro Stadium",
-      "logo": "derby-county.png",
+      "logo": "derby-county.webp",
       "leagueId": "championship"
     },
     {
@@ -375,7 +375,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Sincil Bank Stadium",
-      "logo": "lincoln-city.png",
+      "logo": "lincoln-city.webp",
       "leagueId": "championship"
     },
     {
@@ -388,7 +388,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Riverside Stadium",
-      "logo": "middlesbrough.png",
+      "logo": "middlesbrough.webp",
       "leagueId": "championship"
     },
     {
@@ -401,7 +401,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "The Den",
-      "logo": "millwall.png",
+      "logo": "millwall.webp",
       "leagueId": "championship"
     },
     {
@@ -414,7 +414,7 @@
         "secondary": "#00843D"
       },
       "stadium": "Carrow Road",
-      "logo": "norwich-city.png",
+      "logo": "norwich-city.webp",
       "leagueId": "championship"
     },
     {
@@ -427,7 +427,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Fratton Park",
-      "logo": "portsmouth.png",
+      "logo": "portsmouth.webp",
       "leagueId": "championship"
     },
     {
@@ -440,7 +440,7 @@
         "secondary": "#132257"
       },
       "stadium": "Deepdale Stadium",
-      "logo": "preston-north-end.png",
+      "logo": "preston-north-end.webp",
       "leagueId": "championship"
     },
     {
@@ -453,7 +453,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Kiyan Prince Foundation Stadium",
-      "logo": "queens-park-rangers.png",
+      "logo": "queens-park-rangers.webp",
       "leagueId": "championship"
     },
     {
@@ -466,7 +466,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Bramall Lane",
-      "logo": "sheffield-united.png",
+      "logo": "sheffield-united.webp",
       "leagueId": "championship"
     },
     {
@@ -479,7 +479,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "St. Mary's Stadium",
-      "logo": "southampton.png",
+      "logo": "southampton.webp",
       "leagueId": "championship"
     },
     {
@@ -492,7 +492,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Bet365 Stadium",
-      "logo": "stoke-city.png",
+      "logo": "stoke-city.webp",
       "leagueId": "championship"
     },
     {
@@ -505,7 +505,7 @@
         "secondary": "#111111"
       },
       "stadium": "Liberty Stadium",
-      "logo": "swansea-city.png",
+      "logo": "swansea-city.webp",
       "leagueId": "championship"
     },
     {
@@ -518,7 +518,7 @@
         "secondary": "#111111"
       },
       "stadium": "Vicarage Road Stadium",
-      "logo": "watford.png",
+      "logo": "watford.webp",
       "leagueId": "championship"
     },
     {
@@ -531,7 +531,7 @@
         "secondary": "#132257"
       },
       "stadium": "The Hawthorns",
-      "logo": "west-bromwich-albion.png",
+      "logo": "west-bromwich-albion.webp",
       "leagueId": "championship"
     },
     {
@@ -544,7 +544,7 @@
         "secondary": "#6CABDD"
       },
       "stadium": "London Stadium",
-      "logo": "west-ham-united.png",
+      "logo": "west-ham-united.webp",
       "leagueId": "championship"
     },
     {
@@ -557,7 +557,7 @@
         "secondary": "#FDB913"
       },
       "stadium": "Molineux Stadium",
-      "logo": "wolverhampton-wanderers.png",
+      "logo": "wolverhampton-wanderers.webp",
       "leagueId": "championship"
     },
     {
@@ -570,7 +570,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Racecourse Ground",
-      "logo": "wrexham.png",
+      "logo": "wrexham.webp",
       "leagueId": "championship"
     },
     {
@@ -583,7 +583,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "San Mamés",
-      "logo": "athletic-club.png",
+      "logo": "athletic-club.webp",
       "leagueId": "laliga"
     },
     {
@@ -596,7 +596,7 @@
         "secondary": "#132257"
       },
       "stadium": "Camp Nou",
-      "logo": "barcelona.png",
+      "logo": "barcelona.webp",
       "leagueId": "laliga"
     },
     {
@@ -609,7 +609,7 @@
         "secondary": "#132257"
       },
       "stadium": "Estadio El Sadar",
-      "logo": "ca-osasuna.png",
+      "logo": "ca-osasuna.webp",
       "leagueId": "laliga"
     },
     {
@@ -622,7 +622,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio de Balaídos",
-      "logo": "celta-de-vigo.png",
+      "logo": "celta-de-vigo.webp",
       "leagueId": "laliga"
     },
     {
@@ -635,7 +635,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Wanda Metropolitano",
-      "logo": "club-atletico-de-madrid.png",
+      "logo": "club-atletico-de-madrid.webp",
       "leagueId": "laliga"
     },
     {
@@ -648,7 +648,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio de Mendizorroza",
-      "logo": "deportivo-alaves.png",
+      "logo": "deportivo-alaves.webp",
       "leagueId": "laliga"
     },
     {
@@ -661,7 +661,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Abanca-Riazor",
-      "logo": "deportivo-la-coruna.png",
+      "logo": "deportivo-la-coruna.webp",
       "leagueId": "laliga"
     },
     {
@@ -674,7 +674,7 @@
         "secondary": "#00843D"
       },
       "stadium": "Estadio Manuel Martínez Valero",
-      "logo": "elche.png",
+      "logo": "elche.webp",
       "leagueId": "laliga"
     },
     {
@@ -687,7 +687,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Coliseum Alfonso Pérez",
-      "logo": "getafe.png",
+      "logo": "getafe.webp",
       "leagueId": "laliga"
     },
     {
@@ -700,7 +700,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Ciudad de Valencia",
-      "logo": "levante-ud.png",
+      "logo": "levante-ud.webp",
       "leagueId": "laliga"
     },
     {
@@ -713,7 +713,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio La Rosaleda",
-      "logo": "malaga.png",
+      "logo": "malaga.webp",
       "leagueId": "laliga"
     },
     {
@@ -726,7 +726,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "RCDE Stadium",
-      "logo": "rcd-espanyol-de-barcelona.png",
+      "logo": "rcd-espanyol-de-barcelona.webp",
       "leagueId": "laliga"
     },
     {
@@ -739,7 +739,7 @@
         "secondary": "#D71920"
       },
       "stadium": "Estadio del Rayo Vallecano",
-      "logo": "rayo-vallecano-de-madrid.png",
+      "logo": "rayo-vallecano-de-madrid.webp",
       "leagueId": "laliga"
     },
     {
@@ -752,7 +752,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Benito Villamarín",
-      "logo": "real-betis-balompie.png",
+      "logo": "real-betis-balompie.webp",
       "leagueId": "laliga"
     },
     {
@@ -765,7 +765,7 @@
         "secondary": "#5B2A86"
       },
       "stadium": "Estadio Santiago Bernabéu",
-      "logo": "real-madrid.png",
+      "logo": "real-madrid.webp",
       "leagueId": "laliga"
     },
     {
@@ -778,7 +778,7 @@
         "secondary": "#111111"
       },
       "stadium": "Campos de Sport de El Sardinero",
-      "logo": "real-racing-club-de-santander.png",
+      "logo": "real-racing-club-de-santander.webp",
       "leagueId": "laliga"
     },
     {
@@ -791,7 +791,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Municipal de Anoeta",
-      "logo": "real-sociedad-de-futbol.png",
+      "logo": "real-sociedad-de-futbol.webp",
       "leagueId": "laliga"
     },
     {
@@ -804,7 +804,7 @@
         "secondary": "#D71920"
       },
       "stadium": "Estadio Ramón Sánchez Pizjuán",
-      "logo": "sevilla.png",
+      "logo": "sevilla.webp",
       "leagueId": "laliga"
     },
     {
@@ -817,7 +817,7 @@
         "secondary": "#F18A00"
       },
       "stadium": "Estadio de Mestalla",
-      "logo": "valencia.png",
+      "logo": "valencia.webp",
       "leagueId": "laliga"
     },
     {
@@ -830,7 +830,7 @@
         "secondary": "#1D4ED8"
       },
       "stadium": "Estadio de la Cerámica",
-      "logo": "villarreal.png",
+      "logo": "villarreal.webp",
       "leagueId": "laliga"
     },
     {
@@ -843,7 +843,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stadio Artemio Franchi",
-      "logo": "acf-fiorentina.png",
+      "logo": "acf-fiorentina.webp",
       "leagueId": "serie-a"
     },
     {
@@ -856,7 +856,7 @@
         "secondary": "#1D4ED8"
       },
       "stadium": "Stadio Atleti Azzurri d'Italia",
-      "logo": "atalanta-bc.png",
+      "logo": "atalanta-bc.webp",
       "leagueId": "serie-a"
     },
     {
@@ -869,7 +869,7 @@
         "secondary": "#1D4ED8"
       },
       "stadium": "Stadio Renato Dall'Ara",
-      "logo": "bologna-fc-1909.png",
+      "logo": "bologna-fc-1909.webp",
       "leagueId": "serie-a"
     },
     {
@@ -882,7 +882,7 @@
         "secondary": "#132257"
       },
       "stadium": "Sardegna Arena",
-      "logo": "cagliari-calcio.png",
+      "logo": "cagliari-calcio.webp",
       "leagueId": "serie-a"
     },
     {
@@ -895,7 +895,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stadio Giuseppe Sinigaglia",
-      "logo": "como-1907.png",
+      "logo": "como-1907.webp",
       "leagueId": "serie-a"
     },
     {
@@ -908,7 +908,7 @@
         "secondary": "#1D4ED8"
       },
       "stadium": "Stadio Benito Stirpe",
-      "logo": "frosinone-calcio.png",
+      "logo": "frosinone-calcio.webp",
       "leagueId": "serie-a"
     },
     {
@@ -921,7 +921,7 @@
         "secondary": "#132257"
       },
       "stadium": "Stadio Comunale Luigi Ferraris",
-      "logo": "genoa-cfc.png",
+      "logo": "genoa-cfc.webp",
       "leagueId": "serie-a"
     },
     {
@@ -934,7 +934,7 @@
         "secondary": "#111111"
       },
       "stadium": "Stadio Giuseppe Meazza",
-      "logo": "internazionale-milano.png",
+      "logo": "internazionale-milano.webp",
       "leagueId": "serie-a"
     },
     {
@@ -947,7 +947,7 @@
         "secondary": "#111111"
       },
       "stadium": "Allianz Stadium",
-      "logo": "juventus.png",
+      "logo": "juventus.webp",
       "leagueId": "serie-a"
     },
     {
@@ -960,7 +960,7 @@
         "secondary": "#111111"
       },
       "stadium": "Stadio Giuseppe Meazza",
-      "logo": "milan.png",
+      "logo": "milan.webp",
       "leagueId": "serie-a"
     },
     {
@@ -973,7 +973,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stadio Comunale Brianteo",
-      "logo": "monza.png",
+      "logo": "monza.webp",
       "leagueId": "serie-a"
     },
     {
@@ -986,7 +986,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stadio San Paolo",
-      "logo": "napoli.png",
+      "logo": "napoli.webp",
       "leagueId": "serie-a"
     },
     {
@@ -999,7 +999,7 @@
         "secondary": "#111111"
       },
       "stadium": "Stadio Ennio Tardini",
-      "logo": "parma-calcio-1913.png",
+      "logo": "parma-calcio-1913.webp",
       "leagueId": "serie-a"
     },
     {
@@ -1012,7 +1012,7 @@
         "secondary": "#F18A00"
       },
       "stadium": "Stadio Olimpico",
-      "logo": "roma.png",
+      "logo": "roma.webp",
       "leagueId": "serie-a"
     },
     {
@@ -1025,7 +1025,7 @@
         "secondary": "#6CABDD"
       },
       "stadium": "Stadio Olimpico",
-      "logo": "ss-lazio.png",
+      "logo": "ss-lazio.webp",
       "leagueId": "serie-a"
     },
     {
@@ -1038,7 +1038,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stadio Olimpico di Torino",
-      "logo": "torino.png",
+      "logo": "torino.webp",
       "leagueId": "serie-a"
     },
     {
@@ -1051,7 +1051,7 @@
         "secondary": "#D71920"
       },
       "stadium": "Stadio Comunale Via Del Mare",
-      "logo": "us-lecce.png",
+      "logo": "us-lecce.webp",
       "leagueId": "serie-a"
     },
     {
@@ -1064,7 +1064,7 @@
         "secondary": "#111111"
       },
       "stadium": "Mapei Stadium - Città del Tricolore",
-      "logo": "us-sassuolo-calcio.png",
+      "logo": "us-sassuolo-calcio.webp",
       "leagueId": "serie-a"
     },
     {
@@ -1077,7 +1077,7 @@
         "secondary": "#111111"
       },
       "stadium": "Dacia Arena",
-      "logo": "udinese-calcio.png",
+      "logo": "udinese-calcio.webp",
       "leagueId": "serie-a"
     },
     {
@@ -1090,7 +1090,7 @@
         "secondary": "#111111"
       },
       "stadium": "Stadio Pierluigi Penzo",
-      "logo": "venezia.png",
+      "logo": "venezia.webp",
       "leagueId": "serie-a"
     },
     {
@@ -1103,7 +1103,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Opel Arena",
-      "logo": "1-fsv-mainz-05.png",
+      "logo": "1-fsv-mainz-05.webp",
       "leagueId": "bundesliga"
     },
     {
@@ -1116,7 +1116,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "PreZero Arena",
-      "logo": "1899-hoffenheim.png",
+      "logo": "1899-hoffenheim.webp",
       "leagueId": "bundesliga"
     },
     {
@@ -1129,7 +1129,7 @@
         "secondary": "#00843D"
       },
       "stadium": "WWK Arena",
-      "logo": "augsburg.png",
+      "logo": "augsburg.webp",
       "leagueId": "bundesliga"
     },
     {
@@ -1142,7 +1142,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "BayArena",
-      "logo": "bayer-04-leverkusen.png",
+      "logo": "bayer-04-leverkusen.webp",
       "leagueId": "bundesliga"
     },
     {
@@ -1155,7 +1155,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Allianz Arena",
-      "logo": "bayern-munchen.png",
+      "logo": "bayern-munchen.webp",
       "leagueId": "bundesliga"
     },
     {
@@ -1168,7 +1168,7 @@
         "secondary": "#FDE100"
       },
       "stadium": "Signal Iduna Park",
-      "logo": "borussia-dortmund.png",
+      "logo": "borussia-dortmund.webp",
       "leagueId": "bundesliga"
     },
     {
@@ -1181,7 +1181,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stadion im Borussia-Park",
-      "logo": "borussia-monchengladbach.png",
+      "logo": "borussia-monchengladbach.webp",
       "leagueId": "bundesliga"
     },
     {
@@ -1194,7 +1194,7 @@
         "secondary": "#111111"
       },
       "stadium": "Deutsche Bank Park",
-      "logo": "eintracht-frankfurt.png",
+      "logo": "eintracht-frankfurt.webp",
       "leagueId": "bundesliga"
     },
     {
@@ -1207,7 +1207,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Schwarzwald-Stadion",
-      "logo": "freiburg.png",
+      "logo": "freiburg.webp",
       "leagueId": "bundesliga"
     },
     {
@@ -1220,7 +1220,7 @@
         "secondary": "#D71920"
       },
       "stadium": "Volksparkstadion",
-      "logo": "hamburger-sv.png",
+      "logo": "hamburger-sv.webp",
       "leagueId": "bundesliga"
     },
     {
@@ -1233,7 +1233,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "RheinEnergieSTADION",
-      "logo": "koln.png",
+      "logo": "koln.webp",
       "leagueId": "bundesliga"
     },
     {
@@ -1246,7 +1246,7 @@
         "secondary": "#1D4ED8"
       },
       "stadium": "Benteler-Arena",
-      "logo": "paderborn-07.png",
+      "logo": "paderborn-07.webp",
       "leagueId": "bundesliga"
     },
     {
@@ -1259,7 +1259,7 @@
         "secondary": "#D71920"
       },
       "stadium": "Red Bull Arena",
-      "logo": "rb-leipzig.png",
+      "logo": "rb-leipzig.webp",
       "leagueId": "bundesliga"
     },
     {
@@ -1272,7 +1272,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Ursapharm-Arena an der Kaiserlinde",
-      "logo": "sv-07-elversberg.png",
+      "logo": "sv-07-elversberg.webp",
       "leagueId": "bundesliga"
     },
     {
@@ -1285,7 +1285,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Veltins-Arena",
-      "logo": "schalke-04.png",
+      "logo": "schalke-04.webp",
       "leagueId": "bundesliga"
     },
     {
@@ -1298,7 +1298,7 @@
         "secondary": "#D71920"
       },
       "stadium": "Mercedes-Benz Arena",
-      "logo": "stuttgart.png",
+      "logo": "stuttgart.webp",
       "leagueId": "bundesliga"
     },
     {
@@ -1311,7 +1311,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stadion An der Alten Försterei",
-      "logo": "union-berlin.png",
+      "logo": "union-berlin.webp",
       "leagueId": "bundesliga"
     },
     {
@@ -1324,7 +1324,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Weserstadion",
-      "logo": "werder-bremen.png",
+      "logo": "werder-bremen.webp",
       "leagueId": "bundesliga"
     },
     {
@@ -1337,7 +1337,7 @@
         "secondary": "#1D4ED8"
       },
       "stadium": "Stade de l'Abbé Deschamps",
-      "logo": "aj-auxerre.png",
+      "logo": "aj-auxerre.webp",
       "leagueId": "ligue-1"
     },
     {
@@ -1350,7 +1350,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stade Raymond Kopa",
-      "logo": "angers-sco.png",
+      "logo": "angers-sco.webp",
       "leagueId": "ligue-1"
     },
     {
@@ -1363,7 +1363,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stade de l'Aube",
-      "logo": "es-troyes.png",
+      "logo": "es-troyes.webp",
       "leagueId": "ligue-1"
     },
     {
@@ -1376,7 +1376,7 @@
         "secondary": "#132257"
       },
       "stadium": "Stade Océane",
-      "logo": "le-havre.png",
+      "logo": "le-havre.webp",
       "leagueId": "ligue-1"
     },
     {
@@ -1389,7 +1389,7 @@
         "secondary": "#FDE100"
       },
       "stadium": "MMArena",
-      "logo": "le-mans.png",
+      "logo": "le-mans.webp",
       "leagueId": "ligue-1"
     },
     {
@@ -1402,7 +1402,7 @@
         "secondary": "#D71920"
       },
       "stadium": "Stade Pierre-Mauroy",
-      "logo": "lille-osc.png",
+      "logo": "lille-osc.webp",
       "leagueId": "ligue-1"
     },
     {
@@ -1415,7 +1415,7 @@
         "secondary": "#111111"
       },
       "stadium": "Stade Yves Allainmat - Le Moustoir",
-      "logo": "lorient.png",
+      "logo": "lorient.webp",
       "leagueId": "ligue-1"
     },
     {
@@ -1428,7 +1428,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stade Louis II.",
-      "logo": "monaco.png",
+      "logo": "monaco.webp",
       "leagueId": "ligue-1"
     },
     {
@@ -1441,7 +1441,7 @@
         "secondary": "#111111"
       },
       "stadium": "Stade de Nice",
-      "logo": "ogc-nice.png",
+      "logo": "ogc-nice.webp",
       "leagueId": "ligue-1"
     },
     {
@@ -1454,7 +1454,7 @@
         "secondary": "#D71920"
       },
       "stadium": "Groupama Stadium",
-      "logo": "olympique-lyonnais.png",
+      "logo": "olympique-lyonnais.webp",
       "leagueId": "ligue-1"
     },
     {
@@ -1467,7 +1467,7 @@
         "secondary": "#1D4ED8"
       },
       "stadium": "Orange Vélodrome",
-      "logo": "olympique-de-marseille.png",
+      "logo": "olympique-de-marseille.webp",
       "leagueId": "ligue-1"
     },
     {
@@ -1480,7 +1480,7 @@
         "secondary": "#6CABDD"
       },
       "stadium": "Stade Sébastien Charléty",
-      "logo": "paris.png",
+      "logo": "paris.webp",
       "leagueId": "ligue-1"
     },
     {
@@ -1493,7 +1493,7 @@
         "secondary": "#1D4ED8"
       },
       "stadium": "Parc des Princes",
-      "logo": "paris-saint-germain.png",
+      "logo": "paris-saint-germain.webp",
       "leagueId": "ligue-1"
     },
     {
@@ -1506,7 +1506,7 @@
         "secondary": "#FDE100"
       },
       "stadium": "Stade Bollaert-Delelis",
-      "logo": "racing-club-de-lens.png",
+      "logo": "racing-club-de-lens.webp",
       "leagueId": "ligue-1"
     },
     {
@@ -1519,7 +1519,7 @@
         "secondary": "#D71920"
       },
       "stadium": "Stade Francis-Le Blé",
-      "logo": "stade-brestois-29.png",
+      "logo": "stade-brestois-29.webp",
       "leagueId": "ligue-1"
     },
     {
@@ -1532,7 +1532,7 @@
         "secondary": "#111111"
       },
       "stadium": "Roazhon Park",
-      "logo": "stade-rennais-fc-1901.png",
+      "logo": "stade-rennais-fc-1901.webp",
       "leagueId": "ligue-1"
     },
     {
@@ -1545,7 +1545,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stade de la Meinau",
-      "logo": "strasbourg-alsace.png",
+      "logo": "strasbourg-alsace.webp",
       "leagueId": "ligue-1"
     },
     {
@@ -1558,7 +1558,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stadium Municipal",
-      "logo": "toulouse.png",
+      "logo": "toulouse.webp",
       "leagueId": "ligue-1"
     },
     {
@@ -1571,7 +1571,7 @@
         "secondary": "#FDE100"
       },
       "stadium": "Cars Jeans Stadion",
-      "logo": "ado-den-haag.png",
+      "logo": "ado-den-haag.webp",
       "leagueId": "eredivisie"
     },
     {
@@ -1584,7 +1584,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "AFAS Stadion",
-      "logo": "az.png",
+      "logo": "az.webp",
       "leagueId": "eredivisie"
     },
     {
@@ -1597,7 +1597,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Johan Cruyff ArenA",
-      "logo": "ajax.png",
+      "logo": "ajax.webp",
       "leagueId": "eredivisie"
     },
     {
@@ -1610,7 +1610,7 @@
         "secondary": "#1D4ED8"
       },
       "stadium": "Cambuurstadion",
-      "logo": "cambuur-leeuwarden.png",
+      "logo": "cambuur-leeuwarden.webp",
       "leagueId": "eredivisie"
     },
     {
@@ -1623,7 +1623,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stadion Feijenoord",
-      "logo": "feyenoord-rotterdam.png",
+      "logo": "feyenoord-rotterdam.webp",
       "leagueId": "eredivisie"
     },
     {
@@ -1636,7 +1636,7 @@
         "secondary": "#00843D"
       },
       "stadium": "Fortuna Sittard Stadion",
-      "logo": "fortuna-sittard.png",
+      "logo": "fortuna-sittard.webp",
       "leagueId": "eredivisie"
     },
     {
@@ -1649,7 +1649,7 @@
         "secondary": "#FDE100"
       },
       "stadium": "De Adelaarshorst",
-      "logo": "go-ahead-eagles.png",
+      "logo": "go-ahead-eagles.webp",
       "leagueId": "eredivisie"
     },
     {
@@ -1662,7 +1662,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Hitachi Capital Mobility Stadion",
-      "logo": "groningen.png",
+      "logo": "groningen.webp",
       "leagueId": "eredivisie"
     },
     {
@@ -1675,7 +1675,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Abe Lenstra Stadion",
-      "logo": "heerenveen.png",
+      "logo": "heerenveen.webp",
       "leagueId": "eredivisie"
     },
     {
@@ -1688,7 +1688,7 @@
         "secondary": "#00843D"
       },
       "stadium": "Goffertstadion",
-      "logo": "nec.png",
+      "logo": "nec.webp",
       "leagueId": "eredivisie"
     },
     {
@@ -1701,7 +1701,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "MAC³PARK Stadion",
-      "logo": "pec-zwolle.png",
+      "logo": "pec-zwolle.webp",
       "leagueId": "eredivisie"
     },
     {
@@ -1714,7 +1714,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Philips Stadion",
-      "logo": "psv.png",
+      "logo": "psv.webp",
       "leagueId": "eredivisie"
     },
     {
@@ -1727,7 +1727,7 @@
         "secondary": "#111111"
       },
       "stadium": "Van Donge & De Roo Stadion",
-      "logo": "sbv-excelsior.png",
+      "logo": "sbv-excelsior.webp",
       "leagueId": "eredivisie"
     },
     {
@@ -1740,7 +1740,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Sparta-Stadion Het Kasteel",
-      "logo": "sparta-rotterdam.png",
+      "logo": "sparta-rotterdam.webp",
       "leagueId": "eredivisie"
     },
     {
@@ -1753,7 +1753,7 @@
         "secondary": "#1D4ED8"
       },
       "stadium": "Rabobank IJmond Stadion",
-      "logo": "telstar-1963.png",
+      "logo": "telstar-1963.webp",
       "leagueId": "eredivisie"
     },
     {
@@ -1766,7 +1766,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "De Grolsch Veste",
-      "logo": "twente-65.png",
+      "logo": "twente-65.webp",
       "leagueId": "eredivisie"
     },
     {
@@ -1779,7 +1779,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stadion Galgenwaard",
-      "logo": "utrecht.png",
+      "logo": "utrecht.webp",
       "leagueId": "eredivisie"
     },
     {
@@ -1792,7 +1792,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Koning Willem II Stadion",
-      "logo": "willem-ii-tilburg.png",
+      "logo": "willem-ii-tilburg.webp",
       "leagueId": "eredivisie"
     },
     {
@@ -1805,7 +1805,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio Municipal do Fontelo",
-      "logo": "academico-de-viseu.png",
+      "logo": "academico-de-viseu.webp",
       "leagueId": "primeira-liga"
     },
     {
@@ -1818,7 +1818,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Campo Futebol Clube Alverca",
-      "logo": "alverca.png",
+      "logo": "alverca.webp",
       "leagueId": "primeira-liga"
     },
     {
@@ -1831,7 +1831,7 @@
         "secondary": "#1D4ED8"
       },
       "stadium": "Estádio Municipal de Arouca",
-      "logo": "arouca.png",
+      "logo": "arouca.webp",
       "leagueId": "primeira-liga"
     },
     {
@@ -1844,7 +1844,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio da Madeira",
-      "logo": "cd-nacional.png",
+      "logo": "cd-nacional.webp",
       "leagueId": "primeira-liga"
     },
     {
@@ -1857,7 +1857,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Cidade do Futebol",
-      "logo": "cd-santa-clara.png",
+      "logo": "cd-santa-clara.webp",
       "leagueId": "primeira-liga"
     },
     {
@@ -1870,7 +1870,7 @@
         "secondary": "#D71920"
       },
       "stadium": "Estádio dos Barreiros",
-      "logo": "cs-maritimo.png",
+      "logo": "cs-maritimo.webp",
       "leagueId": "primeira-liga"
     },
     {
@@ -1883,7 +1883,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio Pina Manique",
-      "logo": "casa-pia.png",
+      "logo": "casa-pia.webp",
       "leagueId": "primeira-liga"
     },
     {
@@ -1896,7 +1896,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio Nacional",
-      "logo": "estrela-da-amadora.png",
+      "logo": "estrela-da-amadora.webp",
       "leagueId": "primeira-liga"
     },
     {
@@ -1909,7 +1909,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio Municipal 22 de Junho",
-      "logo": "famalicao.png",
+      "logo": "famalicao.webp",
       "leagueId": "primeira-liga"
     },
     {
@@ -1922,7 +1922,7 @@
         "secondary": "#1D4ED8"
       },
       "stadium": "Estádio António Coimbra da Mota",
-      "logo": "gd-estoril-praia.png",
+      "logo": "gd-estoril-praia.webp",
       "leagueId": "primeira-liga"
     },
     {
@@ -1935,7 +1935,7 @@
         "secondary": "#1D4ED8"
       },
       "stadium": "Estádio Cidade de Barcelos",
-      "logo": "gil-vicente.png",
+      "logo": "gil-vicente.webp",
       "leagueId": "primeira-liga"
     },
     {
@@ -1948,7 +1948,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "P.D. Comendador Joaquim de Almeida Freitas",
-      "logo": "moreirense.png",
+      "logo": "moreirense.webp",
       "leagueId": "primeira-liga"
     },
     {
@@ -1961,7 +1961,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio Do Dragão",
-      "logo": "porto.png",
+      "logo": "porto.webp",
       "leagueId": "primeira-liga"
     },
     {
@@ -1974,7 +1974,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio do Rio Ave Futebol Clube",
-      "logo": "rio-ave.png",
+      "logo": "rio-ave.webp",
       "leagueId": "primeira-liga"
     },
     {
@@ -1987,7 +1987,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio do Sport Lisboa e Benfica",
-      "logo": "sport-lisboa-e-benfica.png",
+      "logo": "sport-lisboa-e-benfica.webp",
       "leagueId": "primeira-liga"
     },
     {
@@ -2000,7 +2000,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio Municipal de Braga",
-      "logo": "sporting-clube-de-braga.png",
+      "logo": "sporting-clube-de-braga.webp",
       "leagueId": "primeira-liga"
     },
     {
@@ -2013,7 +2013,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio José Alvalade",
-      "logo": "sporting-clube-de-portugal.png",
+      "logo": "sporting-clube-de-portugal.webp",
       "leagueId": "primeira-liga"
     },
     {
@@ -2026,7 +2026,7 @@
         "secondary": "#111111"
       },
       "stadium": "Estádio Dom Afonso Henriques",
-      "logo": "vitoria.png",
+      "logo": "vitoria.webp",
       "leagueId": "primeira-liga"
     },
     {
@@ -2039,7 +2039,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Bucheon Stadium",
-      "logo": "bucheon-fc-1995.png",
+      "logo": "bucheon-fc-1995.webp",
       "leagueId": "k-league-1"
     },
     {
@@ -2052,7 +2052,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Daejeon World Cup Stadium",
-      "logo": "daejeon-hana-citizen.png",
+      "logo": "daejeon-hana-citizen.webp",
       "leagueId": "k-league-1"
     },
     {
@@ -2065,7 +2065,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Anyang Stadium",
-      "logo": "fc-anyang.png",
+      "logo": "fc-anyang.webp",
       "leagueId": "k-league-1"
     },
     {
@@ -2078,7 +2078,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Seoul World Cup Stadium",
-      "logo": "fc-seoul.png",
+      "logo": "fc-seoul.webp",
       "leagueId": "k-league-1"
     },
     {
@@ -2091,7 +2091,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Gangneung Stadium",
-      "logo": "gangwon-fc.png",
+      "logo": "gangwon-fc.webp",
       "leagueId": "k-league-1"
     },
     {
@@ -2104,7 +2104,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Gimcheon Stadium",
-      "logo": "gimcheon-sangmu.png",
+      "logo": "gimcheon-sangmu.webp",
       "leagueId": "k-league-1"
     },
     {
@@ -2117,7 +2117,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Gwangju Football Stadium",
-      "logo": "gwangju-fc.png",
+      "logo": "gwangju-fc.webp",
       "leagueId": "k-league-1"
     },
     {
@@ -2130,7 +2130,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Sungui Arena Park",
-      "logo": "incheon-united.png",
+      "logo": "incheon-united.webp",
       "leagueId": "k-league-1"
     },
     {
@@ -2143,7 +2143,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Jeju World Cup Stadium",
-      "logo": "jeju-sk.png",
+      "logo": "jeju-sk.webp",
       "leagueId": "k-league-1"
     },
     {
@@ -2156,7 +2156,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Jeonju World Cup Stadium",
-      "logo": "jeonbuk-hyundai-motors.png",
+      "logo": "jeonbuk-hyundai-motors.webp",
       "leagueId": "k-league-1"
     },
     {
@@ -2169,7 +2169,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Steelyard Stadium",
-      "logo": "pohang-steelers.png",
+      "logo": "pohang-steelers.webp",
       "leagueId": "k-league-1"
     },
     {
@@ -2182,7 +2182,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Ulsan Munsu Football Stadium",
-      "logo": "ulsan-hd.png",
+      "logo": "ulsan-hd.webp",
       "leagueId": "k-league-1"
     },
     {
@@ -2195,7 +2195,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Ansan Wa Stadium",
-      "logo": "ansan-greeners.png",
+      "logo": "ansan-greeners.webp",
       "leagueId": "k-league-2"
     },
     {
@@ -2208,7 +2208,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Busan Asiad Main Stadium",
-      "logo": "busan-ipark.png",
+      "logo": "busan-ipark.webp",
       "leagueId": "k-league-2"
     },
     {
@@ -2221,7 +2221,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Cheonan Baekseok Stadium",
-      "logo": "cheonan-city.png",
+      "logo": "cheonan-city.webp",
       "leagueId": "k-league-2"
     },
     {
@@ -2234,7 +2234,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Cheongju Stadium",
-      "logo": "chungbuk-cheongju.png",
+      "logo": "chungbuk-cheongju.webp",
       "leagueId": "k-league-2"
     },
     {
@@ -2247,7 +2247,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Yishunsin Stadium",
-      "logo": "chungnam-asan.png",
+      "logo": "chungnam-asan.webp",
       "leagueId": "k-league-2"
     },
     {
@@ -2260,7 +2260,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "DGB Arena",
-      "logo": "daegu-fc.png",
+      "logo": "daegu-fc.webp",
       "leagueId": "k-league-2"
     },
     {
@@ -2273,7 +2273,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Gimhae Civil Stadium",
-      "logo": "gimhae-fc-2008.png",
+      "logo": "gimhae-fc-2008.webp",
       "leagueId": "k-league-2"
     },
     {
@@ -2286,7 +2286,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Gimpo Stadium",
-      "logo": "gimpo-fc.png",
+      "logo": "gimpo-fc.webp",
       "leagueId": "k-league-2"
     },
     {
@@ -2299,7 +2299,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Changwon Football Center",
-      "logo": "gyeongnam-fc.png",
+      "logo": "gyeongnam-fc.webp",
       "leagueId": "k-league-2"
     },
     {
@@ -2312,7 +2312,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Hwaseong Stadium",
-      "logo": "hwaseong-fc.png",
+      "logo": "hwaseong-fc.webp",
       "leagueId": "k-league-2"
     },
     {
@@ -2325,7 +2325,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Gwangyang Stadium",
-      "logo": "jeonnam-dragons.png",
+      "logo": "jeonnam-dragons.webp",
       "leagueId": "k-league-2"
     },
     {
@@ -2338,7 +2338,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Paju Public Stadium",
-      "logo": "paju-frontier.png",
+      "logo": "paju-frontier.webp",
       "leagueId": "k-league-2"
     },
     {
@@ -2351,7 +2351,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Tancheon Sports Complex",
-      "logo": "seongnam-fc.png",
+      "logo": "seongnam-fc.webp",
       "leagueId": "k-league-2"
     },
     {
@@ -2364,7 +2364,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Mokdong Stadium",
-      "logo": "seoul-e-land.png",
+      "logo": "seoul-e-land.webp",
       "leagueId": "k-league-2"
     },
     {
@@ -2377,7 +2377,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Suwon Sports Complex",
-      "logo": "suwon-fc.png",
+      "logo": "suwon-fc.webp",
       "leagueId": "k-league-2"
     },
     {
@@ -2390,7 +2390,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Suwon World Cup Stadium",
-      "logo": "suwon-samsung-bluewings.png",
+      "logo": "suwon-samsung-bluewings.webp",
       "leagueId": "k-league-2"
     },
     {
@@ -2403,7 +2403,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Yongin Football Center",
-      "logo": "yongin-fc.png",
+      "logo": "yongin-fc.webp",
       "leagueId": "k-league-2"
     },
     {
@@ -2416,7 +2416,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Best Denki Stadium",
-      "logo": "avispa-fukuoka.png",
+      "logo": "avispa-fukuoka.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2429,7 +2429,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Yodoko Sakura Stadium",
-      "logo": "cerezo-osaka.png",
+      "logo": "cerezo-osaka.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2442,7 +2442,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Ajinomoto Stadium",
-      "logo": "fc-tokyo.png",
+      "logo": "fc-tokyo.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2455,7 +2455,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "JFE Harenokuni Stadium",
-      "logo": "fagiano-okayama.png",
+      "logo": "fagiano-okayama.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2468,7 +2468,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Panasonic Stadium Suita",
-      "logo": "gamba-osaka.png",
+      "logo": "gamba-osaka.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2481,7 +2481,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Fukuda Denshi Arena",
-      "logo": "jef-united-chiba.png",
+      "logo": "jef-united-chiba.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2494,7 +2494,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Kashima Soccer Stadium",
-      "logo": "kashima.png",
+      "logo": "kashima.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2507,7 +2507,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "SANKYO FRONTIER Kashiwa Stadium",
-      "logo": "kashiwa-reysol.png",
+      "logo": "kashiwa-reysol.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2520,7 +2520,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Uvance Todoroki Stadium by Fujitsu",
-      "logo": "kawasaki-frontale.png",
+      "logo": "kawasaki-frontale.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2533,7 +2533,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Sanga Stadium by Kyocera",
-      "logo": "kyoto-sanga.png",
+      "logo": "kyoto-sanga.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2546,7 +2546,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Machida Gion Stadium",
-      "logo": "machida-zelvia.png",
+      "logo": "machida-zelvia.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2559,7 +2559,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "K’s Denki Stadium",
-      "logo": "mito-hollyhock.png",
+      "logo": "mito-hollyhock.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2572,7 +2572,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Toyota Stadium",
-      "logo": "nagoya-grampus.png",
+      "logo": "nagoya-grampus.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2585,7 +2585,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Edion Peace Wing Hiroshima",
-      "logo": "sanfrecce-hiroshima.png",
+      "logo": "sanfrecce-hiroshima.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2598,7 +2598,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "IAI Stadium Nihondaira",
-      "logo": "shimizu-s-pulse.png",
+      "logo": "shimizu-s-pulse.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2611,7 +2611,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Ajinomoto Stadium",
-      "logo": "tokyo-verdy.png",
+      "logo": "tokyo-verdy.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2624,7 +2624,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Saitama Stadium 2002",
-      "logo": "urawa.png",
+      "logo": "urawa.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2637,7 +2637,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "PEACE STADIUM Connected by SoftBank",
-      "logo": "v-varen-nagasaki.png",
+      "logo": "v-varen-nagasaki.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2650,7 +2650,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "NOEVIR Stadium Kobe",
-      "logo": "vissel-kobe.png",
+      "logo": "vissel-kobe.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2663,7 +2663,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Nissan Stadium",
-      "logo": "yokohama-f-marinos.png",
+      "logo": "yokohama-f-marinos.webp",
       "leagueId": "j1-league"
     },
     {
@@ -2676,7 +2676,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "GAIN Park Stadium",
-      "logo": "alanyaspor.png",
+      "logo": "alanyaspor.webp",
       "leagueId": "super-lig"
     },
     {
@@ -2689,7 +2689,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Seyrantepe Spor Kompleksi Stadyumu 1",
-      "logo": "amed.png",
+      "logo": "amed.webp",
       "leagueId": "super-lig"
     },
     {
@@ -2702,7 +2702,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Başakşehir Fatih Terim Stadyumu",
-      "logo": "basaksehir.png",
+      "logo": "basaksehir.webp",
       "leagueId": "super-lig"
     },
     {
@@ -2715,7 +2715,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Tüpraş Stadyumu",
-      "logo": "besiktas.png",
+      "logo": "besiktas.webp",
       "leagueId": "super-lig"
     },
     {
@@ -2728,7 +2728,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Kazım Karabekir Stadyumu",
-      "logo": "erzurumspor-fk.png",
+      "logo": "erzurumspor-fk.webp",
       "leagueId": "super-lig"
     },
     {
@@ -2741,7 +2741,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Recep Tayyip Erdoğan Stadyumu",
-      "logo": "eyupspor.png",
+      "logo": "eyupspor.webp",
       "leagueId": "super-lig"
     },
     {
@@ -2754,7 +2754,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Chobani Stadyumu Fenerbahçe Şükrü Saracoğlu Spor Kompleksi",
-      "logo": "fenerbahce.png",
+      "logo": "fenerbahce.webp",
       "leagueId": "super-lig"
     },
     {
@@ -2767,7 +2767,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "RAMS Park",
-      "logo": "galatasaray.png",
+      "logo": "galatasaray.webp",
       "leagueId": "super-lig"
     },
     {
@@ -2780,7 +2780,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Gaziantep Stadyumu",
-      "logo": "gaziantep-fk.png",
+      "logo": "gaziantep-fk.webp",
       "leagueId": "super-lig"
     },
     {
@@ -2793,7 +2793,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Eryaman Stadyumu",
-      "logo": "genclerbirligi-s-k.png",
+      "logo": "genclerbirligi-s-k.webp",
       "leagueId": "super-lig"
     },
     {
@@ -2806,7 +2806,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Gürsel Aksel Stadyumu",
-      "logo": "goztepe.png",
+      "logo": "goztepe.webp",
       "leagueId": "super-lig"
     },
     {
@@ -2819,7 +2819,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Recep Tayyip Erdoğan Stadyumu",
-      "logo": "kas-mpasa.png",
+      "logo": "kas-mpasa.webp",
       "leagueId": "super-lig"
     },
     {
@@ -2832,7 +2832,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Yıldız Entegre Kocaeli Stadyumu",
-      "logo": "kocaelispor.png",
+      "logo": "kocaelispor.webp",
       "leagueId": "super-lig"
     },
     {
@@ -2845,7 +2845,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Medaş Konya Büyükşehir Stadyumu",
-      "logo": "konyaspor.png",
+      "logo": "konyaspor.webp",
       "leagueId": "super-lig"
     },
     {
@@ -2858,7 +2858,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Çaykur Didi Stadyumu",
-      "logo": "rizespor.png",
+      "logo": "rizespor.webp",
       "leagueId": "super-lig"
     },
     {
@@ -2871,7 +2871,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Samsun Yeni 19 Mayıs Stadyumu",
-      "logo": "samsunspor.png",
+      "logo": "samsunspor.webp",
       "leagueId": "super-lig"
     },
     {
@@ -2884,7 +2884,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Papara Park",
-      "logo": "trabzonspor.png",
+      "logo": "trabzonspor.webp",
       "leagueId": "super-lig"
     },
     {
@@ -2897,7 +2897,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Çorum Şehir Stadyumu",
-      "logo": "corum-fk.png",
+      "logo": "corum-fk.webp",
       "leagueId": "super-lig"
     },
     {
@@ -2910,7 +2910,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Arena da Baixada",
-      "logo": "atletico-paranaense.png",
+      "logo": "atletico-paranaense.webp",
       "leagueId": "brasileirao"
     },
     {
@@ -2923,7 +2923,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Arena MRV",
-      "logo": "atletico-mg.png",
+      "logo": "atletico-mg.webp",
       "leagueId": "brasileirao"
     },
     {
@@ -2936,7 +2936,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Arena Fonte Nova",
-      "logo": "bahia.png",
+      "logo": "bahia.webp",
       "leagueId": "brasileirao"
     },
     {
@@ -2949,7 +2949,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio Nilton Santos",
-      "logo": "botafogo.png",
+      "logo": "botafogo.webp",
       "leagueId": "brasileirao"
     },
     {
@@ -2962,7 +2962,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Arena Condá",
-      "logo": "chapecoense-sc.png",
+      "logo": "chapecoense-sc.webp",
       "leagueId": "brasileirao"
     },
     {
@@ -2975,7 +2975,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Neo Química Arena",
-      "logo": "corinthians.png",
+      "logo": "corinthians.webp",
       "leagueId": "brasileirao"
     },
     {
@@ -2988,7 +2988,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio Major Antônio Couto Pereira",
-      "logo": "coritiba.png",
+      "logo": "coritiba.webp",
       "leagueId": "brasileirao"
     },
     {
@@ -3001,7 +3001,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio Governador Magalhães Pinto",
-      "logo": "cruzeiro.png",
+      "logo": "cruzeiro.webp",
       "leagueId": "brasileirao"
     },
     {
@@ -3014,7 +3014,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Jornalista Mário Filho (Maracanã)",
-      "logo": "flamengo.png",
+      "logo": "flamengo.webp",
       "leagueId": "brasileirao"
     },
     {
@@ -3027,7 +3027,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Jornalista Mário Filho (Maracanã)",
-      "logo": "fluminense.png",
+      "logo": "fluminense.webp",
       "leagueId": "brasileirao"
     },
     {
@@ -3040,7 +3040,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Arena do Grêmio",
-      "logo": "gremio.png",
+      "logo": "gremio.webp",
       "leagueId": "brasileirao"
     },
     {
@@ -3053,7 +3053,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio José Pinheiro Borda",
-      "logo": "internacional.png",
+      "logo": "internacional.webp",
       "leagueId": "brasileirao"
     },
     {
@@ -3066,7 +3066,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio José Maria de Campos Maia",
-      "logo": "mirassol.png",
+      "logo": "mirassol.webp",
       "leagueId": "brasileirao"
     },
     {
@@ -3079,7 +3079,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Allianz Parque",
-      "logo": "palmeiras.png",
+      "logo": "palmeiras.webp",
       "leagueId": "brasileirao"
     },
     {
@@ -3092,7 +3092,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio Nabi Abi Chedid",
-      "logo": "rb-bragantino.png",
+      "logo": "rb-bragantino.webp",
       "leagueId": "brasileirao"
     },
     {
@@ -3105,7 +3105,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio Estadual Jornalista Edgar Augusto Proença",
-      "logo": "remo.png",
+      "logo": "remo.webp",
       "leagueId": "brasileirao"
     },
     {
@@ -3118,7 +3118,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio Urbano Caldeira",
-      "logo": "santos.png",
+      "logo": "santos.webp",
       "leagueId": "brasileirao"
     },
     {
@@ -3131,7 +3131,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio Cícero Pompeu de Toledo (Morumbi)",
-      "logo": "sao-paulo.png",
+      "logo": "sao-paulo.webp",
       "leagueId": "brasileirao"
     },
     {
@@ -3144,7 +3144,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estádio São Januário",
-      "logo": "vasco-da-gama.png",
+      "logo": "vasco-da-gama.webp",
       "leagueId": "brasileirao"
     },
     {
@@ -3170,7 +3170,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Ciudad de los Deportes",
-      "logo": "atlante-fc.png",
+      "logo": "atlante-fc.webp",
       "leagueId": "liga-mx"
     },
     {
@@ -3183,7 +3183,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Jalisco",
-      "logo": "atlas.png",
+      "logo": "atlas.webp",
       "leagueId": "liga-mx"
     },
     {
@@ -3196,7 +3196,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Alfonso Lastras Ramírez",
-      "logo": "atletico-san-luis.png",
+      "logo": "atletico-san-luis.webp",
       "leagueId": "liga-mx"
     },
     {
@@ -3209,7 +3209,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Hidalgo",
-      "logo": "cf-pachuca.png",
+      "logo": "cf-pachuca.webp",
       "leagueId": "liga-mx"
     },
     {
@@ -3222,7 +3222,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Azteca",
-      "logo": "club-america.png",
+      "logo": "club-america.webp",
       "leagueId": "liga-mx"
     },
     {
@@ -3235,7 +3235,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Corregidora",
-      "logo": "club-queretaro.png",
+      "logo": "club-queretaro.webp",
       "leagueId": "liga-mx"
     },
     {
@@ -3248,7 +3248,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Caliente",
-      "logo": "club-tijuana.png",
+      "logo": "club-tijuana.webp",
       "leagueId": "liga-mx"
     },
     {
@@ -3261,7 +3261,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Azteca",
-      "logo": "cruz-azul.png",
+      "logo": "cruz-azul.webp",
       "leagueId": "liga-mx"
     },
     {
@@ -3274,7 +3274,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Olímpico Benito Juárez",
-      "logo": "fc-juarez.png",
+      "logo": "fc-juarez.webp",
       "leagueId": "liga-mx"
     },
     {
@@ -3287,7 +3287,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio AKRON",
-      "logo": "guadalajara-chivas.png",
+      "logo": "guadalajara-chivas.webp",
       "leagueId": "liga-mx"
     },
     {
@@ -3300,7 +3300,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio León (Nou Camp)",
-      "logo": "leon.png",
+      "logo": "leon.webp",
       "leagueId": "liga-mx"
     },
     {
@@ -3313,7 +3313,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio BBVA",
-      "logo": "monterrey.png",
+      "logo": "monterrey.webp",
       "leagueId": "liga-mx"
     },
     {
@@ -3326,7 +3326,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Victoria",
-      "logo": "necaxa.png",
+      "logo": "necaxa.webp",
       "leagueId": "liga-mx"
     },
     {
@@ -3339,7 +3339,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Cuauhtémoc",
-      "logo": "puebla.png",
+      "logo": "puebla.webp",
       "leagueId": "liga-mx"
     },
     {
@@ -3352,7 +3352,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Corona",
-      "logo": "santos-laguna.png",
+      "logo": "santos-laguna.webp",
       "leagueId": "liga-mx"
     },
     {
@@ -3365,7 +3365,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Universitario de Nuevo León",
-      "logo": "tigres-uanl.png",
+      "logo": "tigres-uanl.webp",
       "leagueId": "liga-mx"
     },
     {
@@ -3378,7 +3378,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Nemesio Díez",
-      "logo": "toluca.png",
+      "logo": "toluca.webp",
       "leagueId": "liga-mx"
     },
     {
@@ -3391,7 +3391,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Olímpico de Universitario",
-      "logo": "u-n-a-m-pumas.png",
+      "logo": "u-n-a-m-pumas.webp",
       "leagueId": "liga-mx"
     },
     {
@@ -3404,7 +3404,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Mercedes-Benz Stadium",
-      "logo": "atlanta-united-fc.png",
+      "logo": "atlanta-united-fc.webp",
       "leagueId": "mls"
     },
     {
@@ -3417,7 +3417,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Q2 Stadium",
-      "logo": "austin.png",
+      "logo": "austin.webp",
       "leagueId": "mls"
     },
     {
@@ -3430,7 +3430,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stade Saputo",
-      "logo": "cf-montreal.png",
+      "logo": "cf-montreal.webp",
       "leagueId": "mls"
     },
     {
@@ -3443,7 +3443,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Bank of America Stadium",
-      "logo": "charlotte.png",
+      "logo": "charlotte.webp",
       "leagueId": "mls"
     },
     {
@@ -3456,7 +3456,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Soldier Field",
-      "logo": "chicago-fire.png",
+      "logo": "chicago-fire.webp",
       "leagueId": "mls"
     },
     {
@@ -3469,7 +3469,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Dick's Sporting Goods Park",
-      "logo": "colorado-rapids.png",
+      "logo": "colorado-rapids.webp",
       "leagueId": "mls"
     },
     {
@@ -3482,7 +3482,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Lower.com Field",
-      "logo": "columbus-crew.png",
+      "logo": "columbus-crew.webp",
       "leagueId": "mls"
     },
     {
@@ -3495,7 +3495,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Audi Field",
-      "logo": "dc-united.png",
+      "logo": "dc-united.webp",
       "leagueId": "mls"
     },
     {
@@ -3508,7 +3508,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "TQL Stadium",
-      "logo": "fc-cincinnati.png",
+      "logo": "fc-cincinnati.webp",
       "leagueId": "mls"
     },
     {
@@ -3521,7 +3521,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Toyota Stadium",
-      "logo": "fc-dallas.png",
+      "logo": "fc-dallas.webp",
       "leagueId": "mls"
     },
     {
@@ -3534,7 +3534,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Shell Energy Stadium",
-      "logo": "houston-dynamo.png",
+      "logo": "houston-dynamo.webp",
       "leagueId": "mls"
     },
     {
@@ -3547,7 +3547,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Chase Stadium",
-      "logo": "inter-miami.png",
+      "logo": "inter-miami.webp",
       "leagueId": "mls"
     },
     {
@@ -3560,7 +3560,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "BMO Stadium",
-      "logo": "los-angeles-fc.png",
+      "logo": "los-angeles-fc.webp",
       "leagueId": "mls"
     },
     {
@@ -3573,7 +3573,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Dignity Health Sports Park",
-      "logo": "los-angeles-galaxy.png",
+      "logo": "los-angeles-galaxy.webp",
       "leagueId": "mls"
     },
     {
@@ -3586,7 +3586,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Allianz Field",
-      "logo": "minnesota-united-fc.png",
+      "logo": "minnesota-united-fc.webp",
       "leagueId": "mls"
     },
     {
@@ -3599,7 +3599,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "GEODIS Park",
-      "logo": "nashville-sc.png",
+      "logo": "nashville-sc.webp",
       "leagueId": "mls"
     },
     {
@@ -3612,7 +3612,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Gillette Stadium",
-      "logo": "new-england-revolution.png",
+      "logo": "new-england-revolution.webp",
       "leagueId": "mls"
     },
     {
@@ -3625,7 +3625,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Yankee Stadium",
-      "logo": "new-york-city-fc.png",
+      "logo": "new-york-city-fc.webp",
       "leagueId": "mls"
     },
     {
@@ -3638,7 +3638,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Sports Illustrated Stadium",
-      "logo": "new-york-red-bulls.png",
+      "logo": "new-york-red-bulls.webp",
       "leagueId": "mls"
     },
     {
@@ -3651,7 +3651,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Inter&Co Stadium",
-      "logo": "orlando-city-sc.png",
+      "logo": "orlando-city-sc.webp",
       "leagueId": "mls"
     },
     {
@@ -3664,7 +3664,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Subaru Park",
-      "logo": "philadelphia-union.png",
+      "logo": "philadelphia-union.webp",
       "leagueId": "mls"
     },
     {
@@ -3677,7 +3677,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Providence Park",
-      "logo": "portland-timbers.png",
+      "logo": "portland-timbers.webp",
       "leagueId": "mls"
     },
     {
@@ -3690,7 +3690,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "America First Field",
-      "logo": "real-salt-lake.png",
+      "logo": "real-salt-lake.webp",
       "leagueId": "mls"
     },
     {
@@ -3703,7 +3703,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": null,
-      "logo": "san-diego.png",
+      "logo": "san-diego.webp",
       "leagueId": "mls"
     },
     {
@@ -3716,7 +3716,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "PayPal Park",
-      "logo": "san-jose-earthquakes.png",
+      "logo": "san-jose-earthquakes.webp",
       "leagueId": "mls"
     },
     {
@@ -3729,7 +3729,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Lumen Field",
-      "logo": "seattle-sounders.png",
+      "logo": "seattle-sounders.webp",
       "leagueId": "mls"
     },
     {
@@ -3742,7 +3742,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Children's Mercy Park",
-      "logo": "sporting-kansas-city.png",
+      "logo": "sporting-kansas-city.webp",
       "leagueId": "mls"
     },
     {
@@ -3755,7 +3755,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "CITYPARK",
-      "logo": "st-louis-city.png",
+      "logo": "st-louis-city.webp",
       "leagueId": "mls"
     },
     {
@@ -3768,7 +3768,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "BMO Field",
-      "logo": "toronto-fc.png",
+      "logo": "toronto-fc.webp",
       "leagueId": "mls"
     },
     {
@@ -3781,7 +3781,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "BC Place",
-      "logo": "vancouver-whitecaps.png",
+      "logo": "vancouver-whitecaps.webp",
       "leagueId": "mls"
     },
     {
@@ -3794,7 +3794,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Prince Sultan bin Abdulaziz Sports City Stadium",
-      "logo": "abha.png",
+      "logo": "abha.webp",
       "leagueId": "saudi-pro-league"
     },
     {
@@ -3807,7 +3807,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": null,
-      "logo": "al-diriyah.png",
+      "logo": "al-diriyah.webp",
       "leagueId": "saudi-pro-league"
     },
     {
@@ -3820,7 +3820,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Prince Mohamed bin Fahd Stadium",
-      "logo": "al-khaleej-saihat.png",
+      "logo": "al-khaleej-saihat.webp",
       "leagueId": "saudi-pro-league"
     },
     {
@@ -3833,7 +3833,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Ar-Rass Stadium (Al Hazm Club Stadium)",
-      "logo": "al-kholood.png",
+      "logo": "al-kholood.webp",
       "leagueId": "saudi-pro-league"
     },
     {
@@ -3846,7 +3846,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Prince Faisal bin Fahd Stadium",
-      "logo": "al-riyadh.png",
+      "logo": "al-riyadh.webp",
       "leagueId": "saudi-pro-league"
     },
     {
@@ -3859,7 +3859,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "SHG Arena",
-      "logo": "al-shabab.png",
+      "logo": "al-shabab.webp",
       "leagueId": "saudi-pro-league"
     },
     {
@@ -3872,7 +3872,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Al Taawon Club Stadium",
-      "logo": "al-taawon.png",
+      "logo": "al-taawon.webp",
       "leagueId": "saudi-pro-league"
     },
     {
@@ -3885,7 +3885,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Prince Abdullah al-Faisal Stadium",
-      "logo": "al-ahli-jeddah.png",
+      "logo": "al-ahli-jeddah.webp",
       "leagueId": "saudi-pro-league"
     },
     {
@@ -3898,7 +3898,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Prince Mohamed bin Fahd Stadium",
-      "logo": "al-ettifaq.png",
+      "logo": "al-ettifaq.webp",
       "leagueId": "saudi-pro-league"
     },
     {
@@ -3911,7 +3911,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Al Majma'ah Sports City Stadium",
-      "logo": "al-faisaly-fc.png",
+      "logo": "al-faisaly-fc.webp",
       "leagueId": "saudi-pro-league"
     },
     {
@@ -3924,7 +3924,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Al Fateh Club Stadium",
-      "logo": "al-fateh.png",
+      "logo": "al-fateh.webp",
       "leagueId": "saudi-pro-league"
     },
     {
@@ -3937,7 +3937,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Al Majma'ah Sports City Stadium",
-      "logo": "al-fayha.png",
+      "logo": "al-fayha.webp",
       "leagueId": "saudi-pro-league"
     },
     {
@@ -3950,7 +3950,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Ar-Rass Stadium (Al Hazm Club Stadium)",
-      "logo": "al-hazm.png",
+      "logo": "al-hazm.webp",
       "leagueId": "saudi-pro-league"
     },
     {
@@ -3963,7 +3963,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Kingdom Arena",
-      "logo": "al-hilal-saudi-fc.png",
+      "logo": "al-hilal-saudi-fc.webp",
       "leagueId": "saudi-pro-league"
     },
     {
@@ -3976,7 +3976,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "King Abdullah Sports City",
-      "logo": "al-ittihad-fc.png",
+      "logo": "al-ittihad-fc.webp",
       "leagueId": "saudi-pro-league"
     },
     {
@@ -3989,7 +3989,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Al Awal Park at King Saud University",
-      "logo": "al-nassr.png",
+      "logo": "al-nassr.webp",
       "leagueId": "saudi-pro-league"
     },
     {
@@ -4002,7 +4002,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Prince Saud bin Jalawi Stadium",
-      "logo": "al-qadisiyah-fc.png",
+      "logo": "al-qadisiyah-fc.webp",
       "leagueId": "saudi-pro-league"
     },
     {
@@ -4015,7 +4015,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "King Khalid Sport City Stadium",
-      "logo": "neom.png",
+      "logo": "neom.webp",
       "leagueId": "saudi-pro-league"
     },
     {
@@ -4028,7 +4028,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio José María Minella",
-      "logo": "aldosivi.png",
+      "logo": "aldosivi.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4041,7 +4041,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Diego Armando Maradona",
-      "logo": "argentinos-jrs.png",
+      "logo": "argentinos-jrs.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4054,7 +4054,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Monumental Presidente José Fierro",
-      "logo": "atletico-tucuman.png",
+      "logo": "atletico-tucuman.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4067,7 +4067,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Florencio Solá",
-      "logo": "banfield.png",
+      "logo": "banfield.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4080,7 +4080,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Claudio Fabián Tapia",
-      "logo": "barracas-central.png",
+      "logo": "barracas-central.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4093,7 +4093,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Julio César Villagra",
-      "logo": "belgrano-cordoba.png",
+      "logo": "belgrano-cordoba.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4106,7 +4106,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Alberto José Armando",
-      "logo": "boca-juniors.png",
+      "logo": "boca-juniors.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4119,7 +4119,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Alfredo Terrera",
-      "logo": "central-cordoba-de-santiago.png",
+      "logo": "central-cordoba-de-santiago.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4132,7 +4132,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Norberto Tito Tomaghello",
-      "logo": "defensa-y-justicia.png",
+      "logo": "defensa-y-justicia.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4145,7 +4145,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Guillermo Laza",
-      "logo": "deportivo-riestra.png",
+      "logo": "deportivo-riestra.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4158,7 +4158,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Único Diego Armando Maradona",
-      "logo": "estudiantes-l-p.png",
+      "logo": "estudiantes-l-p.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4171,7 +4171,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Ciudad de Río Cuarto",
-      "logo": "estudiantes-de-rio-cuarto.png",
+      "logo": "estudiantes-de-rio-cuarto.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4184,7 +4184,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Juan Carmelo Zerillo",
-      "logo": "gimnasia-l-p.png",
+      "logo": "gimnasia-l-p.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4197,7 +4197,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Víctor Antonio Legrotaglie",
-      "logo": "gimnasia-m.png",
+      "logo": "gimnasia-m.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4210,7 +4210,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Tomás Adolfo Ducó",
-      "logo": "huracan.png",
+      "logo": "huracan.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4223,7 +4223,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Juan Bautista Gargantini",
-      "logo": "independ-rivadavia.png",
+      "logo": "independ-rivadavia.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4236,7 +4236,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Libertadores de América",
-      "logo": "independiente.png",
+      "logo": "independiente.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4249,7 +4249,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Juan Domingo Perón",
-      "logo": "instituto-cordoba.png",
+      "logo": "instituto-cordoba.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4262,7 +4262,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Ciudad de Lanús - Néstor Díaz Pérez",
-      "logo": "lanus.png",
+      "logo": "lanus.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4275,7 +4275,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Marcelo Alberto Bielsa",
-      "logo": "newells-old-boys.png",
+      "logo": "newells-old-boys.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4288,7 +4288,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Ciudad de Vicente López",
-      "logo": "platense.png",
+      "logo": "platense.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4301,7 +4301,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Presidente Juan Domingo Perón",
-      "logo": "racing-club.png",
+      "logo": "racing-club.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4314,7 +4314,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Mâs Monumental",
-      "logo": "river-plate.png",
+      "logo": "river-plate.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4327,7 +4327,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Gigante de Arroyito",
-      "logo": "rosario-central.png",
+      "logo": "rosario-central.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4340,7 +4340,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Pedro Bidegaín",
-      "logo": "san-lorenzo.png",
+      "logo": "san-lorenzo.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4353,7 +4353,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Eva Perón de Junín",
-      "logo": "sarmiento-junin.png",
+      "logo": "sarmiento-junin.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4366,7 +4366,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio Mario Alberto Kempes",
-      "logo": "talleres-cordoba.png",
+      "logo": "talleres-cordoba.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4379,7 +4379,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio José Dellagiovanna",
-      "logo": "tigre.png",
+      "logo": "tigre.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4392,7 +4392,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio 15 de Abril",
-      "logo": "union-santa-fe.png",
+      "logo": "union-santa-fe.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4405,7 +4405,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Estadio José Amalfitani",
-      "logo": "velez-sarsfield.png",
+      "logo": "velez-sarsfield.webp",
       "leagueId": "liga-profesional"
     },
     {
@@ -4418,7 +4418,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Lotto Park",
-      "logo": "anderlecht.png",
+      "logo": "anderlecht.webp",
       "leagueId": "belgian-pro-league"
     },
     {
@@ -4431,7 +4431,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Bosuilstadion",
-      "logo": "antwerp.png",
+      "logo": "antwerp.webp",
       "leagueId": "belgian-pro-league"
     },
     {
@@ -4444,7 +4444,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Jan Breydelstadion",
-      "logo": "cercle-brugge.png",
+      "logo": "cercle-brugge.webp",
       "leagueId": "belgian-pro-league"
     },
     {
@@ -4457,7 +4457,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stade du Pays de Charleroi",
-      "logo": "charleroi.png",
+      "logo": "charleroi.webp",
       "leagueId": "belgian-pro-league"
     },
     {
@@ -4470,7 +4470,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Jan Breydelstadion",
-      "logo": "club-brugge-kv.png",
+      "logo": "club-brugge-kv.webp",
       "leagueId": "belgian-pro-league"
     },
     {
@@ -4483,7 +4483,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Cegeka Arena",
-      "logo": "genk.png",
+      "logo": "genk.webp",
       "leagueId": "belgian-pro-league"
     },
     {
@@ -4496,7 +4496,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Planet Group Arena",
-      "logo": "gent.png",
+      "logo": "gent.webp",
       "leagueId": "belgian-pro-league"
     },
     {
@@ -4509,7 +4509,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "AFAS Stadion",
-      "logo": "kv-mechelen.png",
+      "logo": "kv-mechelen.webp",
       "leagueId": "belgian-pro-league"
     },
     {
@@ -4522,7 +4522,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Het Kuipje",
-      "logo": "kvc-westerlo.png",
+      "logo": "kvc-westerlo.webp",
       "leagueId": "belgian-pro-league"
     },
     {
@@ -4535,7 +4535,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Guldensporenstadion",
-      "logo": "kortrijk.png",
+      "logo": "kortrijk.webp",
       "leagueId": "belgian-pro-league"
     },
     {
@@ -4548,7 +4548,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Soeverein Stadion",
-      "logo": "lommel-united.png",
+      "logo": "lommel-united.webp",
       "leagueId": "belgian-pro-league"
     },
     {
@@ -4561,7 +4561,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "King Power at Den Dreef Stadion",
-      "logo": "oh-leuven.png",
+      "logo": "oh-leuven.webp",
       "leagueId": "belgian-pro-league"
     },
     {
@@ -4574,7 +4574,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stade Communal du Tivoli",
-      "logo": "raal-la-louviere.png",
+      "logo": "raal-la-louviere.webp",
       "leagueId": "belgian-pro-league"
     },
     {
@@ -4587,7 +4587,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Freethielstadion",
-      "logo": "sk-beveren.png",
+      "logo": "sk-beveren.webp",
       "leagueId": "belgian-pro-league"
     },
     {
@@ -4600,7 +4600,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Daio Wasabi Stayen Stadium",
-      "logo": "st-truiden.png",
+      "logo": "st-truiden.webp",
       "leagueId": "belgian-pro-league"
     },
     {
@@ -4613,7 +4613,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stade Maurice Dufrasne",
-      "logo": "standard-liege.png",
+      "logo": "standard-liege.webp",
       "leagueId": "belgian-pro-league"
     },
     {
@@ -4626,7 +4626,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stade Joseph Mariën",
-      "logo": "union-st-gilloise.png",
+      "logo": "union-st-gilloise.webp",
       "leagueId": "belgian-pro-league"
     },
     {
@@ -4639,7 +4639,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Elindus Arena",
-      "logo": "zulte-waregem.png",
+      "logo": "zulte-waregem.webp",
       "leagueId": "belgian-pro-league"
     },
     {
@@ -4652,7 +4652,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Yerevan Football Academy",
-      "logo": "ararat-armenia.png",
+      "logo": "ararat-armenia.webp",
       "leagueId": null,
       "guest": true,
       "country": "ARM"
@@ -4667,7 +4667,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stadion Z'dežele",
-      "logo": "celje.png",
+      "logo": "celje.webp",
       "leagueId": null,
       "guest": true,
       "country": "SVN"
@@ -4682,7 +4682,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Celtic Park",
-      "logo": "celtic.png",
+      "logo": "celtic.webp",
       "leagueId": null,
       "guest": true,
       "country": "SCO"
@@ -4697,7 +4697,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stadion Maksimir",
-      "logo": "dinamo-zagreb.png",
+      "logo": "dinamo-zagreb.webp",
       "leagueId": null,
       "guest": true,
       "country": "CRO"
@@ -4712,7 +4712,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Groupama Aréna",
-      "logo": "ferencvarosi-tc.png",
+      "logo": "ferencvarosi-tc.webp",
       "leagueId": null,
       "guest": true,
       "country": "HUN"
@@ -4727,7 +4727,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Yaakov Turner Toto Stadium",
-      "logo": "hapoel-beer-sheva.png",
+      "logo": "hapoel-beer-sheva.webp",
       "leagueId": null,
       "guest": true,
       "country": "ISR"
@@ -4742,7 +4742,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stadion Miejski",
-      "logo": "jagiellonia.png",
+      "logo": "jagiellonia.webp",
       "leagueId": null,
       "guest": true,
       "country": "POL"
@@ -4757,7 +4757,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Enea Stadion",
-      "logo": "lech-poznan.png",
+      "logo": "lech-poznan.webp",
       "leagueId": null,
       "guest": true,
       "country": "POL"
@@ -4772,7 +4772,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stadion Georgi Asparuhov",
-      "logo": "levski-sofia.png",
+      "logo": "levski-sofia.webp",
       "leagueId": null,
       "guest": true,
       "country": "BUL"
@@ -4787,7 +4787,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Åråsen Stadion",
-      "logo": "lillestrom.png",
+      "logo": "lillestrom.webp",
       "leagueId": null,
       "guest": true,
       "country": "NOR"
@@ -4802,7 +4802,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stadio Thódoros Vardinoyánnis",
-      "logo": "ofi.png",
+      "logo": "ofi.webp",
       "leagueId": null,
       "guest": true,
       "country": "GRE"
@@ -4817,7 +4817,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Stadio Georgios Karaiskáki",
-      "logo": "olympiakos-piraeus.png",
+      "logo": "olympiakos-piraeus.webp",
       "leagueId": null,
       "guest": true,
       "country": "GRE"
@@ -4832,7 +4832,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Neo GSP",
-      "logo": "omonia-nicosia.png",
+      "logo": "omonia-nicosia.webp",
       "leagueId": null,
       "guest": true,
       "country": "CYP"
@@ -4847,7 +4847,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Doosan Aréna",
-      "logo": "plzen.png",
+      "logo": "plzen.webp",
       "leagueId": null,
       "guest": true,
       "country": "CZE"
@@ -4862,7 +4862,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Red Bull Arena",
-      "logo": "red-bull-salzburg.png",
+      "logo": "red-bull-salzburg.webp",
       "leagueId": null,
       "guest": true,
       "country": "AUT"
@@ -4877,7 +4877,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "epet ARENA",
-      "logo": "sparta-praha.png",
+      "logo": "sparta-praha.webp",
       "leagueId": null,
       "guest": true,
       "country": "CZE"
@@ -4892,7 +4892,7 @@
         "secondary": "#FFFFFF"
       },
       "stadium": "Merkur Arena",
-      "logo": "sturm-graz.png",
+      "logo": "sturm-graz.webp",
       "leagueId": null,
       "guest": true,
       "country": "AUT"
