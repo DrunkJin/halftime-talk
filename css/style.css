@@ -878,3 +878,20 @@ button { font: inherit; color: inherit; }
 .sb-agg { margin-top: 4px; font-size: 12px; text-align: center; min-height: 1em; }
 .mu-vs { display: grid; justify-items: center; gap: 4px; }
 .cup-note { font-size: 11px; color: var(--muted); letter-spacing: 0; font-weight: 500; }
+
+/* ── 기록 ── */
+.history-screen { display: grid; gap: 12px; }
+.history-table td { white-space: nowrap; }
+.history-table tr.is-mine td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+.trophy-row { display: flex; gap: 8px; flex-wrap: wrap; padding: 12px 16px 0; justify-content: center; }
+.trophy { padding: 4px 10px; border-radius: 999px; background: rgba(255, 209, 102, 0.12); border: 1px solid rgba(255, 209, 102, 0.4); color: var(--gold); font-size: 12px; font-weight: 700; }
+.career { display: grid; gap: 10px; padding-bottom: 8px; }
+.career h3 { padding: 0 12px; color: var(--muted); font-size: 11px; letter-spacing: 0.08em; }
+.career-final { border-color: rgba(255, 209, 102, 0.45); }
+.tr-stat small { display: block; font-size: 11px; }
+.season-over-wrap { display: grid; gap: 12px; }
+.next-season { display: grid; gap: 10px; padding: 4px 12px 12px; }
+.next-season h3 { font-size: 12px; color: var(--muted); }
+.season-summary { width: min(620px, 100%); }
+.summary-list { display: grid; gap: 8px; padding-left: 18px; font-size: 13px; line-height: 1.5; }
+.expiry-note { text-align: center; color: var(--warn); }

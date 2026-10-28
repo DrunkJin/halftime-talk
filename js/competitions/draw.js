@@ -20,14 +20,19 @@ export function drawLeaguePhase(teams, rng) {
   const country = new Map(teams.map((t) => [t.id, t.country]));
   const pots = makePots(sorted, potSize, country).map((pot) => pot.map((t) => t.id));
 
-  for (let attempt = 0; attempt < L.drawAttempts; attempt++) {
-    const edges = drawEdges(pots, country, rng);
-    if (!edges) continue;
-    const days = scheduleMatchdays(edges, teams.length, rng);
-    if (!days) continue;
-    return { pots, fixtures: days.flatMap((day, i) => day.map(([homeId, awayId]) => ({ md: i + 1, homeId, awayId }))) };
+  // 같은 나라 팀이 많아 조건을 못 맞추면 '같은 나라 상대' 제한을 한 단계씩 푼다
+  for (let maxSame = L.maxSameCountry; maxSame <= L.matches; maxSame++) {
+    for (let attempt = 0; attempt < L.drawAttempts; attempt++) {
+      const edges = drawEdges(pots, country, rng, maxSame);
+      if (!edges) continue;
+      const days = scheduleMatchdays(edges, teams.length, rng);
+      if (!days) continue;
+      return { pots, fixtures: days.flatMap((day, i) => day.map(([homeId, awayId]) => ({ md: i + 1, homeId, awayId }))) };
+    }
   }
-  throw new Error('리그 페이즈 추첨 실패 (조건을 만족하는 대진을 찾지 못함)');
+  const counts = {};
+  for (const t of teams) counts[t.country] = (counts[t.country] ?? 0) + 1;
+  throw new Error(`리그 페이즈 추첨 실패 (조건을 만족하는 대진을 찾지 못함) — 나라별 ${JSON.stringify(counts)}`);
 }
 
 // 전력순으로 포트를 나누되, 한 포트에 같은 나라가 maxPerPot을 넘으면 그 나라의 가장 약한 팀을
@@ -56,14 +61,14 @@ function makePots(sorted, potSize, country) {
 }
 
 // 대진 (홈, 원정) 쌍 목록. 실패하면 null
-export function drawEdges(pots, country, rng) {
+function drawEdges(pots, country, rng, maxSame = CUP.leaguePhase.maxSameCountry) {
   const L = CUP.leaguePhase;
   const opponents = new Map([...country.keys()].map((id) => [id, new Set()]));
   const countryCount = new Map([...country.keys()].map((id) => [id, new Map()]));
   const edges = [];
   const ok = (a, b) => {
     if (a === b || country.get(a) === country.get(b) || opponents.get(a).has(b)) return false;
-    return (countryCount.get(a).get(country.get(b)) ?? 0) < L.maxSameCountry && (countryCount.get(b).get(country.get(a)) ?? 0) < L.maxSameCountry;
+    return (countryCount.get(a).get(country.get(b)) ?? 0) < maxSame && (countryCount.get(b).get(country.get(a)) ?? 0) < maxSame;
   };
   const link = (home, away, on) => {
     const d = on ? 1 : -1;
@@ -122,7 +127,7 @@ export function drawEdges(pots, country, rng) {
 }
 
 // 대진을 매치데이로 나눈다: 매치데이마다 모든 팀이 한 경기씩 (완전 매칭을 차례로 뽑는다). 실패하면 null
-export function scheduleMatchdays(edges, teamCount, rng) {
+function scheduleMatchdays(edges, teamCount, rng) {
   const L = CUP.leaguePhase;
   for (let attempt = 0; attempt < 30; attempt++) {
     let remaining = shuffled(edges, rng);

@@ -5,7 +5,10 @@ import { changeFormation, createMatch, getMatchResult, makeSubstitution, playMin
 import { computeTeamRatings, conditionFactor, overall, positionFit, positionRating } from '../../engine/ratings.js';
 import { computeTable } from '../../league/table.js';
 import { availabilityOf, fixLineup, fixturesOf, isSeasonOver, leagueOf, lineupProblems, matchInput, roundFixtures, settingsOf, tacticsOf, userFixture } from '../../state/game.js';
-import { advanceCup, advanceRound, simulateRest } from '../../state/simulation.js';
+import { advanceCup, advanceRound, advanceSeason, simulateRest } from '../../state/simulation.js';
+import { expiringContracts, suggestedRenewals } from '../../state/newSeason.js';
+import { contractOf, renewalTerms } from '../../market/finance.js';
+import { formatWage } from '../../market/market.js';
 import { teamAccent, teamBadge } from '../badge.js';
 import { conditionMeter, openConfirm, panel, segmented, statusChip } from '../components.js';
 import { h } from '../dom.js';
@@ -68,7 +71,7 @@ export function render(ctx) {
   const host = h('div', { class: 'match-screen' });
   const show = () => {
     if (live) host.replaceChildren(renderLive(ctx, show));
-    else if (isSeasonOver(ctx.game)) host.replaceChildren(renderSeasonOver(ctx));
+    else if (isSeasonOver(ctx.game)) host.replaceChildren(renderSeasonOver(ctx, show));
     else host.replaceChildren(renderPre(ctx, show));
   };
   show();
@@ -211,6 +214,10 @@ function renderPre(ctx, show) {
   const editLineup = h('button', { class: 'btn ghost', type: 'button' }, '선발 바꾸기');
   editLineup.addEventListener('click', () => ctx.navigate('squad'));
 
+  // 시즌 막판: 계약 만료 예정 안내 (재계약은 시즌 결산에서 고른다)
+  const expiringCount = !cupFx && game.round > game.totalRounds - 5 && game.seasonIndex < game.years ? expiringContracts(dataset, game).length : 0;
+  const expiryNote = expiringCount ? h('p', { class: 'muted small-note expiry-note' }, `계약 만료 예정 ${expiringCount}명 — 시즌이 끝나면 재계약할 선수를 고릅니다 (재정 화면에서 미리 재계약할 수도 있습니다).`) : null;
+
   // 같은 라운드 경기: 대륙 대회면 같은 대회의 이번 주중 경기
   const others = cupFx ? eventFixtures(game, { stage: cupFx.stage, md: cupFx.md, leg: cupFx.leg }).filter((f) => f.comp === cupFx.comp && f !== cupFx) : roundFixtures(game).filter((f) => f !== fixture);
 
@@ -263,6 +270,7 @@ function renderPre(ctx, show) {
           h('div', { class: 'mu-team' }, teamBadge(away, 64), h('b', {}, away.name), h('span', { class: 'muted' }, cupFx?.neutral ? '' : '원정')),
         ),
         moraleMeter(ctx),
+        expiryNote,
         h(
           'div',
           { class: 'cmp' },
@@ -926,15 +934,18 @@ function renderLive(ctx, show) {
 
 // ── 시즌 종료 ─────────────────────────────────────────
 
-function renderSeasonOver(ctx) {
+function renderSeasonOver(ctx, show) {
   const { dataset, game } = ctx;
   const league = leagueOf(dataset, game);
   const table = computeTable(league.teamIds, fixturesOf(game), league.rules);
   const champion = teamOf(ctx, table[0].teamId);
   const mine = table.find((r) => r.teamId === game.teamId);
-  const toTable = h('button', { class: 'btn primary', type: 'button' }, '최종 순위표');
+  const toTable = h('button', { class: 'btn ghost', type: 'button' }, '최종 순위표');
   toTable.addEventListener('click', () => ctx.navigate('table'));
-  return panel(
+  const toHistory = h('button', { class: 'btn primary', type: 'button' }, game.seasonIndex >= game.years ? '커리어 종합 보기' : '시즌 결산 보기');
+  toHistory.addEventListener('click', () => ctx.navigate('history'));
+  const trophies = game.history?.find((r) => r.seasonIndex === game.seasonIndex)?.trophies ?? [];
+  const over = panel(
     `${game.season} 시즌 종료`,
     h(
       'div',
@@ -942,8 +953,85 @@ function renderSeasonOver(ctx) {
       teamBadge(champion, 72),
       h('h2', {}, `우승 ${champion.name}`),
       h('p', {}, `${teamOf(ctx, game.teamId).name} 최종 ${mine.position}위 · 승점 ${mine.points} (${mine.won}승 ${mine.drawn}무 ${mine.lost}패)`),
-      h('p', { class: 'muted' }, game.seasonIndex < game.years ? `게임 기간 ${game.years}시즌 중 ${game.seasonIndex}시즌을 마쳤습니다. 다음 시즌 진행(승강·성장·노화)은 6단계에서 추가됩니다.` : `${game.years}시즌 게임을 모두 마쳤습니다.`),
-      toTable,
+      trophies.length ? h('p', { class: 'trophy-row' }, trophies.map((t) => h('span', { class: 'trophy' }, '🏆 ', t.name))) : null,
+      h('p', { class: 'muted' }, game.seasonIndex < game.years ? `게임 기간 ${game.years}시즌 중 ${game.seasonIndex}시즌을 마쳤습니다.` : `${game.years}시즌 게임을 모두 마쳤습니다.`),
+      h('div', { class: 'btn-row' }, toTable, toHistory),
     ),
   );
+  return game.seasonIndex < game.years ? h('div', { class: 'season-over-wrap' }, over, nextSeasonPanel(ctx, show)) : over;
+}
+
+// 다음 시즌 준비: 계약 만료 선수 재계약 고르기 → 다음 시즌 시작
+function nextSeasonPanel(ctx, show) {
+  const { dataset, game } = ctx;
+  const expiring = expiringContracts(dataset, game).sort((a, b) => overall(b) - overall(a));
+  const chosen = new Set(suggestedRenewals(dataset, game));
+  const rows = expiring.map((p) => {
+    const box = h('input', { type: 'checkbox', checked: chosen.has(p.id) || null, 'aria-label': `${p.name} 재계약` });
+    box.addEventListener('change', () => (box.checked ? chosen.add(p.id) : chosen.delete(p.id)));
+    const terms = renewalTerms(dataset, game, p.id);
+    return h(
+      'tr',
+      {},
+      h('td', {}, box),
+      h('td', {}, h('span', { class: 'pos-tag' }, p.position)),
+      h('td', {}, p.name),
+      h('td', { class: 'num' }, p.age),
+      h('td', { class: `num ${attrClass(overall(p))}` }, overall(p)),
+      h('td', { class: 'num muted' }, formatWage(contractOf(dataset, game, p.id).wage)),
+      h('td', { class: 'num' }, `${formatWage(terms.wage)} · ${terms.years}년`),
+    );
+  });
+  const start = h('button', { class: 'btn primary big', type: 'button' }, `${game.seasonIndex + 1}시즌 시작`);
+  start.addEventListener('click', async () => {
+    const r = await ctx.runBusy('다음 시즌 준비 중 (성장·노화·이적·일정)', () => advanceSeason(ctx.baseDataset, ctx.game, { renew: [...chosen] }));
+    ctx.setGame(r.game);
+    show();
+    showSeasonSummary(ctx, r.summary);
+  });
+  return panel(
+    '다음 시즌 준비',
+    h(
+      'div',
+      { class: 'next-season' },
+      h('p', { class: 'muted' }, '시즌이 넘어가면 선수들이 한 살 먹고 성장·노화합니다. 은퇴, 승강, 유스 입단이 일어나고 대륙 대회 진출 팀은 이번 시즌 순위로 정해집니다.'),
+      expiring.length
+        ? h(
+            'div',
+            {},
+            h('h3', {}, `계약 만료 선수 ${expiring.length}명 — 체크한 선수만 재계약합니다`),
+            h('div', { class: 'table-scroll' }, h('table', { class: 'data compact' }, h('thead', {}, h('tr', {}, h('th', {}, '재계약'), h('th', {}, '포지션'), h('th', {}, '이름'), h('th', { class: 'num' }, '나이'), h('th', { class: 'num' }, 'OVR'), h('th', { class: 'num' }, '지금 주급'), h('th', { class: 'num' }, '재계약 조건'))), h('tbody', {}, rows))),
+          )
+        : h('p', {}, '계약이 끝나는 선수가 없습니다.'),
+      h('div', { class: 'btn-row end' }, start),
+    ),
+  );
+}
+
+// 새 시즌 안내 창
+function showSeasonSummary(ctx, summary) {
+  if (!summary) return;
+  const { game } = ctx;
+  const line = (label, items) => (items?.length ? h('li', {}, h('b', {}, label), ' ', items.join(', ')) : null);
+  const ok = h('button', { class: 'btn primary', type: 'button' }, '확인');
+  const close = openModal(
+    h(
+      'div',
+      { class: 'confirm-modal season-summary' },
+      h('h2', {}, `${game.season} 시즌 시작`),
+      h(
+        'ul',
+        { class: 'summary-list' },
+        summary.newLeague ? h('li', {}, h('b', {}, summary.promoted.length ? '승격!' : '강등'), ` 이번 시즌은 ${summary.newLeague}에서 뜁니다.`) : null,
+        h('li', {}, h('b', {}, '대륙 대회'), ' ', summary.cup ? `${summary.cup} 진출` : '진출 못 함'),
+        line('은퇴', summary.retired),
+        line('계약 만료로 떠남', summary.left),
+        line('유스 입단', summary.youth),
+        line('인원 보강(자동)', summary.signed),
+      ),
+      h('p', { class: 'muted small-note' }, '여름 이적시장이 열렸습니다. 선수들의 능력치 변화는 스쿼드 화면에서 확인하세요.'),
+      h('div', { class: 'confirm-actions' }, ok),
+    ),
+  );
+  ok.addEventListener('click', close);
 }

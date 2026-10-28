@@ -6,6 +6,8 @@ import { applyWeekFinances, awardSeasonPrizes, initSeasonFinances } from '../mar
 import { windowStatus } from '../market/market.js';
 import { createCups, cupMatchInput, dueCupEvent, playCupEvent, userCupFixture } from '../competitions/cups.js';
 import { completeRound, fixLineup, isSeasonOver, matchInput, newGame, userFixture } from './game.js';
+import { recordSeason } from './history.js';
+export { startNextSeason } from './newSeason.js';
 import { settleMoraleAfterMatch } from './morale.js';
 
 export function createGame(dataset, teamId, options) {
@@ -56,6 +58,7 @@ export function playWeek(dataset, game, userResult) {
   const cups = playDueCupEvents(dataset, game);
   if (isSeasonOver(game)) {
     awardSeasonPrizes(dataset, game);
+    recordSeason(dataset, game);
     game.incomingOffers = [];
   }
   return { others, aiTransfers, newOffers, cups };

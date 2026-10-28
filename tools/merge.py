@@ -774,7 +774,8 @@ def main():
     (DATA / 'players.json').write_text(list_json('players', players), encoding='utf-8')
     comps = build_competitions(m)
     if comps:
-        write_json(DATA / 'competitions.json', {'schemaVersion': 1, 'eligibleLeagues': m.sources['competitions']['eligibleLeagues'], 'competitions': comps}, pretty=True)
+        q = {k: v for k, v in m.sources['competitions'].get('qualification', {}).items() if not k.startswith('_')}
+        write_json(DATA / 'competitions.json', {'schemaVersion': 1, 'eligibleLeagues': m.sources['competitions']['eligibleLeagues'], 'competitions': comps, 'qualification': q}, pretty=True)
     old = DATA / 'league.json'
     if old.exists():
         old.unlink()  # schemaVersion 1 파일

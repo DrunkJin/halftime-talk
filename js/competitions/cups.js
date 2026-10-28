@@ -45,14 +45,15 @@ function payPrize(game, teamId, amount) {
 }
 
 // 시즌 시작: 대회마다 리그 페이즈 추첨, 참가 상금
-export function createCups(dataset, game) {
-  if (!dataset.competitions?.length) {
+// competitions: [{ id, name, shortName, teamIds }] — 기본은 데이터의 1시즌 참가 팀, 2시즌부터는 지난 시즌 순위로 정한 팀
+export function createCups(dataset, game, competitions = dataset.competitions) {
+  if (!competitions?.length) {
     game.cups = null;
     return;
   }
   const rng = createRng(`${game.seed}:cups:${game.seasonIndex}`);
   const comps = {};
-  for (const c of dataset.competitions) {
+  for (const c of competitions) {
     const teams = c.teamIds.map((id) => ({ id, country: countryOf(dataset, id), strength: strengthOf(dataset, game, id) }));
     const draw = drawLeaguePhase(teams, rng);
     comps[c.id] = {

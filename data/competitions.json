@@ -102,5 +102,46 @@
       ],
       "realEntrants": 35
     }
-  ]
+  ],
+  "qualification": {
+    "holdersTo": "ucl",
+    "slots": {
+      "ucl": {
+        "epl": 4,
+        "laliga": 4,
+        "serie-a": 4,
+        "bundesliga": 4,
+        "ligue-1": 3,
+        "primeira-liga": 2,
+        "eredivisie": 2,
+        "belgian-pro-league": 1,
+        "super-lig": 1
+      },
+      "uel": {
+        "epl": 2,
+        "laliga": 2,
+        "serie-a": 2,
+        "bundesliga": 2,
+        "ligue-1": 2,
+        "primeira-liga": 2,
+        "eredivisie": 2,
+        "belgian-pro-league": 2,
+        "super-lig": 2
+      }
+    },
+    "guests": {
+      "ucl": 8
+    },
+    "order": [
+      "epl",
+      "laliga",
+      "serie-a",
+      "bundesliga",
+      "ligue-1",
+      "primeira-liga",
+      "eredivisie",
+      "belgian-pro-league",
+      "super-lig"
+    ]
+  }
 }

@@ -7,7 +7,8 @@ export const CUP = {
     maxPerPot: 3, // 한 포트에 같은 나라 최대 3팀 (넘치면 다음 포트 팀과 맞바꿈)
     direct: 8, // 1~8위 16강 직행
     playoff: 24, // 9~24위 녹아웃 플레이오프, 25위 이하 탈락
-    drawAttempts: 400,
+    drawAttempts: 150, // 제한 단계마다 시도 횟수
+    maxPerCountry: 6, // 2시즌부터 한 대회에 같은 나라 최대 팀 수 (넘치면 다음 대회로)
   },
   // 단계 순서와 이름
   stages: ['league', 'playoff', 'r16', 'qf', 'sf', 'final'],

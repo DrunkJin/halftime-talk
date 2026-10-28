@@ -2,19 +2,21 @@
 import { formatMoney } from '../market/value.js';
 import { SAVE_VERSION, dataFingerprint, isSeasonOver, leagueOf } from '../state/game.js';
 import { deleteSave, saveGame } from '../state/save.js';
+import { worldDataset } from '../state/world.js';
 import { teamBadge } from './badge.js';
 import { openConfirm, segmented } from './components.js';
 import { h } from './dom.js';
 import { showToast, swapPanel } from './motion.js';
 import * as cupsScreen from './screens/cups.js';
 import * as financeScreen from './screens/finance.js';
+import * as historyScreen from './screens/history.js';
 import * as matchScreen from './screens/match.js';
 import * as squadScreen from './screens/squad.js';
 import * as tableScreen from './screens/table.js';
 import * as teamSelectScreen from './screens/teamSelect.js';
 import * as transfersScreen from './screens/transfers.js';
 
-const SCREENS = { select: teamSelectScreen, squad: squadScreen, match: matchScreen, table: tableScreen, cups: cupsScreen, transfers: transfersScreen, finance: financeScreen };
+const SCREENS = { select: teamSelectScreen, squad: squadScreen, match: matchScreen, table: tableScreen, cups: cupsScreen, transfers: transfersScreen, finance: financeScreen, history: historyScreen };
 const NAV = [
   { id: 'squad', label: '스쿼드' },
   { id: 'match', label: '경기' },
@@ -22,6 +24,7 @@ const NAV = [
   { id: 'cups', label: '대륙 대회' },
   { id: 'transfers', label: '이적' },
   { id: 'finance', label: '재정' },
+  { id: 'history', label: '기록' },
 ];
 const SAVE_DELAY = 400;
 
@@ -35,7 +38,11 @@ function slotInfo({ slot, game }, dataset) {
 export function createApp(root, dataset, savedSlots = []) {
   let saveTimer = null;
   const ctx = {
-    dataset,
+    baseDataset: dataset,
+    // 시즌이 지나며 바뀐 선수·리그를 반영한 데이터 (state/world.js)
+    get dataset() {
+      return worldDataset(dataset, ctx.game);
+    },
     game: null,
     slots: savedSlots.map((s) => slotInfo(s, dataset)),
     navigate,
@@ -145,7 +152,7 @@ export function createApp(root, dataset, savedSlots = []) {
   function refreshTopbar() {
     if (!roundLabel || !ctx.game) return;
     const g = ctx.game;
-    const league = leagueOf(dataset, g);
+    const league = leagueOf(ctx.dataset, g);
     const season = g.years > 1 ? ` · 시즌 ${g.seasonIndex}/${g.years}` : '';
     roundLabel.textContent = `${league.name} ${g.season}${season} · ${isSeasonOver(g) ? '시즌 종료' : `라운드 ${g.round}/${g.totalRounds}`}`;
     budgetLabel.textContent = formatMoney(g.budgets[g.teamId]);

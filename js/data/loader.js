@@ -58,5 +58,7 @@ export function buildIndex(raw) {
     squads,
     // 대륙 대회: [{ id, name, shortName, level, teamIds }] (data/competitions.json, 없으면 빈 목록)
     competitions: (raw.competitions?.competitions ?? []).map((c) => ({ ...c, teamIds: c.teamIds.filter((id) => teamById.has(id)) })),
+    // 2시즌부터 대륙 대회 진출 규칙: { slots: { [대회]: { [리그]: 팀 수 } }, guests, order, holdersTo }
+    qualification: raw.competitions?.qualification ?? null,
   };
 }

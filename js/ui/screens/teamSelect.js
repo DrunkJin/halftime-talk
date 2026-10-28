@@ -100,7 +100,7 @@ function startModal(ctx, team) {
       h('div', { class: 'start-row' }, h('span', { class: 'muted' }, '게임 기간'), lengthTabs.el),
       h('div', { class: 'start-row' }, h('span', { class: 'muted' }, '저장 위치'), slotTabs.el),
       slotNote,
-      h('p', { class: 'muted small-note' }, '모든 리그가 함께 진행됩니다. 여러 시즌 이어하기(승강·성장·노화)는 6단계에서 추가됩니다.'),
+      h('p', { class: 'muted small-note' }, '모든 리그가 함께 진행됩니다. 시즌이 끝나면 승강·성장·노화·은퇴·유스가 반영되고, 대륙 대회 진출 팀은 지난 시즌 순위로 정해집니다.'),
       h('div', { class: 'confirm-actions' }, cancel, start),
     ),
   );
