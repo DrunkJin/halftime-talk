@@ -19,6 +19,7 @@ from datetime import date
 
 import formula as F
 from common import CACHE, DATA, LOGOS, ROOT, TOOLS, clean_team_name, name_tokens, progress, read_json, slugify, strip_accents, team_id_from_name, write_json
+from lineup_positions import MIN_STARTS, load_lineup_positions
 from positions import assign_groups, from_coarse, from_pl_position_info
 
 SCHEMA_VERSION = 2
@@ -543,7 +544,28 @@ class Merger:
             bonus[tid] = min(C['max'], (ppg_part + a['stage']) * scale)
         return bonus
 
+    def apply_lineup_positions(self):
+        """세부 포지션을 모르는 선수(그룹만 앎)는 실제 경기 라인업에서 선 자리로 정한다 (tools/lineup_positions.py).
+        선발 기록이 적은 선수는 원래 포지션 그룹과 맞을 때만 쓴다"""
+        lineup = load_lineup_positions()
+        for r in self.records:
+            if 'group' not in r:
+                continue
+            api_id = (r.get('stats') or {}).get('apiId') or (int(r['id'][2:]) if r['id'].startswith('af') else None)
+            hit = lineup.get(api_id)
+            if not hit:
+                continue
+            main, alt, starts = hit
+            if starts < MIN_STARTS and main not in r['group']:
+                continue
+            r['position'] = main
+            r['alt'] = [p for p in alt if p != main]
+            del r['group']
+            r['roleClass'] = F.ROLE_CLASS[main]
+            self.report['lineupPositions'] += 1
+
     def finish(self):
+        self.apply_lineup_positions()
         self.team_bonus = self.continental_bonus()
         blend = F.FORMULA['transferBaseBlend']
         for r in self.records:
@@ -786,7 +808,7 @@ def main():
     total = rep['stats'] + rep['noStats']
     progress(f"  EPL: FPL 매칭 {rep['fplMatched']}, football-data만 {rep['fdOnly']}, FPL만 추가 {rep['fplOnly']} (정보 부족 제외 {rep['fplOnlySkipped']})")
     progress(f"  API-Football 기록 매칭 {rep['stats']}/{total}명" + (f" ({rep['stats'] * 100 // total}%)" if total else '') +
-             f" · 국적 미상→리그 국가로 대체 {rep['defaultNationality']}명 · 팀 내 균형 배정 포지션 {rep['groupAssigned']}명"
+             f" · 국적 미상→리그 국가로 대체 {rep['defaultNationality']}명 · 라인업 기준 포지션 {rep['lineupPositions']}명 · 팀 내 균형 배정 포지션 {rep['groupAssigned']}명"
              f" · 제외: 나이 범위 밖 {rep['skippedAge']}명, 중복 등록 {rep['skippedDuplicate']}명 · 이적생 팀 기본값 혼합 {rep['blendedBase']}명")
     by_team = defaultdict(list)
     for r in m.records:
