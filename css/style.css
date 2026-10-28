@@ -895,3 +895,27 @@ button { font: inherit; color: inherit; }
 .season-summary { width: min(620px, 100%); }
 .summary-list { display: grid; gap: 8px; padding-left: 18px; font-size: 13px; line-height: 1.5; }
 .expiry-note { text-align: center; color: var(--warn); }
+
+/* ── 선발 교체 고르기 ── */
+.slot-picker { width: min(560px, 100%); }
+.slot-picker h3 { margin: 10px 0 6px; color: var(--muted); font-size: 11px; letter-spacing: 0.08em; }
+.pick-list { display: grid; gap: 4px; max-height: 46vh; overflow-y: auto; }
+.pick-row { display: grid; grid-template-columns: 40px minmax(0, 1fr) 72px 56px; gap: 8px; align-items: center; min-height: 44px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; background: transparent; color: var(--text); text-align: left; font-size: 13px; cursor: pointer; transition: border-color var(--duration-quick) var(--ease-out), background-color var(--duration-quick) var(--ease-out); }
+.pick-row:hover, .pick-row:focus-visible { border-color: var(--info); background: rgba(90, 169, 255, 0.08); }
+.pick-row.is-unavailable { opacity: 0.55; }
+.pick-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pick-value { text-align: right; font-weight: 800; }
+.bench-mark { color: var(--info); }
+.pick-swap summary { margin: 10px 0 6px; color: var(--muted); font-size: 12px; cursor: pointer; }
+@media (max-width: 640px) {
+  .pick-row { grid-template-columns: 34px minmax(0, 1fr) 56px 44px; gap: 6px; }
+}
+/* 창 안 긴 목록이 화면 너비를 밀어내지 않도록 */
+.modal { max-width: 100%; min-width: 0; }
+.confirm-modal, .confirm-modal > * { min-width: 0; }
+.confirm-actions { flex-wrap: wrap; }
+.modal-backdrop { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+/* 포메이션 프리셋 탭 등 머리 영역 탭: 좁은 화면에서는 줄 안에서 가로 스크롤 (페이지가 넓어지지 않게) */
+.head-actions { min-width: 0; max-width: 100%; flex-wrap: wrap; }
+.head-actions .t-tabs { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.head-actions .t-tabs::-webkit-scrollbar { display: none; }

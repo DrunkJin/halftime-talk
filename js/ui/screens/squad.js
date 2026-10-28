@@ -7,7 +7,7 @@ import { availabilityOf, conditionOf, fixLineup, leagueOf, lineupProblems, previ
 import { condClass, conditionMeter, openPlayerModal, panel, ratingBar, segmented, statusChip, tooltipGroup } from '../components.js';
 import { h } from '../dom.js';
 import { ATTRIBUTE_LABELS, POSITION_NAMES, attrClass, fmt1, shortName } from '../format.js';
-import { setDigits, showToast } from '../motion.js';
+import { openModal, setDigits, showToast } from '../motion.js';
 
 // 격자 칸 중심 좌표 (%). 위쪽이 상대 골문
 const COL_X = [10, 30, 50, 70, 90];
@@ -111,9 +111,80 @@ export function render(ctx) {
   function onSlotClick(i) {
     if (selection?.kind === 'player') return assignPlayerToSlot(selection.id, i);
     if (selection?.kind === 'slot' && selection.index !== i) return assignPlayerToSlot(game.lineup[selection.index], i);
-    selection = selection?.kind === 'slot' ? null : { kind: 'slot', index: i };
-    renderPitch();
-    renderTable();
+    if (selection?.kind === 'slot') {
+      selection = null;
+      renderPitch();
+      return renderTable();
+    }
+    openSlotPicker(i);
+  }
+
+  // 피치 위 선수를 누르면: 이 자리에 대신 넣을 선수 고르기 (후보 · 다른 선발과 맞바꾸기 · 포메이션 위치 옮기기)
+  function openSlotPicker(i) {
+    const pos = userSlots(game)[i];
+    const current = byId.get(game.lineup[i]);
+    const valueAt = (p) => Math.round(positionRating(p, pos) * positionFit(p, pos) * conditionFactor(conditionOf(game, p.id)));
+    const inBench = new Set(game.bench ?? []);
+    const row = (p, extra) => {
+      const avail = availabilityOf(game, p.id);
+      const fit = positionFit(p, pos);
+      const btn = h(
+        'button',
+        { type: 'button', class: `pick-row${avail.available ? '' : ' is-unavailable'}` },
+        h('span', { class: 'pos-tag' }, p.position),
+        h('span', { class: 'pick-name' }, p.name, extra ? h('small', { class: 'muted' }, ` ${extra}`) : null, inBench.has(p.id) ? h('small', { class: 'bench-mark' }, ' 교체 명단') : null),
+        h('span', { class: 'pick-status' }, avail.available ? conditionMeter(conditionOf(game, p.id)) : statusChip(game, p.id)),
+        h('span', { class: `pick-value num ${attrClass(valueAt(p))}`, title: `${pos} 자리 능력 (적합도 ${Math.round(fit * 100)}%)` }, valueAt(p), fit < 1 ? h('small', { class: 'muted' }, ` ${Math.round(fit * 100)}%`) : null),
+      );
+      return btn;
+    };
+    const subs = squad()
+      .filter((p) => !game.lineup.includes(p.id))
+      .sort((a, b) => availabilityOf(game, b.id).available - availabilityOf(game, a.id).available || valueAt(b) - valueAt(a));
+    const others = game.lineup.map((id, j) => ({ p: byId.get(id), j })).filter(({ j }) => j !== i);
+    let close = null;
+    const choose = (id) => {
+      close();
+      assignPlayerToSlot(id, i);
+      showToast(`${pos}: ${current.name} → ${byId.get(id).name}`);
+    };
+    const subRows = subs.map((p) => {
+      const r = row(p);
+      r.addEventListener('click', () => choose(p.id));
+      return r;
+    });
+    const swapRows = others.map(({ p, j }) => {
+      const r = row(p, `(지금 ${userSlots(game)[j]})`);
+      r.addEventListener('click', () => choose(p.id));
+      return r;
+    });
+    const info = h('button', { type: 'button', class: 'btn small ghost' }, '선수 정보');
+    info.addEventListener('click', () => {
+      close();
+      openPlayerModal(dataset, current, ctx);
+    });
+    const move = pos === 'GK' ? null : h('button', { type: 'button', class: 'btn small ghost' }, '포메이션에서 위치 옮기기');
+    move?.addEventListener('click', () => {
+      close();
+      selection = { kind: 'slot', index: i };
+      renderPitch();
+      renderTable();
+      showToast('옮길 빈 칸을 누르세요 (다시 누르면 취소)');
+    });
+    const cancel = h('button', { type: 'button', class: 'btn ghost' }, '닫기');
+    close = openModal(
+      h(
+        'div',
+        { class: 'confirm-modal slot-picker' },
+        h('h2', {}, `${pos} ${current.name} 빼고 넣을 선수`),
+        h('p', { class: 'muted small-note' }, `오른쪽 숫자는 ${pos} 자리에서 낼 능력(컨디션 반영)입니다. 누르면 바로 바뀌고, 빠진 선수는 후보로 내려갑니다.`),
+        h('h3', {}, `후보 ${subs.length}명`),
+        h('div', { class: 'pick-list' }, subRows),
+        h('details', { class: 'pick-swap' }, h('summary', {}, '선발끼리 자리 바꾸기'), h('div', { class: 'pick-list' }, swapRows)),
+        h('div', { class: 'confirm-actions' }, info, move, cancel),
+      ),
+    );
+    cancel.addEventListener('click', close);
   }
 
   function onCellClick(cell) {
@@ -388,7 +459,7 @@ export function render(ctx) {
   const hint = h(
     'p',
     { class: 'hint muted' },
-    '선수를 피치 슬롯에 끌어 놓거나 선수 → 슬롯 순서로 클릭하세요. 피치 위 선수를 빈 칸으로 끌면(또는 클릭 후 빈 칸 클릭) 그 위치로 포메이션이 바뀝니다. 이름을 누르면 상세 능력치.',
+    '피치 위 선수를 누르면 대신 넣을 선수를 고를 수 있습니다 (선발끼리 자리 바꾸기·포메이션 위치 옮기기도 같은 창에서). PC에서는 표의 선수를 피치로 끌어 놓아도 됩니다. 이름을 누르면 상세 능력치.',
   );
 
   return h(
