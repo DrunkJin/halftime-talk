@@ -19,7 +19,7 @@ from datetime import date
 
 import formula as F
 from common import CACHE, DATA, LOGOS, ROOT, TOOLS, clean_team_name, name_tokens, progress, read_json, slugify, strip_accents, team_id_from_name, write_json
-from lineup_positions import MIN_STARTS, load_lineup_positions
+from lineup_positions import MIN_STARTS, OVERRIDE_STARTS, PIVOT, load_lineup_positions
 from positions import assign_groups, from_coarse, from_pl_position_info
 
 SCHEMA_VERSION = 2
@@ -545,24 +545,46 @@ class Merger:
         return bonus
 
     def apply_lineup_positions(self):
-        """세부 포지션을 모르는 선수(그룹만 앎)는 실제 경기 라인업에서 선 자리로 정한다 (tools/lineup_positions.py).
-        선발 기록이 적은 선수는 원래 포지션 그룹과 맞을 때만 쓴다"""
+        """실제 경기 라인업에서 선 자리로 세부 포지션을 정한다 (tools/lineup_positions.py).
+        - 그룹만 아는 선수: 라인업 자리로. 선발 기록이 적으면 원래 그룹과 맞을 때만
+        - 세부 표기가 있는 선수(EPL premierleague.com): 선발 OVERRIDE_STARTS번 이상이면 라인업을 따르고, 원래 표기는 보조 포지션 후보로
+        - 더블 피벗(PIV)은 원래 표기(DM이면 DM, 그 밖의 미드필더면 CM), 없으면 수비 기록 vs 기회 창출 기록으로 가른다"""
         lineup = load_lineup_positions()
+        ctx = F.StatContext(self.records)
+        S = F.FORMULA['pivot']
+
+        def resolve(role, r, label):
+            if role != PIVOT:
+                return role
+            if label == 'DM':
+                return 'DM'
+            if label in ('CM', 'AM', 'LW', 'RW', 'ST'):
+                return 'CM'
+            return 'DM' if ctx.score(r, 'defending') - ctx.score(r, 'creativity') >= S['defendingEdge'] else 'CM'
+
         for r in self.records:
-            if 'group' not in r:
-                continue
             api_id = (r.get('stats') or {}).get('apiId') or (int(r['id'][2:]) if r['id'].startswith('af') else None)
             hit = lineup.get(api_id)
             if not hit:
                 continue
             main, alt, starts = hit
-            if starts < MIN_STARTS and main not in r['group']:
+            label = r.get('position')  # 소스의 세부 표기 (없으면 None)
+            if label is None:
+                if starts < MIN_STARTS and main not in r['group'] and not (main == PIVOT and {'DM', 'CM'} & set(r['group'])):
+                    continue
+            elif starts < OVERRIDE_STARTS or label == 'GK' or main == 'GK':
                 continue
-            r['position'] = main
-            r['alt'] = [p for p in alt if p != main]
-            del r['group']
-            r['roleClass'] = F.ROLE_CLASS[main]
-            self.report['lineupPositions'] += 1
+            pos = resolve(main, r, label)
+            alts = [resolve(a, r, label) for a in alt]
+            if main == PIVOT:
+                alts.insert(0, 'CM' if pos == 'DM' else 'DM')  # 피벗 자리는 둘 다 선다
+            if label and label not in ('GK',):
+                alts.append(label)
+            r['position'] = pos
+            r['alt'] = [p for p in dict.fromkeys(alts) if p != pos][:2]
+            r.pop('group', None)
+            r['roleClass'] = F.ROLE_CLASS[pos]
+            self.report['lineupPositions' if label is None else 'lineupOverrides'] += 1
 
     def reclassify_second_strikers(self):
         """ST로 판정됐지만 기록이 '만드는 쪽'인 선수(투톱의 처진 공격수 등)는 AM(보조 ST)으로.
@@ -579,6 +601,38 @@ class Merger:
                 r['alt'] = ['ST'] + [p for p in r.get('alt', []) if p not in ('ST', 'AM')][:1]
                 r['roleClass'] = F.ROLE_CLASS['AM']
                 self.report['secondStrikers'] += 1
+
+    def guess_groups_from_stats(self, ctx):
+        """라인업 기록이 없어 그룹만 아는 선수: 시즌 기록이 있으면 기록 성향으로 고른다 (없으면 팀 내 균형 배정).
+        미드필더는 수비 기록 → DM, 기회 창출·득점 → AM, 그 밖은 CM. 공격수는 득점 → ST, 아니면 측면(좌우는 균형 배정)"""
+        G = F.FORMULA['groupGuess']
+        for r in self.records:
+            group = r.get('group')
+            if not group or not ctx.metrics.get(r['id']):
+                continue
+            d = ctx.score(r, 'defending')
+            c = ctx.score(r, 'creativity')
+            f = ctx.score(r, 'finishing')
+            pick = None
+            if {'DM', 'CM', 'AM'} <= set(group):
+                if d - max(c, f) >= G['dmEdge']:
+                    pick, alt = 'DM', ['CM']
+                elif (c + f) / 2 - d >= G['amEdge']:
+                    pick, alt = 'AM', ['CM']
+                else:
+                    pick, alt = 'CM', ['DM' if d >= c else 'AM']
+            elif 'ST' in group and {'LW', 'RW'} <= set(group):
+                if f - c >= G['stEdge']:
+                    pick, alt = 'ST', []
+                else:
+                    r['group'] = ['LW', 'RW']  # 측면: 좌우는 팀 균형으로
+                    self.report['groupGuessed'] += 1
+                    continue
+            if pick:
+                r['position'] = pick
+                r['alt'] = [a for a in dict.fromkeys(alt + r.get('alt', [])) if a != pick][:2]
+                del r['group']
+                self.report['groupGuessed'] += 1
 
     def finish(self):
         self.apply_lineup_positions()
@@ -602,6 +656,7 @@ class Merger:
         by_team = defaultdict(list)
         for r in self.records:
             by_team[r['teamId']].append(r)
+        self.guess_groups_from_stats(ctx)
         for squad in by_team.values():
             fixed = [r['position'] for r in squad if 'position' in r]
             # 품질 순으로 배정하면 목표 인원이 많은 CB·CM·ST에 좋은 선수가 몰린다 → 선수 ID 해시 순서로 고르게

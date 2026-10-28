@@ -2,6 +2,7 @@
 
 API-Football 라인업의 grid는 '줄:칸' (줄 1 = GK, 앞으로 갈수록 큰 수 / 칸 1 = 왼쪽).
 줄마다 인원과 깊이로 역할을 정한 뒤, 선수별로 가장 많이 선 자리를 주 포지션, 자주 선 다른 자리를 보조 포지션으로 쓴다.
+중간 줄이 둘 이상인 포메이션(4-2-3-1 등)의 가장 깊은 2명은 'PIV'(더블 피벗): DM인지 CM인지는 merge.py가 원래 표기·기록으로 가린다.
 """
 import glob
 from collections import Counter, defaultdict
@@ -10,6 +11,8 @@ from common import TOOLS, read_json
 
 RAW_API = TOOLS / 'raw' / 'api-football'
 MIN_STARTS = 2  # 이보다 적게 선발로 뛴 선수는 원래 포지션 그룹과 맞을 때만 쓴다
+OVERRIDE_STARTS = 3  # 세부 포지션 표기(premierleague.com 등)가 있어도 이만큼 선발로 뛴 자리가 있으면 라인업을 따른다
+PIVOT = 'PIV'
 ALT_SHARE = 0.25  # 보조 포지션: 선발의 25% 이상을 그 자리에서
 
 
@@ -31,8 +34,10 @@ def line_roles(depth, middle_count, n, back_three):
             return _wide(n, 'CM', 'LB', 'RB') if back_three else _wide(n, 'CM', 'LW', 'RW')
         return ['CM'] * n
     if deepest:
-        if n <= 2:
-            return ['DM'] * n
+        if n == 2:
+            return [PIVOT] * 2  # 더블 피벗: 수비형·중앙 미드필더 모두 서는 자리
+        if n == 1:
+            return ['DM']
         if n >= 4:
             return _wide(n, 'CM', 'LB', 'RB') if back_three else _wide(n, 'CM', 'LW', 'RW')
         return ['CM'] * n
