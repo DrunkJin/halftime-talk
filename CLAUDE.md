@@ -1,4 +1,4 @@
-# Pitchside Manager
+# Halftime Talk
 
 FM 스타일 축구 감독 시뮬레이션 웹게임. 취미 프로젝트, GitHub Pages 배포.
 

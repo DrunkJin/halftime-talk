@@ -114,7 +114,7 @@ export function createApp(root, dataset, savedSlots = []) {
   let budgetLabel = null;
 
   function buildTopbar() {
-    const brand = h('div', { class: 'brand' }, h('span', { class: 'brand-mark' }), h('span', {}, 'PITCHSIDE', h('b', {}, ' MANAGER')));
+    const brand = h('div', { class: 'brand' }, h('span', { class: 'brand-mark' }), h('span', {}, 'HALFTIME', h('b', {}, ' TALK')));
     if (!ctx.game) {
       nav = null;
       topbar.replaceChildren(brand, h('span', { class: 'topbar-meta muted' }, `${dataset.leagues.length}개 리그 · ${dataset.allTeams.length}팀`));

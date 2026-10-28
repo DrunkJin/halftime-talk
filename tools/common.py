@@ -14,7 +14,7 @@ TOOLS = ROOT / 'tools'
 CACHE = TOOLS / '.cache'
 DATA = ROOT / 'data'
 LOGOS = ROOT / 'assets' / 'logos'
-USER_AGENT = 'Mozilla/5.0 (pitchside-manager data tool)'
+USER_AGENT = 'Mozilla/5.0 (halftime-talk data tool)'
 
 
 def load_env():

@@ -1,4 +1,5 @@
 // IndexedDB 세이브 슬롯 (1~3). 브라우저가 막으면 저장 없이 진행한다.
+// 예전 이름(Pitchside Manager) 그대로 둔다: 바꾸면 기존 세이브를 찾지 못한다
 const DB_NAME = 'pitchside-manager';
 const STORE = 'saves';
 export const SLOT_COUNT = 3;
