@@ -36,10 +36,19 @@ export function initTabs(bar, onSelect) {
     });
   });
   requestAnimationFrame(() => moveTo(active(), false));
-  const onResize = () => bar.isConnected && moveTo(active(), false);
-  window.addEventListener('resize', onResize);
+  // 창 크기 변경 때 pill 위치 갱신: 리스너는 하나만 두고, 화면에서 떨어진 탭은 목록에서 뺀다 (화면을 그릴 때마다 쌓이지 않게)
+  resizeHandlers.add(() => {
+    if (!bar.isConnected) return false;
+    moveTo(active(), false);
+    return true;
+  });
   return { select, refresh: () => moveTo(active(), false) };
 }
+
+const resizeHandlers = new Set();
+window.addEventListener('resize', () => {
+  for (const fn of resizeHandlers) if (!fn()) resizeHandlers.delete(fn);
+});
 
 // ── Card hover tilt (19) ──────────────────────────────
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -47,6 +56,11 @@ const TILT_MAX = 10;
 
 export function attachTilt(tilt) {
   const card = tilt.querySelector('.t-tilt-card');
+  // 터치 화면에서는 기울기 효과를 쓰지 않는다 (손가락으로 카드 위를 스크롤할 수 있게)
+  if (matchMedia('(pointer: coarse)').matches) {
+    tilt.style.touchAction = 'pan-y';
+    return;
+  }
 
   function reset() {
     tilt.classList.remove('is-hover');
@@ -232,9 +246,13 @@ export function initTooltipGroup(group) {
 
 // ── Panel reveal (07) ─────────────────────────────────
 // 화면 전환: 닫힘 → 내용 교체 → 열림
+// 닫히는 동안 다른 화면을 또 요청하면 마지막 요청만 그린다 (늦게 도착한 이전 화면이 덮어쓰지 않게)
+let swapToken = 0;
 export function swapPanel(panel, render) {
   const isOpen = panel.getAttribute('data-open') === 'true';
+  const token = ++swapToken;
   const apply = () => {
+    if (token !== swapToken) return;
     render();
     void panel.offsetWidth;
     panel.setAttribute('data-open', 'true');

@@ -12,6 +12,7 @@ const SIDE_TABS = [
 ];
 let sideTab = 'goals';
 let viewLeagueId = null; // 보고 있는 리그 (기본: 내 리그)
+let viewKey = null; // 다른 게임·새 시즌이면 내 리그로 되돌린다
 
 // 순위 구간 표시 (EPL 기준: 1~4 챔피언스리그, 5 유로파, 18~20 강등)
 function zoneOf(position, total) {
@@ -148,6 +149,8 @@ function lastRound(ctx, league) {
 
 export function render(ctx) {
   const { dataset, game } = ctx;
+  const key = `${game.seed}:${game.slot}:${game.seasonIndex}`;
+  if (key !== viewKey) [viewKey, viewLeagueId] = [key, null];
   viewLeagueId = viewLeagueId && dataset.leagueById.has(viewLeagueId) ? viewLeagueId : game.leagueId;
   const host = h('div', { class: 'table-screen' });
 

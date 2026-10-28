@@ -32,7 +32,8 @@ function buildSchedule(totalRounds) {
   let prev = 0;
   return CUP.calendar.map((e) => {
     let after = Math.min(totalRounds - 1, Math.max(1, Math.round(e.at * totalRounds)));
-    if (after <= prev) after = prev + 1; // 한 주에 주중 경기는 하나
+    // 한 주에 주중 경기는 하나. 라운드가 모자라는 짧은 리그면 같은 주에 이어서 치른다 (시즌 뒤로 밀리지 않게)
+    if (after <= prev) after = Math.min(totalRounds - 1, prev + 1);
     prev = after;
     return { ...e, key: e.stage === 'league' ? `md${e.md}` : `${e.stage}${e.leg}`, afterRound: after, done: false };
   });
@@ -162,12 +163,15 @@ export function playCupEvent(dataset, game, userResult = null) {
   const fixtures = eventFixtures(game, ev).filter((f) => !f.result);
   const teams = new Set(fixtures.flatMap((f) => [f.homeId, f.awayId]));
   const playerIds = [...teams].flatMap((id) => squadOf(dataset, game, id).map((p) => p.id));
-  // 이번 경기 전 기존 부상·징계 1경기 차감 (리그와 같은 순서)
-  tickCupAbsences(game, playerIds);
-  for (const f of fixtures) {
-    const comp = cupsOf(game).comps[f.comp];
+  // 리그와 같은 순서: 지금 상태(징계·부상 반영)로 모든 경기를 치른 뒤 → 기존 부상·징계 1경기 차감 → 새 징계 반영
+  const results = fixtures.map((f) => {
     const mine = f.homeId === game.teamId || f.awayId === game.teamId;
-    const r = mine && userResult ? userResult : simulateMatch(cupMatchInput(dataset, game, f));
+    return mine && userResult ? userResult : simulateMatch(cupMatchInput(dataset, game, f));
+  });
+  tickCupAbsences(game, playerIds);
+  fixtures.forEach((f, i) => {
+    const r = results[i];
+    const comp = cupsOf(game).comps[f.comp];
     recordCupResult(comp, f, r);
     applyConsequences(game, r, 'cup');
     if (f.stage === 'league') {
@@ -180,7 +184,7 @@ export function playCupEvent(dataset, game, userResult = null) {
         payPrize(game, home > away ? f.homeId : f.awayId, prizes.win);
       }
     }
-  }
+  });
   // 주중 경기라 다음 주말까지 덜 회복한다
   recoverCondition(dataset, game, playerIds.filter((id) => game.players[id]), CUP.midweekRecovery);
   ev.done = true;
@@ -258,7 +262,11 @@ export function teamCupStatus(game, teamId) {
     const ties = comp.ties.filter((t) => t.seedId === teamId || t.otherId === teamId);
     const last = ties.at(-1);
     if (last) return { comp, status: last.winnerId && last.winnerId !== teamId ? 'out' : 'alive', stage: last.stage };
-    if (comp.finalTable) return { comp, status: 'out', stage: 'league' };
+    // 리그 페이즈가 끝났고 대진이 없으면: 1~8위는 16강 직행(대기), 그 아래는 탈락
+    if (comp.finalTable) {
+      const direct = comp.finalTable.indexOf(teamId) < CUP.leaguePhase.direct;
+      return { comp, status: direct ? 'alive' : 'out', stage: direct ? 'r16' : 'league' };
+    }
     return { comp, status: 'alive', stage: 'league' };
   }
   return null;

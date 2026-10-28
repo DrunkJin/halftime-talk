@@ -119,6 +119,14 @@ function recalc(t) {
   t.gk = t.lineup[t.slots.indexOf('GK')];
 }
 
+// 큰 전력 차 완화 (config RATIO_SOFTCAP): knee 바깥 구간을 slope 배로
+function softRatio(r) {
+  const { knee, slope } = C.RATIO_SOFTCAP;
+  if (r > knee) return knee + (r - knee) * slope;
+  if (r < 1 / knee) return 1 / (knee + (1 / r - knee) * slope);
+  return r;
+}
+
 const emptyStats = () => ({ shots: 0, shotsOnTarget: 0, possessionMinutes: 0, xg: 0, yellow: 0, red: 0 });
 
 export function createMatch({ home, away, homeAdvantage = C.HOME_ADVANTAGE, seed = randomSeed(), knockout = null }) {
@@ -441,7 +449,7 @@ export function playMinute(state) {
   let event = resolveCards(state, defSide);
 
   // 3) 공격 시도: 공격 레이팅 vs 상대 수비 레이팅
-  const ratio = teams[side].ratings.attack / teams[defSide].ratings.defense;
+  const ratio = softRatio(teams[side].ratings.attack / teams[defSide].ratings.defense);
   const pAttack = Math.min(C.ATTACK_PROB_MAX, C.ATTACK_BASE * ratio ** C.ATTACK_EXP * teams[side].tf.attempts);
   if (rng.chance(pAttack)) {
     event = true;

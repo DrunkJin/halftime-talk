@@ -42,11 +42,11 @@ export function askingPrice(dataset, game, player) {
 // 소속 이동 + 이적료 + 새 계약. by: 'user' | 'ai'
 export function transferPlayer(dataset, game, playerId, to, fee, { contract = null, by = 'user' } = {}) {
   const from = currentTeamId(dataset, game, playerId);
-  if (from) {
+  if (from && game.budgets[from] != null) {
     game.budgets[from] = round1(game.budgets[from] + fee);
     bookLedger(game, from, 'transfersOut', fee);
   }
-  if (to) {
+  if (to && game.budgets[to] != null) {
     game.budgets[to] = round1(game.budgets[to] - fee);
     bookLedger(game, to, 'transfersIn', fee);
   }
@@ -83,6 +83,7 @@ export function makeOffer(dataset, game, playerId, amount) {
 
   if (!windowStatus(game).open) return fail('이적시장이 닫혀 있습니다.');
   if (from === game.teamId) return fail('이미 우리 팀 선수입니다.');
+  if (dataset.isGuest(from)) return fail('대륙 대회 전용 팀 선수는 영입할 수 없습니다.');
   if (!(amount >= 0)) return fail('금액을 확인하세요.');
   if (amount > game.budgets[game.teamId]) return fail('잔고가 부족합니다.');
   if (contract.wage > wageRoom(dataset, game, game.teamId)) return fail(`주급 한도 초과: 요구 주급 ${formatWage(contract.wage)}, 남은 한도 ${formatWage(Math.max(0, wageRoom(dataset, game, game.teamId)))}`);

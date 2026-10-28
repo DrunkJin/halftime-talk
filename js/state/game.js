@@ -9,7 +9,7 @@ import { autoSelectBench, autoSelectLineup, bestFormation } from '../engine/line
 import { CUP } from '../competitions/config.js';
 import { TACTICS } from '../engine/config.js';
 import { simulateMatch } from '../engine/match.js';
-import { conditionFactor } from '../engine/ratings.js';
+import { conditionFactor, positionFit, positionRating } from '../engine/ratings.js';
 import { createRng, randomSeed } from '../engine/rng.js';
 import { generateFixtures, roundCount } from '../league/fixtures.js';
 import { moraleBoost, moraleOf } from './morale.js';
@@ -74,7 +74,8 @@ const mutableStateOf = (game, id) => (game.players[id] ??= {});
 
 export function currentTeamId(dataset, game, playerId) {
   const s = stateOf(game, playerId);
-  return 'teamId' in s ? s.teamId : dataset.playerById.get(playerId).teamId;
+  // 은퇴 등으로 데이터에서 사라진 선수는 소속 없음
+  return 'teamId' in s ? s.teamId : dataset.playerById.get(playerId)?.teamId ?? null;
 }
 
 // 현재 소속별 선수 목록. 선수가 만 명 넘게 있어 매번 거르면 느리므로 이적이 생길 때만 다시 만든다
@@ -90,6 +91,11 @@ function squadIndex(dataset, game) {
   }
   squadIndexCache.set(game, { dataset, version: game.transfers.length, index });
   return index;
+}
+
+// 이적 기록 없이 소속을 한꺼번에 바꿨을 때 (시즌 넘기기) 캐시를 버린다
+export function invalidateSquads(game) {
+  squadIndexCache.delete(game);
 }
 
 // 반환 배열은 캐시이므로 정렬 등으로 바꾸려면 복사해서 쓸 것
@@ -132,12 +138,43 @@ export function fixLineup(dataset, game, scope = 'league') {
   const slots = userSlots(game);
   const keep = new Set(game.lineup.filter((_, i) => !problems.some((p) => p.slot === i)));
   const pool = squadOf(dataset, game, game.teamId).filter((p) => isAvailable(game, p, scope) && !keep.has(p.id));
+  // 출전 가능한 선수가 모자라면 (부상자가 아주 많을 때) 결장자라도 같은 팀 선수로 채운다
+  if (pool.length < problems.length) {
+    for (const p of squadOf(dataset, game, game.teamId)) if (!keep.has(p.id) && !pool.includes(p)) pool.push(p);
+  }
   for (const { slot } of problems) {
+    if (!pool.length) break;
     const [best] = autoSelectLineup(pool, [slots[slot]], factorOf(game));
     game.lineup[slot] = best.id;
     pool.splice(pool.indexOf(best), 1);
   }
   return problems.length;
+}
+
+// 지친 선수 자동 휴식: 컨디션이 RULES.rotateBelow 미만인 선발을, 같은 자리에서 (컨디션 반영) 더 잘할 후보로 바꾼다.
+// 사용자가 짠 선발은 최대한 그대로 둔다. → 바뀐 내용 [{ slot, out, in }]
+export function rotateTired(dataset, game, scope = 'league') {
+  const slots = userSlots(game);
+  const factor = factorOf(game);
+  const starters = new Set(game.lineup);
+  const pool = squadOf(dataset, game, game.teamId).filter((p) => isAvailable(game, p, scope) && !starters.has(p.id));
+  const score = (p, pos) => positionRating(p, pos) * positionFit(p, pos) * factor(p);
+  const changes = [];
+  game.lineup.forEach((id, i) => {
+    if (conditionOf(game, id) >= RULES.rotateBelow) return;
+    const current = dataset.playerById.get(id);
+    let best = null;
+    for (const p of pool) if (score(p, slots[i]) > score(current, slots[i]) && (!best || score(p, slots[i]) > score(best, slots[i]))) best = p;
+    if (!best) return;
+    game.lineup[i] = best.id;
+    pool.splice(pool.indexOf(best), 1, current);
+    changes.push({ slot: slots[i], out: current.name, in: best.name });
+  });
+  if (changes.length) {
+    const ids = new Set(game.lineup);
+    game.bench = (game.bench ?? []).filter((id) => !ids.has(id));
+  }
+  return changes;
 }
 
 // ── 경기 입력 ─────────────────────────────────────────
@@ -152,7 +189,7 @@ export function aiFormationOf(dataset, game, teamId) {
   return game.aiFormations[teamId];
 }
 
-export const settingsOf = (game) => ({ autoSubs: true, pauseAtHalfTime: true, ...game.settings });
+export const settingsOf = (game) => ({ autoSubs: true, pauseAtHalfTime: true, autoRotate: true, ...game.settings });
 export const tacticsOf = (game) => ({ ...TACTICS.defaults, ...game.tactics });
 
 // 사용자 교체 명단: 고른 선수 중 출전 가능한 선수 + 모자란 자리는 자동

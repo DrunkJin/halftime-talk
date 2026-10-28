@@ -5,7 +5,7 @@ import { aiTransferRound, expireIncomingOffers, generateIncomingOffers } from '.
 import { applyWeekFinances, awardSeasonPrizes, initSeasonFinances } from '../market/finance.js';
 import { windowStatus } from '../market/market.js';
 import { createCups, cupMatchInput, dueCupEvent, playCupEvent, userCupFixture } from '../competitions/cups.js';
-import { completeRound, fixLineup, isSeasonOver, matchInput, newGame, userFixture } from './game.js';
+import { completeRound, fixLineup, isSeasonOver, matchInput, newGame, rotateTired, userFixture } from './game.js';
 import { recordSeason } from './history.js';
 export { startNextSeason } from './newSeason.js';
 import { settleMoraleAfterMatch } from './morale.js';
@@ -64,18 +64,25 @@ export function playWeek(dataset, game, userResult) {
   return { others, aiTransfers, newOffers, cups };
 }
 
-// 남은 시즌 자동 진행: 사용자 팀은 지금 선발(결장자 자동 대체), 받은 제안은 모두 거절
+// 남은 시즌 자동 진행: 사용자 팀은 지금 선발에서 결장자·지친 선수를 바꾸고(로테이션),
+// 전술은 수석코치처럼 AI가 정한다 (경기 전 전력 차·스코어). 받은 제안은 모두 거절
 export function simulateRestOfSeason(dataset, game) {
+  const autoPlay = (input, fixture) => {
+    input[fixture.homeId === game.teamId ? 'home' : 'away'].autoTactics = true;
+    return simulateMatch(input);
+  };
   while (!isSeasonOver(game)) {
     const cup = userCupFixture(game);
     if (cup) {
       fixLineup(dataset, game, 'cup');
-      playCupWeek(dataset, game, simulateMatch(cupMatchInput(dataset, game, cup)));
+      rotateTired(dataset, game, 'cup');
+      playCupWeek(dataset, game, autoPlay(cupMatchInput(dataset, game, cup), cup));
       continue;
     }
     fixLineup(dataset, game);
+    rotateTired(dataset, game);
     const f = userFixture(game);
-    playWeek(dataset, game, f ? simulateMatch(matchInput(dataset, game, f)) : null);
+    playWeek(dataset, game, f ? autoPlay(matchInput(dataset, game, f), f) : null);
     game.incomingOffers = [];
   }
 }

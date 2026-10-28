@@ -74,6 +74,11 @@ export function createApp(root, dataset, savedSlots = []) {
       overlay.classList.add('is-open');
       try {
         return await fn();
+      } catch (err) {
+        // 진행 실패: 화면이 조용히 멈추지 않게 알리고, 호출한 쪽은 결과를 반영하지 않는다 (같은 버튼으로 다시 시도)
+        console.error(label, err);
+        showToast(`${label} 중 오류가 났습니다. 다시 시도해 주세요.`, { tone: 'bad', duration: 5000 });
+        throw err;
       } finally {
         overlay.classList.remove('is-open');
         setTimeout(() => overlay.remove(), 250);

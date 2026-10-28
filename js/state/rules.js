@@ -13,6 +13,9 @@ export const RULES = {
   straightRedBan: 3,
   secondYellowBan: 1,
 
+  // 지친 선수 자동 휴식: 선발 컨디션이 이보다 낮으면 같은 자리에 더 나은 후보가 있을 때 바꾼다
+  rotateBelow: 88,
+
   // 스쿼드 인원 (이적·방출 제한)
   squadMin: 18,
   squadMax: 36,

@@ -9,6 +9,7 @@ import { h } from '../dom.js';
 let viewComp = null;
 let view = 'table';
 let viewRound = null; // 결과 탭에서 보고 있는 이벤트 key
+let viewKey = null;
 
 const VIEWS = [
   { id: 'table', label: '리그 페이즈' },
@@ -175,7 +176,9 @@ export function render(ctx) {
   const cups = cupsOf(game);
   if (!cups) return panel('대륙 대회', h('p', { class: 'empty muted' }, '이번 시즌에는 대륙 대회가 없습니다.'));
   const comps = Object.values(cups.comps);
-  // 기본: 우리 팀이 나가는 대회
+  // 기본: 우리 팀이 나가는 대회 (다른 게임·새 시즌이면 다시 고른다)
+  const key = `${game.seed}:${game.slot}:${game.seasonIndex}`;
+  if (key !== viewKey) [viewKey, viewComp, viewRound] = [key, null, null];
   viewComp = cups.comps[viewComp] ? viewComp : (teamCupStatus(game, game.teamId)?.comp.id ?? comps[0].id);
 
   const fill = () => {

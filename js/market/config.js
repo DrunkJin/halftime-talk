@@ -51,7 +51,7 @@ export const FINANCE = {
   revenueRatio: { min: 1.08, max: 1.25 },
   revenueSplit: { tv: 0.45, gate: 0.25, commercial: 0.3 },
   startingBalance: 0.3, // 시작 잔고 = 시즌 수입 × 이 값
-  prizeShare: 0.15, // 시즌 종료 상금: 1위 = 시즌 수입 × 이 값, 꼴찌 0 (순위 따라 선형)
+  prizeShare: 0.1, // 시즌 종료 상금: 1위 = 시즌 수입 × 이 값, 꼴찌 0 (순위 따라 선형)
   // 주급 한도 = 시즌 시작 주급 총액 × (min ~ max, 명성 높을수록 여유). 시작부터 한도를 넘는 구단이 없도록 1 이상
   wageHeadroom: { min: 1.05, max: 1.2 },
   weeksPerSeason: 52,

@@ -291,7 +291,6 @@ export function render(ctx) {
         avail.available ? null : h('span', { class: `slot-flag ${avail.reason}` }, avail.reason === 'injury' ? '+' : '!'),
       );
       chip.addEventListener('click', () => onSlotClick(i));
-      chip.addEventListener('dblclick', () => openPlayerModal(dataset, p, ctx));
       dragSource(chip, { kind: 'slot', index: i });
       dropTarget(chip, (d) => (d.kind === 'slot' ? assignPlayerToSlot(game.lineup[d.index], i) : assignPlayerToSlot(d.id, i)));
       return chip;

@@ -69,6 +69,9 @@ export const POSSESSION_EXP = 2.2;
 export const ATTACK_BASE = 0.365;
 export const ATTACK_EXP = 1.5;
 export const ATTACK_PROB_MAX = 0.75;
+// 큰 전력 차 완화: (공격 / 상대 수비) 비가 knee를 넘으면 넘는 만큼을 slope 배로 줄인다 (약한 쪽도 대칭).
+// 비슷한 전력끼리는 그대로, 압도적인 매치업만 덜 일방적으로 — 리그 안 전력 차가 큰 리그의 독주를 줄인다
+export const RATIO_SOFTCAP = { knee: 1.15, slope: 0.25 };
 // 공격 시도가 슈팅까지 이어질 확률 (나머지는 수비 차단)
 export const SHOT_AFTER_ATTACK = 0.78;
 

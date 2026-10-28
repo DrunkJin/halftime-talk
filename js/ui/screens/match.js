@@ -4,7 +4,8 @@ import { HALF_TIME_MINUTE, MATCH_MINUTES } from '../../engine/config.js';
 import { changeFormation, createMatch, getMatchResult, makeSubstitution, playMinute, setAutoSubs, setTactics, teamSnapshot } from '../../engine/match.js';
 import { computeTeamRatings, conditionFactor, overall, positionFit, positionRating } from '../../engine/ratings.js';
 import { computeTable } from '../../league/table.js';
-import { availabilityOf, fixLineup, fixturesOf, isSeasonOver, leagueOf, lineupProblems, matchInput, roundFixtures, settingsOf, tacticsOf, userFixture } from '../../state/game.js';
+import { availabilityOf, conditionOf, fixLineup, fixturesOf, isSeasonOver, leagueOf, lineupProblems, matchInput, rotateTired, roundFixtures, settingsOf, tacticsOf, userFixture } from '../../state/game.js';
+import { RULES } from '../../state/rules.js';
 import { advanceCup, advanceRound, advanceSeason, simulateRest } from '../../state/simulation.js';
 import { expiringContracts, suggestedRenewals } from '../../state/newSeason.js';
 import { contractOf, renewalTerms } from '../../market/finance.js';
@@ -58,7 +59,11 @@ function stopTimer() {
 export function reset() {
   stopTimer();
   live = null;
+  pendingPre = null;
 }
+
+// 진행 중(끝나지 않은) 경기가 있는지 — 이 동안에는 선수 판매·해지를 막는다
+export const isMatchInProgress = () => Boolean(live && !live.done);
 
 export function leave() {
   if (live && !live.done) {
@@ -155,6 +160,7 @@ function renderPre(ctx, show) {
       const r = await ctx.runBusy('다른 경기 진행 중', () => advanceRound(dataset, ctx.game, null));
       ctx.setGame(r.game);
       show();
+      notifyMarket(ctx, r);
     });
     return panel(`라운드 ${game.round}`, h('div', { class: 'empty' }, h('p', {}, '이번 라운드는 경기가 없습니다.'), skip));
   }
@@ -184,25 +190,41 @@ function renderPre(ctx, show) {
       )
     : null;
 
+  // 지친 선수 자동 휴식 (설정이 켜져 있으면 킥오프 때 적용)
+  const rotateNow = () => {
+    if (!settingsOf(ctx.game).autoRotate) return;
+    const changes = rotateTired(dataset, ctx.game, scope);
+    if (changes.length) {
+      ctx.persist();
+      showToast(`지친 선수 휴식: ${changes.map((c) => `${c.slot} ${c.out} → ${c.in}`).join(', ')}`, { duration: 4500 });
+    }
+  };
+  const tired = game.lineup.filter((id) => conditionOf(game, id) < RULES.rotateBelow).map((id) => dataset.playerById.get(id)?.name).filter(Boolean);
+  const tiredNote = tired.length
+    ? h('p', { class: 'muted small-note tired-note' }, `컨디션이 떨어진 선발 ${tired.length}명: ${tired.join(', ')}${settingsOf(game).autoRotate ? ' — 킥오프 때 더 나은 후보가 있으면 쉬게 합니다' : ' — 선발 바꾸기에서 쉬게 할 수 있습니다'}`)
+    : null;
+
   const kickoff = h('button', { class: 'btn primary big', type: 'button', disabled: blocked || null }, '킥오프');
   kickoff.addEventListener('click', () => {
+    rotateNow();
     // 화면을 그린 뒤 바꾼 전술이 반영되도록 킥오프 때 입력을 다시 만든다
     const state = createMatch(makeInput(ctx.game));
-    live = { fixture, state, timer: null, paused: false, done: false, others: null, gap: strengthGap(state, mySide), cup: Boolean(cupFx) };
+    live = { fixture, state, timer: null, paused: false, done: false, others: null, gap: strengthGap(state, mySide), cup: Boolean(cupFx), formationLabel: formationLabel(ctx.game.formation.cells) };
     show();
   });
   const instant = h('button', { class: 'btn', type: 'button', disabled: blocked || null }, '결과만 보기');
   instant.addEventListener('click', () => {
+    rotateNow();
     const state = createMatch(makeInput(ctx.game));
     while (!state.finished) playMinute(state);
-    live = { fixture, state, timer: null, paused: true, done: false, others: null, gap: strengthGap(state, mySide), cup: Boolean(cupFx) };
-    finishMatch(ctx).then(show);
+    live = { fixture, state, timer: null, paused: true, done: false, others: null, gap: strengthGap(state, mySide), cup: Boolean(cupFx), formationLabel: formationLabel(ctx.game.formation.cells) };
+    show(); // 경기 화면이 결과 반영(실패 시 다시 시도 포함)을 맡는다
   });
   const rest = h('button', { class: 'btn ghost', type: 'button', disabled: blocked || null }, '시즌 끝까지');
   rest.addEventListener('click', () =>
     openConfirm({
       title: '남은 시즌을 자동으로 진행할까요?',
-      body: `남은 ${game.totalRounds - game.round + 1}라운드를 지금 선발로 치르고, 결장자는 자동으로 대체합니다. 이적시장 기간도 그대로 지나갑니다.`,
+      body: `남은 ${game.totalRounds - game.round + 1}라운드를 자동으로 치릅니다. 결장자·지친 선수는 후보로 바꾸고, 전술은 상대에 맞춰 수석코치가 정합니다. 이적시장 기간도 그대로 지나갑니다.`,
       confirmLabel: '진행',
       onConfirm: async () => {
         const r = await ctx.runBusy('남은 시즌 진행 중', () => simulateRest(dataset, ctx.game));
@@ -231,7 +253,7 @@ function renderPre(ctx, show) {
         done.skipped ? h('p', { class: 'muted' }, '기자회견을 생략했습니다.') : answeredView(done.question, STANCES.pre[done.stance], done.text, '경기 결과에 따라 선수단 사기가 한 번 더 달라집니다.'),
       );
     }
-    const key = `${game.seasonIndex}:${fixture.id}`;
+    const key = `${game.seed}:${game.slot}:${game.teamId}:${game.seasonIndex}:${fixture.id}`;
     if (pendingPre?.key !== key) pendingPre = { key, interview: cupFx ? preCupInterview(media, dataset, game, fixture, input) : preInterview(media, dataset, game, fixture, input) };
     const iv = pendingPre.interview;
     pressHost.replaceChildren(
@@ -271,6 +293,7 @@ function renderPre(ctx, show) {
         ),
         moraleMeter(ctx),
         expiryNote,
+        tiredNote,
         h(
           'div',
           { class: 'cmp' },
@@ -292,7 +315,7 @@ function renderPre(ctx, show) {
         h(
           'div',
           { class: 'pre-actions' },
-          h('div', { class: 'pre-options' }, h('div', { class: 'speed' }, h('span', { class: 'muted' }, '중계 속도'), speedTabs().el), settingToggle(ctx, 'autoSubs', '자동 교체'), settingToggle(ctx, 'pauseAtHalfTime', '하프타임에 멈추기')),
+          h('div', { class: 'pre-options' }, h('div', { class: 'speed' }, h('span', { class: 'muted' }, '중계 속도'), speedTabs().el), settingToggle(ctx, 'autoSubs', '자동 교체'), settingToggle(ctx, 'pauseAtHalfTime', '하프타임에 멈추기'), settingToggle(ctx, 'autoRotate', '지친 선수 자동 휴식')),
           h('div', { class: 'btn-row' }, editLineup, rest, instant, kickoff),
         ),
       ),
@@ -389,15 +412,22 @@ function fixtureList(ctx, fixtures, highlight = null) {
 // ── 경기 중 · 경기 후 ─────────────────────────────────
 
 // 경기 결과를 넘겨 이번 라운드(모든 리그)를 진행한다. Worker가 새 game을 돌려주므로 바꿔 끼운다
-async function finishMatch(ctx) {
+// 같은 경기를 두 번 반영하지 않도록 진행 중인 반영을 공유한다
+function finishMatch(ctx) {
   stopTimer();
   const m = live;
-  m.result = getMatchResult(m.state);
-  const r = await ctx.runBusy('다른 경기 진행 중', () => (m.cup ? advanceCup : advanceRound)(ctx.dataset, ctx.game, m.result));
-  ctx.setGame(r.game);
-  m.otherIds = r.otherFixtureIds ?? [];
-  m.done = true;
-  notifyMarket(ctx, r);
+  m.finishing ??= (async () => {
+    m.result = getMatchResult(m.state);
+    const r = await ctx.runBusy('다른 경기 진행 중', () => (m.cup ? advanceCup : advanceRound)(ctx.dataset, ctx.game, m.result));
+    ctx.setGame(r.game);
+    m.otherIds = r.otherFixtureIds ?? [];
+    m.done = true;
+    notifyMarket(ctx, r);
+  })().catch((err) => {
+    m.finishing = null; // 실패하면 다시 시도할 수 있게
+    throw err;
+  });
+  return m.finishing;
 }
 
 // 진행 중 생긴 이적 소식: 우리 선수에게 온 제안, 우리 리그 AI 이적
@@ -468,7 +498,7 @@ function renderLive(ctx, show) {
   const updateSubBtn = () => {
     const snap = teamSnapshot(state, mySide);
     subBtn.textContent = `감독 지시 · 교체 ${snap.subsLeft}장`;
-    tacticLine.textContent = `${snap.formation ?? formationLabel(ctx.game.formation.cells)} · ${tacticSummary(snap.tactics)}`;
+    tacticLine.textContent = `${snap.formation ?? live.formationLabel ?? formationLabel(ctx.game.formation.cells)} · ${tacticSummary(snap.tactics)}`;
   };
   subBtn.addEventListener('click', () => openCommandModal());
   const autoToggle = settingToggle(ctx, 'autoSubs', '자동 교체', (on) => setAutoSubs(state, mySide, on));
@@ -859,10 +889,7 @@ function renderLive(ctx, show) {
     updateStats();
     if (state.finished) {
       showToast(`경기 종료 · ${home.shortName} ${state.score.home}-${state.score.away} ${away.shortName}`);
-      finishMatch(ctx).then(() => {
-        updateStatus();
-        renderAfter();
-      });
+      finalize();
       return;
     }
     // 하프타임: 설정이 켜져 있으면 멈추고 교체할 기회를 준다
@@ -882,8 +909,25 @@ function renderLive(ctx, show) {
     schedule();
   }
 
+  // 타이머는 항상 하나만 (화면을 다시 그렸을 때 이전 타이머가 남아 경기가 두 배로 흐르지 않게)
   function schedule() {
+    stopTimer();
+    if (live?.state !== state) return;
     live.timer = setTimeout(tick, speedMs());
+  }
+
+  // 경기 결과 반영 → 결과 패널. 실패하면 다시 시도 버튼
+  function finalize() {
+    finishMatch(ctx)
+      .then(() => {
+        updateStatus();
+        renderAfter();
+      })
+      .catch(() => {
+        const retry = h('button', { class: 'btn primary', type: 'button' }, '결과 반영 다시 시도');
+        retry.addEventListener('click', finalize);
+        after.replaceChildren(panel('결과 반영 실패', h('div', { class: 'empty' }, h('p', {}, '라운드를 진행하는 중 오류가 났습니다.'), retry)));
+      });
   }
 
   pauseBtn.addEventListener('click', () => {
@@ -903,10 +947,7 @@ function renderLive(ctx, show) {
     syncFeed(false);
     updateScore(true);
     updateStats();
-    finishMatch(ctx).then(() => {
-      updateStatus();
-      renderAfter();
-    });
+    finalize();
   });
 
   // 지금까지 진행된 내용 그리기 (돌아왔거나 결과만 보기)
@@ -916,6 +957,7 @@ function renderLive(ctx, show) {
   updateStats();
   updateStatus();
   if (live.done) renderAfter();
+  else if (state.finished) finalize(); // 결과만 보기, 또는 반영 실패 뒤 돌아온 경우
   else if (!live.paused) schedule();
 
   return h(

@@ -37,9 +37,11 @@ export const CUP = {
   midweekRecovery: 0.5,
   // 대륙 대회 징계 (리그와 별도): 경고 누적 3장마다 1경기, 퇴장 1경기
   cards: { yellowBanEvery: 3, yellowBanMatches: 1, redBan: 1, secondYellowBan: 1 },
-  // 상금 (백만 파운드): 참가, 리그 페이즈 승·무, 단계 진출, 우승
+  // 상금 (백만 파운드): 참가, 리그 페이즈 승·무, 단계 진출, 우승.
+  // 게임의 구단 수입은 주급 총액 기준이라 실제의 절반 정도 규모 → 실제 UEFA 분배금의 약 0.4배로 맞춘다
+  // (실제 금액 그대로면 UCL 우승 팀이 시즌마다 수입의 절반 가까이를 상금으로 더 벌어 잔고가 폭증한다)
   prizes: {
-    ucl: { participation: 18.5, win: 2.1, draw: 0.7, playoff: 1.0, r16: 11.0, qf: 12.6, sf: 15.0, final: 18.5, winner: 6.0 },
-    uel: { participation: 4.3, win: 0.45, draw: 0.15, playoff: 0.3, r16: 1.75, qf: 2.6, sf: 4.6, final: 7.0, winner: 5.0 },
+    ucl: { participation: 7.4, win: 0.85, draw: 0.3, playoff: 0.4, r16: 4.4, qf: 5.0, sf: 6.0, final: 7.4, winner: 2.4 },
+    uel: { participation: 1.7, win: 0.2, draw: 0.06, playoff: 0.12, r16: 0.7, qf: 1.0, sf: 1.8, final: 2.8, winner: 2.0 },
   },
 };

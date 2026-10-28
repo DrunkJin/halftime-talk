@@ -18,7 +18,8 @@ function candidatesByPosition(dataset, game) {
   const byPos = new Map(POSITIONS.map((p) => [p, []]));
   for (const p of dataset.players) {
     const teamId = currentTeamId(dataset, game, p.id);
-    if (teamId === game.teamId || p.age > AI_MARKET.maxAge || !availabilityOf(game, p.id).available) continue;
+    // 게스트 팀(대륙 대회 전용, 재정 없음) 선수는 이적시장에 나오지 않는다
+    if (teamId === game.teamId || dataset.isGuest(teamId) || p.age > AI_MARKET.maxAge || !availabilityOf(game, p.id).available) continue;
     byPos.get(p.position).push({ p, ovr: overall(p) });
   }
   for (const list of byPos.values()) list.sort((a, b) => b.ovr - a.ovr);

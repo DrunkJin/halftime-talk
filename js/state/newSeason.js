@@ -8,7 +8,7 @@ import { createRng } from '../engine/rng.js';
 import { generateFixtures, roundCount } from '../league/fixtures.js';
 import { contractOf, demandedContract, initSeasonFinances, renewalTerms, signContract, wageRoom } from '../market/finance.js';
 import { PROGRESSION, lookup } from '../progression/config.js';
-import { currentTeamId, fixLineup, leagueTotalRounds, squadOf } from './game.js';
+import { currentTeamId, fixLineup, invalidateSquads, leagueTotalRounds, squadOf } from './game.js';
 import { recordSeason } from './history.js';
 import { packAttributes, worldDataset } from './world.js';
 
@@ -221,6 +221,10 @@ export function startNextSeason(base, game, { renew = null } = {}) {
     delete game.players[id];
     delete game.contracts[id];
   }
+  // 은퇴한 선수는 선발·교체 명단·받은 제안에서도 뺀다 (선발 빈자리는 새 시즌 시작 때 fixLineup이 채운다)
+  game.bench = (game.bench ?? []).filter((id) => !retired.has(id));
+  game.incomingOffers = (game.incomingOffers ?? []).filter((o) => !retired.has(o.playerId));
+  invalidateSquads(game);
 
   // 4) 계약 만료: 우리 팀은 재계약하지 않은 선수가 떠나고, AI 팀은 주전급을 대부분 재계약
   const renewSet = renew ? new Set(renew) : null;
@@ -250,6 +254,8 @@ export function startNextSeason(base, game, { renew = null } = {}) {
     delete game.contracts[id];
   }
 
+  invalidateSquads(game);
+
   // 5) 승강 (데이터에 승강 정보가 있는 리그만)
   const tableOf = (leagueId) => rec.leagues.find((l) => l.id === leagueId)?.table.map((r) => r.teamId) ?? [];
   for (const league of ds0.leagues) {
@@ -273,7 +279,7 @@ export function startNextSeason(base, game, { renew = null } = {}) {
   };
   let seq = 0;
   const idOf = () => `yt${game.seasonIndex + 1}-${++seq}`;
-  for (const team of ds0.allTeams) {
+  for (const team of [...ds0.allTeams, ...ds0.guestTeams]) {
     const squad = squadOf(ds0, game, team.id).filter((p) => !retired.has(p.id));
     const minWage = Math.max(1, Math.min(...squad.map((p) => game.contracts[p.id]?.wage ?? Infinity).filter(Number.isFinite), 20));
     for (let k = randInt(rng, P.youth.perTeam); k > 0; k--) {
@@ -281,7 +287,7 @@ export function startNextSeason(base, game, { renew = null } = {}) {
       squad.push(y);
       w.youth.push(y);
       w.players[y.id] = packAttributes(y.age, y.attributes);
-      game.contracts[y.id] = { wage: minWage, until: game.seasonIndex + P.youth.contractYears };
+      if (!team.guest) game.contracts[y.id] = { wage: minWage, until: game.seasonIndex + P.youth.contractYears };
       if (team.id === game.teamId) summary.youth.push(`${y.name} (${y.position}, ${y.age}세)`);
     }
   }
@@ -297,7 +303,7 @@ export function startNextSeason(base, game, { renew = null } = {}) {
     .filter((p) => p.age < P.aiFill.maxAge)
     .sort((a, b) => overall(b) - overall(a));
   const F = P.aiFill;
-  for (const team of [...ds1.allTeams].sort(() => rng.next() - 0.5)) {
+  for (const team of [...ds1.allTeams, ...ds1.guestTeams].sort(() => rng.next() - 0.5)) {
     const user = team.id === game.teamId;
     let size = squadOf(ds1, game, team.id).length;
     const goal = user ? F.mustSquad : F.minSquad;
@@ -305,6 +311,13 @@ export function startNextSeason(base, game, { renew = null } = {}) {
       const p = free[i];
       if (!p) continue;
       const contract = demandedContract(ds1, game, p, team.id);
+      if (team.guest) {
+        // 게스트 팀은 재정이 없어 주급 확인 없이 채운다 (계약도 두지 않는다)
+        (game.players[p.id] ??= {}).teamId = team.id;
+        free[i] = null;
+        size++;
+        continue;
+      }
       // 최소 인원도 안 되면 주급 한도를 넘어서라도 가장 싼 선수 쪽으로
       if (size >= F.mustSquad && contract.wage > wageRoom(ds1, game, team.id)) continue;
       if (size < F.mustSquad && contract.wage > Math.max(wageRoom(ds1, game, team.id), 0) && free.slice(i + 1).some((q) => q && demandedContract(ds1, game, q, team.id).wage < contract.wage * 0.5)) continue;
@@ -315,6 +328,8 @@ export function startNextSeason(base, game, { renew = null } = {}) {
       if (user) summary.signed.push(p.name);
     }
   }
+
+  invalidateSquads(game);
 
   // 9) 새 시즌 상태
   game.leagueId = ds1.teamById.get(game.teamId).leagueId;

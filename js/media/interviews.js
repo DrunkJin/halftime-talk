@@ -1,6 +1,7 @@
 // 감독 인터뷰·팀 토크: 경기 상황을 판정해 질문과 답변 선택지를 만들고, 고른 답의 효과를 반영한다.
 // 문구는 data/interviews/*.json, 라이벌은 data/rivalries.json, 효과 수치는 engine/config.js(MORALE)
 import { MORALE } from '../engine/config.js';
+import { createRng } from '../engine/rng.js';
 import { adjustBoost } from '../engine/match.js';
 import { computeTeamRatings, conditionFactor, overall } from '../engine/ratings.js';
 import { computeTable } from '../league/table.js';
@@ -269,7 +270,9 @@ export function answerPost(game, interview, stance) {
   const effect = MORALE.post[stance];
   let delta = effect[interview.outcome];
   let backfired = false;
-  if (effect.backfire && Math.random() < effect.backfire.chance) {
+  // 결과 수치는 시드 난수로 (같은 세이브·같은 선택이면 같은 결과)
+  const rng = createRng(`${game.seed}:post:${game.seasonIndex}:${interview.round}:${stance}`);
+  if (effect.backfire && rng.chance(effect.backfire.chance)) {
     delta = effect.backfire.value;
     backfired = true;
   }
@@ -329,7 +332,8 @@ const REACTIONS = {
 // 팀 토크 효과: 후반 레이팅 보정 + 사기 보정. → { delta, morale, tone, reaction }
 export function answerTalk(game, state, mySide, talk, stance) {
   const T = MORALE.talk;
-  const delta = T[stance][talk.group] + (Math.random() * 2 - 1) * T.noise;
+  const rng = createRng(`${state.seed}:talk:${state.minute}:${stance}`);
+  const delta = T[stance][talk.group] + (rng.next() * 2 - 1) * T.noise;
   adjustBoost(state, mySide, delta);
   const morale = delta * T.moraleScale * talk.mult;
   addMorale(game, morale);

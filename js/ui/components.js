@@ -140,7 +140,10 @@ export function openConfirm({ title, body, confirmLabel, onConfirm }) {
     h('div', { class: 'confirm-modal' }, h('h2', {}, title), h('div', { class: 'confirm-body' }, body), h('div', { class: 'confirm-actions' }, cancel, ok)),
   );
   cancel.addEventListener('click', closeModal);
+  let done = false; // Enter 연타 등으로 두 번 실행되지 않게
   ok.addEventListener('click', () => {
+    if (done) return;
+    done = true;
     closeModal();
     onConfirm();
   });

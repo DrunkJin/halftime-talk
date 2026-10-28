@@ -8,6 +8,7 @@ import { RULES } from '../../state/rules.js';
 import { teamBadge } from '../badge.js';
 import { openConfirm, openPlayerModal, panel, segmented, statusChip } from '../components.js';
 import { h } from '../dom.js';
+import { isMatchInProgress } from './match.js';
 import { attrClass } from '../format.js';
 import { openModal, setDigits, showToast } from '../motion.js';
 
@@ -162,7 +163,7 @@ export function render(ctx) {
     // 이름 검색은 입력할 때마다 renderRows에서 거른다
     const rows = dataset.players
       .map((p) => ({ p, teamId: currentTeamId(dataset, game, p.id) }))
-      .filter(({ teamId }) => teamId !== game.teamId)
+      .filter(({ teamId }) => teamId !== game.teamId && !dataset.isGuest(teamId))
       .filter(({ teamId }) => filters.league === 'all' || (teamId && dataset.teamById.get(teamId).leagueId === filters.league))
       .filter(({ p }) => filters.group === 'all' || GROUP_OF[p.position] === filters.group)
       .filter(({ teamId }) => !filters.freeOnly || teamId === null)
@@ -258,9 +259,11 @@ export function render(ctx) {
           'tbody',
           {},
           mine.map((p) => {
-            const sell = h('button', { class: 'btn small', type: 'button', disabled: open ? null : true, title: open ? '' : '이적시장이 닫혀 있습니다' }, '판매');
+            // 진행 중인 경기가 있으면 판매·해지를 막는다 (뛰고 있는 선수가 팀을 떠나지 않게)
+            const playing = isMatchInProgress();
+            const sell = h('button', { class: 'btn small', type: 'button', disabled: open && !playing ? null : true, title: playing ? '경기가 끝난 뒤 할 수 있습니다' : open ? '' : '이적시장이 닫혀 있습니다' }, '판매');
             sell.addEventListener('click', () => sellModal(p));
-            const release = h('button', { class: 'btn small ghost', type: 'button' }, '계약 해지');
+            const release = h('button', { class: 'btn small ghost', type: 'button', disabled: playing || null, title: playing ? '경기가 끝난 뒤 할 수 있습니다' : '' }, '계약 해지');
             release.addEventListener('click', () =>
               openConfirm({
                 title: `${p.name} 계약 해지`,
@@ -271,6 +274,7 @@ export function render(ctx) {
                   showToast(res.message, { tone: res.ok ? '' : 'warn' });
                   if (res.ok) {
                     ctx.persist();
+                    ctx.refreshTopbar();
                     fill();
                   }
                 },
@@ -310,7 +314,7 @@ export function render(ctx) {
         {},
         offers.map((o) => {
           const p = dataset.playerById.get(o.playerId);
-          const accept = h('button', { class: 'btn small primary', type: 'button' }, '수락');
+          const accept = h('button', { class: 'btn small primary', type: 'button', disabled: isMatchInProgress() || null, title: isMatchInProgress() ? '경기가 끝난 뒤 할 수 있습니다' : '' }, '수락');
           const reject = h('button', { class: 'btn small ghost', type: 'button' }, '거절');
           const answer = (yes) => {
             const res = respondIncomingOffer(dataset, game, o.id, yes);
