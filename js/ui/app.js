@@ -7,6 +7,7 @@ import { teamBadge } from './badge.js';
 import { openConfirm, segmented } from './components.js';
 import { h } from './dom.js';
 import { showToast, swapPanel } from './motion.js';
+import * as careerScreen from './screens/career.js';
 import * as cupsScreen from './screens/cups.js';
 import * as financeScreen from './screens/finance.js';
 import * as historyScreen from './screens/history.js';
@@ -16,7 +17,8 @@ import * as tableScreen from './screens/table.js';
 import * as teamSelectScreen from './screens/teamSelect.js';
 import * as transfersScreen from './screens/transfers.js';
 
-const SCREENS = { select: teamSelectScreen, squad: squadScreen, match: matchScreen, table: tableScreen, cups: cupsScreen, transfers: transfersScreen, finance: financeScreen, history: historyScreen };
+// career: 감독 커리어 엔딩 (상단 탭 없이 시즌 종료·기록 화면에서 연다)
+const SCREENS = { career: careerScreen, select: teamSelectScreen, squad: squadScreen, match: matchScreen, table: tableScreen, cups: cupsScreen, transfers: transfersScreen, finance: financeScreen, history: historyScreen };
 const NAV = [
   { id: 'squad', label: '스쿼드' },
   { id: 'match', label: '경기' },
@@ -48,6 +50,7 @@ export function createApp(root, dataset, savedSlots = []) {
     navigate,
     refreshTopbar,
     persist,
+    leaveToSelect,
     startGame(game) {
       ctx.game = game;
       ctx.slots = ctx.slots.map((s) => (s.slot === game.slot ? { slot: s.slot, game, invalid: false } : s));
@@ -135,14 +138,7 @@ export function createApp(root, dataset, savedSlots = []) {
         title: '팀 선택 화면으로 갈까요?',
         body: `지금 게임은 슬롯 ${ctx.game.slot}에 저장됩니다. 팀 선택 화면에서 이어하거나 새 게임을 시작할 수 있습니다.`,
         confirmLabel: '이동',
-        onConfirm: async () => {
-          SCREENS[current]?.leave?.(ctx);
-          matchScreen.reset();
-          await flushSave();
-          ctx.game = null;
-          buildTopbar();
-          navigate('select');
-        },
+        onConfirm: leaveToSelect,
       }),
     );
     topbar.replaceChildren(
@@ -152,6 +148,16 @@ export function createApp(root, dataset, savedSlots = []) {
       h('div', { class: 'topbar-actions' }, toSelect),
     );
     refreshTopbar();
+  }
+
+  // 지금 게임을 저장하고 팀 선택 화면으로
+  async function leaveToSelect() {
+    SCREENS[current]?.leave?.(ctx);
+    matchScreen.reset();
+    await flushSave();
+    ctx.game = null;
+    buildTopbar();
+    navigate('select');
   }
 
   function refreshTopbar() {

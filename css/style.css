@@ -958,3 +958,82 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .fam-bar { display: inline-block; position: relative; width: 64px; height: 4px; margin: 0 4px; border-radius: 2px; background: var(--panel-3); overflow: hidden; }
 .fam-bar::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--v); background: var(--info); }
 .pm-potential { color: var(--info); font-weight: 600; }
+
+/* ── 감독 커리어 엔딩 ── */
+.career-end { display: grid; gap: 16px; max-width: 1040px; margin: 0 auto; }
+.career-end h2 { margin-bottom: 10px; color: var(--text-2); font-size: 13px; font-weight: 700; letter-spacing: 0.04em; }
+.cc-hero { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 24px; padding: 32px 28px; border: 1px solid var(--line-2); border-radius: 12px;
+  background: radial-gradient(120% 140% at 0% 0%, color-mix(in srgb, var(--team) 30%, transparent), transparent 60%), var(--panel); }
+.cc-hero-text { display: grid; gap: 6px; min-width: 0; }
+.cc-hero h1 { font-size: clamp(30px, 5vw, 48px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; text-wrap: balance; }
+.cc-sub { color: var(--text-2); font-size: 15px; }
+.cc-grade { display: grid; justify-items: center; gap: 2px; min-width: 96px; padding: 12px 16px; border: 1px solid var(--line-2); border-radius: 12px; background: var(--bg-2); }
+.cc-grade-letter { font-size: 64px; font-weight: 900; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; }
+.cc-grade.grade-S .cc-grade-letter { color: var(--gold); }
+.cc-grade.grade-C .cc-grade-letter, .cc-grade.grade-D .cc-grade-letter { color: var(--text-2); }
+.cc-grade-score { color: var(--muted); font-size: 13px; font-weight: 600; }
+.cc-stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); }
+.cc-stat { display: grid; gap: 4px; padding: 14px 16px; border-right: 1px solid var(--line); }
+.cc-stat:last-child { border-right: 0; }
+.cc-stat b { font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.cc-section { padding: 18px 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); }
+.cc-trophies { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.cc-trophy { display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto; column-gap: 10px; align-items: center; padding: 10px 14px; border: 1px solid rgba(255, 209, 102, 0.35); border-radius: 10px; background: rgba(255, 209, 102, 0.06); }
+.cc-trophy .trophy-icon { grid-row: span 2; width: 30px; height: 30px; color: var(--gold); }
+.cc-trophy b { font-size: 14px; }
+.cc-trophy span { font-size: 12px; }
+.cc-legend { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 6px; color: var(--text-2); font-size: 12px; }
+.cc-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.cc-legend i { display: inline-block; width: 18px; height: 0; border-top: 2px solid #22a874; }
+.cc-legend i.lg-expected { border-top: 2px dashed #7a6fd6; }
+.cc-legend i.lg-trophy { width: 12px; height: 12px; border: 2px solid var(--gold); border-radius: 50%; }
+.cc-chart { position: relative; }
+.cc-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.cc-grid { stroke: var(--line); stroke-width: 1; }
+.cc-band { fill: rgba(255, 255, 255, 0.025); }
+.cc-axis { fill: var(--muted); font-size: 11px; }
+.cc-league { fill: var(--text-2); font-weight: 600; }
+.cc-line { fill: none; stroke: #22a874; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.cc-line-expected { fill: none; stroke: #7a6fd6; stroke-width: 2; stroke-dasharray: 5 5; }
+.cc-dot { fill: #22a874; stroke: var(--panel); stroke-width: 2; }
+.cc-dot-expected { fill: var(--panel); stroke: #7a6fd6; stroke-width: 2; }
+.cc-dot-trophy { fill: none; stroke: var(--gold); stroke-width: 2; }
+.cc-hit { fill: transparent; }
+.cc-label { fill: var(--text); font-size: 12px; font-weight: 700; }
+.cc-point { cursor: default; outline: none; }
+.cc-point:focus-visible .cc-hit { stroke: var(--accent); stroke-width: 2; }
+.cc-tip { position: absolute; z-index: 2; display: grid; gap: 2px; padding: 8px 10px; border: 1px solid var(--line-2); border-radius: 8px; background: var(--panel-3); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); font-size: 12px; white-space: nowrap; pointer-events: none; opacity: 0; transform: translate(-50%, calc(-100% - 16px)); transition: opacity var(--duration-quick) var(--ease-out); }
+.cc-tip.is-shown { opacity: 1; }
+.cc-tip .gold { color: var(--gold); }
+.cc-tip .down { color: #ff8a8e; }
+.cc-table { margin-top: 10px; font-size: 13px; }
+.cc-table summary { color: var(--muted); cursor: pointer; }
+.cc-facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0; margin: 0; }
+.cc-fact { display: grid; gap: 3px; padding: 12px 14px; border-top: 1px solid var(--line); }
+.cc-fact dt { color: var(--muted); font-size: 12px; }
+.cc-fact dd { display: grid; gap: 2px; margin: 0; }
+.cc-fact dd b { font-size: 16px; }
+.cc-fact dd span { font-size: 12px; }
+.cc-quotes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.cc-quote { display: grid; align-content: space-between; gap: 10px; margin: 0; padding: 16px; border: 1px solid var(--line-2); border-radius: 10px; background: var(--bg-2); }
+.cc-quote blockquote { margin: 0; font-size: 15px; line-height: 1.6; text-wrap: pretty; }
+.cc-quote blockquote::before { content: "“"; display: block; height: 22px; color: var(--accent); font-size: 40px; font-weight: 800; line-height: 1; }
+.cc-quote figcaption { color: var(--muted); font-size: 12px; }
+.cc-actions { display: grid; justify-items: center; gap: 10px; padding: 8px 0 24px; text-align: center; }
+.career-cta { margin-top: 4px; }
+/* 차례로 떠오르기 (첫 화면 연출). 움직임 줄이기 설정이면 바로 보인다 */
+.career-end .reveal { animation: cc-rise var(--duration-slow, 400ms) var(--ease-smooth-out, ease-out) both; animation-delay: calc(var(--i, 0) * 140ms); }
+@keyframes cc-rise { from { opacity: 0; transform: translateY(14px); filter: blur(3px); } to { opacity: 1; transform: none; filter: none; } }
+@media (prefers-reduced-motion: reduce) { .career-end .reveal { animation: none; } }
+@media (max-width: 860px) {
+  .cc-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cc-stat { border-bottom: 1px solid var(--line); }
+  .cc-quotes { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .cc-hero { grid-template-columns: minmax(0, 1fr) auto; padding: 22px 18px; gap: 14px; }
+  .cc-hero > .badge { grid-column: 1 / -1; --size: 64px !important; }
+  .cc-grade { min-width: 72px; padding: 8px 10px; }
+  .cc-grade-letter { font-size: 44px; }
+  .cc-section { padding: 14px; }
+}

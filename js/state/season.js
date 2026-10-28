@@ -4,7 +4,8 @@ import { simulateMatch } from '../engine/match.js';
 import { aiTransferRound, expireIncomingOffers, generateIncomingOffers } from '../market/ai.js';
 import { applyWeekFinances, awardSeasonPrizes, initSeasonFinances } from '../market/finance.js';
 import { windowStatus } from '../market/market.js';
-import { createCups, cupMatchInput, dueCupEvent, playCupEvent, userCupFixture } from '../competitions/cups.js';
+import { createCups, cupMatchInput, cupsOf, dueCupEvent, playCupEvent, userCupFixture } from '../competitions/cups.js';
+import { noteSeasonExpectation, trackUserMatch } from './career.js';
 import { completeRound, fixLineup, isSeasonOver, matchInput, newGame, rotateTired, userFixture, userSlots } from './game.js';
 import { TACTICS } from '../engine/config.js';
 import { recordSeason } from './history.js';
@@ -23,6 +24,7 @@ export function createGame(dataset, teamId, options) {
   game.budgets = {};
   initSeasonFinances(dataset, game, { firstSeason: true });
   createCups(dataset, game);
+  noteSeasonExpectation(dataset, game);
   return game;
 }
 
@@ -38,6 +40,7 @@ function playDueCupEvents(dataset, game) {
 // → { cups: 진행한 이벤트 목록 }
 export function playCupWeek(dataset, game, userResult) {
   const mine = userCupFixture(game);
+  trackUserMatch(dataset, game, mine, userResult, mine ? cupsOf(game)?.comps[mine.comp]?.name : null);
   const cups = [playCupEvent(dataset, game, userResult)].filter(Boolean);
   settleMoraleAfterMatch(game, mine?.id, userResult, mine?.homeId === game.teamId ? 'home' : 'away', { decay: false });
   if (mine) trainFamiliarity(game);
@@ -49,6 +52,7 @@ export function playCupWeek(dataset, game, userResult) {
 export function playWeek(dataset, game, userResult) {
   const windowOpen = windowStatus(game).open; // 이번 라운드가 이적시장 기간인지 (진행 전 기준)
   const mine = userFixture(game);
+  trackUserMatch(dataset, game, mine, userResult, dataset.leagueById.get(game.leagueId)?.name);
   const others = completeRound(dataset, game, userResult);
   settleMoraleAfterMatch(game, mine?.id, userResult, mine?.homeId === game.teamId ? 'home' : 'away');
   if (mine) trainFamiliarity(game);

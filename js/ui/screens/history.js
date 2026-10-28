@@ -172,10 +172,13 @@ function careerView(ctx, history, finished) {
       }),
     ),
   );
+  // 커리어 엔딩 화면 (끝났으면 주 버튼, 진행 중이면 지금까지 정리)
+  const ending = h('button', { class: `btn small ${finished ? 'primary' : 'ghost'}`, type: 'button' }, finished ? '커리어 엔딩 보기' : '지금까지 정리해 보기');
+  ending.addEventListener('click', () => ctx.navigate('career'));
   return panel(
     finished ? '커리어 종합' : '커리어 (진행 중)',
     h('div', { class: 'career' }, summary, h('h3', {}, '시즌별 기록'), h('div', { class: 'table-scroll' }, perSeason), h('h3', {}, '역대 우승'), h('div', { class: 'table-scroll' }, roll)),
-    { className: finished ? 'career-final' : '' },
+    { className: finished ? 'career-final' : '', actions: ending },
   );
 }
 

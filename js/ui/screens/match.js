@@ -1015,8 +1015,9 @@ function renderSeasonOver(ctx, show) {
   const mine = table.find((r) => r.teamId === game.teamId);
   const toTable = h('button', { class: 'btn ghost', type: 'button' }, '최종 순위표');
   toTable.addEventListener('click', () => ctx.navigate('table'));
-  const toHistory = h('button', { class: 'btn primary', type: 'button' }, game.seasonIndex >= game.years ? '커리어 종합 보기' : '시즌 결산 보기');
-  toHistory.addEventListener('click', () => ctx.navigate('history'));
+  const lastSeason = game.seasonIndex >= game.years;
+  const toHistory = h('button', { class: 'btn primary', type: 'button' }, lastSeason ? '커리어 엔딩 보기' : '시즌 결산 보기');
+  toHistory.addEventListener('click', () => ctx.navigate(lastSeason ? 'career' : 'history'));
   // 정한 기간을 다 채웠어도 한 시즌씩 더 이어갈 수 있다
   const extend = h('button', { class: 'btn ghost', type: 'button' }, '한 시즌 더 하기');
   extend.addEventListener('click', () => {

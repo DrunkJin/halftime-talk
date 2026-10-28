@@ -13,6 +13,7 @@ import { PROGRESSION, lookup } from '../progression/config.js';
 import { currentTeamId, fixLineup, invalidateSquads, leagueTotalRounds, squadOf } from './game.js';
 import { recordSeason } from './history.js';
 import { packAttributes, worldDataset } from './world.js';
+import { noteSeasonExpectation } from './career.js';
 
 const P = PROGRESSION;
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
@@ -403,6 +404,7 @@ export function startNextSeason(base, game, { renew = null } = {}) {
   const squadIds = new Set(squadOf(ds1, game, game.teamId).map((p) => p.id));
   game.bench = (game.bench ?? []).filter((id) => squadIds.has(id));
   fixLineup(ds1, game);
+  noteSeasonExpectation(ds1, game);
   initSeasonFinances(ds1, game, { firstSeason: false });
   createCups(ds1, game, competitions.length ? competitions : undefined);
   const myCup = competitions.find((c) => c.teamIds.includes(game.teamId));

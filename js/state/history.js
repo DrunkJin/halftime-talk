@@ -2,6 +2,7 @@
 // 선수·팀 이름도 함께 저장해 두어, 은퇴·데이터 변경 뒤에도 기록을 그대로 읽을 수 있게 한다.
 import { cupsOf, teamCupStatus } from '../competitions/cups.js';
 import { computeTable } from '../league/table.js';
+import { expectedRank } from './career.js';
 import { currentTeamId, fixturesOf } from './game.js';
 
 const teamName = (dataset, id) => dataset.teamById.get(id)?.shortName ?? id;
@@ -103,6 +104,8 @@ export function recordSeason(dataset, game) {
       cup: status ? { id: status.comp.id, name: status.comp.name, status: status.status, stage: status.stage } : null,
       cupRecord: cupRecord(game),
       topScorer: topScorer(dataset, game, game.playerStats, squadIds),
+      // 시즌 전 예상 순위 (예전 세이브는 시즌 끝 전력으로 대신)
+      expected: game.seasonExpect?.seasonIndex === game.seasonIndex ? game.seasonExpect.rank : expectedRank(dataset, game).rank,
       promoted: myLeague.promoted.includes(game.teamId),
       relegated: myLeague.relegated.includes(game.teamId),
       finance: { income: Math.round(income * 10) / 10, expense: Math.round(expense * 10) / 10, balance: game.budgets?.[game.teamId] ?? null },
