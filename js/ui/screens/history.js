@@ -201,7 +201,7 @@ export function render(ctx) {
       viewSeason = Number(id);
       fill();
     });
-    host.replaceChildren(nextSeasonCta(ctx), careerView(ctx, history, finished), h('div', { class: 'cups-head' }, h('b', {}, '시즌 결산'), tabs.el), ...seasonView(ctx, rec));
+    host.replaceChildren(...[nextSeasonCta(ctx), careerView(ctx, history, finished), h('div', { class: 'cups-head' }, h('b', {}, '시즌 결산'), tabs.el), ...seasonView(ctx, rec)].filter(Boolean));
   };
   fill();
   return host;
