@@ -3,6 +3,7 @@ import { ATTRIBUTE_GROUPS, POSITIONS } from '../data/schema.js';
 import { overall, positionFit, positionRating } from '../engine/ratings.js';
 import { formatMoney, playerValue } from '../market/value.js';
 import { availabilityOf, conditionOf, currentTeamId } from '../state/game.js';
+import { scoutedPotential } from '../state/newSeason.js';
 import { teamBadge } from './badge.js';
 import { h } from './dom.js';
 import { ATTRIBUTE_GROUP_LABELS, ATTRIBUTE_LABELS, POSITION_NAMES, attrClass } from './format.js';
@@ -75,11 +76,13 @@ export function openPlayerModal(dataset, player, ctx = null) {
   const nation = dataset.nationByCode.get(player.nationality);
   const avail = game ? availabilityOf(game, player.id) : null;
   const stats = game?.playerStats[player.id];
+  const potential = game ? scoutedPotential(game, player, overall(player)) : null;
   const extra = game
     ? h(
         'p',
         { class: 'muted pm-extra' },
         `가치 ${formatMoney(playerValue(player))} · 컨디션 ${conditionOf(game, player.id)}%`,
+        potential ? h('span', { class: 'pm-potential' }, ` · 잠재력 ${potential.low}~${potential.high}`) : '',
         stats ? ` · ${stats.apps ?? 0}경기 ${stats.goals}골 ${stats.assists}도움` : '',
         avail && !avail.available ? h('span', { class: `status-chip ${avail.reason}` }, `${avail.label} ${avail.rounds}경기`) : null,
       )

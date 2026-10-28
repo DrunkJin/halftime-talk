@@ -931,3 +931,30 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .head-actions { min-width: 0; max-width: 100%; flex-wrap: wrap; }
 .head-actions .t-tabs { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
 .head-actions .t-tabs::-webkit-scrollbar { display: none; }
+
+/* ── 상대 분석 · 전술 숙련도 ── */
+.analysis { display: grid; gap: 10px; padding: 12px; }
+.analysis h3 { margin-top: 4px; color: var(--muted); font-size: 11px; letter-spacing: 0.08em; }
+.an-opp { display: grid; gap: 4px; font-size: 13px; }
+.an-traits { display: flex; gap: 14px; flex-wrap: wrap; }
+.an-line { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 13px; }
+.an-wdl { display: inline-flex; gap: 8px; font-variant-numeric: tabular-nums; }
+.an-wdl .w { color: var(--accent); }
+.an-wdl .l { color: #ff8a8e; }
+.an-gain { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.an-gain.up { color: var(--accent); }
+.an-gain.down { color: #ff8a8e; }
+.an-notes { display: grid; gap: 3px; margin: 0; padding-left: 16px; font-size: 12px; line-height: 1.45; }
+.an-notes li.good { color: var(--text-2); }
+.an-notes li.good::marker { color: var(--accent); }
+.an-notes li.bad { color: var(--muted); }
+.an-notes li.bad::marker { color: var(--danger); }
+.an-recs { display: grid; gap: 8px; }
+.an-rec { display: grid; gap: 6px; padding: 10px 12px; border: 1px solid var(--line-2); border-radius: 8px; }
+.an-rec-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 13px; }
+.fam-line { display: flex; align-items: center; flex-wrap: wrap; gap: 2px; font-size: 12px; }
+.fam-line .up { color: var(--accent); }
+.fam-line .down { color: #ff8a8e; }
+.fam-bar { display: inline-block; position: relative; width: 64px; height: 4px; margin: 0 4px; border-radius: 2px; background: var(--panel-3); overflow: hidden; }
+.fam-bar::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--v); background: var(--info); }
+.pm-potential { color: var(--info); font-weight: 600; }

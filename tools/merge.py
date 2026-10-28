@@ -564,8 +564,25 @@ class Merger:
             r['roleClass'] = F.ROLE_CLASS[main]
             self.report['lineupPositions'] += 1
 
+    def reclassify_second_strikers(self):
+        """ST로 판정됐지만 기록이 '만드는 쪽'인 선수(투톱의 처진 공격수 등)는 AM(보조 ST)으로.
+        같은 리그 공격수 중 득점 지표는 낮고 키패스는 높은 선수 — 이름이 아니라 기록으로 판단한다"""
+        ctx = F.StatContext(self.records)
+        S = F.FORMULA['secondStriker']
+        for r in self.records:
+            if r.get('position') != 'ST' or r['source'] != 'api':
+                continue
+            fin = ctx.score(r, 'finishing')
+            cre = ctx.score(r, 'creativity')
+            if fin <= S['maxFinishing'] and cre >= S['minCreativity'] and cre - fin >= S['minGap']:
+                r['position'] = 'AM'
+                r['alt'] = ['ST'] + [p for p in r.get('alt', []) if p not in ('ST', 'AM')][:1]
+                r['roleClass'] = F.ROLE_CLASS['AM']
+                self.report['secondStrikers'] += 1
+
     def finish(self):
         self.apply_lineup_positions()
+        self.reclassify_second_strikers()
         self.team_bonus = self.continental_bonus()
         blend = F.FORMULA['transferBaseBlend']
         for r in self.records:

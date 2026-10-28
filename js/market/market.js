@@ -36,6 +36,8 @@ export function askingPrice(dataset, game, player) {
     .indexOf(overall(player)) + 1;
   let mult = rank <= A.keyUntilRank ? A.key : rank <= A.rotationUntilRank ? A.rotation : A.fringe;
   if (seasonsLeft(game, contractOf(dataset, game, player.id)) <= 1) mult *= FINANCE.shortContractDiscount;
+  const leagueId = dataset.teamById.get(teamId)?.leagueId;
+  mult *= MARKET.leagueFee[leagueId] ?? MARKET.defaultLeagueFee;
   return round1(value * mult);
 }
 

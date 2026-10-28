@@ -5,13 +5,19 @@ import { aiTransferRound, expireIncomingOffers, generateIncomingOffers } from '.
 import { applyWeekFinances, awardSeasonPrizes, initSeasonFinances } from '../market/finance.js';
 import { windowStatus } from '../market/market.js';
 import { createCups, cupMatchInput, dueCupEvent, playCupEvent, userCupFixture } from '../competitions/cups.js';
-import { completeRound, fixLineup, isSeasonOver, matchInput, newGame, rotateTired, userFixture } from './game.js';
+import { completeRound, fixLineup, isSeasonOver, matchInput, newGame, rotateTired, userFixture, userSlots } from './game.js';
+import { TACTICS } from '../engine/config.js';
 import { recordSeason } from './history.js';
 export { startNextSeason } from './newSeason.js';
 import { settleMoraleAfterMatch } from './morale.js';
+import { trainFamiliarity } from './familiarity.js';
+import { aiIdentity, squadProfile } from '../engine/tactics.js';
 
 export function createGame(dataset, teamId, options) {
   const game = newGame(dataset, teamId, options);
+  // 처음 전술: 우리 선수 구성에 맞는 압박·공격 방식 (AI 팀이 고르는 방식과 같다)
+  const lineup = game.lineup.map((id) => dataset.playerById.get(id));
+  game.tactics = { ...TACTICS.defaults, ...aiIdentity(squadProfile(userSlots(game), lineup), 0) };
   game.contracts = {};
   game.incomingOffers = [];
   game.budgets = {};
@@ -34,6 +40,7 @@ export function playCupWeek(dataset, game, userResult) {
   const mine = userCupFixture(game);
   const cups = [playCupEvent(dataset, game, userResult)].filter(Boolean);
   settleMoraleAfterMatch(game, mine?.id, userResult, mine?.homeId === game.teamId ? 'home' : 'away', { decay: false });
+  if (mine) trainFamiliarity(game);
   cups.push(...playDueCupEvents(dataset, game));
   return { cups };
 }
@@ -44,6 +51,7 @@ export function playWeek(dataset, game, userResult) {
   const mine = userFixture(game);
   const others = completeRound(dataset, game, userResult);
   settleMoraleAfterMatch(game, mine?.id, userResult, mine?.homeId === game.teamId ? 'home' : 'away');
+  if (mine) trainFamiliarity(game);
   applyWeekFinances(dataset, game);
   let aiTransfers = [];
   let newOffers = [];

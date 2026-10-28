@@ -12,6 +12,7 @@ import { simulateMatch } from '../engine/match.js';
 import { conditionFactor, positionFit, positionRating } from '../engine/ratings.js';
 import { createRng, randomSeed } from '../engine/rng.js';
 import { generateFixtures, roundCount } from '../league/fixtures.js';
+import { familiarityBoost, familiarityOf } from './familiarity.js';
 import { moraleBoost, moraleOf } from './morale.js';
 import { RULES } from './rules.js';
 
@@ -230,8 +231,8 @@ export function teamInput(dataset, game, teamId, scope = 'league') {
   const autoSubs = mine ? settingsOf(game).autoSubs : true;
   // 사용자 팀은 직접 고른 전술, AI 팀은 엔진이 경기 전력·스코어로 정한다
   const tactics = mine ? tacticsOf(game) : undefined;
-  // 사기: 최근 흐름(모든 팀) + 인터뷰·팀 토크(사용자 팀)
-  const boost = moraleBoost(moraleOf(dataset, game, teamId));
+  // 사기: 최근 흐름(모든 팀) + 인터뷰·팀 토크(사용자 팀). 사용자 팀은 전술 숙련도도 (AI 팀은 기준 수준이라 0)
+  const boost = moraleBoost(moraleOf(dataset, game, teamId)) + (mine ? familiarityBoost(familiarityOf(game)) : 0);
   return { id: teamId, name: team.shortName, slots, formation, lineup, bench, condition, autoSubs, tactics, autoTactics: !mine, boost };
 }
 

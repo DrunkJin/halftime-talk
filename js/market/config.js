@@ -20,7 +20,15 @@ export const MARKET = {
   // 시작 예산 = base + (선발 평균 OVR - refOvr) × perOvr
   budget: { base: 40, refOvr: 72, perOvr: 9, min: 10 },
 
-  // 판매 구단 요구액 = 가치 × 팀 내 역할 배율 (OVR 순위로 판단)
+  // 이적료의 리그 수준 배율: 같은 OVR이어도 작은 리그 선수는 이적료가 싸다 (발굴의 여지). 주급 요구는 새 리그 기준 그대로
+  leagueFee: {
+    epl: 1.0, laliga: 0.85, 'serie-a': 0.85, bundesliga: 0.85, 'ligue-1': 0.75, 'saudi-pro-league': 0.7,
+    championship: 0.6, eredivisie: 0.6, 'primeira-liga': 0.6, 'belgian-pro-league': 0.55, 'super-lig': 0.6,
+    brasileirao: 0.5, 'liga-profesional': 0.45, 'liga-mx': 0.55, mls: 0.55, 'j1-league': 0.5, 'k-league-1': 0.45, 'k-league-2': 0.4,
+  },
+  defaultLeagueFee: 0.6, // 표에 없는 리그 (게스트 팀 등)
+
+  // 판매 구단 요구액 = 가치 × 리그 수준 배율 × 팀 내 역할 배율 (OVR 순위로 판단)
   asking: { keyUntilRank: 11, key: 1.5, rotationUntilRank: 18, rotation: 1.2, fringe: 1.0 },
   // 제안액 / 요구액 비율: rejectBelow 이하면 거절, certainAbove 이상이면 수락, 사이는 확률
   acceptance: { rejectBelow: 0.85, certainAbove: 1.15 },

@@ -21,6 +21,7 @@ import { resolveSlots } from './formations.js';
 import { autoSelectLineup } from './lineup.js';
 import { computeTeamRatings, conditionFactor, positionFit, positionRating, weightedSkill } from './ratings.js';
 import { createRng, randomSeed } from './rng.js';
+import { aiIdentity, fitScale, matchupFactors, squadProfile } from './tactics.js';
 
 const opponentOf = (side) => (side === 'home' ? 'away' : 'home');
 const clamp = (v, [min, max]) => Math.min(max, Math.max(min, v));
@@ -57,20 +58,37 @@ function initTeam(team, boost) {
     autoSubs: team.autoSubs ?? true,
     tactics: { ...C.TACTICS.defaults, ...team.tactics },
     autoTactics: team.autoTactics ?? true,
+    styleGiven: Boolean(team.tactics?.pressing || team.tactics?.style), // 압박·스타일을 정해 왔으면 AI 성향으로 덮지 않는다
+    profile: null, // 선수 구성 프로필 (tactics.js)
+    mx: null, // 상성 배율
     baseMentality: null, // AI가 경기 전에 정한 멘탈리티 (스코어 조정 후 돌아갈 값)
   };
   recalc(t);
   return t;
 }
 
-// 전술 지시 → 항목별 배율 (세 지시의 곱)
-function tacticFactors(tactics) {
+// 전술 지시 → 항목별 배율 (세 지시의 곱). 압박·스타일의 이득은 선수 구성 적합도만큼 커지거나 줄어든다
+const GAIN_KEYS = new Set(['attack', 'midfield', 'defense', 'attempts', 'bigChance']);
+function tacticFactors(tactics, profile) {
   const f = { attack: 1, midfield: 1, defense: 1, attempts: 1, bigChance: 1, drain: 1, cards: 1 };
   for (const kind of ['mentality', 'pressing', 'style']) {
     const opt = C.TACTICS[kind][tactics[kind]];
-    for (const key of Object.keys(f)) f[key] *= opt[key] ?? 1;
+    const fit = fitScale(profile, kind, tactics[kind]);
+    for (const key of Object.keys(f)) {
+      const v = opt[key] ?? 1;
+      f[key] *= GAIN_KEYS.has(key) && v > 1 ? 1 + (v - 1) * fit : v;
+    }
   }
   return f;
+}
+
+// 두 팀 프로필(지금 경기장 선수)과 전술로 상성 배율을 다시 구하고 레이팅을 갱신한다
+function refreshMatchups(state) {
+  const { home, away } = state.teams;
+  for (const t of [home, away]) t.profile = squadProfile(t.slots, t.lineup);
+  [home.mx, away.mx] = matchupFactors(home, away);
+  recalc(home);
+  recalc(away);
 }
 
 const factorFor = (t) => (p) => conditionFactor(t.condition.get(p.id));
@@ -84,13 +102,17 @@ function recalc(t) {
   const factorOf = factorFor(t);
   const base = computeTeamRatings(t.slots, t.lineup, factorOf);
   const mult = 1 + t.boost;
-  const tf = tacticFactors(t.tactics);
+  const mx = t.mx ?? { attack: 1, midfield: 1, defense: 1, attempts: 1, bigChance: 1, header: 1 };
+  const tf = tacticFactors(t.tactics, t.profile);
+  tf.attempts *= mx.attempts;
+  tf.bigChance *= mx.bigChance;
+  tf.header = mx.header;
   t.tf = tf;
   t.baseRatings = base; // 전술·홈 어드밴티지 반영 전
   t.ratings = {
-    attack: base.attack * mult * tf.attack,
-    midfield: base.midfield * mult * tf.midfield,
-    defense: base.defense * mult * tf.defense,
+    attack: base.attack * mult * tf.attack * mx.attack,
+    midfield: base.midfield * mult * tf.midfield * mx.midfield,
+    defense: base.defense * mult * tf.defense * mx.defense,
     goalkeeping: base.goalkeeping,
   };
 
@@ -151,7 +173,9 @@ export function createMatch({ home, away, homeAdvantage = C.HOME_ADVANTAGE, seed
     penalties: null,
   };
   state.levelRef = levelReference(state.teams);
+  for (const t of Object.values(state.teams)) t.profile = squadProfile(t.slots, t.lineup);
   for (const side of ['home', 'away']) aiPreMatchTactics(state, side);
+  refreshMatchups(state);
   comment(state, 'kickoff', null, { home: home.name, away: away.name });
   return state;
 }
@@ -166,7 +190,7 @@ function levelReference(teams) {
 
 // ── 전술 (AI 감독) ────────────────────────────────────
 
-// 경기 전: 약팀은 수비적, 강팀은 공격적
+// 경기 전: 약팀은 수비적, 강팀은 공격적. 압박·스타일은 선수 구성에 맞는 팀 성향 (정해 온 팀은 그대로)
 function aiPreMatchTactics(state, side) {
   const t = state.teams[side];
   if (!t.autoTactics) return;
@@ -174,7 +198,7 @@ function aiPreMatchTactics(state, side) {
   const A = C.AI_TACTICS;
   t.baseMentality = gap <= -A.underdogGap ? 'defensive' : gap >= A.favoriteGap ? 'attacking' : 'balanced';
   t.tactics.mentality = t.baseMentality;
-  recalc(t);
+  if (!t.styleGiven) Object.assign(t.tactics, aiIdentity(t.profile, gap));
 }
 
 // 경기 중: 지고 있으면 공격적으로, 이기고 있으면 수비적으로, 비기면 경기 전 계획대로
@@ -188,7 +212,7 @@ function aiInGameTactics(state, side) {
   else if (diff > 0) want = A.leading;
   if (want === t.tactics.mentality) return;
   t.tactics.mentality = want;
-  recalc(t);
+  refreshMatchups(state);
   comment(state, 'tactic', side, { change: C.TACTICS.mentality[want].label });
 }
 
@@ -369,6 +393,9 @@ function fatigueSubs(state, side) {
   if (made > 0) recalc(t);
 }
 
+// 슈팅 종류 비중 배율: 결정적 찬스는 압도할수록·전술로, 헤더는 상성(크로스 vs 내려앉기)으로
+const shotTypeFactor = (t, k, ratio) => (k === 'big' ? ratio ** C.BIG_CHANCE_EXP * t.tf.bigChance : k === 'header' ? t.tf.header : 1);
+
 function resolveShot(state, side, ratio) {
   const { rng } = state;
   const att = state.teams[side];
@@ -376,7 +403,7 @@ function resolveShot(state, side, ratio) {
   const stats = state.stats[side];
 
   // 슈팅 종류: 상대를 압도할수록 결정적 찬스(big) 비중이 커진다
-  const typeWeights = SHOT_TYPE_KEYS.map((k) => C.SHOT_TYPES[k].weight * (k === 'big' ? ratio ** C.BIG_CHANCE_EXP * att.tf.bigChance : 1));
+  const typeWeights = SHOT_TYPE_KEYS.map((k) => C.SHOT_TYPES[k].weight * shotTypeFactor(att, k, ratio));
   const typeKey = SHOT_TYPE_KEYS[rng.weightedIndex(typeWeights)];
   const type = C.SHOT_TYPES[typeKey];
 
@@ -470,10 +497,7 @@ export function playMinute(state) {
     if (state.commentary.length > before) event = true;
     drainCondition(teams[s], state.extraTime);
   }
-  if (state.minute % C.CONDITION.recalcEvery === 0) {
-    recalc(teams.home);
-    recalc(teams.away);
-  }
+  if (state.minute % C.CONDITION.recalcEvery === 0) refreshMatchups(state); // 컨디션·교체로 바뀐 프로필까지
 
   // 5) 체력 교체
   const S = C.SUBSTITUTIONS;
@@ -587,7 +611,7 @@ export function setTactics(state, side, partial) {
     changes.push(C.TACTICS[kind][value].label);
   }
   if (changes.length === 0) return { ok: true, message: '바뀐 지시가 없습니다.' };
-  recalc(t);
+  refreshMatchups(state);
   comment(state, 'tactic', side, { change: changes.join(', ') });
   return { ok: true, message: `전술 변경: ${changes.join(', ')}` };
 }
@@ -620,7 +644,7 @@ export function changeFormation(state, side, formationOrSlots) {
   t.slots = slots;
   t.lineup = lineup;
   t.formation = typeof formationOrSlots === 'string' ? formationOrSlots : null;
-  recalc(t);
+  refreshMatchups(state);
   const name = t.formation ?? formationOrSlots.join('-');
   comment(state, 'formation', side, { formation: name });
   return { ok: true, message: `포메이션 변경: ${name}` };
@@ -703,6 +727,79 @@ export function getMatchResult(state) {
     winner: knockoutWinner(state),
     aggregate: state.knockout ? { home: aggregateOf(state, 'home'), away: aggregateOf(state, 'away') } : null,
   };
+}
+
+// ── 경기 전 분석 ───────────────────────────────────────
+// 킥오프 시점 레이팅으로 두 팀의 90분 기대 득점을 계산한다 (경기 중 변화·교체 제외, 엔진과 같은 공식)
+function expectedGoals(state, side) {
+  const att = state.teams[side];
+  const def = state.teams[opponentOf(side)];
+  const mh = att.ratings.midfield ** C.POSSESSION_EXP;
+  const md = def.ratings.midfield ** C.POSSESSION_EXP;
+  const ratio = softRatio(att.ratings.attack / def.ratings.defense);
+  const pAttack = Math.min(C.ATTACK_PROB_MAX, C.ATTACK_BASE * ratio ** C.ATTACK_EXP * att.tf.attempts);
+  const weights = SHOT_TYPE_KEYS.map((k) => C.SHOT_TYPES[k].weight * shotTypeFactor(att, k, ratio));
+  const total = weights.reduce((s, w) => s + w, 0);
+  const gkDiff = def.ratings.goalkeeping - state.levelRef;
+  // 슈팅 한 번의 득점 확률: resolveShot과 같게 슈터 선택 비중 × (유효슈팅 × 득점 전환)
+  let xgPerShot = 0;
+  SHOT_TYPE_KEYS.forEach((k, ti) => {
+    const type = C.SHOT_TYPES[k];
+    const w = att.shooterWeights[k];
+    const wSum = w.reduce((s, v) => s + v, 0);
+    if (!wSum) return;
+    let pk = 0;
+    w.forEach((wi, i) => {
+      if (!wi) return;
+      const skillDiff = att.shooterSkill[k][i] - state.levelRef;
+      const pOn = clamp(type.onTarget * (1 + C.ON_TARGET_SKILL_SLOPE * skillDiff), C.PROB_LIMITS.onTarget);
+      const pGoal = clamp(((type.xg / type.onTarget) * (1 + C.GOAL_SKILL_SLOPE * skillDiff)) / (1 + C.GK_SKILL_SLOPE * gkDiff), C.PROB_LIMITS.goalIfOnTarget);
+      pk += (wi / wSum) * pOn * pGoal;
+    });
+    xgPerShot += (weights[ti] / total) * pk;
+  });
+  return (mh / (mh + md)) * pAttack * C.SHOT_AFTER_ATTACK * xgPerShot * C.MATCH_MINUTES;
+}
+
+// 푸아송 근사로 기대 승점 (side 기준)
+function expectedPoints(lambdaFor, lambdaAgainst) {
+  const pois = (l) => {
+    const p = [Math.exp(-l)];
+    for (let k = 1; k <= 10; k++) p.push((p[k - 1] * l) / k);
+    return p;
+  };
+  const a = pois(lambdaFor);
+  const b = pois(lambdaAgainst);
+  let win = 0;
+  let draw = 0;
+  for (let i = 0; i <= 10; i++) for (let j = 0; j <= 10; j++) (i > j ? (win += a[i] * b[j]) : i === j ? (draw += a[i] * b[j]) : 0);
+  return { win, draw, loss: 1 - win - draw, points: 3 * win + draw };
+}
+
+const PREVIEW_LATE_MINUTE = 75; // 후반 상태를 볼 시점 (교체 전, 체력이 떨어진 때)
+
+// 경기 입력 → 양 팀 전술(AI 성향 포함)·프로필·기대 득점, side 기준 기대 승점
+export function previewMatch(input, side = 'home') {
+  const state = createMatch({ ...input, seed: 'preview' });
+  const early = { home: expectedGoals(state, 'home'), away: expectedGoals(state, 'away') };
+  const ratings = { home: { ...state.teams.home.ratings }, away: { ...state.teams.away.ratings } };
+  // 후반: 지친 정도(압박·체력에 따라 다르다)를 반영한 레이팅으로 한 번 더 — 두 구간 평균
+  for (const t of Object.values(state.teams)) {
+    t.lineup.forEach((p, i) => {
+      if (!p) return;
+      let drain = C.CONDITION.drainPerMinute * t.tf.drain * (1 + C.CONDITION.staminaEffect * (C.SKILL_REF - p.attributes.stamina));
+      if (t.slots[i] === 'GK') drain *= C.CONDITION.gkDrainFactor;
+      t.condition.set(p.id, Math.max(C.CONDITION.min, t.condition.get(p.id) - drain * PREVIEW_LATE_MINUTE));
+    });
+  }
+  refreshMatchups(state);
+  const xg = (s) => (early[s] + expectedGoals(state, s)) / 2;
+  const team = (s) => ({ tactics: { ...state.teams[s].tactics }, profile: state.teams[s].profile, xg: xg(s), ratings: ratings[s] });
+  const home = team('home');
+  const away = team('away');
+  const mine = side === 'home' ? home : away;
+  const opp = side === 'home' ? away : home;
+  return { home, away, outlook: expectedPoints(mine.xg, opp.xg) };
 }
 
 export function simulateMatch(input) {

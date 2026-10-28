@@ -15,7 +15,9 @@ import { conditionMeter, openConfirm, panel, segmented, statusChip } from '../co
 import { h } from '../dom.js';
 import { attrClass, fmt1, shortName } from '../format.js';
 import { formatMoney } from '../../market/value.js';
-import { formationPicker, presetFormationOptions, tacticSummary, tacticsPicker } from '../tactics.js';
+import { formationPicker, presetFormationOptions, tacticLabel, tacticSummary, tacticsPicker } from '../tactics.js';
+import { analysisPanel } from '../analysis.js';
+import { familiarityBoost, familiarityOf } from '../../state/familiarity.js';
 import { answerPost, answerPre, answerTalk, cupTeamTalk, loadMedia, postCupInterview, postInterview, preCupInterview, preInterview, teamTalk } from '../../media/interviews.js';
 import { compOf, cupMatchInput, cupsOf, eventFixtures, firstLegOf, leaguePhaseTable, stageName, userCupFixture } from '../../competitions/cups.js';
 import { STANCES } from '../../media/situations.js';
@@ -204,6 +206,15 @@ function renderPre(ctx, show) {
     ? h('p', { class: 'muted small-note tired-note' }, `컨디션이 떨어진 선발 ${tired.length}명: ${tired.join(', ')}${settingsOf(game).autoRotate ? ' — 킥오프 때 더 나은 후보가 있으면 쉬게 합니다' : ' — 선발 바꾸기에서 쉬게 할 수 있습니다'}`)
     : null;
 
+  // 상대 분석 · 전술 숙련도
+  const analysis = analysisPanel(ctx.game, makeInput, mySide, (t) => {
+    ctx.game.tactics = t;
+    ctx.persist();
+    showToast(`전술 변경: ${tacticSummary(t)}`);
+    show();
+  });
+  const famLine = h('p', { class: 'fam-line' }, ...familiarityLine(game));
+
   const kickoff = h('button', { class: 'btn primary big', type: 'button', disabled: blocked || null }, '킥오프');
   kickoff.addEventListener('click', () => {
     rotateNow();
@@ -310,7 +321,10 @@ function renderPre(ctx, show) {
           tacticsPicker(tacticsOf(game), (t) => {
             ctx.game.tactics = t;
             ctx.persist();
+            famLine.replaceChildren(...familiarityLine(ctx.game));
+            analysis.refresh();
           }),
+          famLine,
         ),
         h(
           'div',
@@ -320,9 +334,22 @@ function renderPre(ctx, show) {
         ),
       ),
     ),
+    panel('상대 분석', analysis.el, { className: 'analysis-panel' }),
     panel('경기 전 기자회견', pressHost, { className: 'press-panel' }),
     h('div', { class: 'pre-grid' }, panel('홈 선발', lineupTable(ctx, home, input.home)), panel('원정 선발', lineupTable(ctx, away, input.away)), panel('같은 라운드', fixtureList(ctx, others))),
   );
+}
+
+// 전술 숙련도 한 줄: 지금 포메이션·공격 방식이 얼마나 손에 익었는지와 경기력 보정
+function familiarityLine(game) {
+  const value = familiarityOf(game);
+  const boost = familiarityBoost(value) * 100;
+  return [
+    h('span', { class: 'muted' }, `전술 숙련도 (${formationLabel(game.formation.cells)} · ${tacticLabel('style', tacticsOf(game).style)}) `),
+    h('span', { class: 'fam-bar', style: { '--v': `${Math.round(value * 100)}%` } }),
+    h('b', {}, ` ${Math.round(value * 100)}%`),
+    h('span', { class: `muted${boost >= 0.05 ? ' up' : boost <= -0.05 ? ' down' : ''}` }, ` · 경기력 ${boost >= 0 ? '+' : ''}${boost.toFixed(1)}%`),
+  ];
 }
 
 // 대륙 대회 경기 전 메모: 2차전이면 1차전 스코어, 리그 페이즈면 현재 순위
@@ -1080,6 +1107,8 @@ function showSeasonSummary(ctx, summary) {
         h('li', {}, h('b', {}, '대륙 대회'), ' ', summary.cup ? `${summary.cup} 진출` : '진출 못 함'),
         line('은퇴', summary.retired),
         line('계약 만료로 떠남', summary.left),
+        line('강등으로 팔려 간 선수', summary.sold),
+        summary.parachute ? h('li', {}, h('b', {}, '낙하산 지원금'), ` ${formatMoney(summary.parachute)}이 잔고에 들어왔습니다.`) : null,
         line('유스 입단', summary.youth),
         line('인원 보강(자동)', summary.signed),
       ),

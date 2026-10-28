@@ -2,6 +2,10 @@
 // 표 형식 [이 나이 이하, 값] 은 나이가 처음으로 맞는 줄을 쓴다
 export const PROGRESSION = {
   // 숨은 잠재력 = 지금 OVR + 여유 × (선수 ID로 정해지는 0~1 값^skew). 나이가 어릴수록 여유가 크다
+  // 강등 팀 정리: 내려간 리그 최강 팀(주전 11명 평균)보다 gap 이상 높은 선수는 chance 확률로 다른 구단에 팔린다 (팀당 최대 maxLeaving명,
+  // 이적료 = 가치 × feeFactor). 대신 낙하산 지원금 = 지난 시즌 수입 × parachute
+  relegation: { gap: 2, chance: 0.7, maxLeaving: 6, feeFactor: 0.7, parachute: 0.25 },
+  scout: { maxAge: 23, minHeadroom: 3, width: 5 }, // 선수 정보 창의 잠재력 범위 표시
   potential: { headroom: [[17, 26], [19, 21], [21, 15], [23, 9], [25, 4], [27, 1], [99, 0]], skew: 1.4 },
   // 성장 (27세 이하): OVR 변화 = (잠재력 - OVR) × 비율 × (기본 + 출전 보너스 × 출전 비중) ± 편차
   growth: { rate: [[18, 0.38], [20, 0.34], [22, 0.28], [24, 0.2], [27, 0.1]], playFloor: 0.45, playBonus: 0.75, noise: 1.0 },

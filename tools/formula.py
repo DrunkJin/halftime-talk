@@ -44,6 +44,8 @@ FORMULA = {
     'transferBaseBlend': 0.5,
 
     'minMinutesForStats': 450,
+    # 처진 공격수 판정 (merge.reclassify_second_strikers): 득점 지표 점수 이하 · 키패스 점수 이상 · 둘의 차 (점수 -1~1, 출전 신뢰도 반영)
+    'secondStriker': {'maxFinishing': 0.05, 'minCreativity': 0.4, 'minGap': 0.6},
     'fullReliabilityMinutes': 1800,
     'apiStatsReliability': 0.8,  # API-Football 기록은 오래된 시즌일 수 있어 신뢰도를 낮춘다
     'perfRange': 6.0,

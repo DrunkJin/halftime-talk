@@ -66,7 +66,7 @@ export const POSSESSION_EXP = 2.2;
 
 // ── 공격 ───────────────────────────────────────────────
 // 점유 1분당 공격 시도 확률 = ATTACK_BASE × (공격 / 상대 수비)^ATTACK_EXP
-export const ATTACK_BASE = 0.365;
+export const ATTACK_BASE = 0.375; // AI 팀 전술 성향 도입 뒤 리그 평균 골 수(2.6~3.0)에 맞춤
 export const ATTACK_EXP = 1.5;
 export const ATTACK_PROB_MAX = 0.75;
 // 큰 전력 차 완화: (공격 / 상대 수비) 비가 knee를 넘으면 넘는 만큼을 slope 배로 줄인다 (약한 쪽도 대칭).
@@ -100,6 +100,46 @@ export const TACTICS = {
     direct: { label: '직선적', midfield: 0.95, attempts: 1.1, bigChance: 0.9, defense: 1.03 }, // 빨리 전방으로: 슈팅은 많지만 점유를 내준다. 후방 실수는 적다
   },
 };
+
+// ── 선수 구성 프로필 · 전술 적합도 · 상성 ────────────────────
+// 팀 프로필: 경기장 선수의 능력치로 만든 6개 성향. 팀 자신의 평균과 비교해 강점·약점을 본다
+//   energy 활동량(압박) · technique 후방 빌드업 기술 · speed 공격진 속도 · backPace 수비진 속도 · aerial 크로스·제공권 · shape 수비 조직
+// 프로필 차이는 10점을 1단위로 쓰고 ±maxUnits로 자른다
+export const PROFILE = { unit: 10, maxUnits: 1.5 };
+
+// 전술 적합도: 선택지의 이득(1보다 큰 배율)이 우리 선수 성향에 따라 커지거나 줄어든다.
+// 이득 배율 = 1 + (원래 이득) × (1 + scale × 성향 단위). 대가(1보다 작은 배율·체력·카드)는 그대로
+export const TACTIC_FIT = {
+  scale: 1.0,
+  pressing: { high: ['energy'], low: ['shape'] },
+  style: { short: ['technique'], direct: ['speed', 'aerial'] },
+};
+
+// 상성: 두 팀 전술과 성향이 맞물릴 때 생기는 효과 (값은 1단위당 배율 증감)
+export const MATCHUPS = {
+  // 역습: 내려앉기·직선적 팀이 공격적 멘탈리티·강한 압박 팀의 뒷공간을 노린다. 우리 공격진 속도 vs 상대 수비진 속도
+  counter: {
+    exposure: { mentality: { attacking: 1, veryAttacking: 1.5 }, pressing: { high: 1 } }, // 상대가 뒷공간을 내주는 정도
+    bigChance: 0.3, attempts: 0.07, paceWeight: 0.5, // 속도 차 1단위마다 효과 ±50%
+  },
+  // 압박 vs 빌드업: 강한 압박 팀 활동량 vs 짧은 패스(혼합은 절반) 팀 후방 기술.
+  // 압박이 이기면 상대 중원이 흔들리고 우리 결정적 찬스가 늘고, 지면 압박이 뚫려 상대 결정적 찬스가 는다
+  press: { styleWeight: { short: 1, mixed: 0.5, direct: 0 }, oppMidfield: 0.08, bigChance: 0.24, oppBigChanceIfBeaten: 0.2, defenseIfBeaten: 0.04 },
+  // 수비 블록 vs 점유: 내려앉은 팀이 짧은 패스 팀의 슈팅 기회를 줄인다 (수비 조직이 좋을수록)
+  lowBlock: { oppAttempts: 0.14, oppBigChance: 0.18, shapeWeight: 0.5 },
+  // 측면·직선 공격 vs 내려앉은 팀: 크로스·제공권으로 블록을 넘는다
+  crossing: { attempts: 0.12, header: 0.55, aerialWeight: 0.5 },
+  limits: [0.7, 1.6], // 한 항목 배율의 범위
+};
+
+// AI 팀 전술 성향: 선수 구성에서 가장 잘 맞는 압박·스타일을 고른다 (성향이 이 단위 이상 두드러질 때)
+//   전력 차가 크면 강팀은 짧은 패스 쪽으로 기운다. 약팀이 상대에 맞춰 내려앉아 역습하는 건 AI가 알아서 하지 않는다
+//   (선수 구성이 맞는 팀만) — 상대를 분석해 상성을 노리는 것이 사용자 감독의 무기
+export const AI_IDENTITY = { threshold: 0.5, favoriteStyle: 'short', underdogPressing: null };
+
+// 전술 숙련도: 같은 포메이션·압박·스타일로 경기할수록 손발이 맞는다 (사용자 팀). AI 팀은 aiLevel 수준으로 본다
+//   경기 레이팅 배율 = max × (숙련도 - aiLevel) / (1 - aiLevel) (aiLevel 아래면 같은 비율로 손해, 최저 -max/2)
+export const FAMILIARITY = { max: 0.04, aiLevel: 0.5, start: 0.5, gain: 0.15, decay: 0.85 };
 
 // AI 감독 전술: 경기 전 전력 차(필드 레이팅 평균 차)로 멘탈리티, fromMinute 이후 스코어로 조정
 export const AI_TACTICS = {
@@ -229,7 +269,7 @@ export const QUIET_MINUTE_COMMENT = 0.2;
 // 사기 = 50 + 최근 경기 흐름 + (사용자 팀만) 인터뷰·팀 토크로 쌓인 보정
 export const MORALE = {
   neutral: 50,
-  maxBoost: 0.03,
+  maxBoost: 0.05, // 사기 100이면 +5%, 0이면 -5% (인터뷰·팀 토크·연승 관리가 경기력에 닿도록)
   form: { matches: 5, perPoint: 4 }, // (최근 5경기 승점 - 경기당 1.5) × 4 → 최대 ±30
   adjustDecay: 0.7, // 보정은 라운드마다 이 비율만 남는다
   adjustLimit: 25,

@@ -7,6 +7,8 @@ import { overall } from '../engine/ratings.js';
 import { createRng } from '../engine/rng.js';
 import { generateFixtures, roundCount } from '../league/fixtures.js';
 import { contractOf, demandedContract, initSeasonFinances, renewalTerms, signContract, wageRoom } from '../market/finance.js';
+import { canAiBuy, transferPlayer } from '../market/market.js';
+import { playerValue, topElevenOvr } from '../market/value.js';
 import { PROGRESSION, lookup } from '../progression/config.js';
 import { currentTeamId, fixLineup, invalidateSquads, leagueTotalRounds, squadOf } from './game.js';
 import { recordSeason } from './history.js';
@@ -78,14 +80,55 @@ function qualify(dataset, rec) {
   return dataset.competitions.map((c) => ({ ...c, teamIds: entrants[c.id] }));
 }
 
+// ── 강등 팀 정리 ──────────────────────────────────────
+// 내려간 리그 수준을 크게 넘는 선수 일부가 위 리그 등 다른 구단으로 팔리고, 강등 팀은 낙하산 지원금을 받는다
+function relegationExodus(ds, game, rng, upperId, down, lowerId, summary) {
+  const R = P.relegation;
+  const lowerTeams = game.world.leagueTeams[lowerId].filter((id) => !down.includes(id));
+  const bar = Math.max(...lowerTeams.map((id) => topElevenOvr(squadOf(ds, game, id)))) + R.gap;
+  // 살 수 있는 구단: 떠난 리그의 남은 팀부터, 그다음 다른 리그 — 잔고 많은 순
+  const buyers = ds.allTeams
+    .filter((t) => !down.includes(t.id) && t.id !== game.teamId)
+    .sort((a, b) => (b.leagueId === upperId) - (a.leagueId === upperId) || (game.budgets[b.id] ?? 0) - (game.budgets[a.id] ?? 0));
+  for (const teamId of down) {
+    const stars = squadOf(ds, game, teamId)
+      .filter((p) => overall(p) >= bar)
+      .sort((a, b) => overall(b) - overall(a));
+    let gone = 0;
+    for (const p of stars) {
+      if (gone >= R.maxLeaving) break;
+      if (rng.next() >= R.chance) continue;
+      const fee = Math.round(playerValue(p) * R.feeFactor * 10) / 10;
+      const to = buyers.find((t) => canAiBuy(ds, game, t.id, p, fee));
+      if (!to) continue;
+      transferPlayer(ds, game, p.id, to.id, fee, { contract: demandedContract(ds, game, p, to.id), by: 'relegation' });
+      invalidateSquads(game);
+      gone++;
+      if (teamId === game.teamId) summary.sold.push(`${p.name} → ${to.shortName}`);
+    }
+    const parachute = Math.round((game.finances?.[teamId]?.revenue ?? 0) * R.parachute * 10) / 10;
+    if (game.budgets[teamId] != null) game.budgets[teamId] = Math.round((game.budgets[teamId] + parachute) * 10) / 10;
+    if (teamId === game.teamId) summary.parachute = parachute;
+  }
+}
+
 // ── 성장·노화 ─────────────────────────────────────────
 
 function potentialOf(w, p, ovr) {
-  if (w.potential[p.id] == null) {
-    const u = createRng(`pot:${p.id}`).next() ** P.potential.skew;
-    w.potential[p.id] = Math.round(ovr + lookup(P.potential.headroom, p.age) * u);
-  }
+  if (w.potential[p.id] == null) w.potential[p.id] = freshPotential(p, ovr);
   return w.potential[p.id];
+}
+
+const freshPotential = (p, ovr) => Math.round(ovr + lookup(P.potential.headroom, p.age) * createRng(`pot:${p.id}`).next() ** P.potential.skew);
+
+// 스카우트 리포트: 젊은 선수(scout.maxAge 이하)의 잠재력을 범위로 (정확한 값은 감춘다). 더 클 여지가 없으면 null
+export function scoutedPotential(game, p, ovr) {
+  if (p.age > P.scout.maxAge) return null;
+  const pot = Math.max(ovr, game.world?.potential?.[p.id] ?? freshPotential(p, ovr));
+  if (pot - ovr < P.scout.minHeadroom) return null;
+  const below = Math.floor(createRng(`scout:${p.id}`).next() * (P.scout.width + 1));
+  const low = Math.max(ovr, pot - below);
+  return { low, high: low + P.scout.width };
 }
 
 // 한 시즌 OVR 변화량
@@ -186,7 +229,7 @@ export function startNextSeason(base, game, { renew = null } = {}) {
     retired: [],
     potential: {},
   });
-  const summary = { retired: [], left: [], youth: [], signed: [], promoted: [], relegated: [], cup: null, newLeague: null };
+  const summary = { retired: [], left: [], sold: [], youth: [], signed: [], promoted: [], relegated: [], cup: null, newLeague: null };
   const mine = (id) => currentTeamId(ds0, game, id) === game.teamId;
   const isGuest = (id) => ds0.isGuest(currentTeamId(ds0, game, id));
 
@@ -268,6 +311,7 @@ export function startNextSeason(base, game, { renew = null } = {}) {
     w.leagueTeams[lower] = [...w.leagueTeams[lower].filter((id) => !up.includes(id)), ...down];
     if (down.includes(game.teamId)) summary.relegated.push(game.teamId);
     if (up.includes(game.teamId)) summary.promoted.push(game.teamId);
+    relegationExodus(ds0, game, rng, league.id, down, lower, summary);
   }
 
   // 6) 유스: 팀마다 2~3명
