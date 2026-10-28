@@ -1,6 +1,7 @@
 // 기록: 시즌 결산(우리 팀 · 리그별 · 대륙 대회)과 커리어 종합표
 import { stageName } from '../../competitions/cups.js';
 import { formatMoney } from '../../market/value.js';
+import { isSeasonOver } from '../../state/game.js';
 import { careerTotals } from '../../state/history.js';
 import { teamBadge } from '../badge.js';
 import { panel, segmented } from '../components.js';
@@ -84,21 +85,25 @@ function seasonView(ctx, rec) {
     ? panel(
         '대륙 대회',
         h(
-          'table',
-          { class: 'data compact history-table' },
-          h('thead', {}, h('tr', {}, h('th', {}, '대회'), h('th', {}, '우승'), h('th', {}, '준우승'), h('th', {}, '4강'), h('th', {}, '득점왕'))),
+          'div',
+          { class: 'table-scroll' },
           h(
-            'tbody',
-            {},
-            rec.cups.map((c) =>
-              h(
-                'tr',
-                {},
-                h('td', {}, cupShort(c.name)),
-                h('td', {}, h('span', { class: 'team-cell' }, badge(ctx, c.winnerId), h('b', {}, c.winnerName ?? '—'))),
-                h('td', {}, h('span', { class: 'team-cell' }, badge(ctx, c.runnerUpId), h('span', {}, c.runnerUpName ?? '—'))),
-                h('td', { class: 'muted' }, c.semifinalists.map((s) => s.name).join(', ') || '—'),
-                h('td', {}, scorerText(c.topScorer)),
+            'table',
+            { class: 'data compact history-table' },
+            h('thead', {}, h('tr', {}, h('th', {}, '대회'), h('th', {}, '우승'), h('th', {}, '준우승'), h('th', {}, '4강'), h('th', {}, '득점왕'))),
+            h(
+              'tbody',
+              {},
+              rec.cups.map((c) =>
+                h(
+                  'tr',
+                  {},
+                  h('td', {}, cupShort(c.name)),
+                  h('td', {}, h('span', { class: 'team-cell' }, badge(ctx, c.winnerId), h('b', {}, c.winnerName ?? '—'))),
+                  h('td', {}, h('span', { class: 'team-cell' }, badge(ctx, c.runnerUpId), h('span', {}, c.runnerUpName ?? '—'))),
+                  h('td', { class: 'muted' }, c.semifinalists.map((s) => s.name).join(', ') || '—'),
+                  h('td', {}, scorerText(c.topScorer)),
+                ),
               ),
             ),
           ),
@@ -174,6 +179,15 @@ function careerView(ctx, history, finished) {
   );
 }
 
+// 시즌이 끝났고 다음 시즌이 남아 있으면: 다음 시즌 준비(경기 탭)로 가는 길
+function nextSeasonCta(ctx) {
+  const { game } = ctx;
+  if (!isSeasonOver(game) || game.seasonIndex >= game.years) return null;
+  const go = h('button', { class: 'btn primary', type: 'button' }, '다음 시즌 준비');
+  go.addEventListener('click', () => ctx.navigate('match'));
+  return h('div', { class: 'next-cta' }, h('span', {}, `${game.seasonIndex}시즌이 끝났습니다. 재계약할 선수를 고르고 ${game.seasonIndex + 1}시즌을 시작하세요.`), go);
+}
+
 export function render(ctx) {
   const { game } = ctx;
   const history = game.history ?? [];
@@ -187,7 +201,7 @@ export function render(ctx) {
       viewSeason = Number(id);
       fill();
     });
-    host.replaceChildren(careerView(ctx, history, finished), h('div', { class: 'cups-head' }, h('b', {}, '시즌 결산'), tabs.el), ...seasonView(ctx, rec));
+    host.replaceChildren(nextSeasonCta(ctx), careerView(ctx, history, finished), h('div', { class: 'cups-head' }, h('b', {}, '시즌 결산'), tabs.el), ...seasonView(ctx, rec));
   };
   fill();
   return host;

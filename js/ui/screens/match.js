@@ -986,6 +986,14 @@ function renderSeasonOver(ctx, show) {
   toTable.addEventListener('click', () => ctx.navigate('table'));
   const toHistory = h('button', { class: 'btn primary', type: 'button' }, game.seasonIndex >= game.years ? '커리어 종합 보기' : '시즌 결산 보기');
   toHistory.addEventListener('click', () => ctx.navigate('history'));
+  // 정한 기간을 다 채웠어도 한 시즌씩 더 이어갈 수 있다
+  const extend = h('button', { class: 'btn ghost', type: 'button' }, '한 시즌 더 하기');
+  extend.addEventListener('click', () => {
+    ctx.game.years += 1;
+    ctx.persist();
+    ctx.refreshTopbar?.();
+    show();
+  });
   const trophies = game.history?.find((r) => r.seasonIndex === game.seasonIndex)?.trophies ?? [];
   const over = panel(
     `${game.season} 시즌 종료`,
@@ -997,7 +1005,7 @@ function renderSeasonOver(ctx, show) {
       h('p', {}, `${teamOf(ctx, game.teamId).name} 최종 ${mine.position}위 · 승점 ${mine.points} (${mine.won}승 ${mine.drawn}무 ${mine.lost}패)`),
       trophies.length ? h('p', { class: 'trophy-row' }, trophies.map((t) => h('span', { class: 'trophy' }, '🏆 ', t.name))) : null,
       h('p', { class: 'muted' }, game.seasonIndex < game.years ? `게임 기간 ${game.years}시즌 중 ${game.seasonIndex}시즌을 마쳤습니다.` : `${game.years}시즌 게임을 모두 마쳤습니다.`),
-      h('div', { class: 'btn-row' }, toTable, toHistory),
+      h('div', { class: 'btn-row' }, toTable, toHistory, game.seasonIndex >= game.years ? extend : null),
     ),
   );
   return game.seasonIndex < game.years ? h('div', { class: 'season-over-wrap' }, over, nextSeasonPanel(ctx, show)) : over;

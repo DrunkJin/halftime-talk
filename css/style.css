@@ -889,10 +889,12 @@ button { font: inherit; color: inherit; }
 .career h3 { padding: 0 12px; color: var(--muted); font-size: 11px; letter-spacing: 0.08em; }
 .career-final { border-color: rgba(255, 209, 102, 0.45); }
 .tr-stat small { display: block; font-size: 11px; }
-.season-over-wrap { display: grid; gap: 12px; }
-.next-season { display: grid; gap: 10px; padding: 4px 12px 12px; }
+.season-over-wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+/* 열을 화면 폭에 묶는다: 계약 만료 표가 넓어도 표만 가로 스크롤되고 '시즌 시작' 버튼은 화면 안에 남는다 */
+.next-season { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 4px 12px 12px; }
 .next-season h3 { font-size: 12px; color: var(--muted); }
 .season-summary { width: min(620px, 100%); }
+.next-cta { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 12px 14px; border: 1px solid var(--accent); border-radius: var(--radius); background: var(--panel); font-size: 13px; }
 .summary-list { display: grid; gap: 8px; padding-left: 18px; font-size: 13px; line-height: 1.5; }
 .expiry-note { text-align: center; color: var(--warn); }
 
