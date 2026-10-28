@@ -1,0 +1,2275 @@
+{
+  "schemaVersion": 1,
+  "rivalries": [
+    {
+      "teams": [
+        "arsenal",
+        "tottenham-hotspur"
+      ],
+      "name": "북런던 더비",
+      "nameEn": "North London derby",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "liverpool",
+        "everton"
+      ],
+      "name": "머지사이드 더비",
+      "nameEn": "Merseyside derby",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "manchester-city",
+        "manchester-united"
+      ],
+      "name": "맨체스터 더비",
+      "nameEn": "Manchester derby",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "liverpool",
+        "manchester-united"
+      ],
+      "name": "노스웨스트 더비",
+      "nameEn": "North West derby",
+      "intensity": 3,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "newcastle-united",
+        "sunderland"
+      ],
+      "name": "타인-위어 더비",
+      "nameEn": "Tyne–Wear derby",
+      "intensity": 3,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "arsenal",
+        "chelsea"
+      ],
+      "name": "아스널–첼시 라이벌전",
+      "nameEn": "Arsenal–Chelsea rivalry",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "chelsea",
+        "tottenham-hotspur"
+      ],
+      "name": "첼시–토트넘 라이벌전",
+      "nameEn": "Chelsea–Tottenham rivalry",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "arsenal",
+        "manchester-united"
+      ],
+      "name": "아스널–맨유 라이벌전",
+      "nameEn": "Arsenal–Manchester United rivalry",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "leeds-united",
+        "manchester-united"
+      ],
+      "name": "로즈 라이벌리",
+      "nameEn": "Roses rivalry",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "chelsea",
+        "leeds-united"
+      ],
+      "name": "첼시–리즈 라이벌전",
+      "nameEn": "Chelsea–Leeds United rivalry",
+      "intensity": 1,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "tottenham-hotspur",
+        "west-ham-united"
+      ],
+      "name": "토트넘–웨스트햄 라이벌전",
+      "nameEn": "Tottenham–West Ham rivalry",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "arsenal",
+        "west-ham-united"
+      ],
+      "name": "아스널–웨스트햄 라이벌전",
+      "nameEn": "Arsenal–West Ham rivalry",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "chelsea",
+        "west-ham-united"
+      ],
+      "name": "첼시–웨스트햄 라이벌전",
+      "nameEn": "Chelsea–West Ham rivalry",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "chelsea",
+        "fulham"
+      ],
+      "name": "서런던 더비",
+      "nameEn": "West London derby",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "fulham",
+        "brentford"
+      ],
+      "name": "서런던 더비",
+      "nameEn": "West London derby",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "brentford",
+        "queens-park-rangers"
+      ],
+      "name": "서런던 더비",
+      "nameEn": "West London derby",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "fulham",
+        "queens-park-rangers"
+      ],
+      "name": "서런던 더비",
+      "nameEn": "West London derby",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "brighton-hove-albion",
+        "crystal-palace"
+      ],
+      "name": "M23 더비",
+      "nameEn": "M23 derby",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "southampton",
+        "portsmouth"
+      ],
+      "name": "사우스코스트 더비",
+      "nameEn": "South Coast derby",
+      "intensity": 3,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "bournemouth",
+        "southampton"
+      ],
+      "name": "햄프셔–도싯 더비",
+      "nameEn": "Hampshire–Dorset derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "ipswich-town",
+        "norwich-city"
+      ],
+      "name": "이스트앵글리아 더비",
+      "nameEn": "East Anglian derby",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "aston-villa",
+        "birmingham-city"
+      ],
+      "name": "세컨드 시티 더비",
+      "nameEn": "Second City derby",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "wolverhampton-wanderers",
+        "west-bromwich-albion"
+      ],
+      "name": "블랙컨트리 더비",
+      "nameEn": "Black Country derby",
+      "intensity": 3,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "nottingham-forest",
+        "derby-county"
+      ],
+      "name": "이스트미들랜즈 더비",
+      "nameEn": "East Midlands derby",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "cardiff-city",
+        "swansea-city"
+      ],
+      "name": "사우스웨일스 더비",
+      "nameEn": "South Wales derby",
+      "intensity": 3,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "bristol-city",
+        "cardiff-city"
+      ],
+      "name": "세번사이드 더비",
+      "nameEn": "Severnside derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "millwall",
+        "west-ham-united"
+      ],
+      "name": "도커스 더비",
+      "nameEn": "Dockers derby",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "charlton-athletic",
+        "millwall"
+      ],
+      "name": "사우스런던 더비",
+      "nameEn": "South London derby",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "charlton-athletic",
+        "crystal-palace"
+      ],
+      "name": "사우스런던 더비",
+      "nameEn": "South London derby",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "burnley",
+        "blackburn-rovers"
+      ],
+      "name": "이스트랭커셔 더비",
+      "nameEn": "East Lancashire derby",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "middlesbrough",
+        "sunderland"
+      ],
+      "name": "티스-위어 더비",
+      "nameEn": "Tees–Wear derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "middlesbrough",
+        "newcastle-united"
+      ],
+      "name": "티스-타인 더비",
+      "nameEn": "Tees–Tyne derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "leeds-united",
+        "sheffield-united"
+      ],
+      "name": "요크셔 더비",
+      "nameEn": "Yorkshire derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "real-madrid",
+        "barcelona"
+      ],
+      "name": "엘 클라시코",
+      "nameEn": "El Clásico",
+      "intensity": 3,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "real-madrid",
+        "club-atletico-de-madrid"
+      ],
+      "name": "마드리드 더비",
+      "nameEn": "El Derbi madrileño",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "sevilla",
+        "real-betis-balompie"
+      ],
+      "name": "세비야 더비",
+      "nameEn": "El Gran Derbi",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "barcelona",
+        "rcd-espanyol-de-barcelona"
+      ],
+      "name": "바르셀로나 더비",
+      "nameEn": "Derbi barceloní",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "athletic-club",
+        "real-sociedad-de-futbol"
+      ],
+      "name": "바스크 더비",
+      "nameEn": "Derbi vasco",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "athletic-club",
+        "deportivo-alaves"
+      ],
+      "name": "바스크 더비",
+      "nameEn": "Derbi vasco",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "real-sociedad-de-futbol",
+        "deportivo-alaves"
+      ],
+      "name": "바스크 더비",
+      "nameEn": "Derbi vasco",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "celta-de-vigo",
+        "deportivo-la-coruna"
+      ],
+      "name": "갈리시아 더비",
+      "nameEn": "Derbi gallego",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "valencia",
+        "levante-ud"
+      ],
+      "name": "발렌시아 더비",
+      "nameEn": "Derbi valenciano",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "valencia",
+        "villarreal"
+      ],
+      "name": "발렌시아 지방 더비",
+      "nameEn": "Derbi de la Comunitat",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "internazionale-milano",
+        "milan"
+      ],
+      "name": "밀라노 더비",
+      "nameEn": "Derby della Madonnina",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "internazionale-milano",
+        "juventus"
+      ],
+      "name": "이탈리아 더비",
+      "nameEn": "Derby d'Italia",
+      "intensity": 3,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "roma",
+        "ss-lazio"
+      ],
+      "name": "로마 더비",
+      "nameEn": "Derby della Capitale",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "juventus",
+        "torino"
+      ],
+      "name": "토리노 더비",
+      "nameEn": "Derby della Mole",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "juventus",
+        "milan"
+      ],
+      "name": "유벤투스–밀란 라이벌전",
+      "nameEn": "Juventus–Milan rivalry",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "juventus",
+        "acf-fiorentina"
+      ],
+      "name": "유벤투스–피오렌티나 라이벌전",
+      "nameEn": "Fiorentina–Juventus rivalry",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "juventus",
+        "napoli"
+      ],
+      "name": "유벤투스–나폴리 라이벌전",
+      "nameEn": "Juventus–Napoli rivalry",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "napoli",
+        "roma"
+      ],
+      "name": "태양의 더비",
+      "nameEn": "Derby del Sole",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "bologna-fc-1909",
+        "acf-fiorentina"
+      ],
+      "name": "아펜니노 더비",
+      "nameEn": "Derby dell'Appennino",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "bologna-fc-1909",
+        "parma-calcio-1913"
+      ],
+      "name": "에밀리아 더비",
+      "nameEn": "Derby dell'Emilia",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "bayern-munchen",
+        "borussia-dortmund"
+      ],
+      "name": "데어 클라시커",
+      "nameEn": "Der Klassiker",
+      "intensity": 3,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "borussia-dortmund",
+        "schalke-04"
+      ],
+      "name": "레비어 더비",
+      "nameEn": "Revierderby",
+      "intensity": 3,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "hamburger-sv",
+        "werder-bremen"
+      ],
+      "name": "북부 더비",
+      "nameEn": "Nordderby",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "koln",
+        "borussia-monchengladbach"
+      ],
+      "name": "라인 더비",
+      "nameEn": "Rheinderby",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "koln",
+        "bayer-04-leverkusen"
+      ],
+      "name": "라인 더비",
+      "nameEn": "Rheinderby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "1-fsv-mainz-05",
+        "eintracht-frankfurt"
+      ],
+      "name": "라인-마인 더비",
+      "nameEn": "Rhein-Main-Derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "freiburg",
+        "stuttgart"
+      ],
+      "name": "바덴뷔르템베르크 더비",
+      "nameEn": "Baden-Württemberg-Derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "bayern-munchen",
+        "borussia-monchengladbach"
+      ],
+      "name": "바이에른–묀헨글라트바흐 라이벌전",
+      "nameEn": "Bayern–Gladbach rivalry",
+      "intensity": 1,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "paris-saint-germain",
+        "olympique-de-marseille"
+      ],
+      "name": "르 클라시크",
+      "nameEn": "Le Classique",
+      "intensity": 3,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "olympique-lyonnais",
+        "olympique-de-marseille"
+      ],
+      "name": "올랭피크 더비",
+      "nameEn": "Choc des Olympiques",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "lille-osc",
+        "racing-club-de-lens"
+      ],
+      "name": "북부 더비",
+      "nameEn": "Derby du Nord",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "ogc-nice",
+        "monaco"
+      ],
+      "name": "코트다쥐르 더비",
+      "nameEn": "Derby de la Côte d'Azur",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "stade-rennais-fc-1901",
+        "stade-brestois-29"
+      ],
+      "name": "브르타뉴 더비",
+      "nameEn": "Derby breton",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "stade-rennais-fc-1901",
+        "lorient"
+      ],
+      "name": "브르타뉴 더비",
+      "nameEn": "Derby breton",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "stade-brestois-29",
+        "lorient"
+      ],
+      "name": "브르타뉴 더비",
+      "nameEn": "Derby breton",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "paris-saint-germain",
+        "paris"
+      ],
+      "name": "파리 더비",
+      "nameEn": "Derby parisien",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "ajax",
+        "feyenoord-rotterdam"
+      ],
+      "name": "데 클라시커",
+      "nameEn": "De Klassieker",
+      "intensity": 3,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "ajax",
+        "psv"
+      ],
+      "name": "데 토퍼",
+      "nameEn": "De Topper",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "feyenoord-rotterdam",
+        "psv"
+      ],
+      "name": "페예노르트–PSV 라이벌전",
+      "nameEn": "Feyenoord–PSV rivalry",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "feyenoord-rotterdam",
+        "sparta-rotterdam"
+      ],
+      "name": "로테르담 더비",
+      "nameEn": "Rotterdamse derby",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "feyenoord-rotterdam",
+        "sbv-excelsior"
+      ],
+      "name": "로테르담 더비",
+      "nameEn": "Rotterdamse derby",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "sparta-rotterdam",
+        "sbv-excelsior"
+      ],
+      "name": "로테르담 더비",
+      "nameEn": "Rotterdamse derby",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "groningen",
+        "heerenveen"
+      ],
+      "name": "북부 더비",
+      "nameEn": "Derby van het Noorden",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "heerenveen",
+        "cambuur-leeuwarden"
+      ],
+      "name": "프리슬란트 더비",
+      "nameEn": "Friese derby",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "ajax",
+        "az"
+      ],
+      "name": "노르트홀란트 더비",
+      "nameEn": "Noord-Hollandse derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "az",
+        "telstar-1963"
+      ],
+      "name": "노르트홀란트 더비",
+      "nameEn": "Noord-Hollandse derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "ajax",
+        "utrecht"
+      ],
+      "name": "아약스–위트레흐트 라이벌전",
+      "nameEn": "Ajax–Utrecht rivalry",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "ajax",
+        "ado-den-haag"
+      ],
+      "name": "아약스–덴하흐 라이벌전",
+      "nameEn": "Hofstad vs. Hoofdstad",
+      "intensity": 1,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "feyenoord-rotterdam",
+        "ado-den-haag"
+      ],
+      "name": "자위트홀란트 더비",
+      "nameEn": "Zuid-Hollandse derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "pec-zwolle",
+        "go-ahead-eagles"
+      ],
+      "name": "에이설 더비",
+      "nameEn": "IJsselderby",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "pec-zwolle",
+        "twente-65"
+      ],
+      "name": "오버레이설 더비",
+      "nameEn": "Overijsselse derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "twente-65",
+        "go-ahead-eagles"
+      ],
+      "name": "동부 더비",
+      "nameEn": "Derby van het Oosten",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "sport-lisboa-e-benfica",
+        "porto"
+      ],
+      "name": "오 클라시코",
+      "nameEn": "O Clássico",
+      "intensity": 3,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "sport-lisboa-e-benfica",
+        "sporting-clube-de-portugal"
+      ],
+      "name": "리스본 더비",
+      "nameEn": "Dérbi de Lisboa",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "porto",
+        "sporting-clube-de-portugal"
+      ],
+      "name": "포르투–스포르팅 클라시코",
+      "nameEn": "Clássico (Porto–Sporting)",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "vitoria",
+        "sporting-clube-de-braga"
+      ],
+      "name": "미뉴 더비",
+      "nameEn": "Dérbi do Minho",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "cs-maritimo",
+        "cd-nacional"
+      ],
+      "name": "마데이라 더비",
+      "nameEn": "Dérbi da Madeira",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "anderlecht",
+        "standard-liege"
+      ],
+      "name": "벨기에 클라시코",
+      "nameEn": "Le Classique",
+      "intensity": 3,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "anderlecht",
+        "club-brugge-kv"
+      ],
+      "name": "더 토퍼",
+      "nameEn": "De Topper",
+      "intensity": 3,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "club-brugge-kv",
+        "gent"
+      ],
+      "name": "플랑드르 더비",
+      "nameEn": "Battle of Flanders",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "standard-liege",
+        "charleroi"
+      ],
+      "name": "왈롱 더비",
+      "nameEn": "Choc wallon",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "club-brugge-kv",
+        "cercle-brugge"
+      ],
+      "name": "브뤼헤 더비",
+      "nameEn": "Brugse derby",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "anderlecht",
+        "union-st-gilloise"
+      ],
+      "name": "브뤼셀 더비",
+      "nameEn": "Brussels derby",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "genk",
+        "st-truiden"
+      ],
+      "name": "림뷔르흐 더비",
+      "nameEn": "Limburgse derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "zulte-waregem",
+        "kortrijk"
+      ],
+      "name": "남서플랑드르 더비",
+      "nameEn": "South West Flanders derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "kv-mechelen",
+        "oh-leuven"
+      ],
+      "name": "데일 더비",
+      "nameEn": "Dijlederby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "charleroi",
+        "raal-la-louviere"
+      ],
+      "name": "에노 더비",
+      "nameEn": "Derby du Hainaut",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "fenerbahce",
+        "galatasaray"
+      ],
+      "name": "대륙 간 더비",
+      "nameEn": "Kıtalararası Derbi (Intercontinental derby)",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "besiktas",
+        "fenerbahce"
+      ],
+      "name": "베식타시–페네르바흐체 더비",
+      "nameEn": "Beşiktaş–Fenerbahçe derby",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "besiktas",
+        "galatasaray"
+      ],
+      "name": "베식타시–갈라타사라이 더비",
+      "nameEn": "Beşiktaş–Galatasaray derby",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "trabzonspor",
+        "fenerbahce"
+      ],
+      "name": "트라브존스포르–페네르바흐체 라이벌전",
+      "nameEn": "Trabzonspor–Fenerbahçe rivalry",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "trabzonspor",
+        "galatasaray"
+      ],
+      "name": "트라브존스포르–갈라타사라이 라이벌전",
+      "nameEn": "Trabzonspor–Galatasaray rivalry",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "trabzonspor",
+        "besiktas"
+      ],
+      "name": "트라브존스포르–베식타시 라이벌전",
+      "nameEn": "Trabzonspor–Beşiktaş rivalry",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "galatasaray",
+        "kas-mpasa"
+      ],
+      "name": "베이올루 더비",
+      "nameEn": "Beyoğlu derby",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "trabzonspor",
+        "samsunspor"
+      ],
+      "name": "흑해 더비",
+      "nameEn": "Karadeniz derbisi (Old derby)",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "trabzonspor",
+        "rizespor"
+      ],
+      "name": "동부 흑해 더비",
+      "nameEn": "Doğu Karadeniz derbisi",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "fc-seoul",
+        "suwon-samsung-bluewings"
+      ],
+      "name": "슈퍼매치",
+      "nameEn": "Super Match",
+      "intensity": 3,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "ulsan-hd",
+        "pohang-steelers"
+      ],
+      "name": "동해안 더비",
+      "nameEn": "Donghaean derby",
+      "intensity": 3,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "ulsan-hd",
+        "jeonbuk-hyundai-motors"
+      ],
+      "name": "현대가 더비",
+      "nameEn": "Hyundai derby",
+      "intensity": 3,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "fc-seoul",
+        "incheon-united"
+      ],
+      "name": "경인 더비",
+      "nameEn": "Gyeongin derby",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "suwon-samsung-bluewings",
+        "suwon-fc"
+      ],
+      "name": "수원 더비",
+      "nameEn": "Suwon derby",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "fc-seoul",
+        "fc-anyang"
+      ],
+      "name": "연고이전 더비",
+      "nameEn": "Relocation derby",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "bucheon-fc-1995",
+        "jeju-sk"
+      ],
+      "name": "연고이전 더비",
+      "nameEn": "Relocation derby",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "pohang-steelers",
+        "jeonnam-dragons"
+      ],
+      "name": "제철가 더비",
+      "nameEn": "Steel derby",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "jeonbuk-hyundai-motors",
+        "fc-seoul"
+      ],
+      "name": "전설매치",
+      "nameEn": "Jeonseol match",
+      "intensity": 1,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "seongnam-fc",
+        "suwon-samsung-bluewings"
+      ],
+      "name": "마계대전",
+      "nameEn": "Magyedaejeon",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "suwon-fc",
+        "seongnam-fc"
+      ],
+      "name": "깃발 더비",
+      "nameEn": "Flag derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "jeonbuk-hyundai-motors",
+        "gwangju-fc"
+      ],
+      "name": "호남 더비",
+      "nameEn": "Honam derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "jeonbuk-hyundai-motors",
+        "jeonnam-dragons"
+      ],
+      "name": "호남 더비",
+      "nameEn": "Honam derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "busan-ipark",
+        "gyeongnam-fc"
+      ],
+      "name": "낙동강 더비",
+      "nameEn": "Nakdong River derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "fc-seoul",
+        "seoul-e-land"
+      ],
+      "name": "서울 더비",
+      "nameEn": "Seoul derby",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "incheon-united",
+        "bucheon-fc-1995"
+      ],
+      "name": "032 더비",
+      "nameEn": "032 derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "chungnam-asan",
+        "cheonan-city"
+      ],
+      "name": "충남 더비",
+      "nameEn": "Cheonan–Asan derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "chungnam-asan",
+        "chungbuk-cheongju"
+      ],
+      "name": "충청 더비",
+      "nameEn": "Chungcheong derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "gamba-osaka",
+        "cerezo-osaka"
+      ],
+      "name": "오사카 더비",
+      "nameEn": "大阪ダービー (Osaka derby)",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "kawasaki-frontale",
+        "fc-tokyo"
+      ],
+      "name": "다마가와 클라시코",
+      "nameEn": "多摩川クラシコ (Tamagawa Clásico)",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "fc-tokyo",
+        "tokyo-verdy"
+      ],
+      "name": "도쿄 더비",
+      "nameEn": "東京ダービー (Tokyo derby)",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "kawasaki-frontale",
+        "yokohama-f-marinos"
+      ],
+      "name": "가나가와 더비",
+      "nameEn": "神奈川ダービー (Kanagawa derby)",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "jef-united-chiba",
+        "kashiwa-reysol"
+      ],
+      "name": "지바 더비",
+      "nameEn": "千葉ダービー (Chiba derby)",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "kashima",
+        "urawa"
+      ],
+      "name": "내셔널 더비",
+      "nameEn": "ナショナルダービー (National derby)",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "kashima",
+        "mito-hollyhock"
+      ],
+      "name": "이바라키 더비",
+      "nameEn": "茨城ダービー (Ibaraki derby)",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "tokyo-verdy",
+        "machida-zelvia"
+      ],
+      "name": "도쿄 클래식",
+      "nameEn": "東京クラシック (Tokyo Classic)",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "shimizu-s-pulse",
+        "nagoya-grampus"
+      ],
+      "name": "도카이 더비",
+      "nameEn": "東海ダービー (Tokai derby)",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "kyoto-sanga",
+        "gamba-osaka"
+      ],
+      "name": "간사이 더비",
+      "nameEn": "関西ダービー (Kansai derby)",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "kyoto-sanga",
+        "cerezo-osaka"
+      ],
+      "name": "간사이 더비",
+      "nameEn": "関西ダービー (Kansai derby)",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "gamba-osaka",
+        "vissel-kobe"
+      ],
+      "name": "간사이 더비",
+      "nameEn": "関西ダービー (Kansai derby)",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "cerezo-osaka",
+        "vissel-kobe"
+      ],
+      "name": "간사이 더비",
+      "nameEn": "関西ダービー (Kansai derby)",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "fagiano-okayama",
+        "sanfrecce-hiroshima"
+      ],
+      "name": "주고쿠 더비",
+      "nameEn": "中国ダービー (Chugoku derby)",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "avispa-fukuoka",
+        "v-varen-nagasaki"
+      ],
+      "name": "규슈 더비",
+      "nameEn": "九州ダービー (Kyushu derby)",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "urawa",
+        "gamba-osaka"
+      ],
+      "name": "우라와–감바 라이벌전",
+      "nameEn": "浦和–G大阪 ナショナルダービー",
+      "intensity": 1,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "tokyo-verdy",
+        "yokohama-f-marinos"
+      ],
+      "name": "베르디–마리노스 라이벌전",
+      "nameEn": "ヴェルディ–マリノス ナショナルダービー",
+      "intensity": 1,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "al-hilal-saudi-fc",
+        "al-ittihad-fc"
+      ],
+      "name": "사우디 엘 클라시코",
+      "nameEn": "Saudi El Clásico",
+      "intensity": 3,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "al-hilal-saudi-fc",
+        "al-nassr"
+      ],
+      "name": "리야드 더비",
+      "nameEn": "Riyadh derby",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "al-ahli-jeddah",
+        "al-ittihad-fc"
+      ],
+      "name": "제다 더비",
+      "nameEn": "Jeddah derby",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "al-hilal-saudi-fc",
+        "al-ahli-jeddah"
+      ],
+      "name": "사우디 더비",
+      "nameEn": "Saudi derby",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "al-ittihad-fc",
+        "al-nassr"
+      ],
+      "name": "이티하드–나스르 클라시코",
+      "nameEn": "Al-Ittihad–Al-Nassr Clásico",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "al-ettifaq",
+        "al-qadisiyah-fc"
+      ],
+      "name": "동부 더비",
+      "nameEn": "Al-Sharqiyah derby",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "al-hilal-saudi-fc",
+        "al-shabab"
+      ],
+      "name": "리야드 더비",
+      "nameEn": "Riyadh derby",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "al-nassr",
+        "al-shabab"
+      ],
+      "name": "리야드 더비",
+      "nameEn": "Riyadh derby",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "al-hazm",
+        "al-kholood"
+      ],
+      "name": "알라스 더비",
+      "nameEn": "Ar Rass derby",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "flamengo",
+        "fluminense"
+      ],
+      "name": "플라-플루",
+      "nameEn": "Fla–Flu",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "flamengo",
+        "vasco-da-gama"
+      ],
+      "name": "백만의 클라시쿠",
+      "nameEn": "Clássico dos Milhões",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "corinthians",
+        "palmeiras"
+      ],
+      "name": "파울리스타 더비",
+      "nameEn": "Dérbi Paulista",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "gremio",
+        "internacional"
+      ],
+      "name": "그레날",
+      "nameEn": "Grenal",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "atletico-mg",
+        "cruzeiro"
+      ],
+      "name": "미네이루 클라시쿠",
+      "nameEn": "Clássico Mineiro",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "atletico-paranaense",
+        "coritiba"
+      ],
+      "name": "아틀레치바",
+      "nameEn": "Atletiba",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "bahia",
+        "vitoria-bra"
+      ],
+      "name": "바-비",
+      "nameEn": "Ba–Vi",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "corinthians",
+        "sao-paulo"
+      ],
+      "name": "마제스토주",
+      "nameEn": "Clássico Majestoso",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "palmeiras",
+        "sao-paulo"
+      ],
+      "name": "쇼키-헤이",
+      "nameEn": "Choque-Rei",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "santos",
+        "sao-paulo"
+      ],
+      "name": "산-상",
+      "nameEn": "San-São",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "corinthians",
+        "santos"
+      ],
+      "name": "알비네그루 클라시쿠",
+      "nameEn": "Clássico Alvinegro",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "palmeiras",
+        "santos"
+      ],
+      "name": "사우다지 클라시쿠",
+      "nameEn": "Clássico da Saudade",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "botafogo",
+        "flamengo"
+      ],
+      "name": "라이벌 클라시쿠",
+      "nameEn": "Clássico da Rivalidade",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "botafogo",
+        "fluminense"
+      ],
+      "name": "보부 클라시쿠",
+      "nameEn": "Clássico Vovô",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "botafogo",
+        "vasco-da-gama"
+      ],
+      "name": "알비네그루 클라시쿠",
+      "nameEn": "Clássico Alvinegro",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "fluminense",
+        "vasco-da-gama"
+      ],
+      "name": "거인의 클라시쿠",
+      "nameEn": "Clássico dos Gigantes",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "atletico-mg",
+        "flamengo"
+      ],
+      "name": "아틀레치쿠MG–플라멩구 라이벌전",
+      "nameEn": "Atlético Mineiro–Flamengo rivalry",
+      "intensity": 1,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "club-america",
+        "guadalajara-chivas"
+      ],
+      "name": "엘 클라시코 나시오날",
+      "nameEn": "Clásico Nacional (Súper Clásico)",
+      "intensity": 3,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "club-america",
+        "cruz-azul"
+      ],
+      "name": "클라시코 호벤",
+      "nameEn": "Clásico Joven",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "tigres-uanl",
+        "monterrey"
+      ],
+      "name": "클라시코 레히오몬타노",
+      "nameEn": "Clásico Regiomontano",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "club-america",
+        "u-n-a-m-pumas"
+      ],
+      "name": "클라시코 카피탈리노",
+      "nameEn": "Clásico Capitalino",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "guadalajara-chivas",
+        "atlas"
+      ],
+      "name": "클라시코 타파티오",
+      "nameEn": "Clásico Tapatío",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "cruz-azul",
+        "u-n-a-m-pumas"
+      ],
+      "name": "크루스아술–푸마스 라이벌전",
+      "nameEn": "Cruz Azul–Pumas rivalry",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "tigres-uanl",
+        "u-n-a-m-pumas"
+      ],
+      "name": "클라시코 우니베르시타리오",
+      "nameEn": "Clásico Universitario",
+      "intensity": 1,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "cruz-azul",
+        "cf-pachuca"
+      ],
+      "name": "클라시코 이달겐세",
+      "nameEn": "Clásico Hidalguense",
+      "intensity": 1,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "club-queretaro",
+        "atletico-san-luis"
+      ],
+      "name": "클라시코 데 라 57",
+      "nameEn": "Clásico de la 57",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "leon",
+        "cf-pachuca"
+      ],
+      "name": "레온–파추카 라이벌전",
+      "nameEn": "León–Pachuca rivalry",
+      "intensity": 1,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "club-tijuana",
+        "fc-juarez"
+      ],
+      "name": "클라시코 프론테리소",
+      "nameEn": "Clásico Fronterizo",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "necaxa",
+        "atlante-fc"
+      ],
+      "name": "클라시코 아녜호",
+      "nameEn": "Clásico Añejo",
+      "intensity": 1,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "los-angeles-fc",
+        "los-angeles-galaxy"
+      ],
+      "name": "엘 트라피코",
+      "nameEn": "El Tráfico",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "seattle-sounders",
+        "portland-timbers"
+      ],
+      "name": "캐스캐디아 더비",
+      "nameEn": "Cascadia Cup (Sounders–Timbers)",
+      "intensity": 3,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "seattle-sounders",
+        "vancouver-whitecaps"
+      ],
+      "name": "캐스캐디아 더비",
+      "nameEn": "Cascadia Cup (Sounders–Whitecaps)",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "portland-timbers",
+        "vancouver-whitecaps"
+      ],
+      "name": "캐스캐디아 더비",
+      "nameEn": "Cascadia Cup (Timbers–Whitecaps)",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "fc-cincinnati",
+        "columbus-crew"
+      ],
+      "name": "헬 이즈 리얼 더비",
+      "nameEn": "Hell Is Real derby",
+      "intensity": 3,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "new-york-city-fc",
+        "new-york-red-bulls"
+      ],
+      "name": "허드슨강 더비",
+      "nameEn": "Hudson River derby",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "dc-united",
+        "new-york-red-bulls"
+      ],
+      "name": "애틀랜틱컵",
+      "nameEn": "Atlantic Cup",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "toronto-fc",
+        "cf-montreal"
+      ],
+      "name": "캐나다 클래식",
+      "nameEn": "Canadian Classique",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "los-angeles-galaxy",
+        "san-jose-earthquakes"
+      ],
+      "name": "캘리포니아 클라시코",
+      "nameEn": "California Clásico",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "houston-dynamo",
+        "fc-dallas"
+      ],
+      "name": "텍사스 더비",
+      "nameEn": "Texas derby",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "orlando-city-sc",
+        "inter-miami"
+      ],
+      "name": "플로리다 더비",
+      "nameEn": "Florida derby (Turnpike derby)",
+      "intensity": 2,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "real-salt-lake",
+        "colorado-rapids"
+      ],
+      "name": "로키마운틴컵",
+      "nameEn": "Rocky Mountain Cup",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "chicago-fire",
+        "fc-dallas"
+      ],
+      "name": "브림스톤컵",
+      "nameEn": "Brimstone Cup",
+      "intensity": 1,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "toronto-fc",
+        "columbus-crew"
+      ],
+      "name": "트릴리움컵",
+      "nameEn": "Trillium Cup",
+      "intensity": 1,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "new-england-revolution",
+        "new-york-red-bulls"
+      ],
+      "name": "레볼루션–레드불스 라이벌전",
+      "nameEn": "Revolution–Red Bulls rivalry",
+      "intensity": 1,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "dc-united",
+        "new-england-revolution"
+      ],
+      "name": "DC유나이티드–레볼루션 라이벌전",
+      "nameEn": "D.C. United–Revolution rivalry",
+      "intensity": 1,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "dc-united",
+        "philadelphia-union"
+      ],
+      "name": "DC유나이티드–필라델피아 라이벌전",
+      "nameEn": "D.C. United–Union rivalry",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "sporting-kansas-city",
+        "colorado-rapids"
+      ],
+      "name": "I-70 더비",
+      "nameEn": "I-70 derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "sporting-kansas-city",
+        "st-louis-city"
+      ],
+      "name": "I-70 더비",
+      "nameEn": "I-70 derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "atlanta-united-fc",
+        "charlotte"
+      ],
+      "name": "I-85 더비",
+      "nameEn": "I-85 derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "atlanta-united-fc",
+        "orlando-city-sc"
+      ],
+      "name": "애틀랜타–올랜도 라이벌전",
+      "nameEn": "Atlanta–Orlando rivalry",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "atlanta-united-fc",
+        "nashville-sc"
+      ],
+      "name": "애틀랜타–내슈빌 라이벌전",
+      "nameEn": "Atlanta–Nashville rivalry",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "new-england-revolution",
+        "cf-montreal"
+      ],
+      "name": "메이플시럽 더비",
+      "nameEn": "Maple Syrup derby",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "san-jose-earthquakes",
+        "seattle-sounders"
+      ],
+      "name": "헤리티지컵",
+      "nameEn": "Heritage Cup",
+      "intensity": 1,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "austin",
+        "houston-dynamo"
+      ],
+      "name": "코파 테하스",
+      "nameEn": "Copa Tejas",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "austin",
+        "fc-dallas"
+      ],
+      "name": "코파 테하스",
+      "nameEn": "Copa Tejas",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "boca-juniors",
+        "river-plate"
+      ],
+      "name": "수페르클라시코",
+      "nameEn": "Superclásico",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "independiente",
+        "racing-club"
+      ],
+      "name": "아베야네다 더비",
+      "nameEn": "Clásico de Avellaneda",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "newells-old-boys",
+        "rosario-central"
+      ],
+      "name": "로사리오 더비",
+      "nameEn": "Clásico rosarino",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "estudiantes-l-p",
+        "gimnasia-l-p"
+      ],
+      "name": "라플라타 더비",
+      "nameEn": "Clásico platense",
+      "intensity": 3,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "belgrano-cordoba",
+        "talleres-cordoba"
+      ],
+      "name": "코르도바 더비",
+      "nameEn": "Clásico cordobés",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "huracan",
+        "san-lorenzo"
+      ],
+      "name": "포르테뇨 더비",
+      "nameEn": "Clásico porteño (Huracán–San Lorenzo)",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "banfield",
+        "lanus"
+      ],
+      "name": "남부 더비",
+      "nameEn": "Clásico del Sur",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "gimnasia-m",
+        "independ-rivadavia"
+      ],
+      "name": "멘도사 더비",
+      "nameEn": "Clásico mendocino",
+      "intensity": 2,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "platense",
+        "tigre"
+      ],
+      "name": "북부 지역 더비",
+      "nameEn": "Clásico de Zona Norte",
+      "intensity": 1,
+      "kind": "regional"
+    },
+    {
+      "teams": [
+        "boca-juniors",
+        "independiente"
+      ],
+      "name": "보카–인디펜디엔테 클라시코",
+      "nameEn": "Boca–Independiente clásico",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "boca-juniors",
+        "racing-club"
+      ],
+      "name": "보카–라싱 클라시코",
+      "nameEn": "Boca–Racing clásico",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "boca-juniors",
+        "san-lorenzo"
+      ],
+      "name": "보카–산로렌소 클라시코",
+      "nameEn": "Boca–San Lorenzo clásico",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "river-plate",
+        "independiente"
+      ],
+      "name": "리버–인디펜디엔테 클라시코",
+      "nameEn": "River–Independiente clásico",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "river-plate",
+        "racing-club"
+      ],
+      "name": "리버–라싱 클라시코",
+      "nameEn": "River–Racing clásico",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "river-plate",
+        "san-lorenzo"
+      ],
+      "name": "리버–산로렌소 클라시코",
+      "nameEn": "River–San Lorenzo clásico",
+      "intensity": 2,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "racing-club",
+        "san-lorenzo"
+      ],
+      "name": "라싱–산로렌소 클라시코",
+      "nameEn": "Racing–San Lorenzo clásico",
+      "intensity": 1,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "independiente",
+        "san-lorenzo"
+      ],
+      "name": "인디펜디엔테–산로렌소 클라시코",
+      "nameEn": "Independiente–San Lorenzo clásico",
+      "intensity": 1,
+      "kind": "historic"
+    },
+    {
+      "teams": [
+        "instituto-cordoba",
+        "belgrano-cordoba"
+      ],
+      "name": "코르도바 더비",
+      "nameEn": "Clásico cordobés (Instituto–Belgrano)",
+      "intensity": 1,
+      "kind": "local"
+    },
+    {
+      "teams": [
+        "instituto-cordoba",
+        "talleres-cordoba"
+      ],
+      "name": "코르도바 더비",
+      "nameEn": "Clásico cordobés (Instituto–Talleres)",
+      "intensity": 1,
+      "kind": "local"
+    }
+  ]
+}

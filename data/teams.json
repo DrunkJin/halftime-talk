@@ -1,0 +1,4901 @@
+{
+  "schemaVersion": 2,
+  "teams": [
+    {
+      "id": "arsenal",
+      "name": "Arsenal",
+      "shortName": "Arsenal",
+      "code": "ARS",
+      "colors": {
+        "primary": "#EF0107",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Emirates Stadium",
+      "logo": "arsenal.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "aston-villa",
+      "name": "Aston Villa",
+      "shortName": "Aston Villa",
+      "code": "AVL",
+      "colors": {
+        "primary": "#670E36",
+        "secondary": "#95BFE5"
+      },
+      "stadium": "Villa Park",
+      "logo": "aston-villa.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "bournemouth",
+      "name": "Bournemouth",
+      "shortName": "Bournemouth",
+      "code": "BOU",
+      "colors": {
+        "primary": "#DA291C",
+        "secondary": "#000000"
+      },
+      "stadium": "Vitality Stadium",
+      "logo": "bournemouth.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "brentford",
+      "name": "Brentford",
+      "shortName": "Brentford",
+      "code": "BRE",
+      "colors": {
+        "primary": "#E30613",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Gtech Community Stadium",
+      "logo": "brentford.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "brighton-hove-albion",
+      "name": "Brighton & Hove Albion",
+      "shortName": "Brighton",
+      "code": "BHA",
+      "colors": {
+        "primary": "#0057B8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "American Express Stadium",
+      "logo": "brighton-hove-albion.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "chelsea",
+      "name": "Chelsea",
+      "shortName": "Chelsea",
+      "code": "CHE",
+      "colors": {
+        "primary": "#034694",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stamford Bridge",
+      "logo": "chelsea.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "coventry-city",
+      "name": "Coventry City",
+      "shortName": "Coventry City",
+      "code": "COV",
+      "colors": {
+        "primary": "#59CBE8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Coventry Building Society Arena",
+      "logo": "coventry-city.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "crystal-palace",
+      "name": "Crystal Palace",
+      "shortName": "Crystal Palace",
+      "code": "CRY",
+      "colors": {
+        "primary": "#1B458F",
+        "secondary": "#C4122E"
+      },
+      "stadium": "Selhurst Park",
+      "logo": "crystal-palace.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "everton",
+      "name": "Everton",
+      "shortName": "Everton",
+      "code": "EVE",
+      "colors": {
+        "primary": "#003399",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Hill Dickinson Stadium",
+      "logo": "everton.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "fulham",
+      "name": "Fulham",
+      "shortName": "Fulham",
+      "code": "FUL",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#000000"
+      },
+      "stadium": "Craven Cottage",
+      "logo": "fulham.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "hull-city",
+      "name": "Hull City",
+      "shortName": "Hull City",
+      "code": "HUL",
+      "colors": {
+        "primary": "#F5A12D",
+        "secondary": "#000000"
+      },
+      "stadium": "MKM Stadium",
+      "logo": "hull-city.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "ipswich-town",
+      "name": "Ipswich Town",
+      "shortName": "Ipswich Town",
+      "code": "IPS",
+      "colors": {
+        "primary": "#3A64A3",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Portman Road",
+      "logo": "ipswich-town.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "leeds-united",
+      "name": "Leeds United",
+      "shortName": "Leeds United",
+      "code": "LEE",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#1D428A"
+      },
+      "stadium": "Elland Road",
+      "logo": "leeds-united.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "liverpool",
+      "name": "Liverpool",
+      "shortName": "Liverpool",
+      "code": "LIV",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Anfield",
+      "logo": "liverpool.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "manchester-city",
+      "name": "Manchester City",
+      "shortName": "Man City",
+      "code": "MCI",
+      "colors": {
+        "primary": "#6CABDD",
+        "secondary": "#1C2C5B"
+      },
+      "stadium": "Etihad Stadium",
+      "logo": "manchester-city.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "manchester-united",
+      "name": "Manchester United",
+      "shortName": "Man Utd",
+      "code": "MUN",
+      "colors": {
+        "primary": "#DA291C",
+        "secondary": "#FBE122"
+      },
+      "stadium": "Old Trafford",
+      "logo": "manchester-united.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "newcastle-united",
+      "name": "Newcastle United",
+      "shortName": "Newcastle",
+      "code": "NEW",
+      "colors": {
+        "primary": "#241F20",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "St James' Park",
+      "logo": "newcastle-united.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "nottingham-forest",
+      "name": "Nottingham Forest",
+      "shortName": "Nott'm Forest",
+      "code": "NFO",
+      "colors": {
+        "primary": "#DD0000",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "City Ground",
+      "logo": "nottingham-forest.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "sunderland",
+      "name": "Sunderland",
+      "shortName": "Sunderland",
+      "code": "SUN",
+      "colors": {
+        "primary": "#EB172B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stadium of Light",
+      "logo": "sunderland.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "tottenham-hotspur",
+      "name": "Tottenham Hotspur",
+      "shortName": "Spurs",
+      "code": "TOT",
+      "colors": {
+        "primary": "#132257",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Tottenham Hotspur Stadium",
+      "logo": "tottenham-hotspur.png",
+      "leagueId": "epl"
+    },
+    {
+      "id": "birmingham-city",
+      "name": "Birmingham City",
+      "shortName": "Birmingham",
+      "code": "BIR",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "St Andrew's Trillion Trophy Stadium",
+      "logo": "birmingham-city.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "blackburn-rovers",
+      "name": "Blackburn Rovers",
+      "shortName": "Blackburn",
+      "code": "BLA",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Ewood Park",
+      "logo": "blackburn-rovers.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "bolton-wanderers",
+      "name": "Bolton Wanderers",
+      "shortName": "Bolton",
+      "code": "BOL",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#132257"
+      },
+      "stadium": "University of Bolton Stadium",
+      "logo": "bolton-wanderers.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "bristol-city",
+      "name": "Bristol City",
+      "shortName": "Bristol City",
+      "code": "BRI",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Ashton Gate Stadium",
+      "logo": "bristol-city.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "burnley",
+      "name": "Burnley",
+      "shortName": "Burnley",
+      "code": "BUR",
+      "colors": {
+        "primary": "#670E36",
+        "secondary": "#6CABDD"
+      },
+      "stadium": "Turf Moor",
+      "logo": "burnley.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "cardiff-city",
+      "name": "Cardiff City",
+      "shortName": "Cardiff",
+      "code": "CAR",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Cardiff City Stadium",
+      "logo": "cardiff-city.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "charlton-athletic",
+      "name": "Charlton Athletic",
+      "shortName": "Charlton",
+      "code": "CHA",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "The Valley",
+      "logo": "charlton-athletic.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "derby-county",
+      "name": "Derby County",
+      "shortName": "Derby County",
+      "code": "DER",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#111111"
+      },
+      "stadium": "iPro Stadium",
+      "logo": "derby-county.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "lincoln-city",
+      "name": "Lincoln City",
+      "shortName": "Lincoln City",
+      "code": "LIN",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Sincil Bank Stadium",
+      "logo": "lincoln-city.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "middlesbrough",
+      "name": "Middlesbrough",
+      "shortName": "Middlesbrough",
+      "code": "MID",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Riverside Stadium",
+      "logo": "middlesbrough.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "millwall",
+      "name": "Millwall",
+      "shortName": "Millwall",
+      "code": "MIL",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "The Den",
+      "logo": "millwall.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "norwich-city",
+      "name": "Norwich City",
+      "shortName": "Norwich",
+      "code": "NOR",
+      "colors": {
+        "primary": "#FDE100",
+        "secondary": "#00843D"
+      },
+      "stadium": "Carrow Road",
+      "logo": "norwich-city.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "portsmouth",
+      "name": "Portsmouth",
+      "shortName": "Portsmouth",
+      "code": "POR",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Fratton Park",
+      "logo": "portsmouth.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "preston-north-end",
+      "name": "Preston North End",
+      "shortName": "Preston NE",
+      "code": "PNE",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#132257"
+      },
+      "stadium": "Deepdale Stadium",
+      "logo": "preston-north-end.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "queens-park-rangers",
+      "name": "Queens Park Rangers",
+      "shortName": "QPR",
+      "code": "QPR",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Kiyan Prince Foundation Stadium",
+      "logo": "queens-park-rangers.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "sheffield-united",
+      "name": "Sheffield United",
+      "shortName": "Sheffield Utd",
+      "code": "SHE",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Bramall Lane",
+      "logo": "sheffield-united.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "southampton",
+      "name": "Southampton",
+      "shortName": "Southampton",
+      "code": "SOU",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "St. Mary's Stadium",
+      "logo": "southampton.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "stoke-city",
+      "name": "Stoke City",
+      "shortName": "Stoke",
+      "code": "STK",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Bet365 Stadium",
+      "logo": "stoke-city.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "swansea-city",
+      "name": "Swansea City",
+      "shortName": "Swansea",
+      "code": "SWA",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#111111"
+      },
+      "stadium": "Liberty Stadium",
+      "logo": "swansea-city.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "watford",
+      "name": "Watford",
+      "shortName": "Watford",
+      "code": "WAT",
+      "colors": {
+        "primary": "#FDE100",
+        "secondary": "#111111"
+      },
+      "stadium": "Vicarage Road Stadium",
+      "logo": "watford.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "west-bromwich-albion",
+      "name": "West Bromwich Albion",
+      "shortName": "West Brom",
+      "code": "WBA",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#132257"
+      },
+      "stadium": "The Hawthorns",
+      "logo": "west-bromwich-albion.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "west-ham-united",
+      "name": "West Ham United",
+      "shortName": "West Ham",
+      "code": "WHU",
+      "colors": {
+        "primary": "#670E36",
+        "secondary": "#6CABDD"
+      },
+      "stadium": "London Stadium",
+      "logo": "west-ham-united.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "wolverhampton-wanderers",
+      "name": "Wolverhampton Wanderers",
+      "shortName": "Wolverhampton",
+      "code": "WOL",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FDB913"
+      },
+      "stadium": "Molineux Stadium",
+      "logo": "wolverhampton-wanderers.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "wrexham",
+      "name": "Wrexham",
+      "shortName": "Wrexham",
+      "code": "WRE",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Racecourse Ground",
+      "logo": "wrexham.png",
+      "leagueId": "championship"
+    },
+    {
+      "id": "athletic-club",
+      "name": "Athletic Club",
+      "shortName": "Athletic",
+      "code": "ATH",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "San Mamés",
+      "logo": "athletic-club.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "barcelona",
+      "name": "Barcelona",
+      "shortName": "Barça",
+      "code": "FCB",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#132257"
+      },
+      "stadium": "Camp Nou",
+      "logo": "barcelona.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "ca-osasuna",
+      "name": "CA Osasuna",
+      "shortName": "Osasuna",
+      "code": "OSA",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#132257"
+      },
+      "stadium": "Estadio El Sadar",
+      "logo": "ca-osasuna.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "celta-de-vigo",
+      "name": "Celta de Vigo",
+      "shortName": "Celta",
+      "code": "CEL",
+      "colors": {
+        "primary": "#6CABDD",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio de Balaídos",
+      "logo": "celta-de-vigo.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "club-atletico-de-madrid",
+      "name": "Club Atlético de Madrid",
+      "shortName": "Atleti",
+      "code": "ATL",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Wanda Metropolitano",
+      "logo": "club-atletico-de-madrid.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "deportivo-alaves",
+      "name": "Deportivo Alavés",
+      "shortName": "Alavés",
+      "code": "ALA",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio de Mendizorroza",
+      "logo": "deportivo-alaves.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "deportivo-la-coruna",
+      "name": "Deportivo La Coruña",
+      "shortName": "Deportivo",
+      "code": "DEP",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Abanca-Riazor",
+      "logo": "deportivo-la-coruna.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "elche",
+      "name": "Elche",
+      "shortName": "Elche",
+      "code": "ELC",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#00843D"
+      },
+      "stadium": "Estadio Manuel Martínez Valero",
+      "logo": "elche.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "getafe",
+      "name": "Getafe",
+      "shortName": "Getafe",
+      "code": "GET",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Coliseum Alfonso Pérez",
+      "logo": "getafe.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "levante-ud",
+      "name": "Levante UD",
+      "shortName": "Levante",
+      "code": "LEV",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Ciudad de Valencia",
+      "logo": "levante-ud.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "malaga",
+      "name": "Málaga",
+      "shortName": "Málaga",
+      "code": "MAL",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio La Rosaleda",
+      "logo": "malaga.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "rcd-espanyol-de-barcelona",
+      "name": "RCD Espanyol de Barcelona",
+      "shortName": "Espanyol",
+      "code": "ESP",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "RCDE Stadium",
+      "logo": "rcd-espanyol-de-barcelona.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "rayo-vallecano-de-madrid",
+      "name": "Rayo Vallecano de Madrid",
+      "shortName": "Rayo Vallecano",
+      "code": "RAY",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#D71920"
+      },
+      "stadium": "Estadio del Rayo Vallecano",
+      "logo": "rayo-vallecano-de-madrid.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "real-betis-balompie",
+      "name": "Real Betis Balompié",
+      "shortName": "Real Betis",
+      "code": "BET",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Benito Villamarín",
+      "logo": "real-betis-balompie.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "real-madrid",
+      "name": "Real Madrid",
+      "shortName": "Real Madrid",
+      "code": "RMA",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#5B2A86"
+      },
+      "stadium": "Estadio Santiago Bernabéu",
+      "logo": "real-madrid.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "real-racing-club-de-santander",
+      "name": "Real Racing Club de Santander",
+      "shortName": "Santander",
+      "code": "SAN",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#111111"
+      },
+      "stadium": "Campos de Sport de El Sardinero",
+      "logo": "real-racing-club-de-santander.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "real-sociedad-de-futbol",
+      "name": "Real Sociedad de Fútbol",
+      "shortName": "Real Sociedad",
+      "code": "RSO",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Municipal de Anoeta",
+      "logo": "real-sociedad-de-futbol.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "sevilla",
+      "name": "Sevilla",
+      "shortName": "Sevilla FC",
+      "code": "SEV",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#D71920"
+      },
+      "stadium": "Estadio Ramón Sánchez Pizjuán",
+      "logo": "sevilla.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "valencia",
+      "name": "Valencia",
+      "shortName": "Valencia",
+      "code": "VAL",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#F18A00"
+      },
+      "stadium": "Estadio de Mestalla",
+      "logo": "valencia.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "villarreal",
+      "name": "Villarreal",
+      "shortName": "Villarreal",
+      "code": "VIL",
+      "colors": {
+        "primary": "#FDE100",
+        "secondary": "#1D4ED8"
+      },
+      "stadium": "Estadio de la Cerámica",
+      "logo": "villarreal.png",
+      "leagueId": "laliga"
+    },
+    {
+      "id": "acf-fiorentina",
+      "name": "ACF Fiorentina",
+      "shortName": "Fiorentina",
+      "code": "FIO",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stadio Artemio Franchi",
+      "logo": "acf-fiorentina.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "atalanta-bc",
+      "name": "Atalanta BC",
+      "shortName": "Atalanta",
+      "code": "ATA",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#1D4ED8"
+      },
+      "stadium": "Stadio Atleti Azzurri d'Italia",
+      "logo": "atalanta-bc.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "bologna-fc-1909",
+      "name": "Bologna FC 1909",
+      "shortName": "Bologna",
+      "code": "BOL",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#1D4ED8"
+      },
+      "stadium": "Stadio Renato Dall'Ara",
+      "logo": "bologna-fc-1909.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "cagliari-calcio",
+      "name": "Cagliari Calcio",
+      "shortName": "Cagliari",
+      "code": "CAG",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#132257"
+      },
+      "stadium": "Sardegna Arena",
+      "logo": "cagliari-calcio.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "como-1907",
+      "name": "Como 1907",
+      "shortName": "Como 1907",
+      "code": "COM",
+      "colors": {
+        "primary": "#6CABDD",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stadio Giuseppe Sinigaglia",
+      "logo": "como-1907.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "frosinone-calcio",
+      "name": "Frosinone Calcio",
+      "shortName": "Frosinone",
+      "code": "FRO",
+      "colors": {
+        "primary": "#FDE100",
+        "secondary": "#1D4ED8"
+      },
+      "stadium": "Stadio Benito Stirpe",
+      "logo": "frosinone-calcio.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "genoa-cfc",
+      "name": "Genoa CFC",
+      "shortName": "Genoa",
+      "code": "GEN",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#132257"
+      },
+      "stadium": "Stadio Comunale Luigi Ferraris",
+      "logo": "genoa-cfc.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "internazionale-milano",
+      "name": "Internazionale Milano",
+      "shortName": "Inter",
+      "code": "INT",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#111111"
+      },
+      "stadium": "Stadio Giuseppe Meazza",
+      "logo": "internazionale-milano.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "juventus",
+      "name": "Juventus",
+      "shortName": "Juventus",
+      "code": "JUV",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#111111"
+      },
+      "stadium": "Allianz Stadium",
+      "logo": "juventus.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "milan",
+      "name": "Milan",
+      "shortName": "Milan",
+      "code": "MIL",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#111111"
+      },
+      "stadium": "Stadio Giuseppe Meazza",
+      "logo": "milan.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "monza",
+      "name": "Monza",
+      "shortName": "Monza",
+      "code": "MON",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stadio Comunale Brianteo",
+      "logo": "monza.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "napoli",
+      "name": "Napoli",
+      "shortName": "Napoli",
+      "code": "NAP",
+      "colors": {
+        "primary": "#6CABDD",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stadio San Paolo",
+      "logo": "napoli.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "parma-calcio-1913",
+      "name": "Parma Calcio 1913",
+      "shortName": "Parma",
+      "code": "PAR",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#111111"
+      },
+      "stadium": "Stadio Ennio Tardini",
+      "logo": "parma-calcio-1913.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "roma",
+      "name": "Roma",
+      "shortName": "Roma",
+      "code": "ROM",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#F18A00"
+      },
+      "stadium": "Stadio Olimpico",
+      "logo": "roma.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "ss-lazio",
+      "name": "SS Lazio",
+      "shortName": "Lazio",
+      "code": "LAZ",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#6CABDD"
+      },
+      "stadium": "Stadio Olimpico",
+      "logo": "ss-lazio.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "torino",
+      "name": "Torino",
+      "shortName": "Torino",
+      "code": "TOR",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stadio Olimpico di Torino",
+      "logo": "torino.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "us-lecce",
+      "name": "US Lecce",
+      "shortName": "Lecce",
+      "code": "USL",
+      "colors": {
+        "primary": "#FDE100",
+        "secondary": "#D71920"
+      },
+      "stadium": "Stadio Comunale Via Del Mare",
+      "logo": "us-lecce.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "us-sassuolo-calcio",
+      "name": "US Sassuolo Calcio",
+      "shortName": "Sassuolo",
+      "code": "SAS",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#111111"
+      },
+      "stadium": "Mapei Stadium - Città del Tricolore",
+      "logo": "us-sassuolo-calcio.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "udinese-calcio",
+      "name": "Udinese Calcio",
+      "shortName": "Udinese",
+      "code": "UDI",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#111111"
+      },
+      "stadium": "Dacia Arena",
+      "logo": "udinese-calcio.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "venezia",
+      "name": "Venezia",
+      "shortName": "Venezia FC",
+      "code": "VEN",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#111111"
+      },
+      "stadium": "Stadio Pierluigi Penzo",
+      "logo": "venezia.png",
+      "leagueId": "serie-a"
+    },
+    {
+      "id": "1-fsv-mainz-05",
+      "name": "1. FSV Mainz 05",
+      "shortName": "Mainz",
+      "code": "M05",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Opel Arena",
+      "logo": "1-fsv-mainz-05.png",
+      "leagueId": "bundesliga"
+    },
+    {
+      "id": "1899-hoffenheim",
+      "name": "1899 Hoffenheim",
+      "shortName": "Hoffenheim",
+      "code": "TSG",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "PreZero Arena",
+      "logo": "1899-hoffenheim.png",
+      "leagueId": "bundesliga"
+    },
+    {
+      "id": "augsburg",
+      "name": "Augsburg",
+      "shortName": "Augsburg",
+      "code": "FCA",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#00843D"
+      },
+      "stadium": "WWK Arena",
+      "logo": "augsburg.png",
+      "leagueId": "bundesliga"
+    },
+    {
+      "id": "bayer-04-leverkusen",
+      "name": "Bayer 04 Leverkusen",
+      "shortName": "Leverkusen",
+      "code": "B04",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "BayArena",
+      "logo": "bayer-04-leverkusen.png",
+      "leagueId": "bundesliga"
+    },
+    {
+      "id": "bayern-munchen",
+      "name": "Bayern München",
+      "shortName": "Bayern",
+      "code": "FCB",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Allianz Arena",
+      "logo": "bayern-munchen.png",
+      "leagueId": "bundesliga"
+    },
+    {
+      "id": "borussia-dortmund",
+      "name": "Borussia Dortmund",
+      "shortName": "Dortmund",
+      "code": "BVB",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FDE100"
+      },
+      "stadium": "Signal Iduna Park",
+      "logo": "borussia-dortmund.png",
+      "leagueId": "bundesliga"
+    },
+    {
+      "id": "borussia-monchengladbach",
+      "name": "Borussia Mönchengladbach",
+      "shortName": "M'gladbach",
+      "code": "BMG",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stadion im Borussia-Park",
+      "logo": "borussia-monchengladbach.png",
+      "leagueId": "bundesliga"
+    },
+    {
+      "id": "eintracht-frankfurt",
+      "name": "Eintracht Frankfurt",
+      "shortName": "Frankfurt",
+      "code": "SGE",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#111111"
+      },
+      "stadium": "Deutsche Bank Park",
+      "logo": "eintracht-frankfurt.png",
+      "leagueId": "bundesliga"
+    },
+    {
+      "id": "freiburg",
+      "name": "Freiburg",
+      "shortName": "Freiburg",
+      "code": "SCF",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Schwarzwald-Stadion",
+      "logo": "freiburg.png",
+      "leagueId": "bundesliga"
+    },
+    {
+      "id": "hamburger-sv",
+      "name": "Hamburger SV",
+      "shortName": "HSV",
+      "code": "HSV",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#D71920"
+      },
+      "stadium": "Volksparkstadion",
+      "logo": "hamburger-sv.png",
+      "leagueId": "bundesliga"
+    },
+    {
+      "id": "koln",
+      "name": "Köln",
+      "shortName": "1. FC Köln",
+      "code": "KOE",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "RheinEnergieSTADION",
+      "logo": "koln.png",
+      "leagueId": "bundesliga"
+    },
+    {
+      "id": "paderborn-07",
+      "name": "Paderborn 07",
+      "shortName": "SC Paderborn",
+      "code": "SCP",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#1D4ED8"
+      },
+      "stadium": "Benteler-Arena",
+      "logo": "paderborn-07.png",
+      "leagueId": "bundesliga"
+    },
+    {
+      "id": "rb-leipzig",
+      "name": "RB Leipzig",
+      "shortName": "RB Leipzig",
+      "code": "RBL",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#D71920"
+      },
+      "stadium": "Red Bull Arena",
+      "logo": "rb-leipzig.png",
+      "leagueId": "bundesliga"
+    },
+    {
+      "id": "sv-07-elversberg",
+      "name": "SV 07 Elversberg",
+      "shortName": "Elversberg",
+      "code": "ELV",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Ursapharm-Arena an der Kaiserlinde",
+      "logo": "sv-07-elversberg.png",
+      "leagueId": "bundesliga"
+    },
+    {
+      "id": "schalke-04",
+      "name": "Schalke 04",
+      "shortName": "Schalke",
+      "code": "S04",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Veltins-Arena",
+      "logo": "schalke-04.png",
+      "leagueId": "bundesliga"
+    },
+    {
+      "id": "stuttgart",
+      "name": "Stuttgart",
+      "shortName": "Stuttgart",
+      "code": "VFB",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#D71920"
+      },
+      "stadium": "Mercedes-Benz Arena",
+      "logo": "stuttgart.png",
+      "leagueId": "bundesliga"
+    },
+    {
+      "id": "union-berlin",
+      "name": "Union Berlin",
+      "shortName": "Union Berlin",
+      "code": "UNB",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stadion An der Alten Försterei",
+      "logo": "union-berlin.png",
+      "leagueId": "bundesliga"
+    },
+    {
+      "id": "werder-bremen",
+      "name": "Werder Bremen",
+      "shortName": "Bremen",
+      "code": "SVW",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Weserstadion",
+      "logo": "werder-bremen.png",
+      "leagueId": "bundesliga"
+    },
+    {
+      "id": "aj-auxerre",
+      "name": "AJ Auxerre",
+      "shortName": "Auxerre",
+      "code": "AJA",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#1D4ED8"
+      },
+      "stadium": "Stade de l'Abbé Deschamps",
+      "logo": "aj-auxerre.png",
+      "leagueId": "ligue-1"
+    },
+    {
+      "id": "angers-sco",
+      "name": "Angers SCO",
+      "shortName": "Angers SCO",
+      "code": "ANG",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stade Raymond Kopa",
+      "logo": "angers-sco.png",
+      "leagueId": "ligue-1"
+    },
+    {
+      "id": "es-troyes",
+      "name": "ES Troyes",
+      "shortName": "Troyes",
+      "code": "ETR",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stade de l'Aube",
+      "logo": "es-troyes.png",
+      "leagueId": "ligue-1"
+    },
+    {
+      "id": "le-havre",
+      "name": "Le Havre",
+      "shortName": "Le Havre",
+      "code": "HAC",
+      "colors": {
+        "primary": "#6CABDD",
+        "secondary": "#132257"
+      },
+      "stadium": "Stade Océane",
+      "logo": "le-havre.png",
+      "leagueId": "ligue-1"
+    },
+    {
+      "id": "le-mans",
+      "name": "Le Mans",
+      "shortName": "Le Mans",
+      "code": "LMF",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FDE100"
+      },
+      "stadium": "MMArena",
+      "logo": "le-mans.png",
+      "leagueId": "ligue-1"
+    },
+    {
+      "id": "lille-osc",
+      "name": "Lille OSC",
+      "shortName": "Lille",
+      "code": "LIL",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#D71920"
+      },
+      "stadium": "Stade Pierre-Mauroy",
+      "logo": "lille-osc.png",
+      "leagueId": "ligue-1"
+    },
+    {
+      "id": "lorient",
+      "name": "Lorient",
+      "shortName": "Lorient",
+      "code": "FCL",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#111111"
+      },
+      "stadium": "Stade Yves Allainmat - Le Moustoir",
+      "logo": "lorient.png",
+      "leagueId": "ligue-1"
+    },
+    {
+      "id": "monaco",
+      "name": "Monaco",
+      "shortName": "Monaco",
+      "code": "ASM",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stade Louis II.",
+      "logo": "monaco.png",
+      "leagueId": "ligue-1"
+    },
+    {
+      "id": "ogc-nice",
+      "name": "OGC Nice",
+      "shortName": "Nice",
+      "code": "NIC",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#111111"
+      },
+      "stadium": "Stade de Nice",
+      "logo": "ogc-nice.png",
+      "leagueId": "ligue-1"
+    },
+    {
+      "id": "olympique-lyonnais",
+      "name": "Olympique Lyonnais",
+      "shortName": "Olympique Lyon",
+      "code": "LYO",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#D71920"
+      },
+      "stadium": "Groupama Stadium",
+      "logo": "olympique-lyonnais.png",
+      "leagueId": "ligue-1"
+    },
+    {
+      "id": "olympique-de-marseille",
+      "name": "Olympique de Marseille",
+      "shortName": "Marseille",
+      "code": "MAR",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#1D4ED8"
+      },
+      "stadium": "Orange Vélodrome",
+      "logo": "olympique-de-marseille.png",
+      "leagueId": "ligue-1"
+    },
+    {
+      "id": "paris",
+      "name": "Paris",
+      "shortName": "Paris FC",
+      "code": "PFC",
+      "colors": {
+        "primary": "#132257",
+        "secondary": "#6CABDD"
+      },
+      "stadium": "Stade Sébastien Charléty",
+      "logo": "paris.png",
+      "leagueId": "ligue-1"
+    },
+    {
+      "id": "paris-saint-germain",
+      "name": "Paris Saint-Germain",
+      "shortName": "PSG",
+      "code": "PSG",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#1D4ED8"
+      },
+      "stadium": "Parc des Princes",
+      "logo": "paris-saint-germain.png",
+      "leagueId": "ligue-1"
+    },
+    {
+      "id": "racing-club-de-lens",
+      "name": "Racing Club de Lens",
+      "shortName": "RC Lens",
+      "code": "RCL",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FDE100"
+      },
+      "stadium": "Stade Bollaert-Delelis",
+      "logo": "racing-club-de-lens.png",
+      "leagueId": "ligue-1"
+    },
+    {
+      "id": "stade-brestois-29",
+      "name": "Stade Brestois 29",
+      "shortName": "Brest",
+      "code": "BRE",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#D71920"
+      },
+      "stadium": "Stade Francis-Le Blé",
+      "logo": "stade-brestois-29.png",
+      "leagueId": "ligue-1"
+    },
+    {
+      "id": "stade-rennais-fc-1901",
+      "name": "Stade Rennais FC 1901",
+      "shortName": "Stade Rennais",
+      "code": "REN",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#111111"
+      },
+      "stadium": "Roazhon Park",
+      "logo": "stade-rennais-fc-1901.png",
+      "leagueId": "ligue-1"
+    },
+    {
+      "id": "strasbourg-alsace",
+      "name": "Strasbourg Alsace",
+      "shortName": "Strasbourg",
+      "code": "STR",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stade de la Meinau",
+      "logo": "strasbourg-alsace.png",
+      "leagueId": "ligue-1"
+    },
+    {
+      "id": "toulouse",
+      "name": "Toulouse",
+      "shortName": "Toulouse",
+      "code": "TOU",
+      "colors": {
+        "primary": "#6F2DA8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stadium Municipal",
+      "logo": "toulouse.png",
+      "leagueId": "ligue-1"
+    },
+    {
+      "id": "ado-den-haag",
+      "name": "ADO Den Haag",
+      "shortName": "Den Haag",
+      "code": "ADO",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FDE100"
+      },
+      "stadium": "Cars Jeans Stadion",
+      "logo": "ado-den-haag.png",
+      "leagueId": "eredivisie"
+    },
+    {
+      "id": "az",
+      "name": "AZ",
+      "shortName": "AZ",
+      "code": "AZX",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "AFAS Stadion",
+      "logo": "az.png",
+      "leagueId": "eredivisie"
+    },
+    {
+      "id": "ajax",
+      "name": "Ajax",
+      "shortName": "Ajax",
+      "code": "AJA",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Johan Cruyff ArenA",
+      "logo": "ajax.png",
+      "leagueId": "eredivisie"
+    },
+    {
+      "id": "cambuur-leeuwarden",
+      "name": "Cambuur-Leeuwarden",
+      "shortName": "Cambuur",
+      "code": "CAM",
+      "colors": {
+        "primary": "#FDE100",
+        "secondary": "#1D4ED8"
+      },
+      "stadium": "Cambuurstadion",
+      "logo": "cambuur-leeuwarden.png",
+      "leagueId": "eredivisie"
+    },
+    {
+      "id": "feyenoord-rotterdam",
+      "name": "Feyenoord Rotterdam",
+      "shortName": "Feyenoord",
+      "code": "FEY",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stadion Feijenoord",
+      "logo": "feyenoord-rotterdam.png",
+      "leagueId": "eredivisie"
+    },
+    {
+      "id": "fortuna-sittard",
+      "name": "Fortuna Sittard",
+      "shortName": "Sittard",
+      "code": "SIT",
+      "colors": {
+        "primary": "#FDE100",
+        "secondary": "#00843D"
+      },
+      "stadium": "Fortuna Sittard Stadion",
+      "logo": "fortuna-sittard.png",
+      "leagueId": "eredivisie"
+    },
+    {
+      "id": "go-ahead-eagles",
+      "name": "Go Ahead Eagles",
+      "shortName": "Go Ahead",
+      "code": "GOA",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FDE100"
+      },
+      "stadium": "De Adelaarshorst",
+      "logo": "go-ahead-eagles.png",
+      "leagueId": "eredivisie"
+    },
+    {
+      "id": "groningen",
+      "name": "Groningen",
+      "shortName": "Groningen",
+      "code": "GRO",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Hitachi Capital Mobility Stadion",
+      "logo": "groningen.png",
+      "leagueId": "eredivisie"
+    },
+    {
+      "id": "heerenveen",
+      "name": "Heerenveen",
+      "shortName": "Heerenveen",
+      "code": "HEE",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Abe Lenstra Stadion",
+      "logo": "heerenveen.png",
+      "leagueId": "eredivisie"
+    },
+    {
+      "id": "nec",
+      "name": "NEC",
+      "shortName": "NEC",
+      "code": "NEC",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#00843D"
+      },
+      "stadium": "Goffertstadion",
+      "logo": "nec.png",
+      "leagueId": "eredivisie"
+    },
+    {
+      "id": "pec-zwolle",
+      "name": "PEC Zwolle",
+      "shortName": "Zwolle",
+      "code": "ZWO",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "MAC³PARK Stadion",
+      "logo": "pec-zwolle.png",
+      "leagueId": "eredivisie"
+    },
+    {
+      "id": "psv",
+      "name": "PSV",
+      "shortName": "PSV",
+      "code": "PSV",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Philips Stadion",
+      "logo": "psv.png",
+      "leagueId": "eredivisie"
+    },
+    {
+      "id": "sbv-excelsior",
+      "name": "SBV Excelsior",
+      "shortName": "Excelsior",
+      "code": "EXC",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#111111"
+      },
+      "stadium": "Van Donge & De Roo Stadion",
+      "logo": "sbv-excelsior.png",
+      "leagueId": "eredivisie"
+    },
+    {
+      "id": "sparta-rotterdam",
+      "name": "Sparta Rotterdam",
+      "shortName": "Sparta",
+      "code": "SPA",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Sparta-Stadion Het Kasteel",
+      "logo": "sparta-rotterdam.png",
+      "leagueId": "eredivisie"
+    },
+    {
+      "id": "telstar-1963",
+      "name": "Telstar 1963",
+      "shortName": "Telstar",
+      "code": "TEL",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#1D4ED8"
+      },
+      "stadium": "Rabobank IJmond Stadion",
+      "logo": "telstar-1963.png",
+      "leagueId": "eredivisie"
+    },
+    {
+      "id": "twente-65",
+      "name": "Twente '65",
+      "shortName": "Twente",
+      "code": "TWE",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "De Grolsch Veste",
+      "logo": "twente-65.png",
+      "leagueId": "eredivisie"
+    },
+    {
+      "id": "utrecht",
+      "name": "Utrecht",
+      "shortName": "Utrecht",
+      "code": "UTR",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stadion Galgenwaard",
+      "logo": "utrecht.png",
+      "leagueId": "eredivisie"
+    },
+    {
+      "id": "willem-ii-tilburg",
+      "name": "Willem II Tilburg",
+      "shortName": "Willem II",
+      "code": "WII",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Koning Willem II Stadion",
+      "logo": "willem-ii-tilburg.png",
+      "leagueId": "eredivisie"
+    },
+    {
+      "id": "academico-de-viseu",
+      "name": "Académico de Viseu",
+      "shortName": "Acad. Viseu",
+      "code": "ACV",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio Municipal do Fontelo",
+      "logo": "academico-de-viseu.png",
+      "leagueId": "primeira-liga"
+    },
+    {
+      "id": "alverca",
+      "name": "Alverca",
+      "shortName": "Alverca",
+      "code": "ALV",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Campo Futebol Clube Alverca",
+      "logo": "alverca.png",
+      "leagueId": "primeira-liga"
+    },
+    {
+      "id": "arouca",
+      "name": "Arouca",
+      "shortName": "Arouca",
+      "code": "FCA",
+      "colors": {
+        "primary": "#FDE100",
+        "secondary": "#1D4ED8"
+      },
+      "stadium": "Estádio Municipal de Arouca",
+      "logo": "arouca.png",
+      "leagueId": "primeira-liga"
+    },
+    {
+      "id": "cd-nacional",
+      "name": "CD Nacional",
+      "shortName": "CD Nacional",
+      "code": "CDN",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio da Madeira",
+      "logo": "cd-nacional.png",
+      "leagueId": "primeira-liga"
+    },
+    {
+      "id": "cd-santa-clara",
+      "name": "CD Santa Clara",
+      "shortName": "Santa Clara",
+      "code": "CDS",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Cidade do Futebol",
+      "logo": "cd-santa-clara.png",
+      "leagueId": "primeira-liga"
+    },
+    {
+      "id": "cs-maritimo",
+      "name": "CS Marítimo",
+      "shortName": "Marítimo",
+      "code": "CSM",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#D71920"
+      },
+      "stadium": "Estádio dos Barreiros",
+      "logo": "cs-maritimo.png",
+      "leagueId": "primeira-liga"
+    },
+    {
+      "id": "casa-pia",
+      "name": "Casa Pia",
+      "shortName": "Casa Pia",
+      "code": "CAS",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio Pina Manique",
+      "logo": "casa-pia.png",
+      "leagueId": "primeira-liga"
+    },
+    {
+      "id": "estrela-da-amadora",
+      "name": "Estrela da Amadora",
+      "shortName": "Amadora",
+      "code": "AMA",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio Nacional",
+      "logo": "estrela-da-amadora.png",
+      "leagueId": "primeira-liga"
+    },
+    {
+      "id": "famalicao",
+      "name": "Famalicão",
+      "shortName": "Famalicão",
+      "code": "FAM",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio Municipal 22 de Junho",
+      "logo": "famalicao.png",
+      "leagueId": "primeira-liga"
+    },
+    {
+      "id": "gd-estoril-praia",
+      "name": "GD Estoril Praia",
+      "shortName": "Estoril Praia",
+      "code": "EST",
+      "colors": {
+        "primary": "#FDE100",
+        "secondary": "#1D4ED8"
+      },
+      "stadium": "Estádio António Coimbra da Mota",
+      "logo": "gd-estoril-praia.png",
+      "leagueId": "primeira-liga"
+    },
+    {
+      "id": "gil-vicente",
+      "name": "Gil Vicente",
+      "shortName": "Gil Vicente",
+      "code": "GIL",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#1D4ED8"
+      },
+      "stadium": "Estádio Cidade de Barcelos",
+      "logo": "gil-vicente.png",
+      "leagueId": "primeira-liga"
+    },
+    {
+      "id": "moreirense",
+      "name": "Moreirense",
+      "shortName": "Moreirense",
+      "code": "MOR",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "P.D. Comendador Joaquim de Almeida Freitas",
+      "logo": "moreirense.png",
+      "leagueId": "primeira-liga"
+    },
+    {
+      "id": "porto",
+      "name": "Porto",
+      "shortName": "Porto",
+      "code": "FCP",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio Do Dragão",
+      "logo": "porto.png",
+      "leagueId": "primeira-liga"
+    },
+    {
+      "id": "rio-ave",
+      "name": "Rio Ave",
+      "shortName": "Rio Ave",
+      "code": "RIO",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio do Rio Ave Futebol Clube",
+      "logo": "rio-ave.png",
+      "leagueId": "primeira-liga"
+    },
+    {
+      "id": "sport-lisboa-e-benfica",
+      "name": "Sport Lisboa e Benfica",
+      "shortName": "SL Benfica",
+      "code": "BEN",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio do Sport Lisboa e Benfica",
+      "logo": "sport-lisboa-e-benfica.png",
+      "leagueId": "primeira-liga"
+    },
+    {
+      "id": "sporting-clube-de-braga",
+      "name": "Sporting Clube de Braga",
+      "shortName": "Braga",
+      "code": "SCB",
+      "colors": {
+        "primary": "#D71920",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio Municipal de Braga",
+      "logo": "sporting-clube-de-braga.png",
+      "leagueId": "primeira-liga"
+    },
+    {
+      "id": "sporting-clube-de-portugal",
+      "name": "Sporting Clube de Portugal",
+      "shortName": "Sporting CP",
+      "code": "SPO",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio José Alvalade",
+      "logo": "sporting-clube-de-portugal.png",
+      "leagueId": "primeira-liga"
+    },
+    {
+      "id": "vitoria",
+      "name": "Vitória",
+      "shortName": "Vitória SC",
+      "code": "GUI",
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#111111"
+      },
+      "stadium": "Estádio Dom Afonso Henriques",
+      "logo": "vitoria.png",
+      "leagueId": "primeira-liga"
+    },
+    {
+      "id": "bucheon-fc-1995",
+      "name": "Bucheon FC 1995",
+      "shortName": "Bucheon",
+      "code": "BUC",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Bucheon Stadium",
+      "logo": "bucheon-fc-1995.png",
+      "leagueId": "k-league-1"
+    },
+    {
+      "id": "daejeon-hana-citizen",
+      "name": "Daejeon Hana Citizen",
+      "shortName": "Daejeon",
+      "code": "DJN",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Daejeon World Cup Stadium",
+      "logo": "daejeon-hana-citizen.png",
+      "leagueId": "k-league-1"
+    },
+    {
+      "id": "fc-anyang",
+      "name": "FC Anyang",
+      "shortName": "Anyang",
+      "code": "ANY",
+      "colors": {
+        "primary": "#0B2D6B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Anyang Stadium",
+      "logo": "fc-anyang.png",
+      "leagueId": "k-league-1"
+    },
+    {
+      "id": "fc-seoul",
+      "name": "FC Seoul",
+      "shortName": "Seoul",
+      "code": "SEO",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Seoul World Cup Stadium",
+      "logo": "fc-seoul.png",
+      "leagueId": "k-league-1"
+    },
+    {
+      "id": "gangwon-fc",
+      "name": "Gangwon FC",
+      "shortName": "Gangwon",
+      "code": "GWN",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Gangneung Stadium",
+      "logo": "gangwon-fc.png",
+      "leagueId": "k-league-1"
+    },
+    {
+      "id": "gimcheon-sangmu",
+      "name": "Gimcheon Sangmu",
+      "shortName": "Gimcheon",
+      "code": "GIM",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Gimcheon Stadium",
+      "logo": "gimcheon-sangmu.png",
+      "leagueId": "k-league-1"
+    },
+    {
+      "id": "gwangju-fc",
+      "name": "Gwangju FC",
+      "shortName": "Gwangju",
+      "code": "GWJ",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Gwangju Football Stadium",
+      "logo": "gwangju-fc.png",
+      "leagueId": "k-league-1"
+    },
+    {
+      "id": "incheon-united",
+      "name": "Incheon United",
+      "shortName": "Incheon",
+      "code": "ICN",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Sungui Arena Park",
+      "logo": "incheon-united.png",
+      "leagueId": "k-league-1"
+    },
+    {
+      "id": "jeju-sk",
+      "name": "Jeju SK",
+      "shortName": "Jeju",
+      "code": "JEJ",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Jeju World Cup Stadium",
+      "logo": "jeju-sk.png",
+      "leagueId": "k-league-1"
+    },
+    {
+      "id": "jeonbuk-hyundai-motors",
+      "name": "Jeonbuk Hyundai Motors",
+      "shortName": "Jeonbuk",
+      "code": "JBK",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Jeonju World Cup Stadium",
+      "logo": "jeonbuk-hyundai-motors.png",
+      "leagueId": "k-league-1"
+    },
+    {
+      "id": "pohang-steelers",
+      "name": "Pohang Steelers",
+      "shortName": "Pohang",
+      "code": "POH",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Steelyard Stadium",
+      "logo": "pohang-steelers.png",
+      "leagueId": "k-league-1"
+    },
+    {
+      "id": "ulsan-hd",
+      "name": "Ulsan HD",
+      "shortName": "Ulsan",
+      "code": "ULS",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Ulsan Munsu Football Stadium",
+      "logo": "ulsan-hd.png",
+      "leagueId": "k-league-1"
+    },
+    {
+      "id": "ansan-greeners",
+      "name": "Ansan Greeners",
+      "shortName": "Ansan",
+      "code": "ANS",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Ansan Wa Stadium",
+      "logo": "ansan-greeners.png",
+      "leagueId": "k-league-2"
+    },
+    {
+      "id": "busan-ipark",
+      "name": "Busan IPark",
+      "shortName": "Busan",
+      "code": "BUS",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Busan Asiad Main Stadium",
+      "logo": "busan-ipark.png",
+      "leagueId": "k-league-2"
+    },
+    {
+      "id": "cheonan-city",
+      "name": "Cheonan City",
+      "shortName": "Cheonan",
+      "code": "CHN",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Cheonan Baekseok Stadium",
+      "logo": "cheonan-city.png",
+      "leagueId": "k-league-2"
+    },
+    {
+      "id": "chungbuk-cheongju",
+      "name": "Chungbuk Cheongju",
+      "shortName": "Cheongju",
+      "code": "CJU",
+      "colors": {
+        "primary": "#0B2D6B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Cheongju Stadium",
+      "logo": "chungbuk-cheongju.png",
+      "leagueId": "k-league-2"
+    },
+    {
+      "id": "chungnam-asan",
+      "name": "Chungnam Asan",
+      "shortName": "Asan",
+      "code": "ASN",
+      "colors": {
+        "primary": "#0B2D6B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Yishunsin Stadium",
+      "logo": "chungnam-asan.png",
+      "leagueId": "k-league-2"
+    },
+    {
+      "id": "daegu-fc",
+      "name": "Daegu FC",
+      "shortName": "Daegu",
+      "code": "DGU",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "DGB Arena",
+      "logo": "daegu-fc.png",
+      "leagueId": "k-league-2"
+    },
+    {
+      "id": "gimhae-fc-2008",
+      "name": "Gimhae FC 2008",
+      "shortName": "Gimhae",
+      "code": "GMH",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Gimhae Civil Stadium",
+      "logo": "gimhae-fc-2008.png",
+      "leagueId": "k-league-2"
+    },
+    {
+      "id": "gimpo-fc",
+      "name": "Gimpo FC",
+      "shortName": "Gimpo",
+      "code": "GMP",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Gimpo Stadium",
+      "logo": "gimpo-fc.png",
+      "leagueId": "k-league-2"
+    },
+    {
+      "id": "gyeongnam-fc",
+      "name": "Gyeongnam FC",
+      "shortName": "Gyeongnam",
+      "code": "GNM",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Changwon Football Center",
+      "logo": "gyeongnam-fc.png",
+      "leagueId": "k-league-2"
+    },
+    {
+      "id": "hwaseong-fc",
+      "name": "Hwaseong FC",
+      "shortName": "Hwaseong",
+      "code": "HWS",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Hwaseong Stadium",
+      "logo": "hwaseong-fc.png",
+      "leagueId": "k-league-2"
+    },
+    {
+      "id": "jeonnam-dragons",
+      "name": "Jeonnam Dragons",
+      "shortName": "Jeonnam",
+      "code": "JNM",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Gwangyang Stadium",
+      "logo": "jeonnam-dragons.png",
+      "leagueId": "k-league-2"
+    },
+    {
+      "id": "paju-frontier",
+      "name": "Paju Frontier",
+      "shortName": "Paju",
+      "code": "PAJ",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Paju Public Stadium",
+      "logo": "paju-frontier.png",
+      "leagueId": "k-league-2"
+    },
+    {
+      "id": "seongnam-fc",
+      "name": "Seongnam FC",
+      "shortName": "Seongnam",
+      "code": "SNM",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Tancheon Sports Complex",
+      "logo": "seongnam-fc.png",
+      "leagueId": "k-league-2"
+    },
+    {
+      "id": "seoul-e-land",
+      "name": "Seoul E-Land",
+      "shortName": "Seoul E-Land",
+      "code": "ELD",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Mokdong Stadium",
+      "logo": "seoul-e-land.png",
+      "leagueId": "k-league-2"
+    },
+    {
+      "id": "suwon-fc",
+      "name": "Suwon FC",
+      "shortName": "Suwon FC",
+      "code": "SWF",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Suwon Sports Complex",
+      "logo": "suwon-fc.png",
+      "leagueId": "k-league-2"
+    },
+    {
+      "id": "suwon-samsung-bluewings",
+      "name": "Suwon Samsung Bluewings",
+      "shortName": "Suwon Samsung",
+      "code": "SSB",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Suwon World Cup Stadium",
+      "logo": "suwon-samsung-bluewings.png",
+      "leagueId": "k-league-2"
+    },
+    {
+      "id": "yongin-fc",
+      "name": "Yongin FC",
+      "shortName": "Yongin",
+      "code": "YON",
+      "colors": {
+        "primary": "#0B2D6B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Yongin Football Center",
+      "logo": "yongin-fc.png",
+      "leagueId": "k-league-2"
+    },
+    {
+      "id": "avispa-fukuoka",
+      "name": "Avispa Fukuoka",
+      "shortName": "Avispa Fukuoka",
+      "code": "FUK",
+      "colors": {
+        "primary": "#0B2D6B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Best Denki Stadium",
+      "logo": "avispa-fukuoka.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "cerezo-osaka",
+      "name": "Cerezo Osaka",
+      "shortName": "Cerezo Osaka",
+      "code": "COS",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Yodoko Sakura Stadium",
+      "logo": "cerezo-osaka.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "fc-tokyo",
+      "name": "FC Tokyo",
+      "shortName": "Tokyo",
+      "code": "TOK",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Ajinomoto Stadium",
+      "logo": "fc-tokyo.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "fagiano-okayama",
+      "name": "Fagiano Okayama",
+      "shortName": "Fagiano Okayama",
+      "code": "OKA",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "JFE Harenokuni Stadium",
+      "logo": "fagiano-okayama.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "gamba-osaka",
+      "name": "Gamba Osaka",
+      "shortName": "Gamba Osaka",
+      "code": "GOS",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Panasonic Stadium Suita",
+      "logo": "gamba-osaka.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "jef-united-chiba",
+      "name": "JEF United Chiba",
+      "shortName": "JEF United Chiba",
+      "code": "CHI",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Fukuda Denshi Arena",
+      "logo": "jef-united-chiba.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "kashima",
+      "name": "Kashima",
+      "shortName": "Kashima",
+      "code": "KAS",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Kashima Soccer Stadium",
+      "logo": "kashima.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "kashiwa-reysol",
+      "name": "Kashiwa Reysol",
+      "shortName": "Kashiwa Reysol",
+      "code": "KAS",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "SANKYO FRONTIER Kashiwa Stadium",
+      "logo": "kashiwa-reysol.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "kawasaki-frontale",
+      "name": "Kawasaki Frontale",
+      "shortName": "Kawasaki Frontale",
+      "code": "KAW",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Uvance Todoroki Stadium by Fujitsu",
+      "logo": "kawasaki-frontale.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "kyoto-sanga",
+      "name": "Kyoto Sanga",
+      "shortName": "Kyoto Sanga",
+      "code": "KYO",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Sanga Stadium by Kyocera",
+      "logo": "kyoto-sanga.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "machida-zelvia",
+      "name": "Machida Zelvia",
+      "shortName": "Machida Zelvia",
+      "code": "MAC",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Machida Gion Stadium",
+      "logo": "machida-zelvia.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "mito-hollyhock",
+      "name": "Mito Hollyhock",
+      "shortName": "Mito Hollyhock",
+      "code": "MIT",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "K’s Denki Stadium",
+      "logo": "mito-hollyhock.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "nagoya-grampus",
+      "name": "Nagoya Grampus",
+      "shortName": "Nagoya Grampus",
+      "code": "NAG",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Toyota Stadium",
+      "logo": "nagoya-grampus.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "sanfrecce-hiroshima",
+      "name": "Sanfrecce Hiroshima",
+      "shortName": "Sanfrecce Hiroshima",
+      "code": "HIR",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Edion Peace Wing Hiroshima",
+      "logo": "sanfrecce-hiroshima.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "shimizu-s-pulse",
+      "name": "Shimizu S-pulse",
+      "shortName": "Shimizu S-pulse",
+      "code": "SHI",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "IAI Stadium Nihondaira",
+      "logo": "shimizu-s-pulse.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "tokyo-verdy",
+      "name": "Tokyo Verdy",
+      "shortName": "Tokyo Verdy",
+      "code": "VER",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Ajinomoto Stadium",
+      "logo": "tokyo-verdy.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "urawa",
+      "name": "Urawa",
+      "shortName": "Urawa",
+      "code": "URA",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Saitama Stadium 2002",
+      "logo": "urawa.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "v-varen-nagasaki",
+      "name": "V-varen Nagasaki",
+      "shortName": "V-varen Nagasaki",
+      "code": "NAG",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "PEACE STADIUM Connected by SoftBank",
+      "logo": "v-varen-nagasaki.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "vissel-kobe",
+      "name": "Vissel Kobe",
+      "shortName": "Vissel Kobe",
+      "code": "KOB",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "NOEVIR Stadium Kobe",
+      "logo": "vissel-kobe.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "yokohama-f-marinos",
+      "name": "Yokohama F. Marinos",
+      "shortName": "Yokohama F. Marinos",
+      "code": "YOK",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Nissan Stadium",
+      "logo": "yokohama-f-marinos.png",
+      "leagueId": "j1-league"
+    },
+    {
+      "id": "alanyaspor",
+      "name": "Alanyaspor",
+      "shortName": "Alanyaspor",
+      "code": "ALA",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "GAIN Park Stadium",
+      "logo": "alanyaspor.png",
+      "leagueId": "super-lig"
+    },
+    {
+      "id": "amed",
+      "name": "Amed",
+      "shortName": "Amed",
+      "code": "DIY",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Seyrantepe Spor Kompleksi Stadyumu 1",
+      "logo": "amed.png",
+      "leagueId": "super-lig"
+    },
+    {
+      "id": "basaksehir",
+      "name": "Başakşehir",
+      "shortName": "Başakşehir",
+      "code": "IST",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Başakşehir Fatih Terim Stadyumu",
+      "logo": "basaksehir.png",
+      "leagueId": "super-lig"
+    },
+    {
+      "id": "besiktas",
+      "name": "Beşiktaş",
+      "shortName": "Beşiktaş",
+      "code": "BES",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Tüpraş Stadyumu",
+      "logo": "besiktas.png",
+      "leagueId": "super-lig"
+    },
+    {
+      "id": "erzurumspor-fk",
+      "name": "Erzurumspor FK",
+      "shortName": "Erzurumspor FK",
+      "code": "ERZ",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Kazım Karabekir Stadyumu",
+      "logo": "erzurumspor-fk.png",
+      "leagueId": "super-lig"
+    },
+    {
+      "id": "eyupspor",
+      "name": "Eyüpspor",
+      "shortName": "Eyüpspor",
+      "code": "EYU",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Recep Tayyip Erdoğan Stadyumu",
+      "logo": "eyupspor.png",
+      "leagueId": "super-lig"
+    },
+    {
+      "id": "fenerbahce",
+      "name": "Fenerbahçe",
+      "shortName": "Fenerbahçe",
+      "code": "FEN",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Chobani Stadyumu Fenerbahçe Şükrü Saracoğlu Spor Kompleksi",
+      "logo": "fenerbahce.png",
+      "leagueId": "super-lig"
+    },
+    {
+      "id": "galatasaray",
+      "name": "Galatasaray",
+      "shortName": "Galatasaray",
+      "code": "GAL",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "RAMS Park",
+      "logo": "galatasaray.png",
+      "leagueId": "super-lig"
+    },
+    {
+      "id": "gaziantep-fk",
+      "name": "Gaziantep FK",
+      "shortName": "Gaziantep FK",
+      "code": "GAZ",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Gaziantep Stadyumu",
+      "logo": "gaziantep-fk.png",
+      "leagueId": "super-lig"
+    },
+    {
+      "id": "genclerbirligi-s-k",
+      "name": "Gençlerbirliği S.K.",
+      "shortName": "Gençlerbirliği S.K.",
+      "code": "GEN",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Eryaman Stadyumu",
+      "logo": "genclerbirligi-s-k.png",
+      "leagueId": "super-lig"
+    },
+    {
+      "id": "goztepe",
+      "name": "Göztepe",
+      "shortName": "Göztepe",
+      "code": "GOZ",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Gürsel Aksel Stadyumu",
+      "logo": "goztepe.png",
+      "leagueId": "super-lig"
+    },
+    {
+      "id": "kas-mpasa",
+      "name": "Kasımpaşa",
+      "shortName": "Kasımpaşa",
+      "code": "KAS",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Recep Tayyip Erdoğan Stadyumu",
+      "logo": "kas-mpasa.png",
+      "leagueId": "super-lig"
+    },
+    {
+      "id": "kocaelispor",
+      "name": "Kocaelispor",
+      "shortName": "Kocaelispor",
+      "code": "KOC",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Yıldız Entegre Kocaeli Stadyumu",
+      "logo": "kocaelispor.png",
+      "leagueId": "super-lig"
+    },
+    {
+      "id": "konyaspor",
+      "name": "Konyaspor",
+      "shortName": "Konyaspor",
+      "code": "KON",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Medaş Konya Büyükşehir Stadyumu",
+      "logo": "konyaspor.png",
+      "leagueId": "super-lig"
+    },
+    {
+      "id": "rizespor",
+      "name": "Rizespor",
+      "shortName": "Rizespor",
+      "code": "RIZ",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Çaykur Didi Stadyumu",
+      "logo": "rizespor.png",
+      "leagueId": "super-lig"
+    },
+    {
+      "id": "samsunspor",
+      "name": "Samsunspor",
+      "shortName": "Samsunspor",
+      "code": "SAM",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Samsun Yeni 19 Mayıs Stadyumu",
+      "logo": "samsunspor.png",
+      "leagueId": "super-lig"
+    },
+    {
+      "id": "trabzonspor",
+      "name": "Trabzonspor",
+      "shortName": "Trabzonspor",
+      "code": "TRA",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Papara Park",
+      "logo": "trabzonspor.png",
+      "leagueId": "super-lig"
+    },
+    {
+      "id": "corum-fk",
+      "name": "Çorum FK",
+      "shortName": "Çorum FK",
+      "code": "COR",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Çorum Şehir Stadyumu",
+      "logo": "corum-fk.png",
+      "leagueId": "super-lig"
+    },
+    {
+      "id": "atletico-paranaense",
+      "name": "Atletico Paranaense",
+      "shortName": "Atletico Paranaense",
+      "code": "ATL",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Arena da Baixada",
+      "logo": "atletico-paranaense.png",
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "atletico-mg",
+      "name": "Atletico-MG",
+      "shortName": "Atletico-MG",
+      "code": "ATL",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Arena MRV",
+      "logo": "atletico-mg.png",
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "bahia",
+      "name": "Bahia",
+      "shortName": "Bahia",
+      "code": "BAH",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Arena Fonte Nova",
+      "logo": "bahia.png",
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "botafogo",
+      "name": "Botafogo",
+      "shortName": "Botafogo",
+      "code": "BOT",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio Nilton Santos",
+      "logo": "botafogo.png",
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "chapecoense-sc",
+      "name": "Chapecoense-sc",
+      "shortName": "Chapecoense-sc",
+      "code": "CHA",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Arena Condá",
+      "logo": "chapecoense-sc.png",
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "corinthians",
+      "name": "Corinthians",
+      "shortName": "Corinthians",
+      "code": "COR",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Neo Química Arena",
+      "logo": "corinthians.png",
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "coritiba",
+      "name": "Coritiba",
+      "shortName": "Coritiba",
+      "code": "COR",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio Major Antônio Couto Pereira",
+      "logo": "coritiba.png",
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "cruzeiro",
+      "name": "Cruzeiro",
+      "shortName": "Cruzeiro",
+      "code": "CRU",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio Governador Magalhães Pinto",
+      "logo": "cruzeiro.png",
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "flamengo",
+      "name": "Flamengo",
+      "shortName": "Flamengo",
+      "code": "FLA",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Jornalista Mário Filho (Maracanã)",
+      "logo": "flamengo.png",
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "fluminense",
+      "name": "Fluminense",
+      "shortName": "Fluminense",
+      "code": "FLU",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Jornalista Mário Filho (Maracanã)",
+      "logo": "fluminense.png",
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "gremio",
+      "name": "Gremio",
+      "shortName": "Gremio",
+      "code": "GRE",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Arena do Grêmio",
+      "logo": "gremio.png",
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "internacional",
+      "name": "Internacional",
+      "shortName": "Internacional",
+      "code": "INT",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio José Pinheiro Borda",
+      "logo": "internacional.png",
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "mirassol",
+      "name": "Mirassol",
+      "shortName": "Mirassol",
+      "code": "MIR",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio José Maria de Campos Maia",
+      "logo": "mirassol.png",
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "palmeiras",
+      "name": "Palmeiras",
+      "shortName": "Palmeiras",
+      "code": "PAL",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Allianz Parque",
+      "logo": "palmeiras.png",
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "rb-bragantino",
+      "name": "RB Bragantino",
+      "shortName": "RB Bragantino",
+      "code": "BRA",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio Nabi Abi Chedid",
+      "logo": "rb-bragantino.png",
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "remo",
+      "name": "Remo",
+      "shortName": "Remo",
+      "code": "REM",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio Estadual Jornalista Edgar Augusto Proença",
+      "logo": "remo.png",
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "santos",
+      "name": "Santos",
+      "shortName": "Santos",
+      "code": "SAN",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio Urbano Caldeira",
+      "logo": "santos.png",
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "sao-paulo",
+      "name": "Sao Paulo",
+      "shortName": "Sao Paulo",
+      "code": "SAO",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio Cícero Pompeu de Toledo (Morumbi)",
+      "logo": "sao-paulo.png",
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "vasco-da-gama",
+      "name": "Vasco DA Gama",
+      "shortName": "Vasco DA Gama",
+      "code": "VAS",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio São Januário",
+      "logo": "vasco-da-gama.png",
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "vitoria-bra",
+      "name": "Vitoria",
+      "shortName": "Vitoria",
+      "code": "VIT",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estádio Manoel Barradas",
+      "logo": null,
+      "leagueId": "brasileirao"
+    },
+    {
+      "id": "atlante-fc",
+      "name": "Atlante FC",
+      "shortName": "Atlante",
+      "code": "ATL",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Ciudad de los Deportes",
+      "logo": "atlante-fc.png",
+      "leagueId": "liga-mx"
+    },
+    {
+      "id": "atlas",
+      "name": "Atlas",
+      "shortName": "Atlas",
+      "code": "ATL",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Jalisco",
+      "logo": "atlas.png",
+      "leagueId": "liga-mx"
+    },
+    {
+      "id": "atletico-san-luis",
+      "name": "Atletico San Luis",
+      "shortName": "Atletico San Luis",
+      "code": "ASL",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Alfonso Lastras Ramírez",
+      "logo": "atletico-san-luis.png",
+      "leagueId": "liga-mx"
+    },
+    {
+      "id": "cf-pachuca",
+      "name": "CF Pachuca",
+      "shortName": "Pachuca",
+      "code": "PAC",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Hidalgo",
+      "logo": "cf-pachuca.png",
+      "leagueId": "liga-mx"
+    },
+    {
+      "id": "club-america",
+      "name": "Club America",
+      "shortName": "Club America",
+      "code": "CLU",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Azteca",
+      "logo": "club-america.png",
+      "leagueId": "liga-mx"
+    },
+    {
+      "id": "club-queretaro",
+      "name": "Club Queretaro",
+      "shortName": "Club Queretaro",
+      "code": "QUE",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Corregidora",
+      "logo": "club-queretaro.png",
+      "leagueId": "liga-mx"
+    },
+    {
+      "id": "club-tijuana",
+      "name": "Club Tijuana",
+      "shortName": "Club Tijuana",
+      "code": "CLU",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Caliente",
+      "logo": "club-tijuana.png",
+      "leagueId": "liga-mx"
+    },
+    {
+      "id": "cruz-azul",
+      "name": "Cruz Azul",
+      "shortName": "Cruz Azul",
+      "code": "CRU",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Azteca",
+      "logo": "cruz-azul.png",
+      "leagueId": "liga-mx"
+    },
+    {
+      "id": "fc-juarez",
+      "name": "FC Juarez",
+      "shortName": "Juarez",
+      "code": "FCJ",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Olímpico Benito Juárez",
+      "logo": "fc-juarez.png",
+      "leagueId": "liga-mx"
+    },
+    {
+      "id": "guadalajara-chivas",
+      "name": "Guadalajara Chivas",
+      "shortName": "Guadalajara Chivas",
+      "code": "GUA",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio AKRON",
+      "logo": "guadalajara-chivas.png",
+      "leagueId": "liga-mx"
+    },
+    {
+      "id": "leon",
+      "name": "Leon",
+      "shortName": "Leon",
+      "code": "CLU",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio León (Nou Camp)",
+      "logo": "leon.png",
+      "leagueId": "liga-mx"
+    },
+    {
+      "id": "monterrey",
+      "name": "Monterrey",
+      "shortName": "Monterrey",
+      "code": "MON",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio BBVA",
+      "logo": "monterrey.png",
+      "leagueId": "liga-mx"
+    },
+    {
+      "id": "necaxa",
+      "name": "Necaxa",
+      "shortName": "Necaxa",
+      "code": "NEC",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Victoria",
+      "logo": "necaxa.png",
+      "leagueId": "liga-mx"
+    },
+    {
+      "id": "puebla",
+      "name": "Puebla",
+      "shortName": "Puebla",
+      "code": "PUE",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Cuauhtémoc",
+      "logo": "puebla.png",
+      "leagueId": "liga-mx"
+    },
+    {
+      "id": "santos-laguna",
+      "name": "Santos Laguna",
+      "shortName": "Santos Laguna",
+      "code": "SAN",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Corona",
+      "logo": "santos-laguna.png",
+      "leagueId": "liga-mx"
+    },
+    {
+      "id": "tigres-uanl",
+      "name": "Tigres UANL",
+      "shortName": "Tigres UANL",
+      "code": "UAN",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Universitario de Nuevo León",
+      "logo": "tigres-uanl.png",
+      "leagueId": "liga-mx"
+    },
+    {
+      "id": "toluca",
+      "name": "Toluca",
+      "shortName": "Toluca",
+      "code": "TOL",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Nemesio Díez",
+      "logo": "toluca.png",
+      "leagueId": "liga-mx"
+    },
+    {
+      "id": "u-n-a-m-pumas",
+      "name": "U.N.A.M. - Pumas",
+      "shortName": "U.N.A.M. - Pumas",
+      "code": "UNA",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Olímpico de Universitario",
+      "logo": "u-n-a-m-pumas.png",
+      "leagueId": "liga-mx"
+    },
+    {
+      "id": "atlanta-united-fc",
+      "name": "Atlanta United FC",
+      "shortName": "Atlanta United",
+      "code": "ATL",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Mercedes-Benz Stadium",
+      "logo": "atlanta-united-fc.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "austin",
+      "name": "Austin",
+      "shortName": "Austin",
+      "code": "AUS",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Q2 Stadium",
+      "logo": "austin.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "cf-montreal",
+      "name": "CF Montreal",
+      "shortName": "Montreal",
+      "code": "MON",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stade Saputo",
+      "logo": "cf-montreal.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "charlotte",
+      "name": "Charlotte",
+      "shortName": "Charlotte",
+      "code": "CHA",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Bank of America Stadium",
+      "logo": "charlotte.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "chicago-fire",
+      "name": "Chicago Fire",
+      "shortName": "Chicago Fire",
+      "code": "CHI",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Soldier Field",
+      "logo": "chicago-fire.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "colorado-rapids",
+      "name": "Colorado Rapids",
+      "shortName": "Colorado Rapids",
+      "code": "COL",
+      "colors": {
+        "primary": "#0B2D6B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Dick's Sporting Goods Park",
+      "logo": "colorado-rapids.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "columbus-crew",
+      "name": "Columbus Crew",
+      "shortName": "Columbus Crew",
+      "code": "COL",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Lower.com Field",
+      "logo": "columbus-crew.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "dc-united",
+      "name": "DC United",
+      "shortName": "DC United",
+      "code": "UNI",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Audi Field",
+      "logo": "dc-united.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "fc-cincinnati",
+      "name": "FC Cincinnati",
+      "shortName": "Cincinnati",
+      "code": "FCC",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "TQL Stadium",
+      "logo": "fc-cincinnati.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "fc-dallas",
+      "name": "FC Dallas",
+      "shortName": "Dallas",
+      "code": "DAL",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Toyota Stadium",
+      "logo": "fc-dallas.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "houston-dynamo",
+      "name": "Houston Dynamo",
+      "shortName": "Houston Dynamo",
+      "code": "HOU",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Shell Energy Stadium",
+      "logo": "houston-dynamo.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "inter-miami",
+      "name": "Inter Miami",
+      "shortName": "Inter Miami",
+      "code": "INT",
+      "colors": {
+        "primary": "#0B2D6B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Chase Stadium",
+      "logo": "inter-miami.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "los-angeles-fc",
+      "name": "Los Angeles FC",
+      "shortName": "Los Angeles",
+      "code": "LOS",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "BMO Stadium",
+      "logo": "los-angeles-fc.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "los-angeles-galaxy",
+      "name": "Los Angeles Galaxy",
+      "shortName": "Los Angeles Galaxy",
+      "code": "ANG",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Dignity Health Sports Park",
+      "logo": "los-angeles-galaxy.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "minnesota-united-fc",
+      "name": "Minnesota United FC",
+      "shortName": "Minnesota United",
+      "code": "MIN",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Allianz Field",
+      "logo": "minnesota-united-fc.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "nashville-sc",
+      "name": "Nashville SC",
+      "shortName": "Nashville",
+      "code": "NAS",
+      "colors": {
+        "primary": "#0B2D6B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "GEODIS Park",
+      "logo": "nashville-sc.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "new-england-revolution",
+      "name": "New England Revolution",
+      "shortName": "New England Revolution",
+      "code": "ENG",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Gillette Stadium",
+      "logo": "new-england-revolution.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "new-york-city-fc",
+      "name": "New York City FC",
+      "shortName": "New York City",
+      "code": "NEW",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Yankee Stadium",
+      "logo": "new-york-city-fc.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "new-york-red-bulls",
+      "name": "New York Red Bulls",
+      "shortName": "New York Red Bulls",
+      "code": "YOR",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Sports Illustrated Stadium",
+      "logo": "new-york-red-bulls.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "orlando-city-sc",
+      "name": "Orlando City SC",
+      "shortName": "Orlando City",
+      "code": "ORL",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Inter&Co Stadium",
+      "logo": "orlando-city-sc.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "philadelphia-union",
+      "name": "Philadelphia Union",
+      "shortName": "Philadelphia Union",
+      "code": "PHI",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Subaru Park",
+      "logo": "philadelphia-union.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "portland-timbers",
+      "name": "Portland Timbers",
+      "shortName": "Portland Timbers",
+      "code": "POR",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Providence Park",
+      "logo": "portland-timbers.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "real-salt-lake",
+      "name": "Real Salt Lake",
+      "shortName": "Real Salt Lake",
+      "code": "SAL",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "America First Field",
+      "logo": "real-salt-lake.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "san-diego",
+      "name": "San Diego",
+      "shortName": "San Diego",
+      "code": "SAN",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": null,
+      "logo": "san-diego.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "san-jose-earthquakes",
+      "name": "San Jose Earthquakes",
+      "shortName": "San Jose Earthquakes",
+      "code": "JOS",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "PayPal Park",
+      "logo": "san-jose-earthquakes.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "seattle-sounders",
+      "name": "Seattle Sounders",
+      "shortName": "Seattle Sounders",
+      "code": "SEA",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Lumen Field",
+      "logo": "seattle-sounders.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "sporting-kansas-city",
+      "name": "Sporting Kansas City",
+      "shortName": "Sporting Kansas City",
+      "code": "KAN",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Children's Mercy Park",
+      "logo": "sporting-kansas-city.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "st-louis-city",
+      "name": "St. Louis City",
+      "shortName": "St. Louis City",
+      "code": "STL",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "CITYPARK",
+      "logo": "st-louis-city.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "toronto-fc",
+      "name": "Toronto FC",
+      "shortName": "Toronto",
+      "code": "TOR",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "BMO Field",
+      "logo": "toronto-fc.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "vancouver-whitecaps",
+      "name": "Vancouver Whitecaps",
+      "shortName": "Vancouver Whitecaps",
+      "code": "VAN",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "BC Place",
+      "logo": "vancouver-whitecaps.png",
+      "leagueId": "mls"
+    },
+    {
+      "id": "abha",
+      "name": "Abha",
+      "shortName": "Abha",
+      "code": "ABH",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Prince Sultan bin Abdulaziz Sports City Stadium",
+      "logo": "abha.png",
+      "leagueId": "saudi-pro-league"
+    },
+    {
+      "id": "al-diriyah",
+      "name": "Al Diriyah",
+      "shortName": "Al Diriyah",
+      "code": "ALD",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": null,
+      "logo": "al-diriyah.png",
+      "leagueId": "saudi-pro-league"
+    },
+    {
+      "id": "al-khaleej-saihat",
+      "name": "Al Khaleej Saihat",
+      "shortName": "Al Khaleej Saihat",
+      "code": "ALK",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Prince Mohamed bin Fahd Stadium",
+      "logo": "al-khaleej-saihat.png",
+      "leagueId": "saudi-pro-league"
+    },
+    {
+      "id": "al-kholood",
+      "name": "Al Kholood",
+      "shortName": "Al Kholood",
+      "code": "ALK",
+      "colors": {
+        "primary": "#0B2D6B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Ar-Rass Stadium (Al Hazm Club Stadium)",
+      "logo": "al-kholood.png",
+      "leagueId": "saudi-pro-league"
+    },
+    {
+      "id": "al-riyadh",
+      "name": "Al Riyadh",
+      "shortName": "Al Riyadh",
+      "code": "RIY",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Prince Faisal bin Fahd Stadium",
+      "logo": "al-riyadh.png",
+      "leagueId": "saudi-pro-league"
+    },
+    {
+      "id": "al-shabab",
+      "name": "Al Shabab",
+      "shortName": "Al Shabab",
+      "code": "SHA",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "SHG Arena",
+      "logo": "al-shabab.png",
+      "leagueId": "saudi-pro-league"
+    },
+    {
+      "id": "al-taawon",
+      "name": "Al Taawon",
+      "shortName": "Al Taawon",
+      "code": "ALT",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Al Taawon Club Stadium",
+      "logo": "al-taawon.png",
+      "leagueId": "saudi-pro-league"
+    },
+    {
+      "id": "al-ahli-jeddah",
+      "name": "Al-Ahli Jeddah",
+      "shortName": "Al-Ahli Jeddah",
+      "code": "AHL",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Prince Abdullah al-Faisal Stadium",
+      "logo": "al-ahli-jeddah.png",
+      "leagueId": "saudi-pro-league"
+    },
+    {
+      "id": "al-ettifaq",
+      "name": "Al-Ettifaq",
+      "shortName": "Al-Ettifaq",
+      "code": "ETT",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Prince Mohamed bin Fahd Stadium",
+      "logo": "al-ettifaq.png",
+      "leagueId": "saudi-pro-league"
+    },
+    {
+      "id": "al-faisaly-fc",
+      "name": "Al-Faisaly FC",
+      "shortName": "Al-Faisaly",
+      "code": "FAI",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Al Majma'ah Sports City Stadium",
+      "logo": "al-faisaly-fc.png",
+      "leagueId": "saudi-pro-league"
+    },
+    {
+      "id": "al-fateh",
+      "name": "Al-Fateh",
+      "shortName": "Al-Fateh",
+      "code": "FAT",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Al Fateh Club Stadium",
+      "logo": "al-fateh.png",
+      "leagueId": "saudi-pro-league"
+    },
+    {
+      "id": "al-fayha",
+      "name": "Al-Fayha",
+      "shortName": "Al-Fayha",
+      "code": "ALF",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Al Majma'ah Sports City Stadium",
+      "logo": "al-fayha.png",
+      "leagueId": "saudi-pro-league"
+    },
+    {
+      "id": "al-hazm",
+      "name": "Al-Hazm",
+      "shortName": "Al-Hazm",
+      "code": "HAZ",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Ar-Rass Stadium (Al Hazm Club Stadium)",
+      "logo": "al-hazm.png",
+      "leagueId": "saudi-pro-league"
+    },
+    {
+      "id": "al-hilal-saudi-fc",
+      "name": "Al-Hilal Saudi FC",
+      "shortName": "Al-Hilal Saudi",
+      "code": "HIL",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Kingdom Arena",
+      "logo": "al-hilal-saudi-fc.png",
+      "leagueId": "saudi-pro-league"
+    },
+    {
+      "id": "al-ittihad-fc",
+      "name": "Al-Ittihad FC",
+      "shortName": "Al-Ittihad",
+      "code": "ITT",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "King Abdullah Sports City",
+      "logo": "al-ittihad-fc.png",
+      "leagueId": "saudi-pro-league"
+    },
+    {
+      "id": "al-nassr",
+      "name": "Al-Nassr",
+      "shortName": "Al-Nassr",
+      "code": "NAS",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Al Awal Park at King Saud University",
+      "logo": "al-nassr.png",
+      "leagueId": "saudi-pro-league"
+    },
+    {
+      "id": "al-qadisiyah-fc",
+      "name": "Al-Qadisiyah FC",
+      "shortName": "Al-Qadisiyah",
+      "code": "ALQ",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Prince Saud bin Jalawi Stadium",
+      "logo": "al-qadisiyah-fc.png",
+      "leagueId": "saudi-pro-league"
+    },
+    {
+      "id": "neom",
+      "name": "NEOM",
+      "shortName": "NEOM",
+      "code": "NEO",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "King Khalid Sport City Stadium",
+      "logo": "neom.png",
+      "leagueId": "saudi-pro-league"
+    },
+    {
+      "id": "aldosivi",
+      "name": "Aldosivi",
+      "shortName": "Aldosivi",
+      "code": "ALD",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio José María Minella",
+      "logo": "aldosivi.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "argentinos-jrs",
+      "name": "Argentinos JRS",
+      "shortName": "Argentinos JRS",
+      "code": "ARG",
+      "colors": {
+        "primary": "#0B2D6B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Diego Armando Maradona",
+      "logo": "argentinos-jrs.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "atletico-tucuman",
+      "name": "Atletico Tucuman",
+      "shortName": "Atletico Tucuman",
+      "code": "TUC",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Monumental Presidente José Fierro",
+      "logo": "atletico-tucuman.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "banfield",
+      "name": "Banfield",
+      "shortName": "Banfield",
+      "code": "BAN",
+      "colors": {
+        "primary": "#0B2D6B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Florencio Solá",
+      "logo": "banfield.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "barracas-central",
+      "name": "Barracas Central",
+      "shortName": "Barracas Central",
+      "code": "BAR",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Claudio Fabián Tapia",
+      "logo": "barracas-central.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "belgrano-cordoba",
+      "name": "Belgrano Cordoba",
+      "shortName": "Belgrano Cordoba",
+      "code": "BEL",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Julio César Villagra",
+      "logo": "belgrano-cordoba.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "boca-juniors",
+      "name": "Boca Juniors",
+      "shortName": "Boca Juniors",
+      "code": "BOC",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Alberto José Armando",
+      "logo": "boca-juniors.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "central-cordoba-de-santiago",
+      "name": "Central Cordoba de Santiago",
+      "shortName": "Central Cordoba de Santiago",
+      "code": "CEN",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Alfredo Terrera",
+      "logo": "central-cordoba-de-santiago.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "defensa-y-justicia",
+      "name": "Defensa Y Justicia",
+      "shortName": "Defensa Y Justicia",
+      "code": "DEF",
+      "colors": {
+        "primary": "#0B2D6B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Norberto Tito Tomaghello",
+      "logo": "defensa-y-justicia.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "deportivo-riestra",
+      "name": "Deportivo Riestra",
+      "shortName": "Deportivo Riestra",
+      "code": "RIE",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Guillermo Laza",
+      "logo": "deportivo-riestra.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "estudiantes-l-p",
+      "name": "Estudiantes L.P.",
+      "shortName": "Estudiantes L.P.",
+      "code": "EST",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Único Diego Armando Maradona",
+      "logo": "estudiantes-l-p.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "estudiantes-de-rio-cuarto",
+      "name": "Estudiantes de Rio Cuarto",
+      "shortName": "Estudiantes de Rio Cuarto",
+      "code": "EST",
+      "colors": {
+        "primary": "#0B2D6B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Ciudad de Río Cuarto",
+      "logo": "estudiantes-de-rio-cuarto.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "gimnasia-l-p",
+      "name": "Gimnasia L.P.",
+      "shortName": "Gimnasia L.P.",
+      "code": "GIM",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Juan Carmelo Zerillo",
+      "logo": "gimnasia-l-p.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "gimnasia-m",
+      "name": "Gimnasia M.",
+      "shortName": "Gimnasia M.",
+      "code": "GIM",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Víctor Antonio Legrotaglie",
+      "logo": "gimnasia-m.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "huracan",
+      "name": "Huracan",
+      "shortName": "Huracan",
+      "code": "HUR",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Tomás Adolfo Ducó",
+      "logo": "huracan.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "independ-rivadavia",
+      "name": "Independ. Rivadavia",
+      "shortName": "Independ. Rivadavia",
+      "code": "RIV",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Juan Bautista Gargantini",
+      "logo": "independ-rivadavia.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "independiente",
+      "name": "Independiente",
+      "shortName": "Independiente",
+      "code": "IND",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Libertadores de América",
+      "logo": "independiente.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "instituto-cordoba",
+      "name": "Instituto Cordoba",
+      "shortName": "Instituto Cordoba",
+      "code": "INS",
+      "colors": {
+        "primary": "#0B2D6B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Juan Domingo Perón",
+      "logo": "instituto-cordoba.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "lanus",
+      "name": "Lanus",
+      "shortName": "Lanus",
+      "code": "LAN",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Ciudad de Lanús - Néstor Díaz Pérez",
+      "logo": "lanus.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "newells-old-boys",
+      "name": "Newells Old Boys",
+      "shortName": "Newells Old Boys",
+      "code": "NEW",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Marcelo Alberto Bielsa",
+      "logo": "newells-old-boys.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "platense",
+      "name": "Platense",
+      "shortName": "Platense",
+      "code": "PLA",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Ciudad de Vicente López",
+      "logo": "platense.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "racing-club",
+      "name": "Racing Club",
+      "shortName": "Racing Club",
+      "code": "RAC",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Presidente Juan Domingo Perón",
+      "logo": "racing-club.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "river-plate",
+      "name": "River Plate",
+      "shortName": "River Plate",
+      "code": "RIV",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Mâs Monumental",
+      "logo": "river-plate.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "rosario-central",
+      "name": "Rosario Central",
+      "shortName": "Rosario Central",
+      "code": "ROS",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Gigante de Arroyito",
+      "logo": "rosario-central.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "san-lorenzo",
+      "name": "San Lorenzo",
+      "shortName": "San Lorenzo",
+      "code": "LOR",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Pedro Bidegaín",
+      "logo": "san-lorenzo.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "sarmiento-junin",
+      "name": "Sarmiento Junin",
+      "shortName": "Sarmiento Junin",
+      "code": "SAR",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Eva Perón de Junín",
+      "logo": "sarmiento-junin.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "talleres-cordoba",
+      "name": "Talleres Cordoba",
+      "shortName": "Talleres Cordoba",
+      "code": "TAL",
+      "colors": {
+        "primary": "#0B2D6B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio Mario Alberto Kempes",
+      "logo": "talleres-cordoba.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "tigre",
+      "name": "Tigre",
+      "shortName": "Tigre",
+      "code": "TIG",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio José Dellagiovanna",
+      "logo": "tigre.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "union-santa-fe",
+      "name": "Union Santa Fe",
+      "shortName": "Union Santa Fe",
+      "code": "UNI",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio 15 de Abril",
+      "logo": "union-santa-fe.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "velez-sarsfield",
+      "name": "Velez Sarsfield",
+      "shortName": "Velez Sarsfield",
+      "code": "VEL",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Estadio José Amalfitani",
+      "logo": "velez-sarsfield.png",
+      "leagueId": "liga-profesional"
+    },
+    {
+      "id": "anderlecht",
+      "name": "Anderlecht",
+      "shortName": "Anderlecht",
+      "code": "AND",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Lotto Park",
+      "logo": "anderlecht.png",
+      "leagueId": "belgian-pro-league"
+    },
+    {
+      "id": "antwerp",
+      "name": "Antwerp",
+      "shortName": "Antwerp",
+      "code": "ANT",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Bosuilstadion",
+      "logo": "antwerp.png",
+      "leagueId": "belgian-pro-league"
+    },
+    {
+      "id": "cercle-brugge",
+      "name": "Cercle Brugge",
+      "shortName": "Cercle Brugge",
+      "code": "CER",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Jan Breydelstadion",
+      "logo": "cercle-brugge.png",
+      "leagueId": "belgian-pro-league"
+    },
+    {
+      "id": "charleroi",
+      "name": "Charleroi",
+      "shortName": "Charleroi",
+      "code": "CHA",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stade du Pays de Charleroi",
+      "logo": "charleroi.png",
+      "leagueId": "belgian-pro-league"
+    },
+    {
+      "id": "club-brugge-kv",
+      "name": "Club Brugge KV",
+      "shortName": "Club Brugge KV",
+      "code": "CLU",
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Jan Breydelstadion",
+      "logo": "club-brugge-kv.png",
+      "leagueId": "belgian-pro-league"
+    },
+    {
+      "id": "genk",
+      "name": "Genk",
+      "shortName": "Genk",
+      "code": "GEN",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Cegeka Arena",
+      "logo": "genk.png",
+      "leagueId": "belgian-pro-league"
+    },
+    {
+      "id": "gent",
+      "name": "Gent",
+      "shortName": "Gent",
+      "code": "GEN",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Planet Group Arena",
+      "logo": "gent.png",
+      "leagueId": "belgian-pro-league"
+    },
+    {
+      "id": "kv-mechelen",
+      "name": "KV Mechelen",
+      "shortName": "KV Mechelen",
+      "code": "MEC",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "AFAS Stadion",
+      "logo": "kv-mechelen.png",
+      "leagueId": "belgian-pro-league"
+    },
+    {
+      "id": "kvc-westerlo",
+      "name": "KVC Westerlo",
+      "shortName": "KVC Westerlo",
+      "code": "WES",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Het Kuipje",
+      "logo": "kvc-westerlo.png",
+      "leagueId": "belgian-pro-league"
+    },
+    {
+      "id": "kortrijk",
+      "name": "Kortrijk",
+      "shortName": "Kortrijk",
+      "code": "KOR",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Guldensporenstadion",
+      "logo": "kortrijk.png",
+      "leagueId": "belgian-pro-league"
+    },
+    {
+      "id": "lommel-united",
+      "name": "Lommel United",
+      "shortName": "Lommel United",
+      "code": "KVS",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Soeverein Stadion",
+      "logo": "lommel-united.png",
+      "leagueId": "belgian-pro-league"
+    },
+    {
+      "id": "oh-leuven",
+      "name": "OH Leuven",
+      "shortName": "OH Leuven",
+      "code": "LEU",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "King Power at Den Dreef Stadion",
+      "logo": "oh-leuven.png",
+      "leagueId": "belgian-pro-league"
+    },
+    {
+      "id": "raal-la-louviere",
+      "name": "RAAL La Louvière",
+      "shortName": "RAAL La Louvière",
+      "code": "RAA",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stade Communal du Tivoli",
+      "logo": "raal-la-louviere.png",
+      "leagueId": "belgian-pro-league"
+    },
+    {
+      "id": "sk-beveren",
+      "name": "SK Beveren",
+      "shortName": "SK Beveren",
+      "code": "WAA",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Freethielstadion",
+      "logo": "sk-beveren.png",
+      "leagueId": "belgian-pro-league"
+    },
+    {
+      "id": "st-truiden",
+      "name": "St. Truiden",
+      "shortName": "St. Truiden",
+      "code": "TRU",
+      "colors": {
+        "primary": "#0B2D6B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Daio Wasabi Stayen Stadium",
+      "logo": "st-truiden.png",
+      "leagueId": "belgian-pro-league"
+    },
+    {
+      "id": "standard-liege",
+      "name": "Standard Liege",
+      "shortName": "Standard Liege",
+      "code": "STA",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stade Maurice Dufrasne",
+      "logo": "standard-liege.png",
+      "leagueId": "belgian-pro-league"
+    },
+    {
+      "id": "union-st-gilloise",
+      "name": "Union St. Gilloise",
+      "shortName": "Union St. Gilloise",
+      "code": "GIL",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stade Joseph Mariën",
+      "logo": "union-st-gilloise.png",
+      "leagueId": "belgian-pro-league"
+    },
+    {
+      "id": "zulte-waregem",
+      "name": "Zulte Waregem",
+      "shortName": "Zulte Waregem",
+      "code": "WAR",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Elindus Arena",
+      "logo": "zulte-waregem.png",
+      "leagueId": "belgian-pro-league"
+    },
+    {
+      "id": "ararat-armenia",
+      "name": "Ararat-Armenia",
+      "shortName": "Ararat-Armenia",
+      "code": "ARA",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Yerevan Football Academy",
+      "logo": "ararat-armenia.png",
+      "leagueId": null,
+      "guest": true,
+      "country": "ARM"
+    },
+    {
+      "id": "celje",
+      "name": "Celje",
+      "shortName": "Celje",
+      "code": "CEL",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stadion Z'dežele",
+      "logo": "celje.png",
+      "leagueId": null,
+      "guest": true,
+      "country": "SVN"
+    },
+    {
+      "id": "celtic",
+      "name": "Celtic",
+      "shortName": "Celtic",
+      "code": "CEL",
+      "colors": {
+        "primary": "#0B2D6B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Celtic Park",
+      "logo": "celtic.png",
+      "leagueId": null,
+      "guest": true,
+      "country": "SCO"
+    },
+    {
+      "id": "dinamo-zagreb",
+      "name": "Dinamo Zagreb",
+      "shortName": "Dinamo Zagreb",
+      "code": "ZAG",
+      "colors": {
+        "primary": "#FDB913",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stadion Maksimir",
+      "logo": "dinamo-zagreb.png",
+      "leagueId": null,
+      "guest": true,
+      "country": "CRO"
+    },
+    {
+      "id": "ferencvarosi-tc",
+      "name": "Ferencvarosi TC",
+      "shortName": "Ferencvarosi TC",
+      "code": "FER",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Groupama Aréna",
+      "logo": "ferencvarosi-tc.png",
+      "leagueId": null,
+      "guest": true,
+      "country": "HUN"
+    },
+    {
+      "id": "hapoel-beer-sheva",
+      "name": "Hapoel Beer Sheva",
+      "shortName": "Hapoel Beer Sheva",
+      "code": "HAP",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Yaakov Turner Toto Stadium",
+      "logo": "hapoel-beer-sheva.png",
+      "leagueId": null,
+      "guest": true,
+      "country": "ISR"
+    },
+    {
+      "id": "jagiellonia",
+      "name": "Jagiellonia",
+      "shortName": "Jagiellonia",
+      "code": "JAG",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stadion Miejski",
+      "logo": "jagiellonia.png",
+      "leagueId": null,
+      "guest": true,
+      "country": "POL"
+    },
+    {
+      "id": "lech-poznan",
+      "name": "Lech Poznan",
+      "shortName": "Lech Poznan",
+      "code": "LEC",
+      "colors": {
+        "primary": "#5B2A86",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Enea Stadion",
+      "logo": "lech-poznan.png",
+      "leagueId": null,
+      "guest": true,
+      "country": "POL"
+    },
+    {
+      "id": "levski-sofia",
+      "name": "Levski Sofia",
+      "shortName": "Levski Sofia",
+      "code": "LEV",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stadion Georgi Asparuhov",
+      "logo": "levski-sofia.png",
+      "leagueId": null,
+      "guest": true,
+      "country": "BUL"
+    },
+    {
+      "id": "lillestrom",
+      "name": "Lillestrom",
+      "shortName": "Lillestrom",
+      "code": "LIL",
+      "colors": {
+        "primary": "#1D4ED8",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Åråsen Stadion",
+      "logo": "lillestrom.png",
+      "leagueId": null,
+      "guest": true,
+      "country": "NOR"
+    },
+    {
+      "id": "ofi",
+      "name": "OFI",
+      "shortName": "OFI",
+      "code": "CRE",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stadio Thódoros Vardinoyánnis",
+      "logo": "ofi.png",
+      "leagueId": null,
+      "guest": true,
+      "country": "GRE"
+    },
+    {
+      "id": "olympiakos-piraeus",
+      "name": "Olympiakos Piraeus",
+      "shortName": "Olympiakos Piraeus",
+      "code": "OLY",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Stadio Georgios Karaiskáki",
+      "logo": "olympiakos-piraeus.png",
+      "leagueId": null,
+      "guest": true,
+      "country": "GRE"
+    },
+    {
+      "id": "omonia-nicosia",
+      "name": "Omonia Nicosia",
+      "shortName": "Omonia Nicosia",
+      "code": "OMO",
+      "colors": {
+        "primary": "#00A6A6",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Neo GSP",
+      "logo": "omonia-nicosia.png",
+      "leagueId": null,
+      "guest": true,
+      "country": "CYP"
+    },
+    {
+      "id": "plzen",
+      "name": "Plzen",
+      "shortName": "Plzen",
+      "code": "PLZ",
+      "colors": {
+        "primary": "#7A1F2B",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Doosan Aréna",
+      "logo": "plzen.png",
+      "leagueId": null,
+      "guest": true,
+      "country": "CZE"
+    },
+    {
+      "id": "red-bull-salzburg",
+      "name": "Red Bull Salzburg",
+      "shortName": "Red Bull Salzburg",
+      "code": "SAL",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Red Bull Arena",
+      "logo": "red-bull-salzburg.png",
+      "leagueId": null,
+      "guest": true,
+      "country": "AUT"
+    },
+    {
+      "id": "sparta-praha",
+      "name": "Sparta Praha",
+      "shortName": "Sparta Praha",
+      "code": "SPA",
+      "colors": {
+        "primary": "#00843D",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "epet ARENA",
+      "logo": "sparta-praha.png",
+      "leagueId": null,
+      "guest": true,
+      "country": "CZE"
+    },
+    {
+      "id": "sturm-graz",
+      "name": "Sturm Graz",
+      "shortName": "Sturm Graz",
+      "code": "STU",
+      "colors": {
+        "primary": "#F18A00",
+        "secondary": "#FFFFFF"
+      },
+      "stadium": "Merkur Arena",
+      "logo": "sturm-graz.png",
+      "leagueId": null,
+      "guest": true,
+      "country": "AUT"
+    }
+  ]
+}

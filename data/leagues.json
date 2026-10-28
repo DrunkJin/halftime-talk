@@ -1,0 +1,864 @@
+{
+  "schemaVersion": 2,
+  "leagues": [
+    {
+      "id": "epl",
+      "name": "Premier League",
+      "country": "ENG",
+      "season": "2026-27",
+      "level": 1,
+      "teamIds": [
+        "arsenal",
+        "aston-villa",
+        "bournemouth",
+        "brentford",
+        "brighton-hove-albion",
+        "chelsea",
+        "coventry-city",
+        "crystal-palace",
+        "everton",
+        "fulham",
+        "hull-city",
+        "ipswich-town",
+        "leeds-united",
+        "liverpool",
+        "manchester-city",
+        "manchester-united",
+        "newcastle-united",
+        "nottingham-forest",
+        "sunderland",
+        "tottenham-hotspur"
+      ],
+      "rules": {
+        "rounds": 2,
+        "points": {
+          "win": 3,
+          "draw": 1,
+          "loss": 0
+        },
+        "tiebreakers": [
+          "points",
+          "goalDifference",
+          "goalsFor",
+          "headToHead"
+        ],
+        "matchday": {
+          "benchSize": 9,
+          "maxSubstitutions": 5
+        }
+      },
+      "relegation": {
+        "league": "championship",
+        "spots": 3
+      }
+    },
+    {
+      "id": "championship",
+      "name": "Championship",
+      "country": "ENG",
+      "season": "2026-27",
+      "level": 2,
+      "teamIds": [
+        "birmingham-city",
+        "blackburn-rovers",
+        "bolton-wanderers",
+        "bristol-city",
+        "burnley",
+        "cardiff-city",
+        "charlton-athletic",
+        "derby-county",
+        "lincoln-city",
+        "middlesbrough",
+        "millwall",
+        "norwich-city",
+        "portsmouth",
+        "preston-north-end",
+        "queens-park-rangers",
+        "sheffield-united",
+        "southampton",
+        "stoke-city",
+        "swansea-city",
+        "watford",
+        "west-bromwich-albion",
+        "west-ham-united",
+        "wolverhampton-wanderers",
+        "wrexham"
+      ],
+      "rules": {
+        "rounds": 2,
+        "points": {
+          "win": 3,
+          "draw": 1,
+          "loss": 0
+        },
+        "tiebreakers": [
+          "points",
+          "goalDifference",
+          "goalsFor",
+          "headToHead"
+        ],
+        "matchday": {
+          "benchSize": 9,
+          "maxSubstitutions": 5
+        }
+      },
+      "promotion": {
+        "league": "epl",
+        "spots": 3
+      }
+    },
+    {
+      "id": "laliga",
+      "name": "LaLiga",
+      "country": "ESP",
+      "season": "2026-27",
+      "level": 1,
+      "teamIds": [
+        "athletic-club",
+        "barcelona",
+        "ca-osasuna",
+        "celta-de-vigo",
+        "club-atletico-de-madrid",
+        "deportivo-alaves",
+        "deportivo-la-coruna",
+        "elche",
+        "getafe",
+        "levante-ud",
+        "malaga",
+        "rcd-espanyol-de-barcelona",
+        "rayo-vallecano-de-madrid",
+        "real-betis-balompie",
+        "real-madrid",
+        "real-racing-club-de-santander",
+        "real-sociedad-de-futbol",
+        "sevilla",
+        "valencia",
+        "villarreal"
+      ],
+      "rules": {
+        "rounds": 2,
+        "points": {
+          "win": 3,
+          "draw": 1,
+          "loss": 0
+        },
+        "tiebreakers": [
+          "points",
+          "goalDifference",
+          "goalsFor",
+          "headToHead"
+        ],
+        "matchday": {
+          "benchSize": 9,
+          "maxSubstitutions": 5
+        }
+      }
+    },
+    {
+      "id": "serie-a",
+      "name": "Serie A",
+      "country": "ITA",
+      "season": "2026-27",
+      "level": 1,
+      "teamIds": [
+        "acf-fiorentina",
+        "atalanta-bc",
+        "bologna-fc-1909",
+        "cagliari-calcio",
+        "como-1907",
+        "frosinone-calcio",
+        "genoa-cfc",
+        "internazionale-milano",
+        "juventus",
+        "milan",
+        "monza",
+        "napoli",
+        "parma-calcio-1913",
+        "roma",
+        "ss-lazio",
+        "torino",
+        "us-lecce",
+        "us-sassuolo-calcio",
+        "udinese-calcio",
+        "venezia"
+      ],
+      "rules": {
+        "rounds": 2,
+        "points": {
+          "win": 3,
+          "draw": 1,
+          "loss": 0
+        },
+        "tiebreakers": [
+          "points",
+          "goalDifference",
+          "goalsFor",
+          "headToHead"
+        ],
+        "matchday": {
+          "benchSize": 9,
+          "maxSubstitutions": 5
+        }
+      }
+    },
+    {
+      "id": "bundesliga",
+      "name": "Bundesliga",
+      "country": "GER",
+      "season": "2026-27",
+      "level": 1,
+      "teamIds": [
+        "1-fsv-mainz-05",
+        "1899-hoffenheim",
+        "augsburg",
+        "bayer-04-leverkusen",
+        "bayern-munchen",
+        "borussia-dortmund",
+        "borussia-monchengladbach",
+        "eintracht-frankfurt",
+        "freiburg",
+        "hamburger-sv",
+        "koln",
+        "paderborn-07",
+        "rb-leipzig",
+        "sv-07-elversberg",
+        "schalke-04",
+        "stuttgart",
+        "union-berlin",
+        "werder-bremen"
+      ],
+      "rules": {
+        "rounds": 2,
+        "points": {
+          "win": 3,
+          "draw": 1,
+          "loss": 0
+        },
+        "tiebreakers": [
+          "points",
+          "goalDifference",
+          "goalsFor",
+          "headToHead"
+        ],
+        "matchday": {
+          "benchSize": 9,
+          "maxSubstitutions": 5
+        }
+      }
+    },
+    {
+      "id": "ligue-1",
+      "name": "Ligue 1",
+      "country": "FRA",
+      "season": "2026-27",
+      "level": 1,
+      "teamIds": [
+        "aj-auxerre",
+        "angers-sco",
+        "es-troyes",
+        "le-havre",
+        "le-mans",
+        "lille-osc",
+        "lorient",
+        "monaco",
+        "ogc-nice",
+        "olympique-lyonnais",
+        "olympique-de-marseille",
+        "paris",
+        "paris-saint-germain",
+        "racing-club-de-lens",
+        "stade-brestois-29",
+        "stade-rennais-fc-1901",
+        "strasbourg-alsace",
+        "toulouse"
+      ],
+      "rules": {
+        "rounds": 2,
+        "points": {
+          "win": 3,
+          "draw": 1,
+          "loss": 0
+        },
+        "tiebreakers": [
+          "points",
+          "goalDifference",
+          "goalsFor",
+          "headToHead"
+        ],
+        "matchday": {
+          "benchSize": 9,
+          "maxSubstitutions": 5
+        }
+      }
+    },
+    {
+      "id": "eredivisie",
+      "name": "Eredivisie",
+      "country": "NED",
+      "season": "2026-27",
+      "level": 1,
+      "teamIds": [
+        "ado-den-haag",
+        "az",
+        "ajax",
+        "cambuur-leeuwarden",
+        "feyenoord-rotterdam",
+        "fortuna-sittard",
+        "go-ahead-eagles",
+        "groningen",
+        "heerenveen",
+        "nec",
+        "pec-zwolle",
+        "psv",
+        "sbv-excelsior",
+        "sparta-rotterdam",
+        "telstar-1963",
+        "twente-65",
+        "utrecht",
+        "willem-ii-tilburg"
+      ],
+      "rules": {
+        "rounds": 2,
+        "points": {
+          "win": 3,
+          "draw": 1,
+          "loss": 0
+        },
+        "tiebreakers": [
+          "points",
+          "goalDifference",
+          "goalsFor",
+          "headToHead"
+        ],
+        "matchday": {
+          "benchSize": 9,
+          "maxSubstitutions": 5
+        }
+      }
+    },
+    {
+      "id": "primeira-liga",
+      "name": "Primeira Liga",
+      "country": "POR",
+      "season": "2026-27",
+      "level": 1,
+      "teamIds": [
+        "academico-de-viseu",
+        "alverca",
+        "arouca",
+        "cd-nacional",
+        "cd-santa-clara",
+        "cs-maritimo",
+        "casa-pia",
+        "estrela-da-amadora",
+        "famalicao",
+        "gd-estoril-praia",
+        "gil-vicente",
+        "moreirense",
+        "porto",
+        "rio-ave",
+        "sport-lisboa-e-benfica",
+        "sporting-clube-de-braga",
+        "sporting-clube-de-portugal",
+        "vitoria"
+      ],
+      "rules": {
+        "rounds": 2,
+        "points": {
+          "win": 3,
+          "draw": 1,
+          "loss": 0
+        },
+        "tiebreakers": [
+          "points",
+          "goalDifference",
+          "goalsFor",
+          "headToHead"
+        ],
+        "matchday": {
+          "benchSize": 9,
+          "maxSubstitutions": 5
+        }
+      }
+    },
+    {
+      "id": "k-league-1",
+      "name": "K League 1",
+      "country": "KOR",
+      "season": "2026",
+      "level": 1,
+      "teamIds": [
+        "bucheon-fc-1995",
+        "daejeon-hana-citizen",
+        "fc-anyang",
+        "fc-seoul",
+        "gangwon-fc",
+        "gimcheon-sangmu",
+        "gwangju-fc",
+        "incheon-united",
+        "jeju-sk",
+        "jeonbuk-hyundai-motors",
+        "pohang-steelers",
+        "ulsan-hd"
+      ],
+      "rules": {
+        "rounds": 3,
+        "points": {
+          "win": 3,
+          "draw": 1,
+          "loss": 0
+        },
+        "tiebreakers": [
+          "points",
+          "goalDifference",
+          "goalsFor",
+          "headToHead"
+        ],
+        "matchday": {
+          "benchSize": 9,
+          "maxSubstitutions": 5
+        }
+      },
+      "relegation": {
+        "league": "k-league-2",
+        "spots": 1
+      }
+    },
+    {
+      "id": "k-league-2",
+      "name": "K League 2",
+      "country": "KOR",
+      "season": "2026",
+      "level": 2,
+      "teamIds": [
+        "ansan-greeners",
+        "busan-ipark",
+        "cheonan-city",
+        "chungbuk-cheongju",
+        "chungnam-asan",
+        "daegu-fc",
+        "gimhae-fc-2008",
+        "gimpo-fc",
+        "gyeongnam-fc",
+        "hwaseong-fc",
+        "jeonnam-dragons",
+        "paju-frontier",
+        "seongnam-fc",
+        "seoul-e-land",
+        "suwon-fc",
+        "suwon-samsung-bluewings",
+        "yongin-fc"
+      ],
+      "rules": {
+        "rounds": 2,
+        "points": {
+          "win": 3,
+          "draw": 1,
+          "loss": 0
+        },
+        "tiebreakers": [
+          "points",
+          "goalDifference",
+          "goalsFor",
+          "headToHead"
+        ],
+        "matchday": {
+          "benchSize": 9,
+          "maxSubstitutions": 5
+        }
+      },
+      "promotion": {
+        "league": "k-league-1",
+        "spots": 1
+      }
+    },
+    {
+      "id": "j1-league",
+      "name": "J1 League",
+      "country": "JPN",
+      "season": "2027",
+      "level": 1,
+      "teamIds": [
+        "avispa-fukuoka",
+        "cerezo-osaka",
+        "fc-tokyo",
+        "fagiano-okayama",
+        "gamba-osaka",
+        "jef-united-chiba",
+        "kashima",
+        "kashiwa-reysol",
+        "kawasaki-frontale",
+        "kyoto-sanga",
+        "machida-zelvia",
+        "mito-hollyhock",
+        "nagoya-grampus",
+        "sanfrecce-hiroshima",
+        "shimizu-s-pulse",
+        "tokyo-verdy",
+        "urawa",
+        "v-varen-nagasaki",
+        "vissel-kobe",
+        "yokohama-f-marinos"
+      ],
+      "rules": {
+        "rounds": 2,
+        "points": {
+          "win": 3,
+          "draw": 1,
+          "loss": 0
+        },
+        "tiebreakers": [
+          "points",
+          "goalDifference",
+          "goalsFor",
+          "headToHead"
+        ],
+        "matchday": {
+          "benchSize": 9,
+          "maxSubstitutions": 5
+        }
+      }
+    },
+    {
+      "id": "super-lig",
+      "name": "Süper Lig",
+      "country": "TUR",
+      "season": "2026",
+      "level": 1,
+      "teamIds": [
+        "alanyaspor",
+        "amed",
+        "basaksehir",
+        "besiktas",
+        "erzurumspor-fk",
+        "eyupspor",
+        "fenerbahce",
+        "galatasaray",
+        "gaziantep-fk",
+        "genclerbirligi-s-k",
+        "goztepe",
+        "kas-mpasa",
+        "kocaelispor",
+        "konyaspor",
+        "rizespor",
+        "samsunspor",
+        "trabzonspor",
+        "corum-fk"
+      ],
+      "rules": {
+        "rounds": 2,
+        "points": {
+          "win": 3,
+          "draw": 1,
+          "loss": 0
+        },
+        "tiebreakers": [
+          "points",
+          "goalDifference",
+          "goalsFor",
+          "headToHead"
+        ],
+        "matchday": {
+          "benchSize": 9,
+          "maxSubstitutions": 5
+        }
+      }
+    },
+    {
+      "id": "brasileirao",
+      "name": "Brasileirão Série A",
+      "country": "BRA",
+      "season": "2026",
+      "level": 1,
+      "teamIds": [
+        "atletico-paranaense",
+        "atletico-mg",
+        "bahia",
+        "botafogo",
+        "chapecoense-sc",
+        "corinthians",
+        "coritiba",
+        "cruzeiro",
+        "flamengo",
+        "fluminense",
+        "gremio",
+        "internacional",
+        "mirassol",
+        "palmeiras",
+        "rb-bragantino",
+        "remo",
+        "santos",
+        "sao-paulo",
+        "vasco-da-gama",
+        "vitoria-bra"
+      ],
+      "rules": {
+        "rounds": 2,
+        "points": {
+          "win": 3,
+          "draw": 1,
+          "loss": 0
+        },
+        "tiebreakers": [
+          "points",
+          "goalDifference",
+          "goalsFor",
+          "headToHead"
+        ],
+        "matchday": {
+          "benchSize": 9,
+          "maxSubstitutions": 5
+        }
+      }
+    },
+    {
+      "id": "liga-mx",
+      "name": "Liga MX",
+      "country": "MEX",
+      "season": "2026",
+      "level": 1,
+      "teamIds": [
+        "atlante-fc",
+        "atlas",
+        "atletico-san-luis",
+        "cf-pachuca",
+        "club-america",
+        "club-queretaro",
+        "club-tijuana",
+        "cruz-azul",
+        "fc-juarez",
+        "guadalajara-chivas",
+        "leon",
+        "monterrey",
+        "necaxa",
+        "puebla",
+        "santos-laguna",
+        "tigres-uanl",
+        "toluca",
+        "u-n-a-m-pumas"
+      ],
+      "rules": {
+        "rounds": 2,
+        "points": {
+          "win": 3,
+          "draw": 1,
+          "loss": 0
+        },
+        "tiebreakers": [
+          "points",
+          "goalDifference",
+          "goalsFor",
+          "headToHead"
+        ],
+        "matchday": {
+          "benchSize": 9,
+          "maxSubstitutions": 5
+        }
+      }
+    },
+    {
+      "id": "mls",
+      "name": "MLS",
+      "country": "USA",
+      "season": "2026",
+      "level": 1,
+      "teamIds": [
+        "atlanta-united-fc",
+        "austin",
+        "cf-montreal",
+        "charlotte",
+        "chicago-fire",
+        "colorado-rapids",
+        "columbus-crew",
+        "dc-united",
+        "fc-cincinnati",
+        "fc-dallas",
+        "houston-dynamo",
+        "inter-miami",
+        "los-angeles-fc",
+        "los-angeles-galaxy",
+        "minnesota-united-fc",
+        "nashville-sc",
+        "new-england-revolution",
+        "new-york-city-fc",
+        "new-york-red-bulls",
+        "orlando-city-sc",
+        "philadelphia-union",
+        "portland-timbers",
+        "real-salt-lake",
+        "san-diego",
+        "san-jose-earthquakes",
+        "seattle-sounders",
+        "sporting-kansas-city",
+        "st-louis-city",
+        "toronto-fc",
+        "vancouver-whitecaps"
+      ],
+      "rules": {
+        "rounds": 1,
+        "points": {
+          "win": 3,
+          "draw": 1,
+          "loss": 0
+        },
+        "tiebreakers": [
+          "points",
+          "goalDifference",
+          "goalsFor",
+          "headToHead"
+        ],
+        "matchday": {
+          "benchSize": 9,
+          "maxSubstitutions": 5
+        }
+      }
+    },
+    {
+      "id": "saudi-pro-league",
+      "name": "Saudi Pro League",
+      "country": "KSA",
+      "season": "2026",
+      "level": 1,
+      "teamIds": [
+        "abha",
+        "al-diriyah",
+        "al-khaleej-saihat",
+        "al-kholood",
+        "al-riyadh",
+        "al-shabab",
+        "al-taawon",
+        "al-ahli-jeddah",
+        "al-ettifaq",
+        "al-faisaly-fc",
+        "al-fateh",
+        "al-fayha",
+        "al-hazm",
+        "al-hilal-saudi-fc",
+        "al-ittihad-fc",
+        "al-nassr",
+        "al-qadisiyah-fc",
+        "neom"
+      ],
+      "rules": {
+        "rounds": 2,
+        "points": {
+          "win": 3,
+          "draw": 1,
+          "loss": 0
+        },
+        "tiebreakers": [
+          "points",
+          "goalDifference",
+          "goalsFor",
+          "headToHead"
+        ],
+        "matchday": {
+          "benchSize": 9,
+          "maxSubstitutions": 5
+        }
+      }
+    },
+    {
+      "id": "liga-profesional",
+      "name": "Liga Profesional Argentina",
+      "country": "ARG",
+      "season": "2026",
+      "level": 1,
+      "teamIds": [
+        "aldosivi",
+        "argentinos-jrs",
+        "atletico-tucuman",
+        "banfield",
+        "barracas-central",
+        "belgrano-cordoba",
+        "boca-juniors",
+        "central-cordoba-de-santiago",
+        "defensa-y-justicia",
+        "deportivo-riestra",
+        "estudiantes-l-p",
+        "estudiantes-de-rio-cuarto",
+        "gimnasia-l-p",
+        "gimnasia-m",
+        "huracan",
+        "independ-rivadavia",
+        "independiente",
+        "instituto-cordoba",
+        "lanus",
+        "newells-old-boys",
+        "platense",
+        "racing-club",
+        "river-plate",
+        "rosario-central",
+        "san-lorenzo",
+        "sarmiento-junin",
+        "talleres-cordoba",
+        "tigre",
+        "union-santa-fe",
+        "velez-sarsfield"
+      ],
+      "rules": {
+        "rounds": 1,
+        "points": {
+          "win": 3,
+          "draw": 1,
+          "loss": 0
+        },
+        "tiebreakers": [
+          "points",
+          "goalDifference",
+          "goalsFor",
+          "headToHead"
+        ],
+        "matchday": {
+          "benchSize": 9,
+          "maxSubstitutions": 5
+        }
+      }
+    },
+    {
+      "id": "belgian-pro-league",
+      "name": "Belgian Pro League",
+      "country": "BEL",
+      "season": "2026",
+      "level": 1,
+      "teamIds": [
+        "anderlecht",
+        "antwerp",
+        "cercle-brugge",
+        "charleroi",
+        "club-brugge-kv",
+        "genk",
+        "gent",
+        "kv-mechelen",
+        "kvc-westerlo",
+        "kortrijk",
+        "lommel-united",
+        "oh-leuven",
+        "raal-la-louviere",
+        "sk-beveren",
+        "st-truiden",
+        "standard-liege",
+        "union-st-gilloise",
+        "zulte-waregem"
+      ],
+      "rules": {
+        "rounds": 2,
+        "points": {
+          "win": 3,
+          "draw": 1,
+          "loss": 0
+        },
+        "tiebreakers": [
+          "points",
+          "goalDifference",
+          "goalsFor",
+          "headToHead"
+        ],
+        "matchday": {
+          "benchSize": 9,
+          "maxSubstitutions": 5
+        }
+      }
+    }
+  ]
+}

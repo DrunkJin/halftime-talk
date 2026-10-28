@@ -1,0 +1,146 @@
+{
+  "_comment": "소스 데이터 수동 보정. teams는 data/teams.json id 기준(shortName·code·stadium·colors), players는 선수 id 기준(position·altPositions·nationality만). _로 시작하는 키는 메모.",
+  "teams": {
+    "arsenal": {
+      "colors": {
+        "primary": "#EF0107",
+        "secondary": "#FFFFFF"
+      }
+    },
+    "aston-villa": {
+      "colors": {
+        "primary": "#670E36",
+        "secondary": "#95BFE5"
+      }
+    },
+    "brighton-hove-albion": {
+      "shortName": "Brighton",
+      "stadium": "American Express Stadium",
+      "colors": {
+        "primary": "#0057B8",
+        "secondary": "#FFFFFF"
+      }
+    },
+    "bournemouth": {
+      "colors": {
+        "primary": "#DA291C",
+        "secondary": "#000000"
+      }
+    },
+    "brentford": {
+      "stadium": "Gtech Community Stadium",
+      "colors": {
+        "primary": "#E30613",
+        "secondary": "#FFFFFF"
+      }
+    },
+    "chelsea": {
+      "colors": {
+        "primary": "#034694",
+        "secondary": "#FFFFFF"
+      }
+    },
+    "coventry-city": {
+      "colors": {
+        "primary": "#59CBE8",
+        "secondary": "#FFFFFF"
+      }
+    },
+    "crystal-palace": {
+      "colors": {
+        "primary": "#1B458F",
+        "secondary": "#C4122E"
+      }
+    },
+    "everton": {
+      "stadium": "Hill Dickinson Stadium",
+      "colors": {
+        "primary": "#003399",
+        "secondary": "#FFFFFF"
+      }
+    },
+    "fulham": {
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#000000"
+      }
+    },
+    "hull-city": {
+      "stadium": "MKM Stadium",
+      "colors": {
+        "primary": "#F5A12D",
+        "secondary": "#000000"
+      }
+    },
+    "ipswich-town": {
+      "stadium": "Portman Road",
+      "colors": {
+        "primary": "#3A64A3",
+        "secondary": "#FFFFFF"
+      }
+    },
+    "leeds-united": {
+      "colors": {
+        "primary": "#FFFFFF",
+        "secondary": "#1D428A"
+      }
+    },
+    "liverpool": {
+      "colors": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF"
+      }
+    },
+    "manchester-city": {
+      "colors": {
+        "primary": "#6CABDD",
+        "secondary": "#1C2C5B"
+      }
+    },
+    "manchester-united": {
+      "shortName": "Man Utd",
+      "colors": {
+        "primary": "#DA291C",
+        "secondary": "#FBE122"
+      }
+    },
+    "newcastle-united": {
+      "stadium": "St James' Park",
+      "colors": {
+        "primary": "#241F20",
+        "secondary": "#FFFFFF"
+      }
+    },
+    "nottingham-forest": {
+      "shortName": "Nott'm Forest",
+      "code": "NFO",
+      "stadium": "City Ground",
+      "colors": {
+        "primary": "#DD0000",
+        "secondary": "#FFFFFF"
+      }
+    },
+    "sunderland": {
+      "colors": {
+        "primary": "#EB172B",
+        "secondary": "#FFFFFF"
+      }
+    },
+    "tottenham-hotspur": {
+      "shortName": "Spurs",
+      "colors": {
+        "primary": "#132257",
+        "secondary": "#FFFFFF"
+      }
+    }
+  },
+  "players": {
+    "p223340": {
+      "_name": "Bukayo Saka",
+      "position": "RW",
+      "altPositions": [
+        "LW"
+      ]
+    }
+  }
+}

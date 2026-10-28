@@ -1,0 +1,1197 @@
+{
+  "_comment": "국가 코드(FIFA) · 영어 이름 · 한국어 이름 · 소스별 별칭. merge.py가 모르는 국가명을 만나면 오류를 내므로 여기에 추가",
+  "nations": [
+    {
+      "code": "ENG",
+      "name": "England",
+      "nameKo": "잉글랜드",
+      "aliases": []
+    },
+    {
+      "code": "SCO",
+      "name": "Scotland",
+      "nameKo": "스코틀랜드",
+      "aliases": []
+    },
+    {
+      "code": "WAL",
+      "name": "Wales",
+      "nameKo": "웨일스",
+      "aliases": []
+    },
+    {
+      "code": "NIR",
+      "name": "Northern Ireland",
+      "nameKo": "북아일랜드",
+      "aliases": []
+    },
+    {
+      "code": "IRL",
+      "name": "Republic of Ireland",
+      "nameKo": "아일랜드",
+      "aliases": [
+        "Ireland"
+      ]
+    },
+    {
+      "code": "FRA",
+      "name": "France",
+      "nameKo": "프랑스",
+      "aliases": []
+    },
+    {
+      "code": "BEL",
+      "name": "Belgium",
+      "nameKo": "벨기에",
+      "aliases": []
+    },
+    {
+      "code": "NED",
+      "name": "Netherlands",
+      "nameKo": "네덜란드",
+      "aliases": [
+        "Holland"
+      ]
+    },
+    {
+      "code": "LUX",
+      "name": "Luxembourg",
+      "nameKo": "룩셈부르크",
+      "aliases": []
+    },
+    {
+      "code": "GER",
+      "name": "Germany",
+      "nameKo": "독일",
+      "aliases": []
+    },
+    {
+      "code": "AUT",
+      "name": "Austria",
+      "nameKo": "오스트리아",
+      "aliases": []
+    },
+    {
+      "code": "SUI",
+      "name": "Switzerland",
+      "nameKo": "스위스",
+      "aliases": []
+    },
+    {
+      "code": "ESP",
+      "name": "Spain",
+      "nameKo": "스페인",
+      "aliases": []
+    },
+    {
+      "code": "POR",
+      "name": "Portugal",
+      "nameKo": "포르투갈",
+      "aliases": []
+    },
+    {
+      "code": "ITA",
+      "name": "Italy",
+      "nameKo": "이탈리아",
+      "aliases": []
+    },
+    {
+      "code": "GRE",
+      "name": "Greece",
+      "nameKo": "그리스",
+      "aliases": []
+    },
+    {
+      "code": "NOR",
+      "name": "Norway",
+      "nameKo": "노르웨이",
+      "aliases": []
+    },
+    {
+      "code": "SWE",
+      "name": "Sweden",
+      "nameKo": "스웨덴",
+      "aliases": []
+    },
+    {
+      "code": "DEN",
+      "name": "Denmark",
+      "nameKo": "덴마크",
+      "aliases": []
+    },
+    {
+      "code": "FIN",
+      "name": "Finland",
+      "nameKo": "핀란드",
+      "aliases": []
+    },
+    {
+      "code": "ISL",
+      "name": "Iceland",
+      "nameKo": "아이슬란드",
+      "aliases": []
+    },
+    {
+      "code": "POL",
+      "name": "Poland",
+      "nameKo": "폴란드",
+      "aliases": []
+    },
+    {
+      "code": "CZE",
+      "name": "Czech Republic",
+      "nameKo": "체코",
+      "aliases": [
+        "Czechia",
+        "Czech-Republic"
+      ]
+    },
+    {
+      "code": "SVK",
+      "name": "Slovakia",
+      "nameKo": "슬로바키아",
+      "aliases": []
+    },
+    {
+      "code": "HUN",
+      "name": "Hungary",
+      "nameKo": "헝가리",
+      "aliases": []
+    },
+    {
+      "code": "SVN",
+      "name": "Slovenia",
+      "nameKo": "슬로베니아",
+      "aliases": []
+    },
+    {
+      "code": "CRO",
+      "name": "Croatia",
+      "nameKo": "크로아티아",
+      "aliases": []
+    },
+    {
+      "code": "SRB",
+      "name": "Serbia",
+      "nameKo": "세르비아",
+      "aliases": []
+    },
+    {
+      "code": "BIH",
+      "name": "Bosnia and Herzegovina",
+      "nameKo": "보스니아 헤르체고비나",
+      "aliases": [
+        "Bosnia-Herzegovina",
+        "Bosnia & Herzegovina"
+      ]
+    },
+    {
+      "code": "MNE",
+      "name": "Montenegro",
+      "nameKo": "몬테네그로",
+      "aliases": []
+    },
+    {
+      "code": "MKD",
+      "name": "North Macedonia",
+      "nameKo": "북마케도니아",
+      "aliases": []
+    },
+    {
+      "code": "ALB",
+      "name": "Albania",
+      "nameKo": "알바니아",
+      "aliases": []
+    },
+    {
+      "code": "KVX",
+      "name": "Kosovo",
+      "nameKo": "코소보",
+      "aliases": []
+    },
+    {
+      "code": "BUL",
+      "name": "Bulgaria",
+      "nameKo": "불가리아",
+      "aliases": []
+    },
+    {
+      "code": "ROU",
+      "name": "Romania",
+      "nameKo": "루마니아",
+      "aliases": []
+    },
+    {
+      "code": "UKR",
+      "name": "Ukraine",
+      "nameKo": "우크라이나",
+      "aliases": []
+    },
+    {
+      "code": "GEO",
+      "name": "Georgia",
+      "nameKo": "조지아",
+      "aliases": []
+    },
+    {
+      "code": "ARM",
+      "name": "Armenia",
+      "nameKo": "아르메니아",
+      "aliases": []
+    },
+    {
+      "code": "TUR",
+      "name": "Türkiye",
+      "nameKo": "튀르키예",
+      "aliases": [
+        "Turkey"
+      ]
+    },
+    {
+      "code": "ISR",
+      "name": "Israel",
+      "nameKo": "이스라엘",
+      "aliases": []
+    },
+    {
+      "code": "UZB",
+      "name": "Uzbekistan",
+      "nameKo": "우즈베키스탄",
+      "aliases": []
+    },
+    {
+      "code": "KOR",
+      "name": "Korea Republic",
+      "nameKo": "대한민국",
+      "aliases": [
+        "South Korea",
+        "Korea, South"
+      ]
+    },
+    {
+      "code": "JPN",
+      "name": "Japan",
+      "nameKo": "일본",
+      "aliases": []
+    },
+    {
+      "code": "AUS",
+      "name": "Australia",
+      "nameKo": "호주",
+      "aliases": []
+    },
+    {
+      "code": "NZL",
+      "name": "New Zealand",
+      "nameKo": "뉴질랜드",
+      "aliases": []
+    },
+    {
+      "code": "USA",
+      "name": "United States",
+      "nameKo": "미국",
+      "aliases": [
+        "USA"
+      ]
+    },
+    {
+      "code": "CAN",
+      "name": "Canada",
+      "nameKo": "캐나다",
+      "aliases": []
+    },
+    {
+      "code": "MEX",
+      "name": "Mexico",
+      "nameKo": "멕시코",
+      "aliases": []
+    },
+    {
+      "code": "JAM",
+      "name": "Jamaica",
+      "nameKo": "자메이카",
+      "aliases": []
+    },
+    {
+      "code": "HAI",
+      "name": "Haiti",
+      "nameKo": "아이티",
+      "aliases": []
+    },
+    {
+      "code": "GRN",
+      "name": "Grenada",
+      "nameKo": "그레나다",
+      "aliases": []
+    },
+    {
+      "code": "TRI",
+      "name": "Trinidad and Tobago",
+      "nameKo": "트리니다드 토바고",
+      "aliases": [
+        "Trinidad & Tobago"
+      ]
+    },
+    {
+      "code": "SUR",
+      "name": "Suriname",
+      "nameKo": "수리남",
+      "aliases": []
+    },
+    {
+      "code": "CUW",
+      "name": "Curaçao",
+      "nameKo": "퀴라소",
+      "aliases": [
+        "Curacao"
+      ]
+    },
+    {
+      "code": "BRA",
+      "name": "Brazil",
+      "nameKo": "브라질",
+      "aliases": []
+    },
+    {
+      "code": "ARG",
+      "name": "Argentina",
+      "nameKo": "아르헨티나",
+      "aliases": []
+    },
+    {
+      "code": "URU",
+      "name": "Uruguay",
+      "nameKo": "우루과이",
+      "aliases": []
+    },
+    {
+      "code": "PAR",
+      "name": "Paraguay",
+      "nameKo": "파라과이",
+      "aliases": []
+    },
+    {
+      "code": "CHI",
+      "name": "Chile",
+      "nameKo": "칠레",
+      "aliases": []
+    },
+    {
+      "code": "COL",
+      "name": "Colombia",
+      "nameKo": "콜롬비아",
+      "aliases": []
+    },
+    {
+      "code": "ECU",
+      "name": "Ecuador",
+      "nameKo": "에콰도르",
+      "aliases": []
+    },
+    {
+      "code": "PER",
+      "name": "Peru",
+      "nameKo": "페루",
+      "aliases": []
+    },
+    {
+      "code": "VEN",
+      "name": "Venezuela",
+      "nameKo": "베네수엘라",
+      "aliases": []
+    },
+    {
+      "code": "MAR",
+      "name": "Morocco",
+      "nameKo": "모로코",
+      "aliases": []
+    },
+    {
+      "code": "ALG",
+      "name": "Algeria",
+      "nameKo": "알제리",
+      "aliases": []
+    },
+    {
+      "code": "TUN",
+      "name": "Tunisia",
+      "nameKo": "튀니지",
+      "aliases": []
+    },
+    {
+      "code": "EGY",
+      "name": "Egypt",
+      "nameKo": "이집트",
+      "aliases": []
+    },
+    {
+      "code": "SEN",
+      "name": "Senegal",
+      "nameKo": "세네갈",
+      "aliases": []
+    },
+    {
+      "code": "MLI",
+      "name": "Mali",
+      "nameKo": "말리",
+      "aliases": []
+    },
+    {
+      "code": "GUI",
+      "name": "Guinea",
+      "nameKo": "기니",
+      "aliases": []
+    },
+    {
+      "code": "GNB",
+      "name": "Guinea-Bissau",
+      "nameKo": "기니비사우",
+      "aliases": []
+    },
+    {
+      "code": "GAM",
+      "name": "Gambia",
+      "nameKo": "감비아",
+      "aliases": [
+        "The Gambia"
+      ]
+    },
+    {
+      "code": "CIV",
+      "name": "Côte d'Ivoire",
+      "nameKo": "코트디부아르",
+      "aliases": [
+        "Ivory Coast"
+      ]
+    },
+    {
+      "code": "BFA",
+      "name": "Burkina Faso",
+      "nameKo": "부르키나파소",
+      "aliases": []
+    },
+    {
+      "code": "GHA",
+      "name": "Ghana",
+      "nameKo": "가나",
+      "aliases": []
+    },
+    {
+      "code": "TOG",
+      "name": "Togo",
+      "nameKo": "토고",
+      "aliases": []
+    },
+    {
+      "code": "BEN",
+      "name": "Benin",
+      "nameKo": "베냉",
+      "aliases": []
+    },
+    {
+      "code": "NGA",
+      "name": "Nigeria",
+      "nameKo": "나이지리아",
+      "aliases": []
+    },
+    {
+      "code": "CMR",
+      "name": "Cameroon",
+      "nameKo": "카메룬",
+      "aliases": []
+    },
+    {
+      "code": "GAB",
+      "name": "Gabon",
+      "nameKo": "가봉",
+      "aliases": []
+    },
+    {
+      "code": "EQG",
+      "name": "Equatorial Guinea",
+      "nameKo": "적도 기니",
+      "aliases": []
+    },
+    {
+      "code": "CGO",
+      "name": "Congo",
+      "nameKo": "콩고",
+      "aliases": []
+    },
+    {
+      "code": "COD",
+      "name": "DR Congo",
+      "nameKo": "콩고민주공화국",
+      "aliases": [
+        "Congo DR",
+        "Democratic Republic of Congo",
+        "Democratic Republic of the Congo"
+      ]
+    },
+    {
+      "code": "ANG",
+      "name": "Angola",
+      "nameKo": "앙골라",
+      "aliases": []
+    },
+    {
+      "code": "CPV",
+      "name": "Cape Verde",
+      "nameKo": "카보베르데",
+      "aliases": [
+        "Cape Verde Islands",
+        "Cabo Verde"
+      ]
+    },
+    {
+      "code": "SLE",
+      "name": "Sierra Leone",
+      "nameKo": "시에라리온",
+      "aliases": []
+    },
+    {
+      "code": "LBR",
+      "name": "Liberia",
+      "nameKo": "라이베리아",
+      "aliases": []
+    },
+    {
+      "code": "KEN",
+      "name": "Kenya",
+      "nameKo": "케냐",
+      "aliases": []
+    },
+    {
+      "code": "MOZ",
+      "name": "Mozambique",
+      "nameKo": "모잠비크",
+      "aliases": []
+    },
+    {
+      "code": "ZIM",
+      "name": "Zimbabwe",
+      "nameKo": "짐바브웨",
+      "aliases": []
+    },
+    {
+      "code": "ZAM",
+      "name": "Zambia",
+      "nameKo": "잠비아",
+      "aliases": []
+    },
+    {
+      "code": "RSA",
+      "name": "South Africa",
+      "nameKo": "남아프리카공화국",
+      "aliases": []
+    },
+    {
+      "code": "MLT",
+      "name": "Malta",
+      "nameKo": "몰타",
+      "aliases": []
+    },
+    {
+      "code": "CYP",
+      "name": "Cyprus",
+      "nameKo": "키프로스",
+      "aliases": []
+    },
+    {
+      "code": "LTU",
+      "name": "Lithuania",
+      "nameKo": "리투아니아",
+      "aliases": []
+    },
+    {
+      "code": "LVA",
+      "name": "Latvia",
+      "nameKo": "라트비아",
+      "aliases": []
+    },
+    {
+      "code": "EST",
+      "name": "Estonia",
+      "nameKo": "에스토니아",
+      "aliases": []
+    },
+    {
+      "code": "BLR",
+      "name": "Belarus",
+      "nameKo": "벨라루스",
+      "aliases": []
+    },
+    {
+      "code": "MDA",
+      "name": "Moldova",
+      "nameKo": "몰도바",
+      "aliases": []
+    },
+    {
+      "code": "AZE",
+      "name": "Azerbaijan",
+      "nameKo": "아제르바이잔",
+      "aliases": []
+    },
+    {
+      "code": "KAZ",
+      "name": "Kazakhstan",
+      "nameKo": "카자흐스탄",
+      "aliases": []
+    },
+    {
+      "code": "RUS",
+      "name": "Russia",
+      "nameKo": "러시아",
+      "aliases": []
+    },
+    {
+      "code": "FRO",
+      "name": "Faroe Islands",
+      "nameKo": "페로 제도",
+      "aliases": []
+    },
+    {
+      "code": "AND",
+      "name": "Andorra",
+      "nameKo": "안도라",
+      "aliases": []
+    },
+    {
+      "code": "LIE",
+      "name": "Liechtenstein",
+      "nameKo": "리히텐슈타인",
+      "aliases": []
+    },
+    {
+      "code": "SMR",
+      "name": "San Marino",
+      "nameKo": "산마리노",
+      "aliases": []
+    },
+    {
+      "code": "IRN",
+      "name": "Iran",
+      "nameKo": "이란",
+      "aliases": [
+        "IR Iran"
+      ]
+    },
+    {
+      "code": "IRQ",
+      "name": "Iraq",
+      "nameKo": "이라크",
+      "aliases": []
+    },
+    {
+      "code": "KSA",
+      "name": "Saudi Arabia",
+      "nameKo": "사우디아라비아",
+      "aliases": []
+    },
+    {
+      "code": "QAT",
+      "name": "Qatar",
+      "nameKo": "카타르",
+      "aliases": []
+    },
+    {
+      "code": "UAE",
+      "name": "United Arab Emirates",
+      "nameKo": "아랍에미리트",
+      "aliases": []
+    },
+    {
+      "code": "JOR",
+      "name": "Jordan",
+      "nameKo": "요르단",
+      "aliases": []
+    },
+    {
+      "code": "SYR",
+      "name": "Syria",
+      "nameKo": "시리아",
+      "aliases": []
+    },
+    {
+      "code": "LBN",
+      "name": "Lebanon",
+      "nameKo": "레바논",
+      "aliases": []
+    },
+    {
+      "code": "PLE",
+      "name": "Palestine",
+      "nameKo": "팔레스타인",
+      "aliases": []
+    },
+    {
+      "code": "OMA",
+      "name": "Oman",
+      "nameKo": "오만",
+      "aliases": []
+    },
+    {
+      "code": "KUW",
+      "name": "Kuwait",
+      "nameKo": "쿠웨이트",
+      "aliases": []
+    },
+    {
+      "code": "BHR",
+      "name": "Bahrain",
+      "nameKo": "바레인",
+      "aliases": []
+    },
+    {
+      "code": "CHN",
+      "name": "China PR",
+      "nameKo": "중국",
+      "aliases": [
+        "China"
+      ]
+    },
+    {
+      "code": "PRK",
+      "name": "Korea DPR",
+      "nameKo": "북한",
+      "aliases": [
+        "North Korea"
+      ]
+    },
+    {
+      "code": "HKG",
+      "name": "Hong Kong",
+      "nameKo": "홍콩",
+      "aliases": []
+    },
+    {
+      "code": "TPE",
+      "name": "Chinese Taipei",
+      "nameKo": "대만",
+      "aliases": [
+        "Taiwan"
+      ]
+    },
+    {
+      "code": "THA",
+      "name": "Thailand",
+      "nameKo": "태국",
+      "aliases": []
+    },
+    {
+      "code": "VIE",
+      "name": "Vietnam",
+      "nameKo": "베트남",
+      "aliases": []
+    },
+    {
+      "code": "IDN",
+      "name": "Indonesia",
+      "nameKo": "인도네시아",
+      "aliases": []
+    },
+    {
+      "code": "MAS",
+      "name": "Malaysia",
+      "nameKo": "말레이시아",
+      "aliases": []
+    },
+    {
+      "code": "PHI",
+      "name": "Philippines",
+      "nameKo": "필리핀",
+      "aliases": []
+    },
+    {
+      "code": "SIN",
+      "name": "Singapore",
+      "nameKo": "싱가포르",
+      "aliases": []
+    },
+    {
+      "code": "IND",
+      "name": "India",
+      "nameKo": "인도",
+      "aliases": []
+    },
+    {
+      "code": "TJK",
+      "name": "Tajikistan",
+      "nameKo": "타지키스탄",
+      "aliases": []
+    },
+    {
+      "code": "KGZ",
+      "name": "Kyrgyzstan",
+      "nameKo": "키르기스스탄",
+      "aliases": []
+    },
+    {
+      "code": "TKM",
+      "name": "Turkmenistan",
+      "nameKo": "투르크메니스탄",
+      "aliases": []
+    },
+    {
+      "code": "MNG",
+      "name": "Mongolia",
+      "nameKo": "몽골",
+      "aliases": []
+    },
+    {
+      "code": "MYA",
+      "name": "Myanmar",
+      "nameKo": "미얀마",
+      "aliases": []
+    },
+    {
+      "code": "LBY",
+      "name": "Libya",
+      "nameKo": "리비아",
+      "aliases": []
+    },
+    {
+      "code": "SUD",
+      "name": "Sudan",
+      "nameKo": "수단",
+      "aliases": []
+    },
+    {
+      "code": "ETH",
+      "name": "Ethiopia",
+      "nameKo": "에티오피아",
+      "aliases": []
+    },
+    {
+      "code": "UGA",
+      "name": "Uganda",
+      "nameKo": "우간다",
+      "aliases": []
+    },
+    {
+      "code": "TAN",
+      "name": "Tanzania",
+      "nameKo": "탄자니아",
+      "aliases": []
+    },
+    {
+      "code": "RWA",
+      "name": "Rwanda",
+      "nameKo": "르완다",
+      "aliases": []
+    },
+    {
+      "code": "BDI",
+      "name": "Burundi",
+      "nameKo": "부룬디",
+      "aliases": []
+    },
+    {
+      "code": "MAD",
+      "name": "Madagascar",
+      "nameKo": "마다가스카르",
+      "aliases": []
+    },
+    {
+      "code": "MRI",
+      "name": "Mauritius",
+      "nameKo": "모리셔스",
+      "aliases": []
+    },
+    {
+      "code": "COM",
+      "name": "Comoros",
+      "nameKo": "코모로",
+      "aliases": []
+    },
+    {
+      "code": "NAM",
+      "name": "Namibia",
+      "nameKo": "나미비아",
+      "aliases": []
+    },
+    {
+      "code": "BOT",
+      "name": "Botswana",
+      "nameKo": "보츠와나",
+      "aliases": []
+    },
+    {
+      "code": "MWI",
+      "name": "Malawi",
+      "nameKo": "말라위",
+      "aliases": []
+    },
+    {
+      "code": "NIG",
+      "name": "Niger",
+      "nameKo": "니제르",
+      "aliases": []
+    },
+    {
+      "code": "MTN",
+      "name": "Mauritania",
+      "nameKo": "모리타니",
+      "aliases": []
+    },
+    {
+      "code": "CTA",
+      "name": "Central African Republic",
+      "nameKo": "중앙아프리카공화국",
+      "aliases": []
+    },
+    {
+      "code": "CHA",
+      "name": "Chad",
+      "nameKo": "차드",
+      "aliases": []
+    },
+    {
+      "code": "STP",
+      "name": "Sao Tome and Principe",
+      "nameKo": "상투메 프린시페",
+      "aliases": []
+    },
+    {
+      "code": "SOM",
+      "name": "Somalia",
+      "nameKo": "소말리아",
+      "aliases": []
+    },
+    {
+      "code": "ERI",
+      "name": "Eritrea",
+      "nameKo": "에리트레아",
+      "aliases": []
+    },
+    {
+      "code": "DJI",
+      "name": "Djibouti",
+      "nameKo": "지부티",
+      "aliases": []
+    },
+    {
+      "code": "SSD",
+      "name": "South Sudan",
+      "nameKo": "남수단",
+      "aliases": []
+    },
+    {
+      "code": "SWZ",
+      "name": "Eswatini",
+      "nameKo": "에스와티니",
+      "aliases": []
+    },
+    {
+      "code": "LES",
+      "name": "Lesotho",
+      "nameKo": "레소토",
+      "aliases": []
+    },
+    {
+      "code": "CRC",
+      "name": "Costa Rica",
+      "nameKo": "코스타리카",
+      "aliases": []
+    },
+    {
+      "code": "PAN",
+      "name": "Panama",
+      "nameKo": "파나마",
+      "aliases": []
+    },
+    {
+      "code": "HON",
+      "name": "Honduras",
+      "nameKo": "온두라스",
+      "aliases": []
+    },
+    {
+      "code": "SLV",
+      "name": "El Salvador",
+      "nameKo": "엘살바도르",
+      "aliases": []
+    },
+    {
+      "code": "GUA",
+      "name": "Guatemala",
+      "nameKo": "과테말라",
+      "aliases": []
+    },
+    {
+      "code": "NCA",
+      "name": "Nicaragua",
+      "nameKo": "니카라과",
+      "aliases": []
+    },
+    {
+      "code": "CUB",
+      "name": "Cuba",
+      "nameKo": "쿠바",
+      "aliases": []
+    },
+    {
+      "code": "DOM",
+      "name": "Dominican Republic",
+      "nameKo": "도미니카공화국",
+      "aliases": []
+    },
+    {
+      "code": "PUR",
+      "name": "Puerto Rico",
+      "nameKo": "푸에르토리코",
+      "aliases": []
+    },
+    {
+      "code": "BOL",
+      "name": "Bolivia",
+      "nameKo": "볼리비아",
+      "aliases": []
+    },
+    {
+      "code": "GUY",
+      "name": "Guyana",
+      "nameKo": "가이아나",
+      "aliases": []
+    },
+    {
+      "code": "MSR",
+      "name": "Montserrat",
+      "nameKo": "몬트세랫",
+      "aliases": []
+    },
+    {
+      "code": "BER",
+      "name": "Bermuda",
+      "nameKo": "버뮤다",
+      "aliases": []
+    },
+    {
+      "code": "ATG",
+      "name": "Antigua and Barbuda",
+      "nameKo": "앤티가 바부다",
+      "aliases": []
+    },
+    {
+      "code": "SKN",
+      "name": "Saint Kitts and Nevis",
+      "nameKo": "세인트키츠 네비스",
+      "aliases": []
+    },
+    {
+      "code": "BRB",
+      "name": "Barbados",
+      "nameKo": "바베이도스",
+      "aliases": []
+    },
+    {
+      "code": "LCA",
+      "name": "Saint Lucia",
+      "nameKo": "세인트루시아",
+      "aliases": []
+    },
+    {
+      "code": "VIN",
+      "name": "Saint Vincent and the Grenadines",
+      "nameKo": "세인트빈센트 그레나딘",
+      "aliases": []
+    },
+    {
+      "code": "BAH",
+      "name": "Bahamas",
+      "nameKo": "바하마",
+      "aliases": []
+    },
+    {
+      "code": "CAY",
+      "name": "Cayman Islands",
+      "nameKo": "케이맨 제도",
+      "aliases": []
+    },
+    {
+      "code": "ARU",
+      "name": "Aruba",
+      "nameKo": "아루바",
+      "aliases": []
+    },
+    {
+      "code": "GLP",
+      "name": "Guadeloupe",
+      "nameKo": "과들루프",
+      "aliases": []
+    },
+    {
+      "code": "MTQ",
+      "name": "Martinique",
+      "nameKo": "마르티니크",
+      "aliases": []
+    },
+    {
+      "code": "GUF",
+      "name": "French Guiana",
+      "nameKo": "프랑스령 기아나",
+      "aliases": []
+    },
+    {
+      "code": "REU",
+      "name": "Reunion",
+      "nameKo": "레위니옹",
+      "aliases": []
+    },
+    {
+      "code": "NCL",
+      "name": "New Caledonia",
+      "nameKo": "뉴칼레도니아",
+      "aliases": []
+    },
+    {
+      "code": "FIJ",
+      "name": "Fiji",
+      "nameKo": "피지",
+      "aliases": []
+    },
+    {
+      "code": "PNG",
+      "name": "Papua New Guinea",
+      "nameKo": "파푸아뉴기니",
+      "aliases": []
+    },
+    {
+      "code": "SOL",
+      "name": "Solomon Islands",
+      "nameKo": "솔로몬 제도",
+      "aliases": []
+    },
+    {
+      "code": "TAH",
+      "name": "Tahiti",
+      "nameKo": "타히티",
+      "aliases": []
+    },
+    {
+      "code": "GIB",
+      "name": "Gibraltar",
+      "nameKo": "지브롤터",
+      "aliases": []
+    },
+    {
+      "code": "AFG",
+      "name": "Afghanistan",
+      "nameKo": "아프가니스탄",
+      "aliases": []
+    },
+    {
+      "code": "BAN",
+      "name": "Bangladesh",
+      "nameKo": "방글라데시",
+      "aliases": []
+    },
+    {
+      "code": "MON",
+      "name": "Monaco",
+      "nameKo": "모나코",
+      "aliases": []
+    }
+  ]
+}

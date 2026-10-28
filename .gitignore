@@ -1,0 +1,12 @@
+# 외부 API 원본 캐시 (tools/fetch-sources.mjs)
+tools/.cache/
+
+# 토큰 등 로컬 비밀값
+.env
+.env.*
+
+.DS_Store
+tools/raw/
+
+# 파이썬 캐시
+__pycache__/

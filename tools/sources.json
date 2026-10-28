@@ -1,0 +1,572 @@
+{
+  "_comment": "데이터 수집·병합 설정. 리그를 추가·제거하려면 여기만 고친다. strength는 리그 수준 계수 (EPL = 1.0), 팀 기본 능력의 기준점을 정한다.",
+  "seasonStartYear": 2026,
+  "apiFootball": {
+    "_comment": "statsSeasons: merge.py가 능력치에 합쳐 쓰는 선수 기록 시즌 (진행 중 시즌 + 지난 시즌). raw: fetch_api_football.py 원본 수집 설정",
+    "raw": {
+      "_comment": "fetch_api_football.py 원본 수집 대상. perMinute은 플랜 한도(Pro 300)보다 약간 낮게",
+      "leagues": [
+        "epl",
+        "laliga",
+        "serie-a",
+        "championship",
+        "k-league-1",
+        "k-league-2"
+      ],
+      "seasons": [
+        2026,
+        2025,
+        2024
+      ],
+      "perMinute": 280,
+      "workers": 6,
+      "dailyReserve": 50,
+      "marketLeagues": [
+        "primeira-liga",
+        "eredivisie",
+        "ligue-1",
+        "bundesliga",
+        "j1-league",
+        "super-lig",
+        "brasileirao",
+        "liga-mx",
+        "mls",
+        "saudi-pro-league",
+        "liga-profesional",
+        "belgian-pro-league"
+      ],
+      "_market": "marketLeagues: 시즌 목록 전체가 필요 없는 리그 (이적시장 매물 리그 + football-data가 명단 소스인 유럽 리그의 선수 기록 보강). 리그별 현재 시즌(API 조회)과 그 전 시즌의 팀·순위·선수 기록 + 현재 명단만 받는다",
+      "continental": [
+        {
+          "id": "ucl",
+          "name": "UEFA Champions League",
+          "apiId": 2,
+          "weight": 1.0
+        },
+        {
+          "id": "uel",
+          "name": "UEFA Europa League",
+          "apiId": 3,
+          "weight": 0.75
+        },
+        {
+          "id": "uecl",
+          "name": "UEFA Conference League",
+          "apiId": 848,
+          "weight": 0.55
+        }
+      ],
+      "continentalSeasons": {
+        "2026": 1.0,
+        "2025": 0.8,
+        "2024": 0.5
+      },
+      "_continental": "continental: 대륙 대회 경기 결과 (팀 기본값 보정용). continentalSeasons: 시즌별 가중치"
+    },
+    "statsSeasons": [
+      2026,
+      2025
+    ]
+  },
+  "leagues": [
+    {
+      "id": "epl",
+      "name": "Premier League",
+      "country": "ENG",
+      "level": 1,
+      "strength": 1.0,
+      "source": "football-data",
+      "code": "PL",
+      "apiFootballId": 39,
+      "rounds": 2,
+      "relegation": {
+        "league": "championship",
+        "spots": 3
+      }
+    },
+    {
+      "id": "championship",
+      "name": "Championship",
+      "country": "ENG",
+      "level": 2,
+      "strength": 0.78,
+      "source": "football-data",
+      "code": "ELC",
+      "apiFootballId": 40,
+      "rounds": 2,
+      "promotion": {
+        "league": "epl",
+        "spots": 3
+      }
+    },
+    {
+      "id": "laliga",
+      "name": "LaLiga",
+      "country": "ESP",
+      "level": 1,
+      "strength": 0.97,
+      "source": "football-data",
+      "code": "PD",
+      "apiFootballId": 140,
+      "rounds": 2
+    },
+    {
+      "id": "serie-a",
+      "name": "Serie A",
+      "country": "ITA",
+      "level": 1,
+      "strength": 0.94,
+      "source": "football-data",
+      "code": "SA",
+      "apiFootballId": 135,
+      "rounds": 2
+    },
+    {
+      "id": "bundesliga",
+      "name": "Bundesliga",
+      "country": "GER",
+      "level": 1,
+      "strength": 0.95,
+      "source": "football-data",
+      "code": "BL1",
+      "apiFootballId": 78,
+      "rounds": 2
+    },
+    {
+      "id": "ligue-1",
+      "name": "Ligue 1",
+      "country": "FRA",
+      "level": 1,
+      "strength": 0.9,
+      "source": "football-data",
+      "code": "FL1",
+      "apiFootballId": 61,
+      "rounds": 2
+    },
+    {
+      "id": "eredivisie",
+      "name": "Eredivisie",
+      "country": "NED",
+      "level": 1,
+      "strength": 0.82,
+      "source": "football-data",
+      "code": "DED",
+      "apiFootballId": 88,
+      "rounds": 2
+    },
+    {
+      "id": "primeira-liga",
+      "name": "Primeira Liga",
+      "country": "POR",
+      "level": 1,
+      "strength": 0.84,
+      "source": "football-data",
+      "code": "PPL",
+      "apiFootballId": 94,
+      "rounds": 2
+    },
+    {
+      "id": "k-league-1",
+      "name": "K League 1",
+      "country": "KOR",
+      "level": 1,
+      "strength": 0.62,
+      "source": "api-football",
+      "apiFootballId": 292,
+      "rounds": 3,
+      "season": "2026",
+      "relegation": {
+        "league": "k-league-2",
+        "spots": 1
+      },
+      "_teams": "2026 참가팀 (위키백과 2026 K League 1). apiId는 API-Football 팀 ID",
+      "teams": [
+        {
+          "name": "FC Anyang",
+          "short": "Anyang",
+          "code": "ANY",
+          "apiId": 2748
+        },
+        {
+          "name": "Bucheon FC 1995",
+          "short": "Bucheon",
+          "code": "BUC",
+          "apiId": 2745
+        },
+        {
+          "name": "Daejeon Hana Citizen",
+          "short": "Daejeon",
+          "code": "DJN",
+          "apiId": 2750
+        },
+        {
+          "name": "Gangwon FC",
+          "short": "Gangwon",
+          "code": "GWN",
+          "apiId": 2746
+        },
+        {
+          "name": "Gimcheon Sangmu",
+          "short": "Gimcheon",
+          "code": "GIM",
+          "apiId": 2768
+        },
+        {
+          "name": "Gwangju FC",
+          "short": "Gwangju",
+          "code": "GWJ",
+          "apiId": 2759
+        },
+        {
+          "name": "Incheon United",
+          "short": "Incheon",
+          "code": "ICN",
+          "apiId": 2763
+        },
+        {
+          "name": "Jeju SK",
+          "short": "Jeju",
+          "code": "JEJ",
+          "apiId": 2761
+        },
+        {
+          "name": "Jeonbuk Hyundai Motors",
+          "short": "Jeonbuk",
+          "code": "JBK",
+          "apiId": 2762
+        },
+        {
+          "name": "Pohang Steelers",
+          "short": "Pohang",
+          "code": "POH",
+          "apiId": 2764
+        },
+        {
+          "name": "FC Seoul",
+          "short": "Seoul",
+          "code": "SEO",
+          "apiId": 2766
+        },
+        {
+          "name": "Ulsan HD",
+          "short": "Ulsan",
+          "code": "ULS",
+          "apiId": 2767
+        }
+      ]
+    },
+    {
+      "id": "k-league-2",
+      "name": "K League 2",
+      "country": "KOR",
+      "level": 2,
+      "strength": 0.52,
+      "source": "api-football",
+      "apiFootballId": 293,
+      "rounds": 2,
+      "season": "2026",
+      "promotion": {
+        "league": "k-league-1",
+        "spots": 1
+      },
+      "_teams": "2026 참가팀 (위키백과 2026 K League 2)",
+      "teams": [
+        {
+          "name": "Ansan Greeners",
+          "short": "Ansan",
+          "code": "ANS",
+          "apiId": 2758
+        },
+        {
+          "name": "Busan IPark",
+          "short": "Busan",
+          "code": "BUS",
+          "apiId": 2752
+        },
+        {
+          "name": "Cheonan City",
+          "short": "Cheonan",
+          "code": "CHN",
+          "apiId": 7060
+        },
+        {
+          "name": "Chungbuk Cheongju",
+          "short": "Cheongju",
+          "code": "CJU",
+          "apiId": 7061
+        },
+        {
+          "name": "Chungnam Asan",
+          "short": "Asan",
+          "code": "ASN",
+          "apiId": 2753
+        },
+        {
+          "name": "Daegu FC",
+          "short": "Daegu",
+          "code": "DGU",
+          "apiId": 2747
+        },
+        {
+          "name": "Gimpo FC",
+          "short": "Gimpo",
+          "code": "GMP",
+          "apiId": 7078
+        },
+        {
+          "name": "Gimhae FC 2008",
+          "short": "Gimhae",
+          "code": "GMH",
+          "apiId": 7076
+        },
+        {
+          "name": "Gyeongnam FC",
+          "short": "Gyeongnam",
+          "code": "GNM",
+          "apiId": 2751
+        },
+        {
+          "name": "Hwaseong FC",
+          "short": "Hwaseong",
+          "code": "HWS",
+          "apiId": 7087
+        },
+        {
+          "name": "Jeonnam Dragons",
+          "short": "Jeonnam",
+          "code": "JNM",
+          "apiId": 2760
+        },
+        {
+          "name": "Paju Frontier",
+          "short": "Paju",
+          "code": "PAJ",
+          "apiId": 7098
+        },
+        {
+          "name": "Seongnam FC",
+          "short": "Seongnam",
+          "code": "SNM",
+          "apiId": 2757
+        },
+        {
+          "name": "Seoul E-Land",
+          "short": "Seoul E-Land",
+          "code": "ELD",
+          "apiId": 2749
+        },
+        {
+          "name": "Suwon Samsung Bluewings",
+          "short": "Suwon Samsung",
+          "code": "SSB",
+          "apiId": 2765
+        },
+        {
+          "name": "Suwon FC",
+          "short": "Suwon FC",
+          "code": "SWF",
+          "apiId": 2756
+        },
+        {
+          "name": "Yongin FC",
+          "short": "Yongin",
+          "code": "YON",
+          "apiId": 9171
+        }
+      ]
+    },
+    {
+      "id": "j1-league",
+      "name": "J1 League",
+      "country": "JPN",
+      "level": 1,
+      "strength": 0.66,
+      "source": "api-football",
+      "apiFootballId": 98,
+      "rounds": 2,
+      "market": true
+    },
+    {
+      "id": "super-lig",
+      "name": "Süper Lig",
+      "country": "TUR",
+      "level": 1,
+      "strength": 0.78,
+      "source": "api-football",
+      "apiFootballId": 203,
+      "rounds": 2,
+      "market": true
+    },
+    {
+      "id": "brasileirao",
+      "name": "Brasileirão Série A",
+      "country": "BRA",
+      "level": 1,
+      "strength": 0.76,
+      "source": "api-football",
+      "apiFootballId": 71,
+      "rounds": 2,
+      "market": true
+    },
+    {
+      "id": "liga-mx",
+      "name": "Liga MX",
+      "country": "MEX",
+      "level": 1,
+      "strength": 0.72,
+      "source": "api-football",
+      "apiFootballId": 262,
+      "rounds": 2,
+      "market": true
+    },
+    {
+      "id": "mls",
+      "name": "MLS",
+      "country": "USA",
+      "level": 1,
+      "strength": 0.68,
+      "source": "api-football",
+      "apiFootballId": 253,
+      "rounds": 1,
+      "market": true
+    },
+    {
+      "id": "saudi-pro-league",
+      "name": "Saudi Pro League",
+      "country": "KSA",
+      "level": 1,
+      "strength": 0.7,
+      "source": "api-football",
+      "apiFootballId": 307,
+      "rounds": 2,
+      "market": true
+    },
+    {
+      "id": "liga-profesional",
+      "name": "Liga Profesional Argentina",
+      "country": "ARG",
+      "level": 1,
+      "strength": 0.72,
+      "source": "api-football",
+      "apiFootballId": 128,
+      "rounds": 1,
+      "market": true
+    },
+    {
+      "id": "belgian-pro-league",
+      "name": "Belgian Pro League",
+      "country": "BEL",
+      "level": 1,
+      "strength": 0.74,
+      "source": "api-football",
+      "apiFootballId": 144,
+      "rounds": 2,
+      "market": true
+    }
+  ],
+  "competitions": {
+    "_comment": "대륙 대회. 1시즌 참가 팀 = 실제 리그 페이즈 참가 팀 중 데이터에 있는 팀 + 빈자리는 eligibleLeagues 팀 중 전력순 (UCL 먼저)",
+    "season": "2026",
+    "eligibleLeagues": [
+      "epl",
+      "laliga",
+      "serie-a",
+      "bundesliga",
+      "ligue-1",
+      "eredivisie",
+      "primeira-liga",
+      "belgian-pro-league",
+      "super-lig"
+    ],
+    "list": [
+      {
+        "id": "ucl",
+        "raw": "ucl",
+        "name": "UEFA 챔피언스리그",
+        "shortName": "UCL",
+        "level": 1,
+        "size": 36
+      },
+      {
+        "id": "uel",
+        "raw": "uel",
+        "name": "UEFA 유로파리그",
+        "shortName": "UEL",
+        "level": 2,
+        "size": 36,
+        "guests": true
+      }
+    ],
+    "leagueCaps": {
+      "_comment": "두 대회 합계 리그별 최대 팀 수 (빈자리 채울 때만 적용, 실제 참가 팀은 그대로)",
+      "epl": 9,
+      "laliga": 9,
+      "serie-a": 9,
+      "bundesliga": 9,
+      "ligue-1": 8,
+      "primeira-liga": 7,
+      "eredivisie": 7,
+      "belgian-pro-league": 7,
+      "super-lig": 7
+    },
+    "guestLeagues": {
+      "_comment": "게스트 팀 국내 리그 수준 (API-Football 리그 id → strength). 우리 리그 기준: 벨기에 0.74, K리그1 0.62",
+      "218": {
+        "name": "오스트리아 분데스리가",
+        "strength": 0.68
+      },
+      "197": {
+        "name": "그리스 수페르리가",
+        "strength": 0.68
+      },
+      "345": {
+        "name": "체코 리가",
+        "strength": 0.66
+      },
+      "179": {
+        "name": "스코틀랜드 프리미어십",
+        "strength": 0.66
+      },
+      "210": {
+        "name": "크로아티아 HNL",
+        "strength": 0.64
+      },
+      "106": {
+        "name": "폴란드 엑스트라클라사",
+        "strength": 0.64
+      },
+      "103": {
+        "name": "노르웨이 엘리테세리엔",
+        "strength": 0.62
+      },
+      "271": {
+        "name": "헝가리 NB I",
+        "strength": 0.6
+      },
+      "383": {
+        "name": "이스라엘 리가트 하알",
+        "strength": 0.6
+      },
+      "318": {
+        "name": "키프로스 1부",
+        "strength": 0.6
+      },
+      "172": {
+        "name": "불가리아 1부",
+        "strength": 0.56
+      },
+      "373": {
+        "name": "슬로베니아 1부",
+        "strength": 0.55
+      },
+      "342": {
+        "name": "아르메니아 프리미어리그",
+        "strength": 0.5
+      },
+      "104": {
+        "name": "노르웨이 2부",
+        "strength": 0.5
+      }
+    }
+  }
+}

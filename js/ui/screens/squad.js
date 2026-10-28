@@ -1,0 +1,406 @@
+// 스쿼드: 피치 자유 배치 포메이션 + 선발 배치(드래그 또는 클릭 두 번) + 스쿼드 표 + 팀 레이팅 + 교체 명단
+import { POSITIONS } from '../../data/schema.js';
+import { FORMATION_CELLS, FORMATION_IDS, GK_ROW, GRID_COLUMNS, GRID_ROWS, formationName, positionOfCell } from '../../engine/formations.js';
+import { autoSelectLineup } from '../../engine/lineup.js';
+import { computeTeamRatings, conditionFactor, overall, positionFit, positionRating } from '../../engine/ratings.js';
+import { availabilityOf, conditionOf, fixLineup, leagueOf, lineupProblems, previewUserBench, squadOf, userSlots } from '../../state/game.js';
+import { condClass, conditionMeter, openPlayerModal, panel, ratingBar, segmented, statusChip, tooltipGroup } from '../components.js';
+import { h } from '../dom.js';
+import { ATTRIBUTE_LABELS, POSITION_NAMES, attrClass, fmt1, shortName } from '../format.js';
+import { setDigits, showToast } from '../motion.js';
+
+// 격자 칸 중심 좌표 (%). 위쪽이 상대 골문
+const COL_X = [10, 30, 50, 70, 90];
+const ROW_Y = [91, 75, 60, 46, 31, 14];
+
+const ATTR_COLUMNS = ['pace', 'finishing', 'passing', 'dribbling', 'vision', 'tackling', 'heading', 'stamina', 'gkReflexes'];
+const ATTR_SHORT = { pace: '속도', finishing: '결정', passing: '패스', dribbling: '드리블', vision: '시야', tackling: '태클', heading: '헤딩', stamina: '체력', gkReflexes: 'GK' };
+const UNITS = [
+  ['attack', '공격'],
+  ['midfield', '중원'],
+  ['defense', '수비'],
+  ['goalkeeping', 'GK'],
+];
+const POS_ORDER = new Map(POSITIONS.map((p, i) => [p, i]));
+
+const fitClass = (fit) => (fit >= 0.95 ? 'fit-good' : fit >= 0.8 ? 'fit-ok' : 'fit-bad');
+const sameCells = (a, b) => a.length === b.length && a.every((c, i) => c[0] === b[i][0] && c[1] === b[i][1]);
+
+export function render(ctx) {
+  const { dataset, game } = ctx;
+  const byId = dataset.playerById;
+  const squad = () => squadOf(dataset, game, game.teamId);
+  const factorOf = (p) => conditionFactor(conditionOf(game, p.id));
+
+  // 클릭 두 번 배치용 선택 상태, 드래그 중인 대상
+  let selection = null; // { kind: 'player', id } | { kind: 'slot', index }
+  let dragging = null;
+
+  const pitchEl = h('div', { class: 'pitch' });
+  const tableHost = h('div', { class: 'table-host' });
+  const warnHost = h('div');
+  const benchHost = h('div');
+  const formationHead = h('div', { class: 'head-actions' });
+  const ratingRows = {};
+  const ratingList = h(
+    'div',
+    { class: 'unit-ratings' },
+    UNITS.map(([key, label]) => {
+      const digits = h('span', { class: 't-digit-group' });
+      const bar = ratingBar(0, { min: 55, max: 90 });
+      ratingRows[key] = { digits, bar };
+      return h('div', { class: 'unit-row' }, h('span', { class: 'muted' }, label), bar, h('b', { class: 'num' }, digits));
+    }),
+  );
+  const xiOvr = h('span', { class: 't-digit-group' });
+
+  const lineupPlayers = () => game.lineup.map((id) => byId.get(id));
+
+  // ── 배치 규칙 ───────────────────────────────────────
+  function canPlay(id) {
+    const a = availabilityOf(game, id);
+    if (a.available) return true;
+    showToast(`${byId.get(id).name}: ${a.label} (${a.rounds}경기 결장)`, { tone: 'warn' });
+    return false;
+  }
+
+  function assignPlayerToSlot(playerId, slotIndex) {
+    const from = game.lineup.indexOf(playerId);
+    if (from === slotIndex) return refresh();
+    if (from < 0 && !canPlay(playerId)) return refresh();
+    if (from >= 0) [game.lineup[from], game.lineup[slotIndex]] = [game.lineup[slotIndex], game.lineup[from]];
+    else game.lineup[slotIndex] = playerId;
+    game.bench = (game.bench ?? []).filter((id) => id !== playerId); // 선발로 올리면 교체 명단에서 뺀다
+    changed([slotIndex, from].filter((i) => i >= 0));
+  }
+
+  // 교체 명단 넣기·빼기 (선발 선수·결장자는 못 넣음)
+  const benchSize = () => leagueOf(dataset, game).rules.matchday.benchSize;
+  function toggleBench(id) {
+    const bench = game.bench ?? [];
+    if (bench.includes(id)) {
+      game.bench = bench.filter((x) => x !== id);
+      return changed();
+    }
+    if (game.lineup.includes(id)) return showToast('선발 선수는 교체 명단에 넣을 수 없습니다.', { tone: 'warn' });
+    if (!canPlay(id)) return;
+    if (bench.length >= benchSize()) return showToast(`교체 명단은 ${benchSize()}명까지입니다. 먼저 한 명을 빼세요.`, { tone: 'warn' });
+    game.bench = [...bench, id];
+    changed();
+  }
+
+  // 슬롯을 빈 칸으로 옮긴다 → 그 칸의 포지션이 슬롯 포지션이 된다
+  function moveSlotToCell(slotIndex, cell) {
+    if (game.formation.cells[slotIndex][1] === GK_ROW) {
+      showToast('골키퍼 자리는 옮길 수 없습니다. 선수끼리 바꾸세요.', { tone: 'warn' });
+      return refresh();
+    }
+    game.formation.cells[slotIndex] = cell;
+    changed([slotIndex]);
+  }
+
+  function applyPreset(id) {
+    const cells = FORMATION_CELLS[id].map((c) => [...c]);
+    if (sameCells(cells, game.formation.cells)) return;
+    // 지금 선발 11명을 유지한 채 새 포메이션 슬롯에 다시 배치
+    game.lineup = autoSelectLineup(lineupPlayers(), cells.map(positionOfCell), factorOf).map((p) => p.id);
+    game.formation.cells = cells;
+    changed(game.lineup.map((_, i) => i));
+  }
+
+  function onSlotClick(i) {
+    if (selection?.kind === 'player') return assignPlayerToSlot(selection.id, i);
+    if (selection?.kind === 'slot' && selection.index !== i) return assignPlayerToSlot(game.lineup[selection.index], i);
+    selection = selection?.kind === 'slot' ? null : { kind: 'slot', index: i };
+    renderPitch();
+    renderTable();
+  }
+
+  function onCellClick(cell) {
+    if (selection?.kind === 'slot') moveSlotToCell(selection.index, cell);
+  }
+
+  function onRowClick(id) {
+    if (selection?.kind === 'slot') return assignPlayerToSlot(id, selection.index);
+    selection = selection?.kind === 'player' && selection.id === id ? null : { kind: 'player', id };
+    renderPitch();
+    renderTable();
+  }
+
+  // ── 드래그 ──────────────────────────────────────────
+  function dropTarget(el, onDrop) {
+    el.addEventListener('dragover', (e) => {
+      if (!dragging) return;
+      e.preventDefault();
+      el.classList.add('is-over');
+    });
+    el.addEventListener('dragleave', () => el.classList.remove('is-over'));
+    el.addEventListener('drop', (e) => {
+      e.preventDefault();
+      el.classList.remove('is-over');
+      const d = dragging;
+      dragging = null;
+      pitchEl.classList.remove('is-arranging');
+      if (d) onDrop(d);
+    });
+  }
+
+  function dragSource(el, payload) {
+    el.setAttribute('draggable', 'true');
+    el.addEventListener('dragstart', (e) => {
+      dragging = payload;
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', JSON.stringify(payload));
+      el.classList.add('is-dragging');
+      // 슬롯을 끄는 동안 빈 칸 가이드 표시
+      if (payload.kind === 'slot') pitchEl.classList.add('is-arranging');
+    });
+    el.addEventListener('dragend', () => {
+      dragging = null;
+      el.classList.remove('is-dragging');
+      pitchEl.classList.remove('is-arranging');
+    });
+  }
+
+  // ── 렌더 ────────────────────────────────────────────
+  function renderFormationHead() {
+    const cells = game.formation.cells;
+    const preset = FORMATION_IDS.find((id) => sameCells(FORMATION_CELLS[id], cells));
+    const items = FORMATION_IDS.map((id) => ({ id, label: id }));
+    if (!preset) items.push({ id: 'custom', label: formationName(cells) });
+    const tabs = segmented(items, preset ?? 'custom', (id) => id !== 'custom' && applyPreset(id), { size: 'small' });
+    const auto = h('button', { class: 'btn small', type: 'button' }, '자동 선발');
+    auto.addEventListener('click', () => {
+      const available = squad().filter((p) => availabilityOf(game, p.id).available);
+      game.lineup = autoSelectLineup(available, userSlots(game), factorOf).map((p) => p.id);
+      changed(game.lineup.map((_, i) => i));
+      showToast('출전 가능한 가장 강한 선발로 바꿨습니다');
+    });
+    formationHead.replaceChildren(tabs.el, auto);
+  }
+
+  function renderPitch(flash = []) {
+    const cells = game.formation.cells;
+    const occupied = new Set(cells.map(([c, r]) => `${c},${r}`));
+    const arranging = selection?.kind === 'slot' && cells[selection.index][1] !== GK_ROW;
+
+    // 빈 칸: 슬롯을 끌거나 슬롯을 선택했을 때만 보인다
+    const targets = [];
+    for (let row = 1; row < GRID_ROWS; row++) {
+      for (let col = 0; col < GRID_COLUMNS; col++) {
+        if (occupied.has(`${col},${row}`)) continue;
+        const cell = h('button', { type: 'button', class: 'cell-target', style: { left: `${COL_X[col]}%`, top: `${ROW_Y[row]}%` }, tabindex: arranging ? '0' : '-1', 'aria-label': `${positionOfCell([col, row])} 자리로 이동` }, positionOfCell([col, row]));
+        cell.addEventListener('click', () => onCellClick([col, row]));
+        dropTarget(cell, (d) => (d.kind === 'slot' ? moveSlotToCell(d.index, [col, row]) : showToast('빈 칸에는 피치 위 선수를 옮겨 놓으세요', { tone: 'warn' })));
+        targets.push(cell);
+      }
+    }
+
+    const slots = userSlots(game);
+    const chips = slots.map((pos, i) => {
+      const p = byId.get(game.lineup[i]);
+      const fit = positionFit(p, pos);
+      const cond = conditionOf(game, p.id);
+      const value = Math.round(positionRating(p, pos) * fit * conditionFactor(cond));
+      const avail = availabilityOf(game, p.id);
+      const selected = (selection?.kind === 'slot' && selection.index === i) || (selection?.kind === 'player' && selection.id === p.id);
+      const [col, row] = cells[i];
+      const chip = h(
+        'button',
+        {
+          type: 'button',
+          class: `slot ${fitClass(fit)}${selected ? ' is-selected' : ''}${flash.includes(i) ? ' is-flash' : ''}${avail.available ? '' : ' is-unavailable'}`,
+          style: { left: `${COL_X[col]}%`, top: `${ROW_Y[row]}%` },
+          title: `${POSITION_NAMES[pos]} · ${p.name} · 컨디션 ${cond}%${fit < 1 ? ` · 적합도 ${Math.round(fit * 100)}%` : ''}${avail.available ? '' : ` · ${avail.label}`}`,
+        },
+        h('span', { class: 'slot-pos' }, pos),
+        h('span', { class: `slot-ovr ${attrClass(value)}` }, value),
+        h('span', { class: 'slot-name' }, shortName(p.name)),
+        h('span', { class: `slot-cond ${condClass(cond)}` }, h('span', { style: { width: `${cond}%` } })),
+        avail.available ? null : h('span', { class: `slot-flag ${avail.reason}` }, avail.reason === 'injury' ? '+' : '!'),
+      );
+      chip.addEventListener('click', () => onSlotClick(i));
+      chip.addEventListener('dblclick', () => openPlayerModal(dataset, p, ctx));
+      dragSource(chip, { kind: 'slot', index: i });
+      dropTarget(chip, (d) => (d.kind === 'slot' ? assignPlayerToSlot(game.lineup[d.index], i) : assignPlayerToSlot(d.id, i)));
+      return chip;
+    });
+    pitchEl.classList.toggle('is-arranging', arranging);
+    pitchEl.replaceChildren(h('div', { class: 'pitch-lines' }), ...targets, ...chips);
+  }
+
+  function renderTable() {
+    const slots = userSlots(game);
+    const slotOf = new Map(game.lineup.map((id, i) => [id, i]));
+    const starters = game.lineup.map((id) => byId.get(id));
+    const bench = squad()
+      .filter((p) => !slotOf.has(p.id))
+      .sort((a, b) => POS_ORDER.get(a.position) - POS_ORDER.get(b.position) || overall(b) - overall(a));
+
+    const head = h(
+      'tr',
+      {},
+      h('th', { 'data-tooltip': '선발 슬롯' }, '슬롯'),
+      h('th', { 'data-tooltip': '교체 명단 (누르면 넣기·빼기)' }, '교체'),
+      h('th', {}, '포지션'),
+      h('th', {}, '이름'),
+      h('th', { 'data-tooltip': '부상·출장정지 (남은 경기)' }, '상태'),
+      h('th', { 'data-tooltip': '컨디션: 경기를 뛰면 떨어지고 라운드마다 회복' }, '컨디션'),
+      h('th', { class: 'num' }, '나이'),
+      h('th', {}, '국적'),
+      h('th', { class: 'num', 'data-tooltip': '종합 능력치 (주 포지션 기준)' }, 'OVR'),
+      ATTR_COLUMNS.map((k) => h('th', { class: 'num', 'data-tooltip': ATTRIBUTE_LABELS[k] }, ATTR_SHORT[k])),
+    );
+
+    const row = (p, isStarter) => {
+      const slotIndex = slotOf.get(p.id);
+      const selected = selection?.kind === 'player' && selection.id === p.id;
+      const avail = availabilityOf(game, p.id);
+      const cond = conditionOf(game, p.id);
+      const nameButton = h('button', { class: 'link', type: 'button' }, p.name);
+      nameButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openPlayerModal(dataset, p, ctx);
+      });
+      const tr = h(
+        'tr',
+        { class: `${isStarter ? 'is-starter' : 'is-bench'}${selected ? ' is-selected' : ''}${avail.available ? '' : ' is-unavailable'}` },
+        h('td', {}, isStarter ? h('span', { class: 'slot-tag' }, slots[slotIndex]) : h('span', { class: 'muted' }, '—')),
+        h('td', {}, isStarter ? null : benchToggle(p.id)),
+        h('td', {}, h('span', { class: 'pos-tag' }, p.position), p.altPositions.length ? h('span', { class: 'alt muted' }, ` ${p.altPositions.join(' ')}`) : ''),
+        h('td', { class: 'name-cell' }, nameButton),
+        h('td', {}, statusChip(game, p.id)),
+        h('td', {}, conditionMeter(cond)),
+        h('td', { class: 'num' }, p.age),
+        h('td', { title: dataset.nationByCode.get(p.nationality)?.nameKo }, p.nationality),
+        h('td', { class: `num ovr ${attrClass(overall(p))}` }, overall(p)),
+        ATTR_COLUMNS.map((k) => h('td', { class: `num ${attrClass(p.attributes[k])}` }, p.attributes[k])),
+      );
+      tr.addEventListener('click', () => onRowClick(p.id));
+      dragSource(tr, { kind: 'player', id: p.id });
+      // 슬롯 칩을 표의 선수 위에 놓으면 그 선수가 그 슬롯으로
+      dropTarget(tr, (d) => d.kind === 'slot' && assignPlayerToSlot(p.id, d.index));
+      return tr;
+    };
+
+    const table = h(
+      'table',
+      { class: 'data squad-table' },
+      h('thead', {}, head),
+      h('tbody', {}, starters.map((p) => row(p, true)), h('tr', { class: 'divider' }, h('td', { colspan: 9 + ATTR_COLUMNS.length }, `교체 · 후보 ${bench.length}명`)), bench.map((p) => row(p, false))),
+    );
+    tableHost.replaceChildren(tooltipGroup('tt-block', h('div', { class: 'table-scroll' }, table)));
+  }
+
+  function renderWarnings() {
+    const problems = lineupProblems(dataset, game);
+    if (problems.length === 0) return warnHost.replaceChildren();
+    const fix = h('button', { class: 'btn small primary', type: 'button' }, '자동으로 대체');
+    fix.addEventListener('click', () => {
+      const n = fixLineup(dataset, game);
+      changed(problems.map((p) => p.slot));
+      showToast(`${n}명을 출전 가능한 선수로 바꿨습니다`);
+    });
+    warnHost.replaceChildren(
+      h('div', { class: 'warn-banner' }, h('span', {}, h('b', {}, `선발에 출전할 수 없는 선수 ${problems.length}명`), ' — 경기 전에 바꿔야 합니다.'), fix),
+    );
+  }
+
+  function benchToggle(id) {
+    const on = (game.bench ?? []).includes(id);
+    const btn = h('button', { type: 'button', class: `bench-toggle${on ? ' on' : ''}`, 'aria-pressed': String(on), title: on ? '교체 명단에서 빼기' : '교체 명단에 넣기' }, on ? '●' : '○');
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleBench(id);
+    });
+    return btn;
+  }
+
+  // 교체 명단: 직접 고른 선수(●) + 경기 때 자동으로 채울 선수(자동)
+  function renderBench() {
+    const chosen = new Set(game.bench ?? []);
+    const preview = previewUserBench(dataset, game);
+    const autoAll = h('button', { class: 'btn small ghost', type: 'button' }, '자동 구성으로 고정');
+    autoAll.addEventListener('click', () => {
+      game.bench = preview.map((p) => p.id);
+      changed();
+    });
+    const clear = h('button', { class: 'btn small ghost', type: 'button' }, '비우기');
+    clear.addEventListener('click', () => {
+      game.bench = [];
+      changed();
+    });
+    const list = h(
+      'table',
+      { class: 'data compact bench-list' },
+      h(
+        'tbody',
+        {},
+        preview.map((p) => {
+          const mine = chosen.has(p.id);
+          const remove = mine ? h('button', { class: 'link', type: 'button', 'aria-label': `${p.name} 빼기` }, '✕') : h('span', { class: 'muted auto-tag' }, '자동');
+          if (mine) remove.addEventListener('click', () => toggleBench(p.id));
+          return h(
+            'tr',
+            { class: mine ? 'is-chosen' : '' },
+            h('td', {}, h('span', { class: 'pos-tag' }, p.position)),
+            h('td', {}, p.name),
+            h('td', {}, conditionMeter(conditionOf(game, p.id))),
+            h('td', { class: `num ${attrClass(overall(p))}` }, overall(p)),
+            h('td', { class: 'num' }, remove),
+          );
+        }),
+      ),
+    );
+    const host = h('div', { class: 'bench-drop' }, list, h('div', { class: 'btn-row bench-actions' }, h('span', { class: 'muted' }, `직접 ${chosen.size}/${benchSize()}명 · 나머지 자동`), autoAll, clear));
+    // 표의 선수를 끌어다 놓으면 명단에 추가
+    dropTarget(host, (d) => d.kind === 'player' && !(game.bench ?? []).includes(d.id) && toggleBench(d.id));
+    benchHost.replaceChildren(host);
+  }
+
+  function updateRatings() {
+    const r = computeTeamRatings(userSlots(game), lineupPlayers(), factorOf);
+    for (const [key] of UNITS) {
+      setDigits(ratingRows[key].digits, fmt1(r[key]));
+      const pct = Math.max(0, Math.min(100, ((r[key] - 55) / 35) * 100));
+      ratingRows[key].bar.firstChild.style.width = `${pct}%`;
+    }
+    setDigits(xiOvr, fmt1(lineupPlayers().reduce((s, p) => s + overall(p), 0) / game.lineup.length));
+  }
+
+  function refresh(flash = []) {
+    selection = null;
+    renderFormationHead();
+    renderWarnings();
+    renderPitch(flash);
+    renderTable();
+    renderBench();
+    updateRatings();
+  }
+
+  function changed(flash) {
+    refresh(flash);
+    ctx.persist();
+  }
+
+  refresh();
+
+  const hint = h(
+    'p',
+    { class: 'hint muted' },
+    '선수를 피치 슬롯에 끌어 놓거나 선수 → 슬롯 순서로 클릭하세요. 피치 위 선수를 빈 칸으로 끌면(또는 클릭 후 빈 칸 클릭) 그 위치로 포메이션이 바뀝니다. 이름을 누르면 상세 능력치.',
+  );
+
+  return h(
+    'div',
+    { class: 'squad-screen' },
+    h(
+      'div',
+      { class: 'squad-left' },
+      panel('포메이션', h('div', { class: 'pitch-wrap' }, pitchEl), { actions: formationHead }),
+      panel('팀 레이팅', h('div', { class: 'ratings-body' }, ratingList, h('div', { class: 'xi-ovr' }, h('span', { class: 'muted' }, '선발 평균 OVR'), h('b', { class: 'num' }, xiOvr)))),
+      panel('교체 명단', benchHost),
+    ),
+    h('div', { class: 'squad-right' }, warnHost, panel('스쿼드', h('div', {}, hint, tableHost), { actions: h('span', { class: 'muted' }, `${squad().length}명`) })),
+  );
+}
