@@ -1120,3 +1120,24 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .pm-mood h3 { color: var(--muted); font-size: 11px; letter-spacing: 0.08em; }
 .pm-mood-facts { font-size: 13px; color: var(--text-2); }
 .pm-quote { margin: 0; padding: 10px 14px; border: 1px solid var(--line-2); border-radius: 8px; background: var(--bg-2); font-size: 14px; line-height: 1.55; }
+
+/* ── 이사회 ── */
+.board-line { display: flex; align-items: center; flex-wrap: wrap; gap: 2px; font-size: 12px; justify-content: center; }
+.board-bar { display: inline-block; position: relative; width: 70px; height: 5px; margin: 0 4px; border-radius: 3px; background: var(--panel-3); overflow: hidden; }
+.board-bar::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--v); background: var(--accent); }
+.board-bar.lv-ok::after { background: var(--warn); }
+.board-bar.lv-bad::after { background: var(--danger); }
+.board-sacked { display: grid; gap: 14px; }
+.board-letter { display: grid; gap: 8px; padding: 18px; }
+.board-letter h2 { color: #ff8a8e; font-size: 22px; }
+.board-offers, .board-season { display: grid; gap: 10px; padding: 12px; }
+.board-season h3 { color: var(--muted); font-size: 11px; letter-spacing: 0.08em; }
+.board-eval { font-size: 14px; }
+.board-quote { margin: 0; padding: 10px 14px; border: 1px solid var(--line-2); border-radius: 8px; background: var(--bg-2); font-size: 14px; line-height: 1.55; }
+.board-quote.bad { border-color: rgba(242, 85, 90, 0.4); }
+.board-pending { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 12px; border: 1px solid var(--accent); border-radius: 8px; }
+.offer-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
+.offer-card { display: grid; gap: 8px; align-content: start; padding: 14px; border: 1px solid var(--line-2); border-radius: 10px; background: var(--panel); }
+.offer-head { display: flex; align-items: center; gap: 10px; }
+.offer-head > div { display: grid; gap: 2px; min-width: 0; }
+.offer-letter { margin: 0; font-size: 13px; line-height: 1.5; color: var(--text-2); }

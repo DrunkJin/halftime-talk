@@ -55,6 +55,7 @@ export function createApp(root, dataset, savedSlots = []) {
     refreshTopbar,
     persist,
     leaveToSelect,
+    rebuildTopbar: () => buildTopbar(), // 구단을 옮기면 상단 팀 표시를 다시
     startGame(game) {
       ctx.game = game;
       ctx.slots = ctx.slots.map((s) => (s.slot === game.slot ? { slot: s.slot, game, invalid: false } : s));

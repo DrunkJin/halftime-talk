@@ -16,6 +16,7 @@ import { ensureWorld, packAttributes, worldDataset } from './world.js';
 import { noteSeasonExpectation } from './career.js';
 import { takeRetention } from './training.js';
 import { resetMoodsForNewSeason } from './squadMood.js';
+import { startBoardSeason } from './board.js';
 
 const P = PROGRESSION;
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
@@ -408,6 +409,13 @@ export function startNextSeason(base, game, { renew = null } = {}) {
   noteSeasonExpectation(ds1, game);
   initSeasonFinances(ds1, game, { firstSeason: false });
   createCups(ds1, game, competitions.length ? competitions : undefined);
+  // 이사회: 옮기기로 한 구단이 있으면 부임, 아니면 신뢰도를 이어 받고 새 목표
+  const moving = game.board?.pendingMove?.teamId ?? null;
+  startBoardSeason(ds1, game);
+  if (moving) {
+    summary.newTeam = ds1.teamById.get(moving)?.name ?? moving;
+    summary.newLeague = null; // 승강 안내 대신 새 구단 안내
+  }
   const myCup = competitions.find((c) => c.teamIds.includes(game.teamId));
   summary.cup = myCup?.name ?? null;
   return { summary };

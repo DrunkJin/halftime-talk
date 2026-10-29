@@ -60,7 +60,7 @@ function runLocally(type, dataset, game, userResult) {
     return { game: copy, otherFixtureIds: null, aiTransfers: [], newOffers: [], cups: week.cups, moods: week.moods };
   }
   const week = playWeek(dataset, copy, userResult);
-  return { game: copy, otherFixtureIds: week.others.map((r) => r.fixture.id), aiTransfers: week.aiTransfers, newOffers: week.newOffers, cups: week.cups, training: week.training, moods: week.moods };
+  return { game: copy, otherFixtureIds: week.others.map((r) => r.fixture.id), aiTransfers: week.aiTransfers, newOffers: week.newOffers, cups: week.cups, training: week.training, moods: week.moods, board: week.board };
 }
 
 async function run(type, dataset, game, userResult = null) {

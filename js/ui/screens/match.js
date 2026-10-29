@@ -1,5 +1,7 @@
 // 경기: 경기 전(선발·전력 비교) → 실시간 텍스트 중계 → 경기 후(다른 경기 결과)
 import { loadTalks, pickTalk } from '../../media/talks.js';
+import { loadBoardText } from '../../media/boardText.js';
+import { boardLine, mustChooseClub, sackedPanel, seasonBoardPanel } from '../board.js';
 import { FORMATION_CELLS, formationLabel, positionOfCell } from '../../engine/formations.js';
 import { HALF_TIME_MINUTE, MATCH_MINUTES } from '../../engine/config.js';
 import { changeFormation, createMatch, getMatchResult, makeSubstitution, playMinute, playerRatings, setAutoSubs, setTactics, teamSnapshot } from '../../engine/match.js';
@@ -153,6 +155,13 @@ export function cupFixtureLabel(game, fixture) {
 
 function renderPre(ctx, show) {
   const { dataset, game } = ctx;
+  // 시즌 중 경질: 새 구단을 고를 때까지 경기 대신 통보
+  if (game.board?.sacked?.midSeason) {
+    return sackedPanel(ctx, () => {
+      reset();
+      ctx.navigate('squad');
+    });
+  }
   // 주중 대륙 대회 경기가 있으면 그것부터
   const cupFx = userCupFixture(game);
   const fixture = cupFx ?? userFixture(game);
@@ -306,6 +315,7 @@ function renderPre(ctx, show) {
           h('div', { class: 'mu-team' }, teamBadge(away, 64), h('b', {}, away.name), h('span', { class: 'muted' }, cupFx?.neutral ? '' : '원정')),
         ),
         moraleMeter(ctx),
+        boardLine(ctx),
         expiryNote,
         tiredNote,
         benchedNote,
@@ -469,6 +479,16 @@ function notifyMarket(ctx, r) {
   if (cupWeeks.length) showToast(`주중 대륙 대회 경기 진행${cupWeeks.some((c) => c.newStage) ? ' · 다음 단계 대진 확정' : ''} — 대륙 대회 탭`, { duration: 3500 });
   for (const o of r.newOffers ?? []) {
     showToast(`영입 제안: ${dataset.teamById.get(o.teamId).shortName} → ${dataset.playerById.get(o.playerId).name}, ${formatMoney(o.amount)} (이적 › 받은 제안)`, { tone: 'warn', duration: 4500 });
+  }
+  // 이사회: 경고·최후통첩·칭찬·경질
+  if (r.board?.length) {
+    loadBoardText().then((t) => {
+      for (const e of r.board) {
+        const b = game.board ?? {};
+        const line = pickTalk(t?.[e.kind] ?? t?.sacked, `${game.seed}:${game.seasonIndex}:${game.round}:${e.kind}`, { team: dataset.teamById.get(game.teamId)?.shortName ?? '', goal: b.objective?.label ?? '', target: b.objective?.target ?? '' });
+        showToast(`이사회: ${line}`, { tone: e.kind === 'praise' ? '' : 'bad', duration: 6000 });
+      }
+    });
   }
   // 선수 기분: 불만·이적 요청·약속 (대사는 data/talks.json)
   if (r.moods?.length) {
@@ -1089,13 +1109,15 @@ function renderSeasonOver(ctx, show) {
       h('div', { class: 'btn-row' }, toTable, toHistory, game.seasonIndex >= game.years ? extend : null),
     ),
   );
-  return game.seasonIndex < game.years ? h('div', { class: 'season-over-wrap' }, over, nextSeasonPanel(ctx, show)) : over;
+  return game.seasonIndex < game.years ? h('div', { class: 'season-over-wrap' }, over, seasonBoardPanel(ctx, show), nextSeasonPanel(ctx, show)) : h('div', { class: 'season-over-wrap' }, over, seasonBoardPanel(ctx, show));
 }
 
 // 다음 시즌 준비: 계약 만료 선수 재계약 고르기 → 다음 시즌 시작
 function nextSeasonPanel(ctx, show) {
   const { dataset, game } = ctx;
-  const expiring = expiringContracts(dataset, game).sort((a, b) => overall(b) - overall(a));
+  // 다른 구단으로 옮기면 지금 구단 재계약은 다음 감독 몫
+  const leaving = Boolean(game.board?.pendingMove || game.board?.sacked);
+  const expiring = leaving ? [] : expiringContracts(dataset, game).sort((a, b) => overall(b) - overall(a));
   const chosen = new Set(suggestedRenewals(dataset, game));
   const rows = expiring.map((p) => {
     const box = h('input', { type: 'checkbox', checked: chosen.has(p.id) || null, 'aria-label': `${p.name} 재계약` });
@@ -1114,9 +1136,13 @@ function nextSeasonPanel(ctx, show) {
     );
   });
   const start = h('button', { class: 'btn primary big', type: 'button' }, `${game.seasonIndex + 1}시즌 시작`);
+  // 경질됐으면 새 구단을 골라야 시작할 수 있다
+  if (mustChooseClub(game)) start.disabled = true;
   start.addEventListener('click', async () => {
     const r = await ctx.runBusy('다음 시즌 준비 중 (성장·노화·이적·일정)', () => advanceSeason(ctx.baseDataset, ctx.game, { renew: [...chosen] }));
+    const moved = r.game.teamId !== ctx.game.teamId;
     ctx.setGame(r.game);
+    if (moved) ctx.rebuildTopbar?.();
     show();
     showSeasonSummary(ctx, r.summary);
   });
@@ -1153,7 +1179,9 @@ function showSeasonSummary(ctx, summary) {
       h(
         'ul',
         { class: 'summary-list' },
+        summary.newTeam ? h('li', {}, h('b', {}, '새 구단'), ` ${summary.newTeam} 지휘봉을 잡았습니다. 이사회 목표: ${game.board?.objective?.label ?? ''}`) : null,
         summary.newLeague ? h('li', {}, h('b', {}, summary.promoted.length ? '승격!' : '강등'), ` 이번 시즌은 ${summary.newLeague}에서 뜁니다.`) : null,
+        !summary.newTeam && game.board?.objective ? h('li', {}, h('b', {}, '이사회 목표'), ` ${game.board.objective.label}`) : null,
         h('li', {}, h('b', {}, '대륙 대회'), ' ', summary.cup ? `${summary.cup} 진출` : '진출 못 함'),
         line('은퇴', summary.retired),
         line('계약 만료로 떠남', summary.left),

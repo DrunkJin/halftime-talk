@@ -14,6 +14,7 @@ import { settleMoraleAfterMatch } from './morale.js';
 import { trainFamiliarity } from './familiarity.js';
 import { applyTrainingWeek } from './training.js';
 import { updateMoods } from './squadMood.js';
+import { evaluateSeason, setObjective, updateBoardAfterMatch } from './board.js';
 import { aiIdentity, squadProfile } from '../engine/tactics.js';
 
 export function createGame(dataset, teamId, options) {
@@ -27,6 +28,8 @@ export function createGame(dataset, teamId, options) {
   initSeasonFinances(dataset, game, { firstSeason: true });
   createCups(dataset, game);
   noteSeasonExpectation(dataset, game);
+  setObjective(dataset, game);
+  game.jobs = [{ seasonIndex: 1, round: 1, teamId, reason: 'start' }];
   return game;
 }
 
@@ -57,6 +60,7 @@ export function playWeek(dataset, game, userResult) {
   const mine = userFixture(game);
   trackUserMatch(dataset, game, mine, userResult, dataset.leagueById.get(game.leagueId)?.name);
   const others = completeRound(dataset, game, userResult);
+  const board = mine ? updateBoardAfterMatch(dataset, game, mine, userResult) : []; // 이사회 신뢰도
   settleMoraleAfterMatch(game, mine?.id, userResult, mine?.homeId === game.teamId ? 'home' : 'away');
   if (mine) trainFamiliarity(game);
   const moods = mine ? updateMoods(dataset, game, userResult) : []; // 출전 기대치·기분 (사용자 팀)
@@ -76,9 +80,10 @@ export function playWeek(dataset, game, userResult) {
   if (isSeasonOver(game)) {
     awardSeasonPrizes(dataset, game);
     recordSeason(dataset, game);
+    evaluateSeason(dataset, game); // 이사회 평가 → 경질 또는 다른 구단 제안
     game.incomingOffers = [];
   }
-  return { others, aiTransfers, newOffers, cups, training, moods };
+  return { others, aiTransfers, newOffers, cups, training, moods, board };
 }
 
 // 남은 시즌 자동 진행: 사용자 팀은 지금 선발에서 결장자·지친 선수를 바꾸고(로테이션),
@@ -89,6 +94,7 @@ export function simulateRestOfSeason(dataset, game) {
     return simulateMatch(input);
   };
   while (!isSeasonOver(game)) {
+    if (game.board?.sacked) break; // 경질: 새 구단을 골라야 이어 갈 수 있다
     const cup = userCupFixture(game);
     if (cup) {
       autoPickLineup(dataset, game, 'cup');

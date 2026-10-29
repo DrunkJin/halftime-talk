@@ -242,6 +242,8 @@ export function render(ctx) {
     const r = careerReview(game, { rivalryOf: (a, b) => rivalryBetween(media, a, b) });
     const title = text?.titles?.[r.titleId] ?? { label: '감독', summary: '', board: [], fans: [], captain: [] };
     const team = dataset.teamById.get(game.teamId);
+    // 부임 기록 (경질·이직): 연속으로 같은 구단은 한 번만
+    const clubs = (game.jobs ?? []).map((j) => dataset.teamById.get(j.teamId)?.shortName ?? j.teamId).filter((n, i, a) => i === 0 || a[i - 1] !== n);
     const finished = isSeasonOver(game) && game.seasonIndex >= game.years;
     const first = r.seasons[0];
     const last = r.seasons.at(-1);
@@ -267,6 +269,7 @@ export function render(ctx) {
         h('h1', {}, title.label),
         h('p', { class: 'cc-sub' }, `${team.name} 감독 · ${first.season}${last !== first ? ` ~ ${last.season}` : ''} · ${r.seasons.length}시즌`),
         title.summary ? h('p', { class: 'muted' }, title.summary) : null,
+        clubs.length > 1 ? h('p', { class: 'cc-clubs muted' }, `거친 구단: ${clubs.join(' → ')}`) : null,
       ),
       h('div', { class: `cc-grade grade-${r.grade}`, 'aria-label': `감독 평가 ${r.grade}등급, ${r.score}점` }, h('span', { class: 'cc-grade-letter' }, r.grade), h('span', { class: 'cc-grade-score' }, `${r.score}점`)),
     );

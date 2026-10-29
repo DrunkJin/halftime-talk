@@ -29,6 +29,11 @@ function strengthOf(dataset, game, teamId) {
   return top.reduce((s, v) => s + v, 0) / Math.max(1, top.length);
 }
 
+// 사용자 리그가 바뀌면(새 시즌에 다른 리그 구단 부임) 주중 일정을 그 리그 라운드 수에 맞춰 다시 짠다 (진행 전에만)
+export function rebuildCupSchedule(game) {
+  if (game.cups && !game.cups.schedule.some((e) => e.done)) game.cups.schedule = buildSchedule(game.totalRounds);
+}
+
 function buildSchedule(totalRounds) {
   let prev = 0;
   return CUP.calendar.map((e) => {
