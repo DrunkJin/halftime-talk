@@ -5,6 +5,7 @@ import { overall } from '../engine/ratings.js';
 import { computeTable } from '../league/table.js';
 import { topElevenOvr } from '../market/value.js';
 import { currentTeamId, fixturesOf, squadOf } from './game.js';
+import { VERDICT_LABELS } from './scouting.js';
 
 const RUMOR_CHANCE = 0.22; // 라운드마다 이적설이 하나 나올 확률
 const BIG_LEAGUES = ['epl', 'laliga', 'serie-a', 'bundesliga', 'ligue-1'];
@@ -38,6 +39,8 @@ export function weeklyNews(dataset, game, week, userFixture, userResult) {
   for (const e of week.board ?? []) pushNews(game, `board.${e.kind}`, { team: me, goal: game.board?.objective?.label ?? '' }, { important: e.kind !== 'praise' });
   // 선수 기분
   for (const e of week.moods ?? []) pushNews(game, `player.${e.kind}`, { name: e.name, id: e.id }, { important: e.kind === 'request' || e.kind === 'promiseBroken' });
+  // 스카우트 보고서
+  for (const r of week.scouting ?? []) pushNews(game, 'player.scoutReport', { name: r.name, id: r.id, verdict: VERDICT_LABELS[r.verdict] ?? '' }, { important: r.verdict === 'starter' });
   // 우리 팀 부상 (이번 경기)
   if (userResult) {
     const mySide = userFixture.homeId === game.teamId ? 'home' : 'away';

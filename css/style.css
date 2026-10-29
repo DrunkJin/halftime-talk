@@ -1194,3 +1194,10 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .role-row { display: grid; grid-template-columns: 84px minmax(0, 1fr); align-items: center; gap: 4px 10px; }
 .role-row .small-note { grid-column: 2; }
 .role-label { color: var(--text-2); font-size: 12px; font-weight: 700; }
+
+/* ── 스카우팅 ── */
+.ovr-range { color: var(--muted); font-weight: 700; white-space: nowrap; }
+.pm-ovr.is-range .pm-ovr-num { font-size: 18px; color: var(--text-2); }
+.pm-scout { display: grid; gap: 8px; padding: 12px 18px; border-top: 1px solid var(--line); font-size: 13px; }
+.scout-note { padding: 0 12px 8px; }
+.row-actions { display: flex; gap: 6px; justify-content: flex-end; }

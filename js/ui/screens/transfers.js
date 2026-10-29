@@ -1,4 +1,5 @@
 // 이적: 선수 찾기(영입 제안) · 받은 제안 · 우리 선수(판매·계약 해지) · 이적 기록(우리 팀 / 전체 소식)
+import { SCOUT, assignmentOf, ovrView, scoutSlotsLeft, sendScout } from '../../state/scouting.js';
 import { overall } from '../../engine/ratings.js';
 import { contractOf, releaseCost, seasonsLeft, wageRoom } from '../../market/finance.js';
 import { acceptSellOffer, askingPrice, formatWage, makeOffer, offerTerms, releasePlayer, respondIncomingOffer, sellOffers, windowStatus } from '../../market/market.js';
@@ -167,7 +168,11 @@ export function render(ctx) {
       .filter(({ teamId }) => filters.league === 'all' || (teamId && dataset.teamById.get(teamId).leagueId === filters.league))
       .filter(({ p }) => filters.group === 'all' || GROUP_OF[p.position] === filters.group)
       .filter(({ teamId }) => !filters.freeOnly || teamId === null)
-      .map((r) => ({ ...r, ovr: overall(r.p), asking: askingPrice(dataset, game, r.p) }))
+      .map((r) => {
+        const view = ovrView(dataset, game, r.p);
+        // 모르는 선수는 보이는 범위의 가운데로 정렬 (실제 값이 새어 나가지 않게)
+        return { ...r, view, ovr: view.known ? view.ovr : (view.low + view.high) / 2, asking: askingPrice(dataset, game, r.p) };
+      })
       .filter((r) => !filters.affordable || r.asking <= budget)
       .sort((a, b) => b.ovr - a.ovr || a.asking - b.asking);
 
@@ -200,12 +205,27 @@ export function render(ctx) {
       fill();
     });
 
+    // 스카우트 파견 버튼 (모르는 선수만)
+    const scoutButton = (p) => {
+      const a = assignmentOf(game, p.id);
+      const b = h('button', { class: 'btn small ghost', type: 'button', disabled: a || scoutSlotsLeft(game) <= 0 || null, title: a ? '' : scoutSlotsLeft(game) <= 0 ? `스카우트는 동시에 ${SCOUT.slots}명까지` : '' }, a ? `관찰 중 (${Math.max(0, a.readyRound - game.round)}R)` : '스카우트');
+      b.addEventListener('click', () => {
+        const r = sendScout(dataset, game, p);
+        if (!r.ok) return;
+        ctx.persist();
+        showToast(`${p.name}에게 스카우트를 보냈습니다 — ${r.rounds}라운드 뒤 보고서 (편지함)`);
+        fill();
+      });
+      return b;
+    };
+    const scoutNote = h('span', { class: 'muted small-note' }, `스카우트 ${SCOUT.slots - scoutSlotsLeft(game)}/${SCOUT.slots}명 파견 중 · 우리 리그·맞붙어 본 팀·스카우트한 선수만 정확한 능력치가 보입니다`);
+
     const tbody = h('tbody');
     function renderRows() {
       const qq = filters.query.trim().toLowerCase();
       const shown = rows.filter(({ p }) => !qq || p.name.toLowerCase().includes(qq)).slice(0, RESULT_LIMIT);
       tbody.replaceChildren(
-        ...shown.map(({ p, teamId, ovr, asking }) => {
+        ...shown.map(({ p, teamId, view, asking }) => {
           const offer = h('button', { class: 'btn small', type: 'button', disabled: open ? null : true, title: open ? '' : '이적시장이 닫혀 있습니다' }, teamId ? '제안' : '영입');
           offer.addEventListener('click', () => offerModal(p));
           const name = h('button', { class: 'link', type: 'button' }, p.name);
@@ -217,11 +237,11 @@ export function render(ctx) {
             h('td', {}, teamCell(teamId)),
             h('td', {}, h('span', { class: 'pos-tag' }, p.position)),
             h('td', { class: 'num' }, p.age),
-            h('td', { class: `num ovr ${attrClass(ovr)}` }, ovr),
+            h('td', { class: `num ovr ${view.known ? attrClass(view.ovr) : 'ovr-range'}`, title: view.known ? '' : '스카우트하면 정확한 능력치를 볼 수 있습니다' }, view.known ? view.ovr : `${view.low}~${view.high}`),
             h('td', { class: 'num' }, formatMoney(playerValue(p))),
             h('td', { class: 'num' }, teamId ? formatMoney(asking) : '—'),
             h('td', {}, statusChip(game, p.id)),
-            h('td', { class: 'num' }, offer),
+            h('td', { class: 'num row-actions' }, view.known ? null : scoutButton(p), offer),
           );
         }),
       );
@@ -232,6 +252,7 @@ export function render(ctx) {
       'div',
       {},
       h('div', { class: 'filter-bar' }, leagueSelect, groups.el, search, check('affordable', '예산 안에서'), check('freeOnly', '무소속만'), h('span', { class: 'muted' }, `${rows.length}명 중 OVR 상위 ${Math.min(RESULT_LIMIT, rows.length)}명`)),
+      h('div', { class: 'scout-note' }, scoutNote),
       h(
         'div',
         { class: 'table-scroll' },

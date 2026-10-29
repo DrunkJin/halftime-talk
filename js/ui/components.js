@@ -7,11 +7,12 @@ import { scoutedPotential } from '../state/newSeason.js';
 import { formOf, ratingClass, seasonRating } from '../state/form.js';
 import { canTalk, isRequesting, levelOf, moodOf, promiseOf, rolesOf, shareOf, talk } from '../state/squadMood.js';
 import { MOOD } from '../state/moodConfig.js';
+import { SCOUT, assignmentOf, ovrView, scoutSlotsLeft, sendScout } from '../state/scouting.js';
 import { loadTalks, pickTalk } from '../media/talks.js';
 import { teamBadge } from './badge.js';
 import { h } from './dom.js';
 import { ATTRIBUTE_GROUP_LABELS, ATTRIBUTE_LABELS, POSITION_NAMES, attrClass } from './format.js';
-import { initTabs, initTooltipGroup, openModal } from './motion.js';
+import { initTabs, initTooltipGroup, openModal, showToast } from './motion.js';
 
 // 슬라이딩 탭. items: [{ id, label }]
 export function segmented(items, selectedId, onSelect, { size = '' } = {}) {
@@ -118,6 +119,29 @@ function moodSection(dataset, game, player, ctx) {
   return box;
 }
 
+// 모르는 선수: 스카우트 파견 (보고서는 몇 라운드 뒤 편지함으로)
+function scoutSection(dataset, game, player, ctx) {
+  const box = h('section', { class: 'pm-scout' });
+  const draw = () => {
+    const a = assignmentOf(game, player.id);
+    const b = h('button', { class: 'btn small primary', type: 'button', disabled: a || scoutSlotsLeft(game) <= 0 || null }, a ? `관찰 중 — ${Math.max(0, a.readyRound - game.round)}라운드 뒤 보고` : '스카우트 보내기');
+    b.addEventListener('click', () => {
+      const r = sendScout(dataset, game, player);
+      if (r.ok) {
+        ctx.persist();
+        showToast(`${player.name}에게 스카우트를 보냈습니다 — ${r.rounds}라운드 뒤 보고서 (편지함)`);
+      }
+      draw();
+    });
+    box.replaceChildren(
+      h('p', {}, '아직 직접 본 적 없는 선수입니다. 능력치는 대략적인 범위로만 알 수 있습니다.'),
+      h('div', { class: 'btn-row' }, b, h('span', { class: 'muted small-note' }, `스카우트 ${SCOUT.slots - scoutSlotsLeft(game)}/${SCOUT.slots}명 파견 중`)),
+    );
+  };
+  draw();
+  return box;
+}
+
 // 최근 평점 (오래된 것부터)과 시즌 평균
 function formLine(game, id) {
   const recent = formOf(game, id);
@@ -147,7 +171,10 @@ export function openPlayerModal(dataset, player, ctx = null) {
   const nation = dataset.nationByCode.get(player.nationality);
   const avail = game ? availabilityOf(game, player.id) : null;
   const stats = game?.playerStats[player.id];
-  const potential = game ? scoutedPotential(game, player, overall(player)) : null;
+  // 스카우팅: 모르는 선수는 OVR 범위만, 세부 능력치·잠재력·포지션별 능력은 가린다
+  const view = game ? ovrView(dataset, game, player) : { known: true, ovr: overall(player) };
+  const hidden = !view.known;
+  const potential = game && !hidden ? scoutedPotential(game, player, overall(player)) : null;
   const extra = game
     ? h(
         'p',
@@ -169,7 +196,7 @@ export function openPlayerModal(dataset, player, ctx = null) {
       h(
         'table',
         { class: 'attr-table' },
-        h('tbody', {}, keys.map((k) => h('tr', {}, h('td', {}, ATTRIBUTE_LABELS[k]), h('td', { class: `num ${attrClass(player.attributes[k])}` }, player.attributes[k])))),
+        h('tbody', {}, keys.map((k) => h('tr', {}, h('td', {}, ATTRIBUTE_LABELS[k]), hidden ? h('td', { class: 'num muted' }, '?') : h('td', { class: `num ${attrClass(player.attributes[k])}` }, player.attributes[k])))),
       ),
     ),
   );
@@ -184,7 +211,7 @@ export function openPlayerModal(dataset, player, ctx = null) {
     h(
       'header',
       { class: 'pm-head' },
-      h('div', { class: 'pm-ovr' }, h('span', { class: 'pm-ovr-num' }, overall(player)), h('span', { class: 'pm-ovr-label' }, 'OVR')),
+      h('div', { class: `pm-ovr${hidden ? ' is-range' : ''}` }, h('span', { class: 'pm-ovr-num' }, hidden ? `${view.low}~${view.high}` : overall(player)), h('span', { class: 'pm-ovr-label' }, 'OVR')),
       h(
         'div',
         { class: 'pm-title' },
@@ -196,12 +223,13 @@ export function openPlayerModal(dataset, player, ctx = null) {
       close,
     ),
     game && ctx && teamId === game.teamId ? moodSection(dataset, game, player, ctx) : null,
+    hidden && ctx ? scoutSection(dataset, game, player, ctx) : null,
     h('div', { class: 'attr-groups' }, groups),
     h(
       'footer',
       { class: 'pm-foot' },
       h('span', { class: 'muted' }, '포지션별 능력'),
-      byPosition.map(({ pos, value }) => h('span', { class: 'pos-score' }, h('b', {}, pos), ` ${Math.round(value)}`)),
+      hidden ? h('span', { class: 'muted' }, '스카우트하면 볼 수 있습니다') : byPosition.map(({ pos, value }) => h('span', { class: 'pos-score' }, h('b', {}, pos), ` ${Math.round(value)}`)),
     ),
     h(
       'p',

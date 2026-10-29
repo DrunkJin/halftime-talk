@@ -16,6 +16,7 @@ import { applyTrainingWeek } from './training.js';
 import { updateMoods } from './squadMood.js';
 import { evaluateSeason, setObjective, updateBoardAfterMatch } from './board.js';
 import { pushNews, weeklyNews } from './inbox.js';
+import { processScouting } from './scouting.js';
 import { aiIdentity, squadProfile } from '../engine/tactics.js';
 
 export function createGame(dataset, teamId, options) {
@@ -85,7 +86,8 @@ export function playWeek(dataset, game, userResult) {
     seasonEndNews(dataset, game, evaluateSeason(dataset, game)); // 이사회 평가 → 경질 또는 다른 구단 제안
     game.incomingOffers = [];
   }
-  const week = { others, aiTransfers, newOffers, cups, training, moods, board };
+  const scouting = processScouting(dataset, game); // 다 된 스카우트 보고서
+  const week = { others, aiTransfers, newOffers, cups, training, moods, board, scouting };
   weeklyNews(dataset, game, week, mine, userResult);
   return week;
 }
