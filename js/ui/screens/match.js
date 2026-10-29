@@ -466,6 +466,13 @@ function notifyMarket(ctx, r) {
   for (const o of r.newOffers ?? []) {
     showToast(`영입 제안: ${dataset.teamById.get(o.teamId).shortName} → ${dataset.playerById.get(o.playerId).name}, ${formatMoney(o.amount)} (이적 › 받은 제안)`, { tone: 'warn', duration: 4500 });
   }
+  // 이번 주 훈련 결과: 오른 능력치, 훈련 중 부상
+  const tr = r.training;
+  if (tr?.gains?.length) {
+    const names = [...new Set(tr.gains.map((g) => g.name))];
+    showToast(`훈련 성과: ${names.slice(0, 3).join(', ')}${names.length > 3 ? ` 외 ${names.length - 3}명` : ''} 능력치 상승 (${tr.gains.length}) — 훈련 탭`, { duration: 3500 });
+  }
+  for (const i of tr?.injuries ?? []) showToast(`훈련 중 부상: ${i.name} (${i.weeks}경기 결장)`, { tone: 'warn', duration: 4500 });
   const myLeague = new Set(dataset.leagueById.get(game.leagueId).teamIds);
   const local = (r.aiTransfers ?? []).filter((t) => myLeague.has(t.to) || myLeague.has(t.from));
   if (local.length) showToast(`이적 소식 ${local.length}건 (우리 리그) — 이적 › 이적 기록`, { duration: 3500 });

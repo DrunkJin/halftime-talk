@@ -1037,3 +1037,57 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
   .cc-grade-letter { font-size: 44px; }
   .cc-section { padding: 14px; }
 }
+
+/* ── 일정 ── */
+.schedule-screen, .training-screen { display: grid; gap: 14px; }
+.sch-next { display: grid; gap: 10px; padding: 12px; }
+.sch-next-list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin: 0; padding: 0; list-style: none; }
+.sch-next-item { display: grid; justify-items: center; gap: 4px; padding: 12px 8px; border: 1px solid var(--line-2); border-radius: 10px; text-align: center; font-size: 12px; }
+.sch-next-item b { font-size: 13px; }
+.sch-next-item.lv-hard { border-color: rgba(242, 85, 90, 0.45); }
+.sch-next-item.lv-easy { border-color: rgba(61, 220, 151, 0.35); }
+.sch-level { display: inline-block; min-width: 36px; padding: 1px 6px; border-radius: 4px; font-size: var(--fs-min); font-weight: 700; text-align: center; background: var(--panel-3); color: var(--text-2); }
+.sch-level.lv-hard { background: rgba(242, 85, 90, 0.16); color: #ff8a8e; }
+.sch-level.lv-easy { background: rgba(61, 220, 151, 0.14); color: var(--accent); }
+.sch-table td { white-space: nowrap; }
+.sch-table tr.sch-cup td { background: rgba(90, 169, 255, 0.05); }
+.sch-table tr.is-next td { background: var(--accent-dim); }
+.sch-table tr.is-done td { color: var(--text-2); }
+.sch-table tr.sch-bye td { color: var(--muted); }
+.sch-table tr.sch-window td { padding: 6px 8px; background: rgba(255, 196, 0, 0.07); color: var(--warn); font-size: var(--fs-min); font-weight: 700; letter-spacing: 0.04em; }
+.sch-where { margin-left: 4px; font-size: var(--fs-min); }
+.sch-res { font-weight: 700; font-variant-numeric: tabular-nums; }
+.sch-res.r-W { color: var(--accent); }
+.sch-res.r-L { color: #ff8a8e; }
+.sch-next-tag { color: var(--accent); }
+.sch-note { padding: 8px 12px 0; }
+@media (max-width: 860px) { .sch-next-list { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); } }
+
+/* ── 훈련 ── */
+.tr-week { display: grid; gap: 12px; padding: 12px; }
+.tr-next { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.tr-effects { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 0; }
+.tr-effects > div { display: grid; gap: 2px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg-2); }
+.tr-effects dt { color: var(--muted); font-size: 12px; }
+.tr-effects dd { margin: 0; font-size: 16px; font-weight: 700; }
+.tr-effects dd.up, .tr-individual .up { color: var(--accent); }
+.tr-effects dd.down { color: #ff8a8e; }
+.tr-team { display: grid; gap: 12px; padding: 12px; }
+.tr-focus-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+.tr-focus { display: grid; align-content: start; gap: 6px; padding: 12px; border: 1px solid var(--line-2); border-radius: 10px; background: transparent; color: var(--text); text-align: left; cursor: pointer; transition: border-color var(--duration-quick) var(--ease-out), background-color var(--duration-quick) var(--ease-out); }
+.tr-focus:hover { border-color: var(--info); }
+.tr-focus.is-selected { border-color: var(--accent); background: var(--accent-dim); }
+.tr-focus b { font-size: 14px; }
+.tr-desc { color: var(--text-2); font-size: 12px; line-height: 1.5; }
+.tr-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.tr-tag { padding: 1px 6px; border-radius: 4px; font-size: var(--fs-min); font-weight: 700; }
+.tr-tag.good { background: rgba(61, 220, 151, 0.12); color: var(--accent); }
+.tr-tag.bad { background: rgba(242, 85, 90, 0.12); color: #ff8a8e; }
+.tr-intensity { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.tr-individual { display: grid; gap: 10px; padding: 0 0 12px; }
+.tr-individual .btn-row, .tr-individual > p { padding: 0 12px; }
+.select.small { height: 30px; padding: 0 28px 0 8px; font-size: 12px; }
+.tr-log { display: grid; gap: 4px; margin: 0; padding: 12px 12px 12px 28px; font-size: 13px; }
+.tr-log li.bad { color: #ff8a8e; }
+.tr-empty { padding: 12px; }
+@media (max-width: 860px) { .tr-effects { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

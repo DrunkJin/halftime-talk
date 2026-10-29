@@ -13,9 +13,22 @@ import { ATTRIBUTE_KEYS } from '../data/schema.js';
 import { buildIndex } from '../data/loader.js';
 
 export const packAttributes = (age, attributes) => [age, ...ATTRIBUTE_KEYS.map((k) => attributes[k])];
-const unpack = (arr) => Object.fromEntries(ATTRIBUTE_KEYS.map((k, i) => [k, arr[i + 1]]));
+export const unpackAttributes = (arr) => Object.fromEntries(ATTRIBUTE_KEYS.map((k, i) => [k, arr[i + 1]]));
 
 const cache = new WeakMap(); // 원본 데이터 → { key, dataset }
+
+// 첫 시즌에는 world가 없다: 처음 바꿀 때(시즌 넘기기·훈련 성장) 지금 데이터 기준으로 만든다
+export function ensureWorld(dataset, game) {
+  return (game.world ??= {
+    version: 0,
+    leagueTeams: Object.fromEntries(dataset.leagues.map((l) => [l.id, [...l.teamIds]])),
+    seasons: {},
+    players: {},
+    youth: [],
+    retired: [],
+    potential: {},
+  });
+}
 
 export function worldDataset(base, game) {
   const w = game?.world;
@@ -29,7 +42,7 @@ export function worldDataset(base, game) {
   for (const p of [...base.players, ...w.youth]) {
     if (retired.has(p.id)) continue;
     const o = w.players[p.id];
-    players.push(o ? { ...p, age: o[0], attributes: unpack(o) } : p);
+    players.push(o ? { ...p, age: o[0], attributes: unpackAttributes(o) } : p);
   }
   const membership = new Map();
   for (const [leagueId, ids] of Object.entries(w.leagueTeams)) for (const id of ids) membership.set(id, leagueId);

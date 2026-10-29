@@ -12,8 +12,9 @@ import { playerValue, topElevenOvr } from '../market/value.js';
 import { PROGRESSION, lookup } from '../progression/config.js';
 import { currentTeamId, fixLineup, invalidateSquads, leagueTotalRounds, squadOf } from './game.js';
 import { recordSeason } from './history.js';
-import { packAttributes, worldDataset } from './world.js';
+import { ensureWorld, packAttributes, worldDataset } from './world.js';
 import { noteSeasonExpectation } from './career.js';
+import { takeRetention } from './training.js';
 
 const P = PROGRESSION;
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
@@ -120,6 +121,9 @@ function potentialOf(w, p, ovr) {
   return w.potential[p.id];
 }
 
+// 잠재력 (OVR 기준): 이미 정해졌으면 그 값, 아니면 선수마다 고정된 값으로 새로
+export const potentialFor = (game, p, ovr) => game.world?.potential?.[p.id] ?? freshPotential(p, ovr);
+
 const freshPotential = (p, ovr) => Math.round(ovr + lookup(P.potential.headroom, p.age) * createRng(`pot:${p.id}`).next() ** P.potential.skew);
 
 // 스카우트 리포트: 젊은 선수(scout.maxAge 이하)의 잠재력을 범위로 (정확한 값은 감춘다). 더 클 여지가 없으면 null
@@ -221,15 +225,7 @@ export function startNextSeason(base, game, { renew = null } = {}) {
   const rng = createRng(`${game.seed}:newseason:${game.seasonIndex}`);
   if (!game.history?.some((h) => h.seasonIndex === game.seasonIndex)) recordSeason(ds0, game);
   const rec = game.history.find((h) => h.seasonIndex === game.seasonIndex);
-  const w = (game.world ??= {
-    version: 0,
-    leagueTeams: Object.fromEntries(ds0.leagues.map((l) => [l.id, [...l.teamIds]])),
-    seasons: {},
-    players: {},
-    youth: [],
-    retired: [],
-    potential: {},
-  });
+  const w = ensureWorld(ds0, game);
   const summary = { retired: [], left: [], sold: [], youth: [], signed: [], promoted: [], relegated: [], cup: null, newLeague: null };
   const mine = (id) => currentTeamId(ds0, game, id) === game.teamId;
   const isGuest = (id) => ds0.isGuest(currentTeamId(ds0, game, id));
@@ -248,7 +244,10 @@ export function startNextSeason(base, game, { renew = null } = {}) {
     const teamId = currentTeamId(ds0, game, p.id);
     const leagueId = teamId ? ds0.teamById.get(teamId).leagueId : null;
     const share = Math.min(1, (game.playerStats[p.id]?.apps ?? 0) / Math.max(1, rounds[leagueId] ?? 34));
-    const delta = ovrChange(p, ovr, potentialOf(w, p, ovr), share, rng);
+    let delta = ovrChange(p, ovr, potentialOf(w, p, ovr), share, rng);
+    // 베테랑 개인 훈련으로 쌓인 '노화 늦추기'만큼 하락폭을 줄인다 (training.js)
+    const retention = takeRetention(game, p.id);
+    if (delta < 0) delta *= 1 - retention;
     const age = p.age + 1;
     w.players[p.id] = packAttributes(age, progressAttributes(p, delta, rng));
     const R = P.retire;

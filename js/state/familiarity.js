@@ -30,5 +30,7 @@ export function trainFamiliarity(game) {
     t[k] *= FAMILIARITY.decay;
     if (t[k] < 0.02) delete t[k];
   }
-  t[key] = Math.min(1, (t[key] ?? 0) + FAMILIARITY.gain);
+  // 경기로는 matchCap까지만 (그 위는 전술 훈련). 이미 넘었으면 그대로 둔다
+  const now = t[key] ?? 0;
+  t[key] = Math.max(now, Math.min(FAMILIARITY.matchCap, now + FAMILIARITY.gain));
 }

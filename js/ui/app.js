@@ -12,16 +12,20 @@ import * as cupsScreen from './screens/cups.js';
 import * as financeScreen from './screens/finance.js';
 import * as historyScreen from './screens/history.js';
 import * as matchScreen from './screens/match.js';
+import * as scheduleScreen from './screens/schedule.js';
 import * as squadScreen from './screens/squad.js';
 import * as tableScreen from './screens/table.js';
 import * as teamSelectScreen from './screens/teamSelect.js';
+import * as trainingScreen from './screens/training.js';
 import * as transfersScreen from './screens/transfers.js';
 
 // career: 감독 커리어 엔딩 (상단 탭 없이 시즌 종료·기록 화면에서 연다)
-const SCREENS = { career: careerScreen, select: teamSelectScreen, squad: squadScreen, match: matchScreen, table: tableScreen, cups: cupsScreen, transfers: transfersScreen, finance: financeScreen, history: historyScreen };
+const SCREENS = { career: careerScreen, select: teamSelectScreen, squad: squadScreen, match: matchScreen, schedule: scheduleScreen, training: trainingScreen, table: tableScreen, cups: cupsScreen, transfers: transfersScreen, finance: financeScreen, history: historyScreen };
 const NAV = [
   { id: 'squad', label: '스쿼드' },
   { id: 'match', label: '경기' },
+  { id: 'schedule', label: '일정' },
+  { id: 'training', label: '훈련' },
   { id: 'table', label: '순위표' },
   { id: 'cups', label: '대륙 대회' },
   { id: 'transfers', label: '이적' },

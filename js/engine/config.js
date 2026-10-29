@@ -139,7 +139,8 @@ export const AI_IDENTITY = { threshold: 0.5, favoriteStyle: 'short', underdogPre
 
 // 전술 숙련도: 같은 포메이션·압박·스타일로 경기할수록 손발이 맞는다 (사용자 팀). AI 팀은 aiLevel 수준으로 본다
 //   경기 레이팅 배율 = max × (숙련도 - aiLevel) / (1 - aiLevel) (aiLevel 아래면 같은 비율로 손해, 최저 -max/2)
-export const FAMILIARITY = { max: 0.04, aiLevel: 0.5, start: 0.5, gain: 0.15, decay: 0.85 };
+// 경기만으로는 matchCap까지, 그 위는 전술 훈련으로 채운다 (state/training.js)
+export const FAMILIARITY = { max: 0.04, aiLevel: 0.5, start: 0.5, gain: 0.07, decay: 0.85, matchCap: 0.8 };
 
 // AI 감독 전술: 경기 전 전력 차(필드 레이팅 평균 차)로 멘탈리티, fromMinute 이후 스코어로 조정
 export const AI_TACTICS = {

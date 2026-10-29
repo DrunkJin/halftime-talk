@@ -3,6 +3,7 @@ import { overall } from '../engine/ratings.js';
 import { createRng } from '../engine/rng.js';
 import { currentTeamId, fixLineup, isSeasonOver, squadOf } from '../state/game.js';
 import { RULES } from '../state/rules.js';
+import { onSigning } from '../state/training.js';
 import { FINANCE, MARKET } from './config.js';
 import { bookLedger, contractOf, demandedContract, releaseCost, renewalTerms, seasonsLeft, signContract, wageBill, wageRoom } from './finance.js';
 import { formatMoney, playerValue, topElevenOvr } from './value.js';
@@ -10,14 +11,17 @@ import { formatMoney, playerValue, topElevenOvr } from './value.js';
 const round1 = (v) => Math.round(v * 10) / 10;
 export const formatWage = (k) => `£${k.toLocaleString()}k/주`;
 
-// { open, name, closesAfter, next } — next는 다음에 열릴 창
-export function windowStatus(game) {
-  if (isSeasonOver(game)) return { open: false, name: null, next: null };
-  // 진행률 구간 → 사용자 리그의 라운드 구간
-  const windows = MARKET.windows.map((w) => {
+// 이적시장 기간: 진행률 구간 → 사용자 리그의 라운드 구간 [{ name, from, to }]
+export const transferWindows = (game) =>
+  MARKET.windows.map((w) => {
     const from = Math.floor(w.from * game.totalRounds) + 1;
     return { name: w.name, from, to: Math.max(from, Math.round(w.to * game.totalRounds)) };
   });
+
+// { open, name, closesAfter, next } — next는 다음에 열릴 창
+export function windowStatus(game) {
+  if (isSeasonOver(game)) return { open: false, name: null, next: null };
+  const windows = transferWindows(game);
   const current = windows.find((w) => game.round >= w.from && game.round <= w.to);
   if (current) return { open: true, name: current.name, closesAfter: current.to, next: null };
   const next = windows.find((w) => w.from > game.round) ?? null;
@@ -61,6 +65,7 @@ export function transferPlayer(dataset, game, playerId, to, fee, { contract = nu
   }
   if (from === game.teamId) game.bench = (game.bench ?? []).filter((id) => id !== playerId);
   if (to && contract) signContract(game, playerId, contract);
+  if (to === game.teamId && by === 'user') onSigning(game); // 새 얼굴: 조직력이 잠시 어긋난다
   if (!to) delete game.contracts[playerId];
   game.transfers.push({ round: game.round, season: game.seasonIndex, playerId, from, to, fee, by });
   // 받은 제안 중 이 선수 것은 무효

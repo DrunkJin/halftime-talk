@@ -12,6 +12,7 @@ import { recordSeason } from './history.js';
 export { startNextSeason } from './newSeason.js';
 import { settleMoraleAfterMatch } from './morale.js';
 import { trainFamiliarity } from './familiarity.js';
+import { applyTrainingWeek } from './training.js';
 import { aiIdentity, squadProfile } from '../engine/tactics.js';
 
 export function createGame(dataset, teamId, options) {
@@ -57,6 +58,7 @@ export function playWeek(dataset, game, userResult) {
   settleMoraleAfterMatch(game, mine?.id, userResult, mine?.homeId === game.teamId ? 'home' : 'away');
   if (mine) trainFamiliarity(game);
   applyWeekFinances(dataset, game);
+  const training = applyTrainingWeek(dataset, game); // 경기 사이 한 주 훈련
   let aiTransfers = [];
   let newOffers = [];
   if (windowOpen) aiTransfers = aiTransferRound(dataset, game);
@@ -73,7 +75,7 @@ export function playWeek(dataset, game, userResult) {
     recordSeason(dataset, game);
     game.incomingOffers = [];
   }
-  return { others, aiTransfers, newOffers, cups };
+  return { others, aiTransfers, newOffers, cups, training };
 }
 
 // 남은 시즌 자동 진행: 사용자 팀은 지금 선발에서 결장자·지친 선수를 바꾸고(로테이션),
