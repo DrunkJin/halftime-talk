@@ -53,25 +53,48 @@ export function updateBoardAfterMatch(dataset, game, fixture, result) {
   if (side) {
     const gf = result.score[side];
     const ga = result.score[side === 'home' ? 'away' : 'home'];
-    delta += B.result[gf > ga ? 'W' : gf < ga ? 'L' : 'D'];
+    const outcome = gf > ga ? 'W' : gf < ga ? 'L' : 'D';
+    const oppId = side === 'home' ? fixture.awayId : fixture.homeId;
+    const underdog = topElevenOvr(squadOf(dataset, game, oppId)) - topElevenOvr(squadOf(dataset, game, game.teamId)) >= B.underdog.gap;
+    delta += B.result[outcome] * (underdog ? (outcome === 'L' ? B.underdog.lossFactor : outcome === 'W' ? B.underdog.winFactor : 1) : 1);
   }
   const progress = (game.round - 1) / game.totalRounds;
-  if (game.round - 1 >= B.positionFromRound) {
-    const pos = positionOf(dataset, game);
-    if (pos) delta += ((board.objective.target - pos) / board.objective.size) * B.positionWeight * progress;
-  }
+  const pos = game.round - 1 >= B.positionFromRound ? positionOf(dataset, game) : null;
+  if (pos) delta += ((fairTarget(board) - pos) / board.objective.size) * B.positionWeight * progress;
   const before = board.confidence;
   board.confidence = clamp(before + delta);
   const c = board.confidence;
   if (c < B.ultimatumBelow && !board.alerts.ultimatum) (board.alerts.ultimatum = true), events.push({ kind: 'ultimatum' });
   else if (c < B.warnBelow && !board.alerts.warn) (board.alerts.warn = true), events.push({ kind: 'warn' });
   if (c > B.praiseAbove && !board.alerts.praise) (board.alerts.praise = true), events.push({ kind: 'praise' });
-  if (progress >= B.sackFrom && c <= B.sackBelow) {
-    board.sacked = { midSeason: true, offers: findOffers(dataset, game, 'worse', { sameLeague: true }) };
+  if (progress >= B.sackFrom && c <= B.sackBelow && !(pos && pos <= board.objective.expected)) {
+    board.sacked = { midSeason: true, offers: findOffers(dataset, game, 'worse', { sameLeague: true }), reason: sackReason(game, pos) };
     events.push({ kind: 'sacked' });
   }
   return events;
 }
+
+// 순위 압박의 기준: 목표와 시즌 전 예상 중 낮은 쪽 (예상보다 높게 잡힌 목표 때문에 예상만큼 하는 감독이 깎이지 않게)
+const fairTarget = (board) => Math.max(board.objective.target, board.objective.expected ?? board.objective.target);
+
+// 우리 팀 최근 리그 경기 { played, w, d, l }
+export function recentRecord(game, n = B.recentGames) {
+  const mine = fixturesOf(game)
+    .filter((f) => f.result && (f.homeId === game.teamId || f.awayId === game.teamId))
+    .sort((a, b) => a.round - b.round)
+    .slice(-n);
+  const r = { played: mine.length, w: 0, d: 0, l: 0 };
+  for (const f of mine) {
+    const side = f.homeId === game.teamId ? 'home' : 'away';
+    const gf = f.result.score[side];
+    const ga = f.result.score[side === 'home' ? 'away' : 'home'];
+    r[gf > ga ? 'w' : gf < ga ? 'l' : 'd']++;
+  }
+  return r;
+}
+
+// 경질 통보에 적을 사실: 목표·순위·예상·최근 흐름
+const sackReason = (game, position) => ({ goal: game.board.objective.label, position, expected: game.board.objective.expected, recent: recentRecord(game) });
 
 // 시즌 끝 평가 (playWeek에서 시즌이 끝날 때, recordSeason 뒤). → { verdict, delta, sacked, offers }
 export function evaluateSeason(dataset, game) {
@@ -86,9 +109,12 @@ export function evaluateSeason(dataset, game) {
   if (rec.mine.promoted) delta += S.promoted;
   if (rec.mine.relegated) delta += S.relegated;
   board.confidence = clamp(board.confidence + delta);
-  board.seasonEval = { verdict, delta, target: board.objective.target, label: board.objective.label, position: rec.mine.position, confidence: board.confidence, trophies: rec.trophies.length };
+  // 시즌 전 예상 순위 이상으로 마쳤으면 경질하지 않는다 (신뢰는 불안 수준에서 다음 시즌으로)
+  const beatExpectation = rec.mine.position <= (board.objective.expected ?? 0); // 강등 후보로 꼽힌 팀이 예상대로 강등돼도 마찬가지
+  if (beatExpectation && board.confidence < B.seasonEndSackBelow) board.confidence = B.seasonEndSackBelow;
+  board.seasonEval = { verdict, delta, target: board.objective.target, label: board.objective.label, position: rec.mine.position, expected: board.objective.expected, confidence: board.confidence, trophies: rec.trophies.length };
   if (board.confidence < B.seasonEndSackBelow) {
-    board.sacked = { midSeason: false, offers: findOffers(dataset, game, 'worse') };
+    board.sacked = { midSeason: false, offers: findOffers(dataset, game, 'worse'), reason: sackReason(game, rec.mine.position) };
   } else if (board.confidence >= B.offers.goodFrom && (verdict === 'exceeded' || rec.trophies.length)) {
     board.offers = findOffers(dataset, game, 'better');
   }

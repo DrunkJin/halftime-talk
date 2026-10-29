@@ -21,6 +21,9 @@ export function familiarityBoost(value) {
   return value >= aiLevel ? (max * (value - aiLevel)) / (1 - aiLevel) : (-under * (aiLevel - value)) / aiLevel;
 }
 
+// 숙련도 단계 (화면에는 숫자 대신 이 말). 경기로 닿는 수준(AI 팀과 같음)이 '손에 익음'
+export const familiarityWord = (v) => (v < 0.45 ? '낯섦' : v < FAMILIARITY.aiLevel - 0.001 ? '익히는 중' : v < 0.95 ? '손에 익음' : '몸에 뱀');
+
 // 사용자 팀이 경기를 치른 뒤: 쓴 체계는 오르고, 나머지는 조금씩 잊는다
 export function trainFamiliarity(game) {
   const t = table(game);

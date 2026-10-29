@@ -1,6 +1,6 @@
 // 훈련: 팀 초점·강도(주 단위), 개인 훈련(최대 5명), 이번 주 예상 효과, 조직력, 최근 훈련 기록
 import { overall } from '../../engine/ratings.js';
-import { familiarityBoost, familiarityOf } from '../../state/familiarity.js';
+import { familiarityOf, familiarityWord } from '../../state/familiarity.js';
 import { conditionOf, squadOf, userFixture } from '../../state/game.js';
 import { scoutedPotential } from '../../state/newSeason.js';
 import { seasonGainsOf, suggestIndividual, trainingOf, weekPreview, weeklyRates } from '../../state/training.js';
@@ -60,10 +60,10 @@ export function render(ctx) {
           { class: 'tr-effects' },
           h('div', {}, h('dt', {}, '컨디션 회복'), h('dd', { class: week.recovery > 0 ? 'up' : week.recovery < 0 ? 'down' : '' }, week.recovery ? signed(week.recovery) : '평소대로'), h('span', { class: 'muted small-note' }, `선수단 평균 ${avgCond}%`)),
           h('div', {}, h('dt', {}, '훈련 부상 위험'), h('dd', { class: week.injury ? 'down' : '' }, week.injury ? `선수당 ${(week.injury * 100).toFixed(1)}%` : '없음')),
-          h('div', {}, h('dt', {}, '조직력'), h('dd', { class: week.familiarity ? 'up' : '' }, week.familiarity ? `+${Math.round(week.familiarity * 100)}%p` : '경기로만'), h('span', { class: 'muted small-note' }, `지금 ${pct(fam)} · 경기력 ${signed(+(familiarityBoost(fam) * 100).toFixed(1), '%')}`)),
-          h('div', {}, h('dt', {}, '경기 준비'), h('dd', { class: week.matchBoost ? 'up' : '' }, week.matchBoost ? `이번 주 경기 +${week.matchBoost * 100}%` : '—')),
+          h('div', {}, h('dt', {}, '조직력'), h('dd', { class: week.familiarity ? 'up' : '' }, week.familiarity ? '반복 연습으로 더 다집니다' : '경기로만'), h('span', { class: 'muted small-note' }, `지금 전술 숙련도: ${familiarityWord(fam)}`)),
+          h('div', {}, h('dt', {}, '경기 준비'), h('dd', { class: week.matchBoost ? 'up' : '' }, week.matchBoost ? '이번 주 상대 맞춤 준비' : '—')),
         ),
-        h('p', { class: 'muted small-note' }, '훈련은 리그 라운드를 마칠 때마다 한 주씩 적용됩니다. 경기로 오르는 조직력은 80%까지, 그 위는 전술 훈련으로만 채울 수 있습니다.'),
+        h('p', { class: 'muted small-note' }, '훈련은 리그 라운드를 마칠 때마다 한 주씩 적용됩니다. 경기만 치러도 전술은 \'손에 익음\'까지 오르고, 그 위(\'몸에 뱀\')는 전술 훈련으로만 다질 수 있습니다.'),
       ),
     );
 

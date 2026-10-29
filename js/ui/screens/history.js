@@ -27,7 +27,7 @@ function stat(label, value, sub) {
 function seasonView(ctx, rec) {
   const m = rec.mine;
   const trophies = rec.trophies.length
-    ? h('div', { class: 'trophy-row' }, rec.trophies.map((t) => h('span', { class: 'trophy' }, '🏆 ', t.name)))
+    ? h('div', { class: 'trophy-row' }, rec.trophies.map((t) => h('span', { class: 'trophy' }, t.name)))
     : null;
   const mine = panel(
     `${rec.season} · ${rec.teamName}`,

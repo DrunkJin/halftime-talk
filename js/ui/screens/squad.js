@@ -447,6 +447,16 @@ export function render(ctx) {
         ATTR_COLUMNS.map((k) => h('td', { class: `num ${attrClass(p.attributes[k])}` }, p.attributes[k])),
       );
       tr.addEventListener('click', () => onRowClick(p.id));
+      // 키보드로도 선수를 고른다 (Tab으로 줄에 와서 Enter·Space). 안쪽 이름 버튼은 선수 창을 연다
+      tr.tabIndex = 0;
+      tr.setAttribute('aria-label', `${p.name} ${isStarter ? `선발 ${slots[slotIndex]}` : '후보'} — Enter로 선택`);
+      tr.addEventListener('keydown', (e) => {
+        if (e.target !== tr || (e.key !== 'Enter' && e.key !== ' ')) return;
+        e.preventDefault();
+        onRowClick(p.id);
+        tableHost.querySelector(`tr[data-pid="${p.id}"]`)?.focus(); // 표를 다시 그려도 포커스는 그 줄에
+      });
+      tr.dataset.pid = p.id;
       dragSource(tr, { kind: 'player', id: p.id });
       // 슬롯 칩을 표의 선수 위에 놓으면 그 선수가 그 슬롯으로
       dropTarget(tr, (d) => d.kind === 'slot' && assignPlayerToSlot(p.id, d.index));

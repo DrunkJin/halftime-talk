@@ -30,7 +30,9 @@ export function segmented(items, selectedId, onSelect, { size = '' } = {}) {
     el: bar,
     select(id, animate = true) {
       const tab = bar.querySelector(`[data-id="${id}"]`);
+      bar.classList.toggle('is-none', !tab);
       if (tab) ctl.select(tab, animate);
+      else bar.querySelectorAll('.t-tab').forEach((t) => t.setAttribute('aria-selected', 'false')); // 탭에 없는 화면 (편지함 등)
     },
   };
 }

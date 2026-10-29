@@ -27,8 +27,7 @@ export function boardLine(ctx) {
     h('b', {}, b.objective.label),
     h('span', { class: 'muted' }, ' · 신뢰도 '),
     h('span', { class: `board-bar lv-${c >= 60 ? 'good' : c >= 35 ? 'ok' : 'bad'}`, style: { '--v': `${c}%` } }),
-    h('b', {}, ` ${c}`),
-    h('span', { class: 'muted' }, ` (${confidenceLabel(ctx.game)})`),
+    h('b', {}, ` ${confidenceLabel(ctx.game)}`),
   );
 }
 
@@ -57,6 +56,18 @@ function offerCards(ctx, offers, lines, onPick, buttonLabel) {
   );
 }
 
+// 경질 이유 (사실만: 목표·순위·최근 흐름). 숫자 신뢰도는 보여 주지 않는다
+function sackReasonText(reason) {
+  if (!reason) return '';
+  const parts = [`목표는 ${reason.goal}였지만 ${reason.position}위에 머물렀습니다.`];
+  const r = reason.recent;
+  if (r?.played >= 4) parts.push(r.w <= 1 ? `최근 ${r.played}경기 ${r.w}승 ${r.d}무 ${r.l}패, 흐름을 되돌리지 못했습니다.` : `최근 ${r.played}경기 ${r.w}승 ${r.d}무 ${r.l}패였지만 이사회의 인내심이 먼저 바닥났습니다.`);
+  return parts.join(' ');
+}
+
+// 신뢰 변화 → 말
+const trustShift = (d) => (d >= 15 ? '이사회의 신뢰가 크게 깊어졌습니다' : d > 0 ? '이사회의 신뢰가 조금 깊어졌습니다' : d <= -25 ? '이사회의 신뢰가 크게 흔들렸습니다' : d < 0 ? '이사회의 신뢰가 조금 줄었습니다' : '이사회의 신뢰는 그대로입니다');
+
 // 시즌 중 경질: 경기 화면 대신 보여준다. done() → 부임 뒤 화면 다시 그리기
 export function sackedPanel(ctx, done) {
   const host = h('div', { class: 'board-sacked' }, h('p', { class: 'muted' }, '…'));
@@ -71,7 +82,7 @@ export function sackedPanel(ctx, done) {
           { class: 'board-letter' },
           h('h2', {}, '경질'),
           h('p', {}, pickTalk(text?.sacked, `${ctx.game.seed}:${ctx.game.seasonIndex}:${ctx.game.round}`, textVars(ctx)) || '이사회가 계약 해지를 결정했습니다.'),
-          h('p', { class: 'muted' }, `신뢰도 ${Math.round(b.confidence)} · 목표 ${b.objective?.label ?? ''}`),
+          h('p', { class: 'board-reason' }, sackReasonText(b.sacked?.reason) || `목표 ${b.objective?.label ?? ''}`),
         ),
       ),
       panel(
@@ -106,10 +117,10 @@ export function seasonBoardPanel(ctx, redraw) {
     const parts = [];
     if (e) {
       const verdictLabel = { exceeded: '목표 초과 달성', met: '목표 달성', missedSlightly: '목표에 조금 못 미침', missedBadly: '목표 실패' }[e.verdict];
-      parts.push(
-        h('div', { class: 'board-eval' }, h('b', {}, verdictLabel), h('span', { class: 'muted' }, ` · 목표 ${e.label} → ${e.position}위 · 신뢰도 ${e.delta >= 0 ? '+' : ''}${e.delta} → ${Math.round(b.confidence)}`)),
-        h('p', { class: 'board-quote' }, pickTalk(text?.season?.[e.verdict], `${game.seed}:${game.seasonIndex}:eval`, vars)),
-      );
+      parts.push(h('div', { class: 'board-eval' }, h('b', {}, verdictLabel), h('span', { class: 'muted' }, ` · 목표 ${e.label} → ${e.position}위 · ${b.sacked ? '이사회가 결단을 내렸습니다' : trustShift(e.delta)}`)));
+      // 경질이면 '다음 시즌 기대' 같은 평가 문장은 빼고 통보만 (메시지가 서로 어긋나지 않게)
+      if (!b.sacked) parts.push(h('p', { class: 'board-quote' }, pickTalk(text?.season?.[e.verdict], `${game.seed}:${game.seasonIndex}:eval`, vars)));
+      else if (b.sacked.reason) parts.push(h('p', { class: 'board-reason' }, sackReasonText(b.sacked.reason)));
     }
     const pending = b.pendingMove ? dataset.teamById.get(b.pendingMove.teamId) : null;
     if (pending) {

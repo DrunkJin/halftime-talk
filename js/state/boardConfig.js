@@ -17,11 +17,16 @@ export const BOARD = {
   positionFromRound: 5, // 이 라운드부터 순위를 본다
   positionWeight: 10,
   result: { W: 1.2, D: 0, L: -1.4 },
+  // 상대가 우리보다 이만큼(주전 OVR) 이상 강하면 패배는 덜 아프고 승리는 더 반갑다 (약팀이 강팀에 지는 건 예상한 일)
+  underdog: { gap: 2, lossFactor: 0.5, winFactor: 1.5 },
+  // 목표가 시즌 전 예상보다 높게 잡혀도(강등권 팀에 '잔류'), 순위 압박은 예상 순위 기준으로 — 예상만큼 하면 신뢰가 깎이지 않는다
+  // 그리고 예상 순위 이상이면 경질하지 않는다 (아래 sack 조건과 함께)
   // 신뢰도 구간 알림 (내려갈 때 한 번씩)
   warnBelow: 35,
   ultimatumBelow: 20,
   praiseAbove: 82,
-  // 경질: 시즌 진행률 sackFrom 이후 신뢰도가 sackBelow 이하, 또는 시즌 끝 평가 뒤 seasonEndSackBelow 미만
+  // 경질: 시즌 진행률 sackFrom 이후 신뢰도가 sackBelow 이하, 또는 시즌 끝 평가 뒤 seasonEndSackBelow 미만 (단, 순위가 시즌 전 예상 이상이면 경질하지 않는다)
+  recentGames: 6, // 경질 통보에 적는 최근 경기 수
   sackFrom: 0.25,
   sackBelow: 10,
   seasonEndSackBelow: 25,

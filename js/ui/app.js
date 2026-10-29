@@ -191,6 +191,9 @@ export function createApp(root, dataset, savedSlots = []) {
     SCREENS[current]?.leave?.(ctx);
     current = name;
     nav?.select(name);
+    inboxBtn?.classList.toggle('is-active', name === 'inbox');
+    // 모바일 하단 탭 줄은 가로로 넘치므로 지금 화면 탭을 가운데로
+    nav?.el.querySelector(`[data-id="${name}"]`)?.scrollIntoView({ block: 'nearest', inline: 'center' });
     swapPanel(panelEl, () => {
       panelEl.replaceChildren(SCREENS[name].render(ctx));
       window.scrollTo({ top: 0 });
