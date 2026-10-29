@@ -73,6 +73,7 @@
   "match.cmp.defence": "Defence",
   "match.pre.tactics": "Tactics",
   "match.pre.analysis": "Opposition report",
+  "match.pre.oppTactics": "Opposition & tactics",
   "match.pre.speed": "Match speed",
   "match.setting.autoSubs": "Auto subs",
   "match.setting.pauseAtHalfTime": "Pause at half-time",
@@ -164,6 +165,8 @@
   "match.brief.st.warn": "Check",
   "match.brief.st.todo": "To do",
   "match.brief.st.idle": "Default",
+  "match.brief.allSet": "Nothing left to sort. Just the kick-off to go.",
+  "match.brief.settled": "{n} items ready",
   "match.brief.today": "Our side today",
   "match.fam.line": "Tactical familiarity ({formation} · {style}) ",
   "match.cup.firstLeg": "1st leg {a}-{b}",
@@ -281,7 +284,60 @@
   "match.after.next": "Next match",
   "match.after.toCups": "Continental",
   "match.after.toTable": "Table",
-  "match.after.leagueStanding": "Now {pos} · {pts} pts",
+  "match.after.move.now": "Now {pos} · {pts} pts",
+  "match.after.move.up": "Up to {pos} · {pts} pts",
+  "match.after.move.down": "Down to {pos} · {pts} pts",
+  "match.after.move.same": "Holding {pos} · {pts} pts",
+  "match.after.others": "Other results this round ({n})",
+  "match.after.openInbox": "Inbox",
+  "match.after.fromAssistant": "Assistant",
+  "match.after.fromBoard": "Board",
+  "match.after.fromInbox": "News",
+  "match.after.verdict.win.fav": [
+    "We did the job. Good sides don't let games like this slip.",
+    "As expected, but it wasn't easy. The lads held their nerve.",
+    "Three points, nice and clean. Same focus next week and we'll be fine."
+  ],
+  "match.after.verdict.win.even": [
+    "We edged a tight one. Today the small margins went our way.",
+    "A coin-toss game and we won it. The dressing room is buzzing.",
+    "We got past an evenly matched side. Wins like this change a season."
+  ],
+  "match.after.verdict.win.dog": [
+    "Nobody gave us a chance. The players believed in you, boss.",
+    "That's an upset. People will be talking about this one tonight.",
+    "They had the better squad and we still won. This is why we do it."
+  ],
+  "match.after.verdict.draw.fav": [
+    "We should have won that. Two points dropped.",
+    "A frustrating afternoon. The finishing let us down.",
+    "We didn't lose, but that's not good enough. We need to open them up next time."
+  ],
+  "match.after.verdict.draw.even": [
+    "Neither side had the killer touch. A point isn't bad.",
+    "Tight game, fair result.",
+    "Only a draw, but there's plenty to take from the performance."
+  ],
+  "match.after.verdict.draw.dog": [
+    "A hard-earned point. That one's worth having.",
+    "We stood up well against a strong side. Proud of the lads.",
+    "Most expected us to lose, and we came away with a point."
+  ],
+  "match.after.verdict.loss.fav": [
+    "No excuses for that one. The players know it.",
+    "We let a winnable game slip. It's quiet in the dressing room.",
+    "We weren't ourselves today. We need to shake it off quickly."
+  ],
+  "match.after.verdict.loss.even": [
+    "Beaten by small margins. One or two moments decided it.",
+    "It was tight until we cracked late on. We'll regroup.",
+    "Disappointing result, but the performance wasn't all bad."
+  ],
+  "match.after.verdict.loss.dog": [
+    "The result we feared, but we didn't fold.",
+    "We couldn't bridge the gap. Still, there are lessons in that.",
+    "They played like a top side. It shows us where we need to get to."
+  ],
   "match.after.pensSuffix": " · Pens {a}-{b}",
   "match.after.cupWon": "{comp} winners!{pens}",
   "match.after.runnersUp": "Runners-up{pens}",
@@ -303,7 +359,6 @@
   "match.toast.red": "Sent off! {min}' {name}",
   "match.toast.injury": "Injury {min}' {name} — {type}",
   "match.toast.goal": " Goal! ",
-  "match.toast.fullTime": "Full time · {home} {h}-{a} {away}",
   "match.toast.extraTime": "Level on aggregate — going to extra time",
   "match.fail.retry": "Retry saving result",
   "match.fail.title": "Could not save result",

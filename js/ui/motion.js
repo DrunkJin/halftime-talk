@@ -158,15 +158,22 @@ export function showToast(content, { duration = 2600, tone = '' } = {}) {
   ensureToastHost();
   const toast = document.createElement('div');
   toast.className = `t-toast toast ${tone}`;
+  toast.dataset.tone = tone;
   if (typeof content === 'string') toast.textContent = content;
   else toast.append(content);
+  // 같은 종류 알림이 겹겹이 쌓이지 않게: 앞의 것은 바로 닫는다 (골 알림만 경기 중 이어서 쌓인다)
+  if (tone !== 'goal') for (const old of toastHost.querySelectorAll('.toast.is-open')) if (old.dataset.tone === tone) closeToast(old);
   toastHost.appendChild(toast);
   void toast.offsetWidth;
   toast.classList.add('is-open');
-  setTimeout(() => {
-    toast.classList.remove('is-open');
-    setTimeout(() => toast.remove(), cssMs('--toast-close', 250));
-  }, duration);
+  toast.addEventListener('click', () => closeToast(toast)); // 누르면 닫힌다 (가린 내용을 바로 볼 수 있게)
+  setTimeout(() => closeToast(toast), duration);
+}
+
+function closeToast(toast) {
+  if (!toast.classList.contains('is-open')) return;
+  toast.classList.remove('is-open');
+  setTimeout(() => toast.remove(), cssMs('--toast-close', 250));
 }
 
 // ── Modal (06) ────────────────────────────────────────

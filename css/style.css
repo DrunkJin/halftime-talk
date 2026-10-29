@@ -157,12 +157,12 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
   border-bottom: 1px solid var(--line);
   flex-wrap: wrap;
 }
+/* 패널 제목은 본문(13px)보다 한 단계 크고 굵게: 화면에서 구획을 먼저 읽게 */
 .panel-head h2 {
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-2);
+  letter-spacing: 0.01em;
+  color: var(--text);
 }
 .head-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .empty { padding: 24px; display: grid; gap: 12px; justify-items: start; }
@@ -450,11 +450,38 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .stat-mid { display: grid; gap: 4px; justify-items: center; font-size: 11px; }
 .split { display: flex; width: 100%; height: 4px; border-radius: 2px; overflow: hidden; background: var(--panel-3); gap: 2px; }
 .split span { height: 100%; transition: width var(--duration-slow) var(--ease-smooth-out); }
-.result-banner { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 12px; border-bottom: 1px solid var(--line); }
-.result-banner b { font-size: 18px; }
-.result-banner.win b { color: var(--accent); }
-.result-banner.draw b { color: var(--warn); }
-.result-banner.loss b { color: var(--danger); }
+/* 경기 끝 장면: 결과 단어가 주인공. 결과 색이 위에서 은은하게 번진다 */
+.result-scene {
+  --rs: var(--text-2);
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 24px 20px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: radial-gradient(110% 90% at 50% 0%, color-mix(in srgb, var(--rs) 15%, transparent), transparent 70%), var(--panel);
+  text-align: center;
+}
+.result-scene.win { --rs: var(--accent); }
+.result-scene.draw { --rs: var(--warn); }
+.result-scene.loss { --rs: var(--danger); }
+.rs-label { font-size: 12px; letter-spacing: 0.04em; }
+.rs-word { font-size: 46px; font-weight: 800; line-height: 1; letter-spacing: -0.02em; color: var(--rs); }
+.rs-standing { font-size: 15px; font-weight: 600; }
+.rs-quote { max-width: 56ch; margin: 6px 0 2px; color: var(--text-2); font-size: 14px; line-height: 1.6; text-wrap: balance; }
+.rs-from { margin-right: 8px; color: var(--muted); font-size: var(--fs-min); font-weight: 700; letter-spacing: 0.06em; }
+.rs-quote .rs-from { display: block; margin: 0 0 2px; }
+.rs-board { display: grid; gap: 4px; }
+.rs-note { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 8px; color: var(--text-2); font-size: 13px; }
+.rs-note.good { color: var(--accent); }
+.rs-note.bad { color: var(--danger-text); }
+.result-scene .prep-effects { justify-content: center; }
+.result-scene .absences { justify-items: center; padding: 0; border-bottom: 0; }
+.result-scene .reveal { animation: cc-rise var(--duration-slow) var(--ease-smooth-out) both; animation-delay: calc(var(--i, 0) * 90ms); }
+@media (prefers-reduced-motion: reduce) { .result-scene .reveal { animation: none; } }
+@media (max-width: 560px) { .rs-word { font-size: 38px; } .result-scene { padding: 20px 14px 16px; } }
+.rs-others > summary { padding: 10px 12px; color: var(--text-2); font-weight: 600; cursor: pointer; }
+.rs-others[open] > summary { border-bottom: 1px solid var(--line); }
 .season-over { display: grid; justify-items: center; gap: 10px; padding: 32px 16px; text-align: center; }
 .season-over h2 { font-size: 22px; }
 
@@ -546,6 +573,7 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
   font-size: 13px;
 }
+.toast.is-open { pointer-events: auto; cursor: pointer; }
 .toast.goal { border-color: color-mix(in srgb, var(--accent) 55%, var(--line-2)); background: color-mix(in srgb, var(--accent) 12%, var(--panel-3)); }
 .toast-goal { display: inline-flex; align-items: center; gap: 4px; flex-wrap: wrap; }
 .toast-goal b { color: var(--accent); }
@@ -833,6 +861,14 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 
 /* ── 전술 지시 ── */
 .pre-tactics { display: grid; gap: 8px; padding-top: 4px; }
+/* 상대와 전술: 왼쪽 분석, 오른쪽 전술 (좁으면 분석 → 전술) */
+.opp-tactics { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+.ot-analysis { min-width: 0; border-right: 1px solid var(--line); }
+.opp-tactics > .pre-tactics { align-content: start; padding: 12px 16px; }
+@media (max-width: 860px) {
+  .opp-tactics { grid-template-columns: minmax(0, 1fr); }
+  .ot-analysis { border-right: 0; border-bottom: 1px solid var(--line); }
+}
 .pre-tactics h3, .cmd-formation h3 { color: var(--muted); font-size: 11px; letter-spacing: 0.08em; }
 .tactics-picker { display: grid; gap: 10px; }
 .tac-row { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 10px; align-items: start; }
@@ -1201,11 +1237,13 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .brief-status.st-idle { background: var(--panel-3); color: var(--muted); }
 .brief-label { color: var(--text-2); }
 .brief-text { min-width: 0; color: var(--text); }
+.brief-allset { padding: 4px 8px; color: var(--accent); font-weight: 600; }
+.brief-settled > summary { padding: 4px 8px; color: var(--muted); font-size: 12px; cursor: pointer; }
+.brief-settled[open] > summary { margin-bottom: 4px; }
 .prep-effects { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 12px; }
 .prep-chip { padding: 2px 8px; border-radius: 999px; background: var(--panel-3); color: var(--text-2); font-variant-numeric: tabular-nums; }
 .prep-chip.up, .prep-effects b.up { color: var(--accent); }
 .prep-chip.down, .prep-effects b.down { color: var(--danger-text); }
-.result-banner + .prep-effects { padding: 8px 12px 0; }
 @media (max-width: 560px) {
   .brief-row { grid-template-columns: 44px minmax(0, 1fr) auto; }
   .brief-label { display: none; }

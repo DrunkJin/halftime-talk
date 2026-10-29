@@ -17,7 +17,6 @@ import { FAMILIARITY } from '../../engine/config.js';
 import { t } from '../../i18n.js';
 
 const pct = (v) => `${Math.round(v * 100)}%`;
-const signed = (v, unit = '') => `${v > 0 ? '+' : ''}${v}${unit}`;
 
 // 초점마다 효과 꼬리표 (좋은 것 / 대가)
 function focusTags(id) {
@@ -28,7 +27,7 @@ function focusTags(id) {
   if (f.familiarity) tags.push({ good: true, text: t('training.tag.familiarity') });
   if (f.matchBoost) tags.push({ good: true, text: t('training.tag.matchBoost', { pct: f.matchBoost * 100 }) });
   if (f.recovery > 0) tags.push({ good: true, text: t('training.tag.recoveryUp', { v: f.recovery }) });
-  if (f.recovery < 0) tags.push({ good: false, text: t('training.tag.recoveryDown', { v: f.recovery }) });
+  if (f.recovery < 0) tags.push({ good: false, text: t(f.recovery <= -2 ? 'training.tag.recoveryDownBig' : 'training.tag.recoveryDown') });
   if (f.injury) tags.push({ good: false, text: t('training.tag.injury') });
   if (!tags.length) tags.push({ good: true, text: t('training.tag.none') });
   return tags;
@@ -62,8 +61,8 @@ export function render(ctx) {
         h(
           'dl',
           { class: 'tr-effects' },
-          h('div', {}, h('dt', {}, t('training.week.recovery')), h('dd', { class: week.recovery > 0 ? 'up' : week.recovery < 0 ? 'down' : '' }, week.recovery ? signed(week.recovery) : t('training.week.normal')), h('span', { class: 'muted small-note' }, t('training.week.avgCond', { avg: avgCond }))),
-          h('div', {}, h('dt', {}, t('training.week.injury')), h('dd', { class: week.injury ? 'down' : '' }, week.injury ? t('training.week.injuryPer', { pct: (week.injury * 100).toFixed(1) }) : t('training.week.none'))),
+          h('div', {}, h('dt', {}, t('training.week.recovery')), h('dd', { class: week.recovery > 0 ? 'up' : week.recovery < 0 ? 'down' : '' }, t(`training.week.rec.${week.recovery >= 4 ? 'bigUp' : week.recovery > 0 ? 'up' : week.recovery <= -2 ? 'bigDown' : week.recovery < 0 ? 'down' : 'flat'}`)), h('span', { class: 'muted small-note' }, t('training.week.avgCond', { avg: avgCond }))),
+          h('div', {}, h('dt', {}, t('training.week.injury')), h('dd', { class: week.injury ? 'down' : '' }, week.injury ? t(`training.week.risk.${week.injury >= 0.002 ? 'high' : week.injury >= 0.001 ? 'mid' : 'low'}`) : t('training.week.none'))),
           h('div', {}, h('dt', {}, t('training.week.familiarity')), h('dd', { class: week.familiarity ? 'up' : '' }, week.familiarity ? t('training.week.famDrill') : t('training.week.famMatches')), h('span', { class: 'muted small-note' }, t('training.week.famNow', { word: familiarityWord(fam) }))),
           h('div', {}, h('dt', {}, t('training.week.prep')), h('dd', { class: week.matchBoost ? 'up' : '' }, week.matchBoost ? t('training.week.prepOn') : '—')),
         ),

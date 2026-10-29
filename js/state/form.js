@@ -31,4 +31,4 @@ export function formAverage(game, id) {
 }
 
 // 평점 색 등급 (화면용)
-export const ratingClass = (r) => (r == null ? '' : r >= 7.5 ? 'rt-great' : r >= 7.0 ? 'rt-good' : r >= 6.3 ? 'rt-ok' : 'rt-poor');
+export const ratingClass = (r) => (r == null ? '' : r >= 7.5 ? 'rt-great' : r >= 7.0 ? 'rt-good' : r >= 6.0 ? 'rt-ok' : 'rt-poor');

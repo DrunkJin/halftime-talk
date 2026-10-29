@@ -13,7 +13,10 @@
   "squad.unit.defense": "Defence",
   "squad.unit.goalkeeping": "GK",
   "squad.roles.captain": "Captain",
-  "squad.roles.captainNote": "Leadership {lead} · performance +{boost}%",
+  "squad.roles.captainNote": "Leadership {lead} · {effect}",
+  "squad.roles.captainEffect.small": "lifts the team a little",
+  "squad.roles.captainEffect.some": "lifts the team noticeably",
+  "squad.roles.captainEffect.big": "lifts the team a lot",
   "squad.roles.captainHint": "Lifts the team's performance while he's on the pitch. If he's left out, the vice-captain gives half the effect. An unhappy captain hurts the dressing room.",
   "squad.roles.penalty": "Penalty taker",
   "squad.roles.penaltyNote": "Finishing {fin} · Composure {comp}",
@@ -30,7 +33,10 @@
   "squad.mood.promised": " · Promise",
   "squad.form.recent": "Recent {list}",
   "squad.form.season": " / season avg {avg}",
-  "squad.toast.unavailable": { "one": "{name}: {label} (out for 1 match)", "other": "{name}: {label} (out for {n} matches)" },
+  "squad.toast.unavailable": {
+    "one": "{name}: {label} (out for 1 match)",
+    "other": "{name}: {label} (out for {n} matches)"
+  },
   "squad.toast.starterBench": "Starters can't be named on the bench.",
   "squad.toast.benchFull": "The bench holds {n} players. Remove one first.",
   "squad.toast.gkFixed": "The goalkeeper slot can't be moved. Swap players instead.",
@@ -72,8 +78,14 @@
   "squad.row.reserveAria": "{name}, reserve — press Enter to select",
   "squad.row.divider": "Subs & reserves ({n})",
   "squad.warn.fix": "Auto replace",
-  "squad.warn.fixed": { "one": "Replaced 1 player with an available one", "other": "Replaced {n} players with available ones" },
-  "squad.warn.title": { "one": "1 unavailable player in the XI", "other": "{n} unavailable players in the XI" },
+  "squad.warn.fixed": {
+    "one": "Replaced 1 player with an available one",
+    "other": "Replaced {n} players with available ones"
+  },
+  "squad.warn.title": {
+    "one": "1 unavailable player in the XI",
+    "other": "{n} unavailable players in the XI"
+  },
   "squad.warn.body": " — change them before the match.",
   "squad.bench.remove": "Remove from bench",
   "squad.bench.add": "Add to bench",
@@ -88,5 +100,8 @@
   "squad.panel.bench": "Bench",
   "squad.panel.roles": "Captain & Set Pieces",
   "squad.panel.squad": "Squad",
-  "squad.panel.count": { "one": "1 player", "other": "{n} players" }
+  "squad.panel.count": {
+    "one": "1 player",
+    "other": "{n} players"
+  }
 }

@@ -15,6 +15,9 @@ import { ATTRIBUTE_LABELS, POSITION_NAMES, attrClass, fmt1, shortName } from '..
 import { openModal, setDigits, showToast } from '../motion.js';
 import { getLang, t } from '../../i18n.js';
 
+// 주장 효과 크기 → 말 단계 (보정 %는 보여 주지 않는다)
+const captainLevel = (boost) => (boost >= 0.014 ? 'big' : boost >= 0.008 ? 'some' : 'small');
+
 // 보조 포지션 + 포지션 전환으로 손에 익은 자리
 const altsOf = (p) => [...p.altPositions, ...Object.entries(p.posLearn ?? {}).filter(([pos, v]) => v >= POSITION_FIT.learn.familiar && !p.altPositions.includes(pos)).map(([pos]) => pos)];
 
@@ -42,7 +45,7 @@ function rolesPanel(ctx) {
     const lineup = game.lineup.map((id) => dataset.playerById.get(id)).filter(Boolean);
     const autos = { captain: bestLeader(lineup), penaltyTaker: bestPenaltyTaker(lineup, PENALTIES.takerSkill), setPieceTaker: bestSetPieceTaker(lineup) };
     const rows = [
-      { key: 'captain', label: t('squad.roles.captain'), note: (p) => t('squad.roles.captainNote', { lead: Math.round(leadership(p)), boost: (captainBoostOf(p) * 100).toFixed(1) }), hint: t('squad.roles.captainHint') },
+      { key: 'captain', label: t('squad.roles.captain'), note: (p) => t('squad.roles.captainNote', { lead: Math.round(leadership(p)), effect: t(`squad.roles.captainEffect.${captainLevel(captainBoostOf(p))}`) }), hint: t('squad.roles.captainHint') },
       { key: 'penaltyTaker', label: t('squad.roles.penalty'), note: (p) => t('squad.roles.penaltyNote', { fin: p.attributes.finishing, comp: p.attributes.composure }), hint: t('squad.roles.penaltyHint') },
       { key: 'setPieceTaker', label: t('squad.roles.setPiece'), note: (p) => t('squad.roles.setPieceNote', { cross: p.attributes.crossing }), hint: t('squad.roles.setPieceHint') },
     ];
@@ -543,7 +546,7 @@ export function render(ctx) {
   function updateRatings() {
     const r = computeTeamRatings(userSlots(game), lineupPlayers(), factorOf, slotMods(userSlots(game), lineupPlayers(), userRoles(dataset, game)));
     for (const key of UNITS) {
-      setDigits(ratingRows[key].digits, fmt1(r[key]));
+      setDigits(ratingRows[key].digits, String(Math.round(r[key])));
       const pct = Math.max(0, Math.min(100, ((r[key] - 55) / 35) * 100));
       ratingRows[key].bar.firstChild.style.width = `${pct}%`;
     }
