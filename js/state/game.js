@@ -19,6 +19,7 @@ import { captainBoost } from './captain.js';
 import { moraleBoost, moraleOf } from './morale.js';
 import { RULES } from './rules.js';
 import { aiRoleIds } from '../engine/roles.js';
+import { PROGRESSION } from '../progression/config.js';
 
 export const SAVE_VERSION = 5;
 export const DEFAULT_FORMATION = '4-3-3';
@@ -235,6 +236,16 @@ function userBench(dataset, game, available, lineup, size, factor) {
 
 const DEFAULT_BENCH = 9; // 리그가 없는 게스트 팀
 
+// 강등 후유증: 이번 시즌 내려온 팀은 초반 레이팅 배율이 깎이고 리그 진행에 따라 사라진다 (newSeason.js가 기록)
+export function hangoverBoost(dataset, game, teamId) {
+  const hg = game.hangover;
+  if (!hg || hg.season !== game.seasonIndex || !hg.teams.includes(teamId)) return 0;
+  const R = PROGRESSION.relegation;
+  const leagueId = dataset.teamById.get(teamId)?.leagueId;
+  const progress = (game.leagueRounds?.[leagueId] ?? 0) / Math.max(1, leagueTotalRounds(game, leagueId));
+  return -R.hangover * Math.max(0, 1 - progress / R.hangoverFade);
+}
+
 export function teamInput(dataset, game, teamId, scope = 'league') {
   const team = dataset.teamById.get(teamId);
   const squad = squadOf(dataset, game, teamId);
@@ -265,7 +276,7 @@ export function teamInput(dataset, game, teamId, scope = 'league') {
   // 사기: 최근 흐름(모든 팀) + 인터뷰·팀 토크(사용자 팀). 사용자 팀은 전술 숙련도도 (AI 팀은 기준 수준이라 0)
   // 사용자 팀은 전술 숙련도와 이번 주 경기 준비 훈련도
   // 주장: 경기장에 있으면 리더십만큼 (AI 팀도 리더십이 가장 좋은 선발이 주장)
-  const boost = moraleBoost(moraleOf(dataset, game, teamId)) + captainBoost(lineup, mine ? game.captain : null) + (mine ? familiarityBoost(familiarityOf(game)) + trainingMatchBoost(game) : 0);
+  const boost = moraleBoost(moraleOf(dataset, game, teamId)) + captainBoost(lineup, mine ? game.captain : null) + hangoverBoost(dataset, game, teamId) + (mine ? familiarityBoost(familiarityOf(game)) + trainingMatchBoost(game) : 0);
   const takers = mine ? { penaltyTakerId: game.penaltyTaker ?? null, setPieceTakerId: game.setPieceTaker ?? null } : {};
   const roles = mine ? userRoles(dataset, game) : undefined; // AI 팀은 엔진이 선수 구성에 맞게 고른다
   return { id: teamId, name: team.shortName, slots, formation, lineup, bench, condition, autoSubs, tactics, autoTactics: !mine, boost, roles, ...takers };

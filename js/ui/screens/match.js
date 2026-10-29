@@ -1372,6 +1372,7 @@ function showSeasonSummary(ctx, summary) {
         line('계약 만료로 떠남', summary.left),
         line('강등으로 팔려 간 선수', summary.sold),
         summary.parachute ? h('li', {}, h('b', {}, '낙하산 지원금'), ` ${formatMoney(summary.parachute)}이 잔고에 들어왔습니다.`) : null,
+        summary.relegated?.length ? h('li', {}, h('b', {}, '강등 후유증'), ' 선수단이 크게 바뀌고 분위기가 가라앉아 시즌 초반에는 제 힘을 내기 어렵습니다. 경기를 치르며 서서히 회복합니다.') : null,
         line('유스 입단', summary.youth),
         line('인원 보강(자동)', summary.signed),
       ),

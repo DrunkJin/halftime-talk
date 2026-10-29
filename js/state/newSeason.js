@@ -13,6 +13,7 @@ import { playerValue, topElevenOvr } from '../market/value.js';
 import { PROGRESSION, lookup } from '../progression/config.js';
 import { currentTeamId, fixLineup, invalidateSquads, leagueTotalRounds, loanOf, squadOf } from './game.js';
 import { recordSeason } from './history.js';
+import { RULES } from './rules.js';
 import { ensureWorld, packAttributes, worldDataset } from './world.js';
 import { noteSeasonExpectation } from './career.js';
 import { takeRetention } from './training.js';
@@ -87,11 +88,17 @@ function qualify(dataset, rec) {
 }
 
 // ── 강등 팀 정리 ──────────────────────────────────────
-// 내려간 리그 수준을 크게 넘는 선수 일부가 위 리그 등 다른 구단으로 팔리고, 강등 팀은 낙하산 지원금을 받는다
+// 내려간 리그 수준을 크게 넘는 선수가 핵심 선수부터 위 리그 등 다른 구단으로 팔리고, 강등 팀은 낙하산 지원금을 받는다
+// (비싼 스타일수록 주급 한도에 걸려 남고 중간급만 팔려 나가면, 강등 팀이 2부에서 독주한다)
 function relegationExodus(ds, game, rng, upperId, down, lowerId, summary) {
   const R = P.relegation;
   const lowerTeams = game.world.leagueTeams[lowerId].filter((id) => !down.includes(id));
-  const bar = Math.max(...lowerTeams.map((id) => topElevenOvr(squadOf(ds, game, id)))) + R.gap;
+  const top = lowerTeams.map((id) => topElevenOvr(squadOf(ds, game, id))).sort((a, b) => b - a).slice(0, R.topTeams);
+  const bar = top.reduce((s, v) => s + v, 0) / top.length + R.gap;
+  // 주급 한도는 넘더라도 이 선수가 주전이 될 만하고 이적료를 낼 수 있는 구단 (스타는 결국 팔려 나간다)
+  const starterFloor = (id) => squadOf(ds, game, id).map(overall).sort((a, b) => b - a)[10] ?? 0;
+  const fallbackBuyer = (p, fee) =>
+    buyers.find((t) => !ds.isGuest(t.id) && squadOf(ds, game, t.id).length < RULES.squadMax && (game.budgets[t.id] ?? 0) >= fee && overall(p) >= starterFloor(t.id) - R.starterGap);
   // 살 수 있는 구단: 떠난 리그의 남은 팀부터, 그다음 다른 리그 — 잔고 많은 순
   const buyers = ds.allTeams
     .filter((t) => !down.includes(t.id) && t.id !== game.teamId)
@@ -101,11 +108,11 @@ function relegationExodus(ds, game, rng, upperId, down, lowerId, summary) {
       .filter((p) => overall(p) >= bar)
       .sort((a, b) => overall(b) - overall(a));
     let gone = 0;
-    for (const p of stars) {
+    for (const [i, p] of stars.entries()) {
       if (gone >= R.maxLeaving) break;
-      if (rng.next() >= R.chance) continue;
+      if (rng.next() >= (i < R.starCount ? R.starChance : R.chance)) continue;
       const fee = Math.round(playerValue(p) * R.feeFactor * 10) / 10;
-      const to = buyers.find((t) => canAiBuy(ds, game, t.id, p, fee));
+      const to = buyers.find((t) => canAiBuy(ds, game, t.id, p, fee)) ?? fallbackBuyer(p, fee);
       if (!to) continue;
       transferPlayer(ds, game, p.id, to.id, fee, { contract: demandedContract(ds, game, p, to.id), by: 'relegation' });
       invalidateSquads(game);
@@ -311,6 +318,7 @@ export function startNextSeason(base, game, { renew = null } = {}) {
 
   invalidateSquads(game);
 
+  game.hangover = null;
   // 5) 승강 (데이터에 승강 정보가 있는 리그만)
   const tableOf = (leagueId) => rec.leagues.find((l) => l.id === leagueId)?.table.map((r) => r.teamId) ?? [];
   for (const league of ds0.leagues) {
@@ -322,6 +330,7 @@ export function startNextSeason(base, game, { renew = null } = {}) {
     w.leagueTeams[league.id] = [...w.leagueTeams[league.id].filter((id) => !down.includes(id)), ...up];
     w.leagueTeams[lower] = [...w.leagueTeams[lower].filter((id) => !up.includes(id)), ...down];
     if (down.includes(game.teamId)) summary.relegated.push(game.teamId);
+    (game.hangover ??= { season: game.seasonIndex + 1, teams: [] }).teams.push(...down); // 강등 후유증 (game.js hangoverBoost)
     if (up.includes(game.teamId)) summary.promoted.push(game.teamId);
     relegationExodus(ds0, game, rng, league.id, down, lower, summary);
   }
@@ -359,13 +368,20 @@ export function startNextSeason(base, game, { renew = null } = {}) {
     .filter((p) => p.age < P.aiFill.maxAge)
     .sort((a, b) => overall(b) - overall(a));
   const F = P.aiFill;
+  const levelCap = new Map(
+    ds1.leagues.map((l) => {
+      const top = l.teamIds.map((id) => topElevenOvr(squadOf(ds1, game, id))).sort((a, b) => b - a).slice(0, 3);
+      return [l.id, top.reduce((s, v) => s + v, 0) / top.length + F.levelGap];
+    }),
+  );
   for (const team of [...ds1.allTeams, ...ds1.guestTeams].sort(() => rng.next() - 0.5)) {
     const user = team.id === game.teamId;
     let size = squadOf(ds1, game, team.id).length;
     const goal = user ? F.mustSquad : F.minSquad;
+    const cap = levelCap.get(team.leagueId) ?? Infinity; // 게스트 팀은 제한 없음
     for (let i = 0; size < goal && i < free.length; i++) {
       const p = free[i];
-      if (!p) continue;
+      if (!p || overall(p) > cap) continue;
       const contract = demandedContract(ds1, game, p, team.id);
       if (team.guest) {
         // 게스트 팀은 재정이 없어 주급 확인 없이 채운다 (계약도 두지 않는다)
