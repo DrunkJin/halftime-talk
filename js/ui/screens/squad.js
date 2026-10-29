@@ -1,4 +1,6 @@
 // 스쿼드: 피치 자유 배치 포메이션 + 선발 배치(드래그 또는 클릭 두 번) + 스쿼드 표 + 팀 레이팅 + 교체 명단
+import { bestLeader, bestPenaltyTaker, bestSetPieceTaker, captainBoostOf, leadership } from '../../state/captain.js';
+import { PENALTIES } from '../../engine/config.js';
 import { isRequesting, levelOf, moodOf, promiseOf, rolesOf, shareOf } from '../../state/squadMood.js';
 import { formAverage, formOf, ratingClass, seasonRating } from '../../state/form.js';
 import { POSITIONS } from '../../data/schema.js';
@@ -27,6 +29,45 @@ const POS_ORDER = new Map(POSITIONS.map((p, i) => [p, i]));
 
 const fitClass = (fit) => (fit >= 0.95 ? 'fit-good' : fit >= 0.8 ? 'fit-ok' : 'fit-bad');
 const sameCells = (a, b) => a.length === b.length && a.every((c, i) => c[0] === b[i][0] && c[1] === b[i][1]);
+
+// 주장·페널티 키커·세트피스 키커 지정 (비우면 자동: 리더십·페널티·크로스가 가장 좋은 선수)
+function rolesPanel(ctx) {
+  const { dataset, game } = ctx;
+  const box = h('div', { class: 'roles-panel' });
+  const draw = () => {
+    const squad = squadOf(dataset, game, game.teamId).sort((a, b) => overall(b) - overall(a));
+    const lineup = game.lineup.map((id) => dataset.playerById.get(id)).filter(Boolean);
+    const autos = { captain: bestLeader(lineup), penaltyTaker: bestPenaltyTaker(lineup, PENALTIES.takerSkill), setPieceTaker: bestSetPieceTaker(lineup) };
+    const rows = [
+      { key: 'captain', label: '주장', note: (p) => `리더십 ${Math.round(leadership(p))} · 경기력 +${(captainBoostOf(p) * 100).toFixed(1)}%`, hint: '경기장에 있으면 팀 경기력이 오릅니다. 선발에서 빠지면 부주장이 절반 효과를 냅니다. 불만인 주장은 라커룸 분위기를 해칩니다.' },
+      { key: 'penaltyTaker', label: '페널티 키커', note: (p) => `결정력 ${p.attributes.finishing} · 침착성 ${p.attributes.composure}`, hint: '경기 중 페널티킥과 승부차기 1번 키커입니다.' },
+      { key: 'setPieceTaker', label: '세트피스 키커', note: (p) => `크로스 ${p.attributes.crossing}`, hint: '크로스가 좋을수록 헤더 찬스가 늘고, 헤더 골의 도움을 자주 기록합니다.' },
+    ];
+    box.replaceChildren(
+      ...rows.map((r) => {
+        const current = game[r.key] && dataset.playerById.get(game[r.key]);
+        const shown = current ?? autos[r.key];
+        const sel = h(
+          'select',
+          { class: 'select small', 'aria-label': r.label },
+          h('option', { value: '' }, `자동${autos[r.key] ? ` (${autos[r.key].name})` : ''}`),
+          squad.filter((p) => p.position !== 'GK' || r.key === 'captain').map((p) => h('option', { value: p.id, selected: game[r.key] === p.id || null }, `${p.position} ${p.name}`)),
+        );
+        sel.addEventListener('change', () => {
+          if (sel.value) game[r.key] = sel.value;
+          else delete game[r.key];
+          ctx.persist();
+          showToast(`${r.label}: ${sel.value ? dataset.playerById.get(sel.value).name : '자동'}`);
+          draw();
+        });
+        return h('div', { class: 'role-row', title: r.hint }, h('span', { class: 'role-label' }, r.label), sel, h('span', { class: 'muted small-note' }, shown ? r.note(shown) : ''));
+      }),
+      h('p', { class: 'muted small-note' }, '지정한 선수가 경기장에 없으면 그 경기에서는 자동으로 다른 선수가 맡습니다.'),
+    );
+  };
+  draw();
+  return box;
+}
 
 // 기분 칩: 만족·보통·불만·이적 요청 (+ 출전 약속 중)
 function moodChip(game, id, role) {
@@ -499,6 +540,7 @@ export function render(ctx) {
       panel('포메이션', h('div', { class: 'pitch-wrap' }, pitchEl), { actions: formationHead }),
       panel('팀 레이팅', h('div', { class: 'ratings-body' }, ratingList, h('div', { class: 'xi-ovr' }, h('span', { class: 'muted' }, '선발 평균 OVR'), h('b', { class: 'num' }, xiOvr)))),
       panel('교체 명단', benchHost),
+      panel('주장·전담 키커', rolesPanel(ctx)),
     ),
     h('div', { class: 'squad-right' }, warnHost, panel('스쿼드', h('div', {}, hint, tableHost), { actions: h('span', { class: 'muted' }, `${squad().length}명`) })),
   );

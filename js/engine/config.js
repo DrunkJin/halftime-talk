@@ -68,7 +68,7 @@ export const POSSESSION_EXP = 2.2;
 
 // ── 공격 ───────────────────────────────────────────────
 // 점유 1분당 공격 시도 확률 = ATTACK_BASE × (공격 / 상대 수비)^ATTACK_EXP
-export const ATTACK_BASE = 0.365; // 리그 평균 골 수(2.6~3.0)에 맞춤 — 시장가치 반영으로 팀 간 차가 조금 벌어진 만큼 낮춤
+export const ATTACK_BASE = 0.35; // 리그 평균 골 수(2.6~3.0)에 맞춤 — 경기 중 페널티킥·세트피스 키커가 더한 골만큼 낮춤
 export const ATTACK_EXP = 1.5;
 export const ATTACK_PROB_MAX = 0.75;
 // 큰 전력 차 완화: (공격 / 상대 수비) 비가 knee를 넘으면 넘는 만큼을 slope 배로 줄인다 (약한 쪽도 대칭).
@@ -211,6 +211,13 @@ export const PROB_LIMITS = { onTarget: [0.1, 0.9], goalIfOnTarget: [0.02, 0.95] 
 
 // 빗나간 슈팅 중 수비 블록·골대 비율 (중계 문구용, 결과에는 영향 없음)
 export const MISS_BREAKDOWN = { blocked: 0.3, woodwork: 0.05 };
+
+// ── 세트피스 · 주장 ─────────────────────────────────────
+// 페널티킥: 결정적 찬스(big) 중 penaltyShare가 페널티킥이 된다 (성공 확률은 PENALTIES 공식, 키커 vs GK)
+// 세트피스 키커: 헤더 비중 × (1 + (키커 크로스 - 경기 기준) × headerSlope), 헤더 골 도움이 키커에게 갈 확률 takerAssist
+export const SET_PIECES = { penaltyShare: 0.09, headerSlope: 0.006, headerRange: [0.85, 1.2], takerAssist: 0.5 };
+// 주장: 경기장에 있으면 레이팅 배율 + (리더십 - 70) / 10 × perUnit + base (0 ~ max). 리더십 = 침착성·활동량·경험
+export const CAPTAIN = { base: 0.004, perUnit: 0.004, max: 0.02, weights: { composure: 0.5, workRate: 0.3, experience: 0.2 } };
 
 // ── 선수 평점 (경기 결과에는 영향 없음) ─────────────────────
 // 6.0에서 시작해 기록·팀 결과·기량으로 가감. 실점·무실점 가산은 자리(줄)별로 다르다

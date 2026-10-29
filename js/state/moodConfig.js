@@ -25,6 +25,7 @@ export const MOOD = {
   // 팀 사기: 불만인 주전급(상위 11) 한 명당 (40 - 기분) / 10, 합계 최대 maxTeamPenalty
   teamPenaltyFrom: 40,
   maxTeamPenalty: 10,
+  captainUnhappy: 3, // 지정 주장이 불만이면 추가 감점
   requestOfferBoost: 3, // 이적 요청한 선수에게 들어오는 영입 제안 확률 배율
 
   // 면담 (같은 선수는 cooldown 라운드에 한 번)

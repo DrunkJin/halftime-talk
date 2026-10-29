@@ -28,6 +28,7 @@ import { compOf, cupMatchInput, cupsOf, eventFixtures, firstLegOf, leaguePhaseTa
 import { STANCES } from '../../media/situations.js';
 import { moraleBoost, moraleLabel, moraleOf } from '../../state/morale.js';
 import { trainingMatchBoost, trainingOf } from '../../state/training.js';
+import { captainBoost, captainFor } from '../../state/captain.js';
 import { TRAINING as TRAINING_CONFIG } from '../../state/trainingConfig.js';
 import { isRequesting, moodOf, rolesOf } from '../../state/squadMood.js';
 import { openModal, setDigits, showToast, streamText } from '../motion.js';
@@ -381,6 +382,7 @@ export function prepEffects(ctx, mySide, neutral = false) {
     { label: '사기', value: moraleBoost(moraleOf(dataset, game, game.teamId)) },
     { label: '전술 숙련도', value: familiarityBoost(familiarityOf(game)) },
     { label: '경기 준비 훈련', value: trainingMatchBoost(game) },
+    { label: '주장', value: captainBoost(game.lineup.map((id) => dataset.playerById.get(id)).filter(Boolean), game.captain) },
   ];
   if (mySide === 'home' && !neutral) parts.push({ label: '홈', value: HOME_ADVANTAGE });
   return parts.map((p) => ({ ...p, value: Math.round(p.value * 1000) / 10 }));
@@ -439,6 +441,17 @@ function briefingPanel(ctx, { fixture, scope, mySide, neutral, problems, tired, 
         status: tr.focus === 'balanced' && !Object.keys(tr.individual ?? {}).length ? 'idle' : 'ok',
         text: `이번 주 ${TRAINING_CONFIG.focus[tr.focus]?.label ?? '균형'} · ${TRAINING_CONFIG.intensity[tr.intensity]?.label ?? '보통'} · 개인 훈련 ${Object.keys(tr.individual ?? {}).length}/${TRAINING_CONFIG.individual.max}명`,
         action: go('훈련 탭', () => ctx.navigate('training')),
+      },
+      {
+        label: '주장·키커',
+        status: game.captain && !game.lineup.includes(game.captain) ? 'warn' : game.captain || game.penaltyTaker || game.setPieceTaker ? 'ok' : 'idle',
+        text: (() => {
+          const lineup = game.lineup.map((id) => dataset.playerById.get(id)).filter(Boolean);
+          const cap = captainFor(lineup, game.captain);
+          const name = (id) => dataset.playerById.get(id)?.name;
+          return `주장 ${cap.player?.name ?? '-'}${cap.vice ? ' (지정 주장 결장, 부주장)' : game.captain ? '' : ' (자동)'} · PK ${name(game.penaltyTaker) ?? '자동'} · 세트피스 ${name(game.setPieceTaker) ?? '자동'}`;
+        })(),
+        action: go('스쿼드', () => ctx.navigate('squad')),
       },
       {
         label: '기자회견',

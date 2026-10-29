@@ -96,6 +96,8 @@ export function teamMoodPenalty(dataset, game) {
     const mood = moodOf(game, id);
     if (mood < M.teamPenaltyFrom) total += (M.teamPenaltyFrom - mood) / 10;
   }
+  // 지정 주장이 불만이면 라커룸 분위기가 더 가라앉는다
+  if (game.captain && moodOf(game, game.captain) < M.teamPenaltyFrom) total += M.captainUnhappy;
   return Math.min(M.maxTeamPenalty, total);
 }
 

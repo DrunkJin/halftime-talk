@@ -1188,3 +1188,9 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
   .brief-row { grid-template-columns: 44px minmax(0, 1fr) auto; }
   .brief-label { display: none; }
 }
+
+/* ── 주장·전담 키커 ── */
+.roles-panel { display: grid; gap: 8px; padding: 12px; }
+.role-row { display: grid; grid-template-columns: 84px minmax(0, 1fr); align-items: center; gap: 4px 10px; }
+.role-row .small-note { grid-column: 2; }
+.role-label { color: var(--text-2); font-size: 12px; font-weight: 700; }

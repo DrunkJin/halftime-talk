@@ -55,6 +55,9 @@ function initTeam(team, boost) {
     minutes: new Map(team.lineup.map((p) => [p.id, 0])),
     roster: new Map([...team.lineup, ...(team.bench ?? [])].map((p) => [p.id, p])), // 평점용: 교체로 나간 선수까지
     slotOf: new Map(), // 선수가 마지막으로 선 자리 (평점 가중치)
+    penaltyTakerId: team.penaltyTakerId ?? null, // 지정 키커 (없거나 경기장에 없으면 가장 잘 차는 선수)
+    setPieceTakerId: team.setPieceTakerId ?? null,
+    spFactor: 1, // 세트피스 키커가 만드는 헤더 비중 배율
     yellow: new Set(),
     subsUsed: 0,
     autoSubs: team.autoSubs ?? true,
@@ -87,7 +90,12 @@ function tacticFactors(tactics, profile) {
 // 두 팀 프로필(지금 경기장 선수)과 전술로 상성 배율을 다시 구하고 레이팅을 갱신한다
 function refreshMatchups(state) {
   const { home, away } = state.teams;
-  for (const t of [home, away]) t.profile = squadProfile(t.slots, t.lineup);
+  for (const t of [home, away]) {
+    t.profile = squadProfile(t.slots, t.lineup);
+    const sp = setPieceTaker(t);
+    const [lo, hi] = C.SET_PIECES.headerRange;
+    t.spFactor = sp ? clamp(1 + (sp.attributes.crossing - (state.levelRef ?? C.SKILL_REF)) * C.SET_PIECES.headerSlope, [lo, hi]) : 1;
+  }
   [home.mx, away.mx] = matchupFactors(home, away);
   recalc(home);
   recalc(away);
@@ -441,7 +449,49 @@ function fatigueSubs(state, side) {
 }
 
 // 슈팅 종류 비중 배율: 결정적 찬스는 압도할수록·전술로, 헤더는 상성(크로스 vs 내려앉기)으로
-const shotTypeFactor = (t, k, ratio) => (k === 'big' ? ratio ** C.BIG_CHANCE_EXP * t.tf.bigChance : k === 'header' ? t.tf.header : 1);
+const shotTypeFactor = (t, k, ratio) => (k === 'big' ? ratio ** C.BIG_CHANCE_EXP * t.tf.bigChance : k === 'header' ? t.tf.header * (t.spFactor ?? 1) : 1);
+
+// 전담 키커: 지정한 선수가 경기장에 있으면 그 선수, 아니면 그 능력이 가장 좋은 선수
+const onPitch = (t, id) => (id ? t.lineup.find((p) => p?.id === id) ?? null : null);
+const bestBy = (t, f) => t.lineup.filter((p) => p && p !== t.gk).reduce((a, b) => (!a || f(b) > f(a) ? b : a), null);
+const penaltySkill = (p) => weightedSkill(p.attributes, C.PENALTIES.takerSkill);
+const penaltyTaker = (t) => onPitch(t, t.penaltyTakerId) ?? bestBy(t, penaltySkill);
+const setPieceTaker = (t) => onPitch(t, t.setPieceTakerId) ?? bestBy(t, (p) => p.attributes.crossing);
+
+// 경기 중 페널티킥 (결정적 찬스의 일부). 성공 확률은 승부차기와 같은 공식
+function resolvePenalty(state, side) {
+  const { rng } = state;
+  const att = state.teams[side];
+  const def = state.teams[opponentOf(side)];
+  const taker = penaltyTaker(att);
+  if (!taker) return;
+  const P = C.PENALTIES;
+  const gk = def.gk;
+  const p = clamp(P.base + P.takerSlope * (penaltySkill(taker) - state.levelRef) - P.gkSlope * (gk ? weightedSkill(gk.attributes, P.gkSkill) - state.levelRef : -20), P.limits);
+  comment(state, 'penaltyAwarded', side, { player: taker.name }, taker.id);
+  state.stats[side].shots++;
+  state.stats[side].xg += p;
+  const ps = pstat(state, taker.id);
+  ps.shots++;
+  if (!rng.chance(p)) {
+    const saved = state.textRng.chance(0.65);
+    if (saved) {
+      state.stats[side].shotsOnTarget++;
+      ps.onTarget++;
+      if (gk) pstat(state, gk.id).saves++;
+    }
+    comment(state, saved ? 'penaltySaved' : 'penaltyMissed', side, { player: taker.name, gk: gk?.name ?? '골키퍼' }, taker.id);
+    return;
+  }
+  state.stats[side].shotsOnTarget++;
+  ps.onTarget++;
+  state.score[side]++;
+  ps.goals++;
+  for (const q of def.lineup) if (q) pstat(state, q.id).conceded++;
+  state.goals.push({ minute: state.minute, team: side, scorerId: taker.id, scorerName: taker.name, assistId: null, assistName: null, shotType: 'penalty' });
+  const line = comment(state, 'penaltyGoal', side, { player: taker.name }, taker.id);
+  line.text += ` ${scoreText(state)}`;
+}
 
 function resolveShot(state, side, ratio) {
   const { rng } = state;
@@ -452,6 +502,7 @@ function resolveShot(state, side, ratio) {
   // 슈팅 종류: 상대를 압도할수록 결정적 찬스(big) 비중이 커진다
   const typeWeights = SHOT_TYPE_KEYS.map((k) => C.SHOT_TYPES[k].weight * shotTypeFactor(att, k, ratio));
   const typeKey = SHOT_TYPE_KEYS[rng.weightedIndex(typeWeights)];
+  if (typeKey === 'big' && rng.chance(C.SET_PIECES.penaltyShare)) return resolvePenalty(state, side);
   const type = C.SHOT_TYPES[typeKey];
 
   const si = rng.weightedIndex(att.shooterWeights[typeKey]);
@@ -496,6 +547,9 @@ function resolveShot(state, side, ratio) {
     const weights = att.assistWeights[typeKey].map((w, i) => (i === si ? 0 : w));
     const ai = rng.weightedIndex(weights);
     if (ai >= 0) assister = att.lineup[ai];
+    // 헤더 골: 세트피스 키커의 크로스였을 가능성
+    const sp = typeKey === 'header' ? setPieceTaker(att) : null;
+    if (sp && sp !== shooter && rng.chance(C.SET_PIECES.takerAssist)) assister = sp;
     if (assister) pstat(state, assister.id).assists++;
   }
   state.goals.push({
@@ -612,7 +666,7 @@ function penaltyShootout(state) {
     const t = state.teams[side];
     takers[side] = t.lineup
       .filter(Boolean)
-      .sort((a, b) => (a === t.gk) - (b === t.gk) || weightedSkill(b.attributes, P.takerSkill) - weightedSkill(a.attributes, P.takerSkill));
+      .sort((a, b) => (a === t.gk) - (b === t.gk) || (b.id === t.penaltyTakerId) - (a.id === t.penaltyTakerId) || weightedSkill(b.attributes, P.takerSkill) - weightedSkill(a.attributes, P.takerSkill));
   }
   const pen = { home: 0, away: 0, kicks: [] };
   state.penalties = pen;

@@ -15,6 +15,7 @@ import { generateFixtures, roundCount } from '../league/fixtures.js';
 import { familiarityBoost, familiarityOf } from './familiarity.js';
 import { addRatings } from './form.js';
 import { trainingMatchBoost } from './training.js';
+import { captainBoost } from './captain.js';
 import { moraleBoost, moraleOf } from './morale.js';
 import { RULES } from './rules.js';
 
@@ -253,8 +254,10 @@ export function teamInput(dataset, game, teamId, scope = 'league') {
   const tactics = mine ? tacticsOf(game) : undefined;
   // 사기: 최근 흐름(모든 팀) + 인터뷰·팀 토크(사용자 팀). 사용자 팀은 전술 숙련도도 (AI 팀은 기준 수준이라 0)
   // 사용자 팀은 전술 숙련도와 이번 주 경기 준비 훈련도
-  const boost = moraleBoost(moraleOf(dataset, game, teamId)) + (mine ? familiarityBoost(familiarityOf(game)) + trainingMatchBoost(game) : 0);
-  return { id: teamId, name: team.shortName, slots, formation, lineup, bench, condition, autoSubs, tactics, autoTactics: !mine, boost };
+  // 주장: 경기장에 있으면 리더십만큼 (AI 팀도 리더십이 가장 좋은 선발이 주장)
+  const boost = moraleBoost(moraleOf(dataset, game, teamId)) + captainBoost(lineup, mine ? game.captain : null) + (mine ? familiarityBoost(familiarityOf(game)) + trainingMatchBoost(game) : 0);
+  const takers = mine ? { penaltyTakerId: game.penaltyTaker ?? null, setPieceTakerId: game.setPieceTaker ?? null } : {};
+  return { id: teamId, name: team.shortName, slots, formation, lineup, bench, condition, autoSubs, tactics, autoTactics: !mine, boost, ...takers };
 }
 
 // 스쿼드 화면용: 지금 경기를 하면 쓰일 교체 명단
