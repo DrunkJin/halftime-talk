@@ -1165,3 +1165,26 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
   .news-from { display: none; }
   .news-body { padding-left: 12px; }
 }
+
+/* ── 매치데이 브리핑 ── */
+.briefing { display: grid; gap: 10px; padding: 12px; }
+.brief-list { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.brief-row { display: grid; grid-template-columns: 44px 64px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 6px 8px; border-radius: 6px; font-size: 13px; }
+.brief-row.st-todo { background: rgba(242, 85, 90, 0.06); }
+.brief-row.st-warn { background: rgba(245, 184, 75, 0.06); }
+.brief-status { padding: 1px 6px; border-radius: 4px; font-size: var(--fs-min); font-weight: 800; text-align: center; }
+.brief-status.st-ok { background: rgba(61, 220, 151, 0.14); color: var(--accent); }
+.brief-status.st-warn { background: rgba(245, 184, 75, 0.16); color: var(--warn); }
+.brief-status.st-todo { background: rgba(242, 85, 90, 0.16); color: #ff8a8e; }
+.brief-status.st-idle { background: var(--panel-3); color: var(--muted); }
+.brief-label { color: var(--text-2); }
+.brief-text { min-width: 0; color: var(--text); }
+.prep-effects { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 12px; }
+.prep-chip { padding: 2px 8px; border-radius: 999px; background: var(--panel-3); color: var(--text-2); font-variant-numeric: tabular-nums; }
+.prep-chip.up, .prep-effects b.up { color: var(--accent); }
+.prep-chip.down, .prep-effects b.down { color: #ff8a8e; }
+.result-banner + .prep-effects { padding: 8px 12px 0; }
+@media (max-width: 560px) {
+  .brief-row { grid-template-columns: 44px minmax(0, 1fr) auto; }
+  .brief-label { display: none; }
+}

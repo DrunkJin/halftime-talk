@@ -4,7 +4,7 @@ import { loadBoardText } from '../../media/boardText.js';
 import { pushNews } from '../../state/inbox.js';
 import { boardLine, mustChooseClub, sackedPanel, seasonBoardPanel } from '../board.js';
 import { FORMATION_CELLS, formationLabel, positionOfCell } from '../../engine/formations.js';
-import { HALF_TIME_MINUTE, MATCH_MINUTES } from '../../engine/config.js';
+import { HALF_TIME_MINUTE, HOME_ADVANTAGE, MATCH_MINUTES } from '../../engine/config.js';
 import { changeFormation, createMatch, getMatchResult, makeSubstitution, playMinute, playerRatings, setAutoSubs, setTactics, teamSnapshot } from '../../engine/match.js';
 import { ratingClass } from '../../state/form.js';
 import { computeTeamRatings, conditionFactor, overall, positionFit, positionRating } from '../../engine/ratings.js';
@@ -17,7 +17,7 @@ import { contractOf, renewalTerms } from '../../market/finance.js';
 import { formatWage } from '../../market/market.js';
 import { teamAccent, teamBadge } from '../badge.js';
 import { conditionMeter, openConfirm, panel, segmented, statusChip } from '../components.js';
-import { h } from '../dom.js';
+import { appendChildren, h } from '../dom.js';
 import { attrClass, fmt1, shortName } from '../format.js';
 import { formatMoney } from '../../market/value.js';
 import { formationPicker, presetFormationOptions, tacticLabel, tacticSummary, tacticsPicker } from '../tactics.js';
@@ -26,7 +26,10 @@ import { familiarityBoost, familiarityOf } from '../../state/familiarity.js';
 import { answerPost, answerPre, answerTalk, cupTeamTalk, loadMedia, rivalryBetween, postCupInterview, postInterview, preCupInterview, preInterview, teamTalk } from '../../media/interviews.js';
 import { compOf, cupMatchInput, cupsOf, eventFixtures, firstLegOf, leaguePhaseTable, stageName, userCupFixture } from '../../competitions/cups.js';
 import { STANCES } from '../../media/situations.js';
-import { moraleLabel, moraleOf } from '../../state/morale.js';
+import { moraleBoost, moraleLabel, moraleOf } from '../../state/morale.js';
+import { trainingMatchBoost, trainingOf } from '../../state/training.js';
+import { TRAINING as TRAINING_CONFIG } from '../../state/trainingConfig.js';
+import { isRequesting, moodOf, rolesOf } from '../../state/squadMood.js';
 import { openModal, setDigits, showToast, streamText } from '../motion.js';
 
 const SPEEDS = [
@@ -233,7 +236,7 @@ function renderPre(ctx, show) {
     rotateNow();
     // 화면을 그린 뒤 바꾼 전술이 반영되도록 킥오프 때 입력을 다시 만든다
     const state = createMatch(makeInput(ctx.game));
-    live = { fixture, state, timer: null, paused: false, done: false, others: null, gap: strengthGap(state, mySide), cup: Boolean(cupFx), formationLabel: formationLabel(ctx.game.formation.cells) };
+    live = { fixture, state, timer: null, paused: false, done: false, others: null, gap: strengthGap(state, mySide), cup: Boolean(cupFx), formationLabel: formationLabel(ctx.game.formation.cells), prep: prepEffects(ctx, mySide, Boolean(cupFx?.neutral)) };
     show();
   });
   const instant = h('button', { class: 'btn', type: 'button', disabled: blocked || null }, '결과만 보기');
@@ -241,7 +244,7 @@ function renderPre(ctx, show) {
     rotateNow();
     const state = createMatch(makeInput(ctx.game));
     while (!state.finished) playMinute(state);
-    live = { fixture, state, timer: null, paused: true, done: false, others: null, gap: strengthGap(state, mySide), cup: Boolean(cupFx), formationLabel: formationLabel(ctx.game.formation.cells) };
+    live = { fixture, state, timer: null, paused: true, done: false, others: null, gap: strengthGap(state, mySide), cup: Boolean(cupFx), formationLabel: formationLabel(ctx.game.formation.cells), prep: prepEffects(ctx, mySide, Boolean(cupFx?.neutral)) };
     show(); // 경기 화면이 결과 반영(실패 시 다시 시도 포함)을 맡는다
   });
   const rest = h('button', { class: 'btn ghost', type: 'button', disabled: blocked || null }, '시즌 끝까지');
@@ -310,9 +313,14 @@ function renderPre(ctx, show) {
     }
   });
 
+  const tacticsBox = h('div', { class: 'pre-tactics' });
+  const pressPanel = panel('경기 전 기자회견', pressHost, { className: 'press-panel' });
+  const briefing = briefingPanel(ctx, { fixture, scope, mySide, neutral: Boolean(cupFx?.neutral), problems, tired, benched, refs: { tactics: tacticsBox, press: pressPanel } });
+
   return h(
     'div',
     { class: 'match-pre' },
+    panel('매치데이 브리핑', briefing.el, { className: 'briefing-panel' }),
     panel(
       cupFx ? `${cupFixtureLabel(game, cupFx)} · 주중 경기${cupFx.neutral ? ' · 중립 경기장' : ` · ${home.stadium ?? ''}`}` : `라운드 ${game.round} · ${home.stadium ?? ''}`,
       h(
@@ -339,18 +347,17 @@ function renderPre(ctx, show) {
           compareRow('GK', rh.goalkeeping, ra.goalkeeping),
         ),
         warning,
-        h(
-          'div',
-          { class: 'pre-tactics' },
+        appendChildren(tacticsBox, [
           h('h3', {}, '전술 지시'),
           tacticsPicker(tacticsOf(game), (t) => {
             ctx.game.tactics = t;
             ctx.persist();
             famLine.replaceChildren(...familiarityLine(ctx.game));
             analysis.refresh();
+            briefing.refresh();
           }),
           famLine,
-        ),
+        ]),
         h(
           'div',
           { class: 'pre-actions' },
@@ -360,9 +367,110 @@ function renderPre(ctx, show) {
       ),
     ),
     panel('상대 분석', analysis.el, { className: 'analysis-panel' }),
-    panel('경기 전 기자회견', pressHost, { className: 'press-panel' }),
+    pressPanel,
     h('div', { class: 'pre-grid' }, panel('홈 선발', lineupTable(ctx, home, input.home)), panel('원정 선발', lineupTable(ctx, away, input.away)), panel('같은 라운드', fixtureList(ctx, others))),
   );
+}
+
+// ── 매치데이 브리핑: 이번 경기 준비 상태를 한곳에 ──
+
+// 이번 경기에 실제로 적용되는 경기력 보정 (%): 사기·전술 숙련도·경기 준비 훈련·홈
+export function prepEffects(ctx, mySide, neutral = false) {
+  const { dataset, game } = ctx;
+  const parts = [
+    { label: '사기', value: moraleBoost(moraleOf(dataset, game, game.teamId)) },
+    { label: '전술 숙련도', value: familiarityBoost(familiarityOf(game)) },
+    { label: '경기 준비 훈련', value: trainingMatchBoost(game) },
+  ];
+  if (mySide === 'home' && !neutral) parts.push({ label: '홈', value: HOME_ADVANTAGE });
+  return parts.map((p) => ({ ...p, value: Math.round(p.value * 1000) / 10 }));
+}
+
+const signedPct = (v) => `${v > 0 ? '+' : ''}${v.toFixed(1)}%`;
+
+function effectsLine(effects, title) {
+  const total = effects.reduce((s, e) => s + e.value, 0);
+  return h(
+    'div',
+    { class: 'prep-effects' },
+    h('span', { class: 'muted' }, title),
+    effects.map((e) => h('span', { class: `prep-chip ${e.value > 0 ? 'up' : e.value < 0 ? 'down' : ''}` }, `${e.label} ${signedPct(e.value)}`)),
+    h('b', { class: total > 0 ? 'up' : total < 0 ? 'down' : '' }, `합계 ${signedPct(total)}`),
+  );
+}
+
+// 준비 체크리스트. refs: { tactics, press } — 같은 화면에서 스크롤할 곳
+function briefingPanel(ctx, { fixture, scope, mySide, neutral, problems, tired, benched, refs }) {
+  const box = h('div', { class: 'briefing' });
+  const draw = () => {
+    const { dataset, game } = ctx;
+    const tr = trainingOf(game);
+    const moods = rolesOf(dataset, game);
+    let unhappy = 0;
+    let requests = 0;
+    for (const id of moods.keys()) {
+      if (isRequesting(game, id)) requests++;
+      else if (moodOf(game, id) < 40) unhappy++;
+    }
+    const important = (game.inbox ?? []).filter((m) => !m.read && m.important).length;
+    const press = game.press?.round === game.round && game.press.fixtureId === fixture.id ? game.press : null;
+    const fam = familiarityOf(game);
+    const go = (label, fn) => {
+      const b = h('button', { class: 'btn small ghost', type: 'button' }, label);
+      b.addEventListener('click', fn);
+      return b;
+    };
+    const scrollTo = (el) => () => el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const rows = [
+      {
+        label: '선발',
+        status: problems.length ? 'todo' : tired.length || benched.length ? 'warn' : 'ok',
+        text: problems.length ? `출전할 수 없는 선수 ${problems.length}명` : [tired.length ? `지친 선발 ${tired.length}명` : null, benched.length ? `선발 밖 주전급 ${benched.length}명` : null].filter(Boolean).join(' · ') || '11명 모두 준비됨',
+        action: go('선발 바꾸기', () => ctx.navigate('squad')),
+      },
+      {
+        label: '전술',
+        status: 'ok',
+        text: `${tacticSummary(tacticsOf(game))} · 숙련도 ${Math.round(fam * 100)}%`,
+        action: go('전술·상대 분석', scrollTo(refs.tactics)),
+      },
+      {
+        label: '훈련',
+        status: tr.focus === 'balanced' && !Object.keys(tr.individual ?? {}).length ? 'idle' : 'ok',
+        text: `이번 주 ${TRAINING_CONFIG.focus[tr.focus]?.label ?? '균형'} · ${TRAINING_CONFIG.intensity[tr.intensity]?.label ?? '보통'} · 개인 훈련 ${Object.keys(tr.individual ?? {}).length}/${TRAINING_CONFIG.individual.max}명`,
+        action: go('훈련 탭', () => ctx.navigate('training')),
+      },
+      {
+        label: '기자회견',
+        status: press ? (press.skipped ? 'idle' : 'ok') : 'todo',
+        text: press ? (press.skipped ? '생략함' : `답변함 — ${STANCES.pre[press.stance] ?? ''}`) : '아직 (경기 결과에 따라 사기가 달라집니다)',
+        action: go('기자회견으로', scrollTo(refs.press)),
+      },
+      {
+        label: '선수단',
+        status: requests ? 'todo' : unhappy ? 'warn' : 'ok',
+        text: requests || unhappy ? [requests ? `이적 요청 ${requests}명` : null, unhappy ? `출전 불만 ${unhappy}명` : null].filter(Boolean).join(' · ') : '불만 없음',
+        action: go('스쿼드', () => ctx.navigate('squad')),
+      },
+      {
+        label: '편지함',
+        status: important ? 'warn' : 'ok',
+        text: important ? `읽지 않은 중요 소식 ${important}개` : '중요한 새 소식 없음',
+        action: go('편지함', () => ctx.navigate('inbox')),
+      },
+    ];
+    const STATUS = { ok: '완료', warn: '확인', todo: '아직', idle: '기본' };
+    box.replaceChildren(
+      h(
+        'ul',
+        { class: 'brief-list' },
+        rows.map((r) => h('li', { class: `brief-row st-${r.status}` }, h('span', { class: `brief-status st-${r.status}` }, STATUS[r.status]), h('b', { class: 'brief-label' }, r.label), h('span', { class: 'brief-text' }, r.text), r.action)),
+      ),
+      effectsLine(prepEffects(ctx, mySide, neutral), '이번 경기 경기력 보정'),
+    );
+  };
+  draw();
+  return { el: box, refresh: draw };
 }
 
 // 전술 숙련도 한 줄: 지금 포메이션·공격 방식이 얼마나 손에 익었는지와 경기력 보정
@@ -963,6 +1071,7 @@ function renderLive(ctx, show) {
           'div',
           {},
           h('div', { class: `result-banner ${outcome[1]}` }, h('b', {}, outcome[0]), h('span', {}, standing)),
+          live.prep ? effectsLine(live.prep, '이번 경기에 적용된 준비') : null,
           absenceReport(),
           fixtureList(ctx, [mineFixture, ...otherFixtures], mineFixture),
           h('div', { class: 'btn-row end' }, toTable, next),
