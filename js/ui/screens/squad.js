@@ -1,4 +1,5 @@
 // 스쿼드: 피치 자유 배치 포메이션 + 선발 배치(드래그 또는 클릭 두 번) + 스쿼드 표 + 팀 레이팅 + 교체 명단
+import { isRequesting, levelOf, moodOf, promiseOf, rolesOf, shareOf } from '../../state/squadMood.js';
 import { formAverage, formOf, ratingClass, seasonRating } from '../../state/form.js';
 import { POSITIONS } from '../../data/schema.js';
 import { FORMATION_CELLS, FORMATION_IDS, GK_ROW, GRID_COLUMNS, GRID_ROWS, formationName, positionOfCell } from '../../engine/formations.js';
@@ -26,6 +27,16 @@ const POS_ORDER = new Map(POSITIONS.map((p, i) => [p, i]));
 
 const fitClass = (fit) => (fit >= 0.95 ? 'fit-good' : fit >= 0.8 ? 'fit-ok' : 'fit-bad');
 const sameCells = (a, b) => a.length === b.length && a.every((c, i) => c[0] === b[i][0] && c[1] === b[i][1]);
+
+// 기분 칩: 만족·보통·불만·이적 요청 (+ 출전 약속 중)
+function moodChip(game, id, role) {
+  const mood = moodOf(game, id);
+  const level = levelOf(mood);
+  const share = shareOf(game, id);
+  const promise = promiseOf(game, id);
+  const title = `${role?.label ?? ''} · 기대 출전 ${Math.round((role?.expect ?? 0) * 100)}%${share != null ? ` · 최근 ${Math.round(share * 100)}%` : ''}${promise ? ` · 출전 약속 (남은 ${promise.left}경기 중 ${promise.starts - promise.got}경기 선발)` : ''}`;
+  return h('span', { class: `mood-chip mood-${isRequesting(game, id) ? 'request' : level.id}`, title }, isRequesting(game, id) ? '이적 요청' : level.label, promise ? ' · 약속' : '');
+}
 
 // 폼 칸: 최근 5경기 평균 (시즌 평균), 마우스를 올리면 경기별 평점
 function formCell(game, id) {
@@ -328,6 +339,7 @@ export function render(ctx) {
       h('th', {}, '포지션'),
       h('th', {}, '이름'),
       h('th', { 'data-tooltip': '부상·출장정지 (남은 경기)' }, '상태'),
+      h('th', { 'data-tooltip': '출전 시간 만족도 (선수를 눌러 면담)' }, '기분'),
       h('th', { 'data-tooltip': '컨디션: 경기를 뛰면 떨어지고 라운드마다 회복' }, '컨디션'),
       h('th', { class: 'num' }, '나이'),
       h('th', {}, '국적'),
@@ -336,6 +348,7 @@ export function render(ctx) {
       ATTR_COLUMNS.map((k) => h('th', { class: 'num', 'data-tooltip': ATTRIBUTE_LABELS[k] }, ATTR_SHORT[k])),
     );
 
+    const roles = rolesOf(dataset, game);
     const row = (p, isStarter) => {
       const slotIndex = slotOf.get(p.id);
       const selected = selection?.kind === 'player' && selection.id === p.id;
@@ -354,6 +367,7 @@ export function render(ctx) {
         h('td', {}, h('span', { class: 'pos-tag' }, p.position), p.altPositions.length ? h('span', { class: 'alt muted' }, ` ${p.altPositions.join(' ')}`) : ''),
         h('td', { class: 'name-cell' }, nameButton),
         h('td', {}, statusChip(game, p.id)),
+        h('td', {}, moodChip(game, p.id, roles.get(p.id))),
         h('td', {}, conditionMeter(cond)),
         h('td', { class: 'num' }, p.age),
         h('td', { title: dataset.nationByCode.get(p.nationality)?.nameKo }, p.nationality),
@@ -372,7 +386,7 @@ export function render(ctx) {
       'table',
       { class: 'data squad-table' },
       h('thead', {}, head),
-      h('tbody', {}, starters.map((p) => row(p, true)), h('tr', { class: 'divider' }, h('td', { colspan: 10 + ATTR_COLUMNS.length }, `교체 · 후보 ${bench.length}명`)), bench.map((p) => row(p, false))),
+      h('tbody', {}, starters.map((p) => row(p, true)), h('tr', { class: 'divider' }, h('td', { colspan: 11 + ATTR_COLUMNS.length }, `교체 · 후보 ${bench.length}명`)), bench.map((p) => row(p, false))),
     );
     tableHost.replaceChildren(tooltipGroup('tt-block', h('div', { class: 'table-scroll' }, table)));
   }

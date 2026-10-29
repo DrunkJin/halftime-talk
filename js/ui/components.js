@@ -5,6 +5,9 @@ import { formatMoney, playerValue } from '../market/value.js';
 import { availabilityOf, conditionOf, currentTeamId } from '../state/game.js';
 import { scoutedPotential } from '../state/newSeason.js';
 import { formOf, ratingClass, seasonRating } from '../state/form.js';
+import { canTalk, isRequesting, levelOf, moodOf, promiseOf, rolesOf, shareOf, talk } from '../state/squadMood.js';
+import { MOOD } from '../state/moodConfig.js';
+import { loadTalks, pickTalk } from '../media/talks.js';
 import { teamBadge } from './badge.js';
 import { h } from './dom.js';
 import { ATTRIBUTE_GROUP_LABELS, ATTRIBUTE_LABELS, POSITION_NAMES, attrClass } from './format.js';
@@ -70,6 +73,51 @@ export function ratingBar(value, { max = 100, min = 40 } = {}) {
 }
 
 // 선수 상세 모달. ctx가 있으면 이적 후 소속·부상·컨디션·가치까지 보여준다
+// 면담: 역할·출전 기대·기분, 선수의 첫마디와 선택지 4개 (같은 선수는 몇 라운드에 한 번)
+function moodSection(dataset, game, player, ctx) {
+  const box = h('section', { class: 'pm-mood' }, h('p', { class: 'muted' }, '불러오는 중…'));
+  const draw = (talks, reply = null) => {
+    const role = rolesOf(dataset, game).get(player.id);
+    const mood = moodOf(game, player.id);
+    const level = isRequesting(game, player.id) ? { id: 'request', label: '이적 요청' } : levelOf(mood);
+    const share = shareOf(game, player.id);
+    const promise = promiseOf(game, player.id);
+    const vars = { name: player.name, role: role?.label ?? '' };
+    const opening = pickTalk(talks?.opening?.[level.id], `${game.seed}:${player.id}:${game.seasonIndex}:${game.round}`, vars);
+    const facts = h(
+      'p',
+      { class: 'pm-mood-facts' },
+      h('span', { class: `mood-chip mood-${level.id}` }, level.label),
+      ` ${role?.label ?? ''} · 기대 출전 ${Math.round((role?.expect ?? 0) * 100)}%`,
+      share != null ? ` · 최근 ${MOOD.window}경기 ${Math.round(share * 100)}%` : ' · 출전 기록 쌓는 중',
+      promise ? ` · 출전 약속: 남은 ${promise.left}경기 중 ${Math.max(0, promise.starts - promise.got)}경기 선발` : '',
+    );
+    const options = Object.entries(MOOD.talks).map(([id, t]) => {
+      const b = h('button', { class: 'btn small', type: 'button', disabled: !canTalk(game, player.id) || (id === 'promise' && promise) || (id === 'allowTransfer' && isRequesting(game, player.id) && game.squadMood.requests[player.id]?.allowed) || null }, t.label);
+      b.addEventListener('click', () => {
+        const res = talk(dataset, game, player.id, id);
+        ctx.persist();
+        const key = !res.ok ? res.reason : id === 'compete' ? (res.delta >= 0 ? 'competeAccept' : 'competeHurt') : id;
+        draw(talks, pickTalk(talks?.reply?.[key], `${game.seed}:${player.id}:${id}:${game.round}`, vars) || (res.ok ? '…' : '지금은 대화하기 어렵습니다.'));
+        ctx.refreshTopbar?.();
+      });
+      return b;
+    });
+    box.replaceChildren(
+      ...[
+      h('h3', {}, '면담'),
+      facts,
+      h('blockquote', { class: 'pm-quote' }, reply ?? opening),
+      level.id === 'happy' && !reply ? h('p', { class: 'muted small-note' }, '지금은 만족하고 있습니다. 면담은 몇 라운드에 한 번만 할 수 있습니다.') : null,
+      h('div', { class: 'btn-row' }, options),
+      !canTalk(game, player.id) ? h('p', { class: 'muted small-note' }, `최근에 면담했습니다. ${MOOD.cooldown}라운드가 지나야 다시 할 수 있습니다.`) : null,
+      ].filter(Boolean),
+    );
+  };
+  loadTalks().then((t) => draw(t));
+  return box;
+}
+
 // 최근 평점 (오래된 것부터)과 시즌 평균
 function formLine(game, id) {
   const recent = formOf(game, id);
@@ -147,6 +195,7 @@ export function openPlayerModal(dataset, player, ctx = null) {
       ),
       close,
     ),
+    game && ctx && teamId === game.teamId ? moodSection(dataset, game, player, ctx) : null,
     h('div', { class: 'attr-groups' }, groups),
     h(
       'footer',

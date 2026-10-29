@@ -9,7 +9,7 @@ import { autoSelectBench, autoSelectLineup, bestFormation } from '../engine/line
 import { CUP } from '../competitions/config.js';
 import { TACTICS } from '../engine/config.js';
 import { simulateMatch } from '../engine/match.js';
-import { conditionFactor, positionFit, positionRating } from '../engine/ratings.js';
+import { conditionFactor, overall, positionFit, positionRating } from '../engine/ratings.js';
 import { createRng, randomSeed } from '../engine/rng.js';
 import { generateFixtures, roundCount } from '../league/fixtures.js';
 import { familiarityBoost, familiarityOf } from './familiarity.js';
@@ -152,6 +152,24 @@ export function fixLineup(dataset, game, scope = 'league') {
     pool.splice(pool.indexOf(best), 1);
   }
   return problems.length;
+}
+
+// 자동 진행용: 출전 가능한 선수 중 지금 포메이션에 가장 강한 선발 (컨디션 반영). 부상에서 돌아온 주전도 다시 들어온다
+export function autoPickLineup(dataset, game, scope = 'league') {
+  const available = squadOf(dataset, game, game.teamId).filter((p) => isAvailable(game, p, scope));
+  if (available.length < 11) return fixLineup(dataset, game, scope);
+  game.lineup = autoSelectLineup(available, userSlots(game), factorOf(game)).map((p) => p.id);
+  const ids = new Set(game.lineup);
+  game.bench = (game.bench ?? []).filter((id) => !ids.has(id));
+  return 0;
+}
+
+// 선발에 없는 주전급(스쿼드 OVR 상위 11명) 중 출전 가능하고 컨디션이 좋은 선수 — 경기 전 안내용
+export function benchedRegulars(dataset, game, scope = 'league') {
+  const squad = squadOf(dataset, game, game.teamId).sort((a, b) => overall(b) - overall(a));
+  const top = squad.slice(0, 11);
+  const inXI = new Set(game.lineup);
+  return top.filter((p) => !inXI.has(p.id) && isAvailable(game, p, scope) && conditionOf(game, p.id) >= RULES.rotateBelow);
 }
 
 // 지친 선수 자동 휴식: 컨디션이 RULES.rotateBelow 미만인 선발을, 같은 자리에서 (컨디션 반영) 더 잘할 후보로 바꾼다.

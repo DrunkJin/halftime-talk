@@ -1109,3 +1109,14 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .ratings-table td { padding: 4px 8px; }
 .ratings-table tr.is-potm td { background: rgba(255, 209, 102, 0.08); }
 .potm { display: flex; align-items: center; gap: 8px; padding: 8px 12px; color: var(--gold); font-weight: 700; }
+
+/* ── 선수 기분·면담 ── */
+.mood-chip { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: var(--fs-min); font-weight: 700; white-space: nowrap; }
+.mood-happy { background: rgba(61, 220, 151, 0.12); color: var(--accent); }
+.mood-ok { background: var(--panel-3); color: var(--text-2); }
+.mood-unhappy { background: rgba(245, 184, 75, 0.14); color: var(--warn); }
+.mood-request { background: rgba(242, 85, 90, 0.16); color: #ff8a8e; }
+.pm-mood { display: grid; gap: 8px; padding: 12px 18px; border-top: 1px solid var(--line); }
+.pm-mood h3 { color: var(--muted); font-size: 11px; letter-spacing: 0.08em; }
+.pm-mood-facts { font-size: 13px; color: var(--text-2); }
+.pm-quote { margin: 0; padding: 10px 14px; border: 1px solid var(--line-2); border-radius: 8px; background: var(--bg-2); font-size: 14px; line-height: 1.55; }

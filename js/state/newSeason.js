@@ -15,6 +15,7 @@ import { recordSeason } from './history.js';
 import { ensureWorld, packAttributes, worldDataset } from './world.js';
 import { noteSeasonExpectation } from './career.js';
 import { takeRetention } from './training.js';
+import { resetMoodsForNewSeason } from './squadMood.js';
 
 const P = PROGRESSION;
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
@@ -396,6 +397,7 @@ export function startNextSeason(base, game, { renew = null } = {}) {
     if (s.injury && (s.injury.matchesOut -= 6) <= 0) delete s.injury; // 비시즌 동안 회복
   }
   game.morale = { adjust: 0 };
+  resetMoodsForNewSeason(game);
   game.press = null;
   game.lastPostInterview = null;
   game.incomingOffers = [];

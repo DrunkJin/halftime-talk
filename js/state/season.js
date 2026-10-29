@@ -6,13 +6,14 @@ import { applyWeekFinances, awardSeasonPrizes, initSeasonFinances } from '../mar
 import { windowStatus } from '../market/market.js';
 import { createCups, cupMatchInput, cupsOf, dueCupEvent, playCupEvent, userCupFixture } from '../competitions/cups.js';
 import { noteSeasonExpectation, trackUserMatch } from './career.js';
-import { completeRound, fixLineup, isSeasonOver, matchInput, newGame, rotateTired, userFixture, userSlots } from './game.js';
+import { autoPickLineup, completeRound, isSeasonOver, matchInput, newGame, userFixture, userSlots } from './game.js';
 import { TACTICS } from '../engine/config.js';
 import { recordSeason } from './history.js';
 export { startNextSeason } from './newSeason.js';
 import { settleMoraleAfterMatch } from './morale.js';
 import { trainFamiliarity } from './familiarity.js';
 import { applyTrainingWeek } from './training.js';
+import { updateMoods } from './squadMood.js';
 import { aiIdentity, squadProfile } from '../engine/tactics.js';
 
 export function createGame(dataset, teamId, options) {
@@ -45,8 +46,9 @@ export function playCupWeek(dataset, game, userResult) {
   const cups = [playCupEvent(dataset, game, userResult)].filter(Boolean);
   settleMoraleAfterMatch(game, mine?.id, userResult, mine?.homeId === game.teamId ? 'home' : 'away', { decay: false });
   if (mine) trainFamiliarity(game);
+  const moods = mine ? updateMoods(dataset, game, userResult) : [];
   cups.push(...playDueCupEvents(dataset, game));
-  return { cups };
+  return { cups, moods };
 }
 
 // → { others: 사용자 리그의 다른 경기 [{ fixture, result }], aiTransfers, newOffers }
@@ -57,6 +59,7 @@ export function playWeek(dataset, game, userResult) {
   const others = completeRound(dataset, game, userResult);
   settleMoraleAfterMatch(game, mine?.id, userResult, mine?.homeId === game.teamId ? 'home' : 'away');
   if (mine) trainFamiliarity(game);
+  const moods = mine ? updateMoods(dataset, game, userResult) : []; // 출전 기대치·기분 (사용자 팀)
   applyWeekFinances(dataset, game);
   const training = applyTrainingWeek(dataset, game); // 경기 사이 한 주 훈련
   let aiTransfers = [];
@@ -75,7 +78,7 @@ export function playWeek(dataset, game, userResult) {
     recordSeason(dataset, game);
     game.incomingOffers = [];
   }
-  return { others, aiTransfers, newOffers, cups, training };
+  return { others, aiTransfers, newOffers, cups, training, moods };
 }
 
 // 남은 시즌 자동 진행: 사용자 팀은 지금 선발에서 결장자·지친 선수를 바꾸고(로테이션),
@@ -88,13 +91,11 @@ export function simulateRestOfSeason(dataset, game) {
   while (!isSeasonOver(game)) {
     const cup = userCupFixture(game);
     if (cup) {
-      fixLineup(dataset, game, 'cup');
-      rotateTired(dataset, game, 'cup');
+      autoPickLineup(dataset, game, 'cup');
       playCupWeek(dataset, game, autoPlay(cupMatchInput(dataset, game, cup), cup));
       continue;
     }
-    fixLineup(dataset, game);
-    rotateTired(dataset, game);
+    autoPickLineup(dataset, game); // 매 경기 최선의 선발 (회복한 주전 복귀, 지친 선수 휴식)
     const f = userFixture(game);
     playWeek(dataset, game, f ? autoPlay(matchInput(dataset, game, f), f) : null);
     game.incomingOffers = [];

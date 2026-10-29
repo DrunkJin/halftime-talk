@@ -36,6 +36,7 @@ self.onmessage = async ({ data }) => {
       cups: week?.cups ?? [],
       summary: week?.summary ?? null,
       training: week?.training ?? null,
+      moods: week?.moods ?? [],
     });
   } catch (err) {
     datasetPromise = null;

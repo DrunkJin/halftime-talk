@@ -1,6 +1,7 @@
 // 팀 사기: 최근 경기 흐름 + 사용자 팀은 인터뷰·팀 토크 보정. 수치는 engine/config.js(MORALE)
 import { MORALE } from '../engine/config.js';
 import { fixturesOf } from './game.js';
+import { teamMoodPenalty } from './squadMood.js';
 
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 
@@ -33,7 +34,8 @@ function formComponent(dataset, game, teamId) {
 export const moraleAdjust = (game) => game.morale?.adjust ?? 0;
 
 export function moraleOf(dataset, game, teamId) {
-  const user = teamId === game.teamId ? moraleAdjust(game) : 0;
+  // 사용자 팀: 인터뷰·팀 토크 보정, 출전 불만인 주전급만큼 감점
+  const user = teamId === game.teamId ? moraleAdjust(game) - teamMoodPenalty(dataset, game) : 0;
   return Math.round(clamp(MORALE.neutral + formComponent(dataset, game, teamId) + user, 0, 100));
 }
 

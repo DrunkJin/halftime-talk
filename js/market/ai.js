@@ -1,4 +1,6 @@
 // AI 구단 이적: 이적시장 기간에 라운드마다 약한 포지션을 보강하고, 우리 선수에게 제안을 건다.
+import { isRequesting } from '../state/squadMood.js';
+import { MOOD } from '../state/moodConfig.js';
 import { POSITIONS } from '../data/schema.js';
 import { FORMATIONS } from '../engine/formations.js';
 import { autoSelectLineup } from '../engine/lineup.js';
@@ -77,7 +79,9 @@ export function generateIncomingOffers(dataset, game) {
   const bar = topElevenOvr(squad) - 2;
   const fresh = [];
   for (const p of squad) {
-    if (overall(p) < bar || !rng.chance(AI_MARKET.incomingChance)) continue;
+    // 이적을 요청한(허락한) 선수는 주전급이 아니어도, 더 자주 제안이 온다
+    const requested = isRequesting(game, p.id);
+    if ((!requested && overall(p) < bar) || !rng.chance(AI_MARKET.incomingChance * (requested ? MOOD.requestOfferBoost : 1))) continue;
     if ((game.incomingOffers ?? []).some((o) => o.playerId === p.id)) continue;
     const [lo, hi] = AI_MARKET.incomingRatio;
     const amount = round1(playerValue(p) * (lo + rng.next() * (hi - lo)));
@@ -85,7 +89,7 @@ export function generateIncomingOffers(dataset, game) {
     const buyers = dataset.allTeams.filter((t) => {
       if (t.id === game.teamId) return false;
       const theirs = squadOf(dataset, game, t.id);
-      return overall(p) >= topElevenOvr(theirs) - 3 && canAiBuy(dataset, game, t.id, p, amount);
+      return overall(p) >= topElevenOvr(theirs) - (requested ? 6 : 3) && canAiBuy(dataset, game, t.id, p, amount);
     });
     if (buyers.length === 0) continue;
     const buyer = buyers[Math.floor(rng.next() * buyers.length)];

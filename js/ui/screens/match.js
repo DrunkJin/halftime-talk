@@ -1,11 +1,12 @@
 // 경기: 경기 전(선발·전력 비교) → 실시간 텍스트 중계 → 경기 후(다른 경기 결과)
+import { loadTalks, pickTalk } from '../../media/talks.js';
 import { FORMATION_CELLS, formationLabel, positionOfCell } from '../../engine/formations.js';
 import { HALF_TIME_MINUTE, MATCH_MINUTES } from '../../engine/config.js';
 import { changeFormation, createMatch, getMatchResult, makeSubstitution, playMinute, playerRatings, setAutoSubs, setTactics, teamSnapshot } from '../../engine/match.js';
 import { ratingClass } from '../../state/form.js';
 import { computeTeamRatings, conditionFactor, overall, positionFit, positionRating } from '../../engine/ratings.js';
 import { computeTable } from '../../league/table.js';
-import { availabilityOf, conditionOf, fixLineup, fixturesOf, isSeasonOver, leagueOf, lineupProblems, matchInput, rotateTired, roundFixtures, settingsOf, tacticsOf, userFixture } from '../../state/game.js';
+import { availabilityOf, benchedRegulars, conditionOf, fixLineup, fixturesOf, isSeasonOver, leagueOf, lineupProblems, matchInput, rotateTired, roundFixtures, settingsOf, tacticsOf, userFixture } from '../../state/game.js';
 import { RULES } from '../../state/rules.js';
 import { advanceCup, advanceRound, advanceSeason, simulateRest } from '../../state/simulation.js';
 import { expiringContracts, suggestedRenewals } from '../../state/newSeason.js';
@@ -211,6 +212,12 @@ function renderPre(ctx, show) {
   const analysis = analysisPanel(ctx.game, makeInput, mySide);
   const famLine = h('p', { class: 'fam-line' }, ...familiarityLine(game));
 
+  // 선발에 없는 주전급 (부상 복귀 등): 오래 못 뛰면 불만이 쌓인다
+  const benched = benchedRegulars(dataset, game, scope);
+  const benchedNote = benched.length
+    ? h('p', { class: 'muted small-note tired-note' }, `선발에 없는 주전급 ${benched.length}명: ${benched.map((p) => p.name).join(', ')} — 오래 못 뛰면 출전 불만이 쌓입니다`)
+    : null;
+
   const kickoff = h('button', { class: 'btn primary big', type: 'button', disabled: blocked || null }, '킥오프');
   kickoff.addEventListener('click', () => {
     rotateNow();
@@ -301,6 +308,7 @@ function renderPre(ctx, show) {
         moraleMeter(ctx),
         expiryNote,
         tiredNote,
+        benchedNote,
         h(
           'div',
           { class: 'cmp' },
@@ -461,6 +469,15 @@ function notifyMarket(ctx, r) {
   if (cupWeeks.length) showToast(`주중 대륙 대회 경기 진행${cupWeeks.some((c) => c.newStage) ? ' · 다음 단계 대진 확정' : ''} — 대륙 대회 탭`, { duration: 3500 });
   for (const o of r.newOffers ?? []) {
     showToast(`영입 제안: ${dataset.teamById.get(o.teamId).shortName} → ${dataset.playerById.get(o.playerId).name}, ${formatMoney(o.amount)} (이적 › 받은 제안)`, { tone: 'warn', duration: 4500 });
+  }
+  // 선수 기분: 불만·이적 요청·약속 (대사는 data/talks.json)
+  if (r.moods?.length) {
+    loadTalks().then((t) => {
+      for (const e of r.moods) {
+        const line = pickTalk(t?.news?.[e.kind], `${game.seed}:${e.id}:${game.round}`, { name: e.name }) || `${e.name}: ${e.kind}`;
+        showToast(`${line} — 스쿼드에서 선수를 눌러 면담`, { tone: e.kind === 'promiseKept' ? '' : 'warn', duration: 5000 });
+      }
+    });
   }
   // 이번 주 훈련 결과: 오른 능력치, 훈련 중 부상
   const tr = r.training;
