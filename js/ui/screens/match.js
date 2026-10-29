@@ -262,6 +262,7 @@ function renderPre(ctx, show) {
       confirmLabel: '진행',
       onConfirm: async () => {
         const r = await ctx.runBusy('남은 시즌 진행 중', () => simulateRest(dataset, ctx.game));
+        track('season-auto', { season: ctx.game.seasonIndex });
         ctx.setGame(r.game);
         show();
       },
@@ -653,6 +654,7 @@ function finishMatch(ctx) {
     ctx.setGame(r.game);
     m.otherIds = r.otherFixtureIds ?? [];
     m.done = true;
+    track('match-played', { cup: Boolean(m.cup), season: r.game.seasonIndex }); // 직접 치른 경기 (자동 진행 제외)
     notifyMarket(ctx, r);
   })().catch((err) => {
     m.finishing = null; // 실패하면 다시 시도할 수 있게

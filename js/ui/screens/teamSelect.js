@@ -137,7 +137,10 @@ function slotsPanel(ctx, refresh) {
     const team = ctx.dataset.teamById.get(g.teamId);
     const league = ctx.dataset.leagueById.get(g.leagueId);
     const resume = h('button', { class: 'btn primary small', type: 'button' }, '이어하기');
-    resume.addEventListener('click', () => ctx.startGame(g));
+    resume.addEventListener('click', () => {
+      track('game-continue', { team: team.shortName, season: g.seasonIndex });
+      ctx.startGame(g);
+    });
     const when = g.savedAt ? new Date(g.savedAt).toLocaleString('ko-KR', { dateStyle: 'short', timeStyle: 'short' }) : '';
     return h(
       'div',
