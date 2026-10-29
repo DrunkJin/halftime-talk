@@ -4,7 +4,7 @@ import { computeTeamRatings, overall } from '../../engine/ratings.js';
 import { GAME_LENGTHS } from '../../state/game.js';
 import { createGame } from '../../state/season.js';
 import { teamBadge } from '../badge.js';
-import { openConfirm, panel, ratingBar, segmented } from '../components.js';
+import { openConfirm, panel, ratingBar, segmented, basisText } from '../components.js';
 import { h } from '../dom.js';
 import { fmt1 } from '../format.js';
 import { attachTilt, openModal } from '../motion.js';
@@ -221,5 +221,6 @@ export function render(ctx) {
     h('div', { class: 'page-head' }, h('div', {}, h('h1', {}, '팀 선택'), leagueMeta), sort.el),
     h('div', { class: 'league-tabs' }, leagueTabs.el),
     grid,
+    h('p', { class: 'muted small-note basis-note' }, basisText(ctx.dataset.basis), ' · 실제 선수 이름만 쓰며, 능력치는 기록과 시장가치로 자체 계산한 값입니다.'),
   );
 }

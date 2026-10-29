@@ -46,6 +46,22 @@ FORMULA = {
     'minMinutesForStats': 450,
     # 처진 공격수 판정 (merge.reclassify_second_strikers): 득점 지표 점수 이하 · 키패스 점수 이상 · 둘의 차 (점수 -1~1, 출전 신뢰도 반영)
     'pivot': {'defendingEdge': 0.15},
+    # 보조 포지션 자동 보완 (merge.auto_alt_positions): 이웃 자리 능력이 주 포지션과 margin 이내면 보조로 (최대 2개)
+    'autoAlt': {
+        'margin': 3.5,
+        'neighbors': {
+            'CB': ['RB', 'LB', 'DM'], 'LB': ['RB', 'LW', 'CB'], 'RB': ['LB', 'RW', 'CB'], 'DM': ['CM', 'CB'],
+            'CM': ['DM', 'AM'], 'AM': ['CM', 'LW', 'RW', 'ST'], 'LW': ['RW', 'AM', 'ST'], 'RW': ['LW', 'AM', 'ST'], 'ST': ['LW', 'RW', 'AM'],
+        },
+    },
+    # 시장가치(트랜스퍼마르크트) 반영 (merge.blend_market_value): 품질 = weight × 평판 품질 + (1 - weight) × 기록 품질
+    #   평판 점수 = ln(가치 백만 유로) + 나이 보정(어린 선수는 잠재력 프리미엄을 빼고, 베테랑은 낮게 매겨진 만큼 더한다) + 골키퍼 보정
+    'marketValue': {
+        'weight': 0.65,
+        'minValue': 50_000,
+        'ageAdjust': [(20, -0.6), (22, -0.35), (24, -0.15), (28, 0.0), (30, 0.2), (32, 0.45), (99, 0.75)],
+        'gkAdjust': 0.45,
+    },
     # 라인업 기록 없는 선수의 세부 포지션 추정 (merge.guess_groups_from_stats): 기록 점수 차 기준
     'groupGuess': {'dmEdge': 0.25, 'amEdge': 0.3, 'stEdge': 0.2},  # 더블 피벗 판정: 수비 기록 점수가 기회 창출 점수보다 이만큼 높으면 DM
     'secondStriker': {'maxFinishing': 0.05, 'minCreativity': 0.4, 'minGap': 0.6},

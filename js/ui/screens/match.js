@@ -207,12 +207,7 @@ function renderPre(ctx, show) {
     : null;
 
   // 상대 분석 · 전술 숙련도
-  const analysis = analysisPanel(ctx.game, makeInput, mySide, (t) => {
-    ctx.game.tactics = t;
-    ctx.persist();
-    showToast(`전술 변경: ${tacticSummary(t)}`);
-    show();
-  });
+  const analysis = analysisPanel(ctx.game, makeInput, mySide);
   const famLine = h('p', { class: 'fam-line' }, ...familiarityLine(game));
 
   const kickoff = h('button', { class: 'btn primary big', type: 'button', disabled: blocked || null }, '킥오프');

@@ -49,7 +49,7 @@ export function worldDataset(base, game) {
   const teams = [...base.allTeams, ...base.guestTeams].map((t) => (membership.has(t.id) && membership.get(t.id) !== t.leagueId ? { ...t, leagueId: membership.get(t.id) } : t));
   const leagues = base.leagues.map((l) => ({ ...l, teamIds: w.leagueTeams[l.id] ?? l.teamIds, season: w.seasons?.[l.id] ?? l.season }));
   const dataset = buildIndex({
-    leagues: { leagues },
+    leagues: { leagues, basis: base.basis },
     teams: { teams },
     nations: { nations: [...base.nationByCode.values()] },
     players: { players },

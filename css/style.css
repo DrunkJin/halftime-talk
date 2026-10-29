@@ -949,6 +949,11 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .an-notes li.good::marker { color: var(--accent); }
 .an-notes li.bad { color: var(--muted); }
 .an-notes li.bad::marker { color: var(--danger); }
+.an-memos { display: grid; gap: 4px; margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.5; }
+.an-memos li::marker { color: var(--muted); }
+.an-memos li.memo-chance::marker { color: var(--accent); }
+.an-memos li.memo-warn::marker { color: var(--warn); }
+.an-memos li.memo-self { color: var(--text-2); }
 .an-recs { display: grid; gap: 8px; }
 .an-rec { display: grid; gap: 6px; padding: 10px 12px; border: 1px solid var(--line-2); border-radius: 8px; }
 .an-rec-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 13px; }
@@ -1091,3 +1096,5 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .tr-log li.bad { color: #ff8a8e; }
 .tr-empty { padding: 12px; }
 @media (max-width: 860px) { .tr-effects { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.pm-basis { padding: 0 18px 14px; }
+.basis-note { margin-top: 14px; text-align: center; }

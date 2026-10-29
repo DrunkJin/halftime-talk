@@ -19,6 +19,9 @@ from datetime import date
 
 import formula as F
 from common import CACHE, DATA, LOGOS, ROOT, TOOLS, clean_team_name, name_tokens, progress, read_json, slugify, strip_accents, team_id_from_name, write_json
+import math
+
+import transfermarkt as TM
 from lineup_positions import MIN_STARTS, OVERRIDE_STARTS, PIVOT, load_lineup_positions
 from positions import assign_groups, from_coarse, from_pl_position_info
 
@@ -586,13 +589,59 @@ class Merger:
             r['roleClass'] = F.ROLE_CLASS[pos]
             self.report['lineupPositions' if label is None else 'lineupOverrides'] += 1
 
+    def apply_transfermarkt(self):
+        """트랜스퍼마르크트 공개 데이터: 주 포지션은 TM 세부 포지션을 기준으로 (라인업·소스 판정은 보조 포지션 후보로),
+        시장가치는 r['tm']에 붙여 두었다가 blend_market_value()가 품질에 섞는다"""
+        tm = TM.load()
+        if not tm:
+            self.missing.append('트랜스퍼마르크트 데이터 없음 (tools/transfermarkt.py 참고) → 포지션·능력치는 라인업·기록만으로')
+            return
+        year = self.sources['seasonStartYear']
+        for r in self.records:
+            e = TM.match(tm, r['name'], (r.get('stats') or {}).get('birth'), r['age'], year)
+            if not e:
+                continue
+            self.report['tmMatched'] += 1
+            r['tm'] = {'value': e['value'], 'peak': e['peak']}
+            if not e['position']:
+                continue
+            pos, extra = e['position']
+            prev = r.get('position')
+            if prev != pos:
+                self.report['tmPositionChanged'] += 1
+            alts = ([prev] if prev and prev != PIVOT else []) + r.get('alt', []) + extra
+            r['alt'] = [a for a in dict.fromkeys(alts) if a != pos and a != 'GK' and pos != 'GK'][:2]
+            r['position'] = pos
+            r.pop('group', None)
+            r['roleClass'] = F.ROLE_CLASS[pos]
+            r['tmPosition'] = True
+
+    def blend_market_value(self):
+        """시장가치(나이·골키퍼 보정)의 순위를 지금 품질 분포에 대응시킨 '평판 품질'을 기록 품질과 섞는다.
+        순서는 시장가치를 따르고 전체 분포는 그대로라 경기 엔진 밸런스가 흔들리지 않는다"""
+        M = F.FORMULA['marketValue']
+        rated = [r for r in self.records if (r.get('tm') or {}).get('value') and r['tm']['value'] >= M['minValue']]
+        if not rated:
+            return
+
+        def score(r):
+            age_adj = next(adj for max_age, adj in M['ageAdjust'] if r['age'] <= max_age)
+            return math.log(r['tm']['value'] / 1e6) + age_adj + (M['gkAdjust'] if r['roleClass'] == 'GK' else 0)
+
+        by_value = sorted(rated, key=score)
+        qualities = sorted(r['quality'] for r in rated)
+        for r, q in zip(by_value, qualities):
+            r['qualityStats'] = r['quality']
+            r['quality'] = M['weight'] * q + (1 - M['weight']) * r['quality']
+        self.report['marketValueBlended'] = len(rated)
+
     def reclassify_second_strikers(self):
         """ST로 판정됐지만 기록이 '만드는 쪽'인 선수(투톱의 처진 공격수 등)는 AM(보조 ST)으로.
         같은 리그 공격수 중 득점 지표는 낮고 키패스는 높은 선수 — 이름이 아니라 기록으로 판단한다"""
         ctx = F.StatContext(self.records)
         S = F.FORMULA['secondStriker']
         for r in self.records:
-            if r.get('position') != 'ST' or r['source'] != 'api':
+            if r.get('position') != 'ST' or r['source'] != 'api' or r.get('tmPosition'):
                 continue
             fin = ctx.score(r, 'finishing')
             cre = ctx.score(r, 'creativity')
@@ -636,6 +685,7 @@ class Merger:
 
     def finish(self):
         self.apply_lineup_positions()
+        self.apply_transfermarkt()
         self.reclassify_second_strikers()
         self.team_bonus = self.continental_bonus()
         blend = F.FORMULA['transferBaseBlend']
@@ -653,6 +703,7 @@ class Merger:
         ctx = self.ctx = F.StatContext(self.records)
         for r in self.records:
             r['quality'] = F.compute_quality(r, ctx)
+        self.blend_market_value()
         by_team = defaultdict(list)
         for r in self.records:
             by_team[r['teamId']].append(r)
@@ -672,6 +723,23 @@ class Merger:
             if 'nationality' in ov:
                 r['nationality'] = ov['nationality']
             r['attributes'] = F.compute_attributes(r, r['quality'], ctx)
+        self.auto_alt_positions()
+
+    def auto_alt_positions(self):
+        """보조 포지션이 비어 있으면 능력치로 채운다: 이웃 자리 능력이 주 포지션과 거의 같으면 그 자리도 설 수 있는 선수"""
+        W = F.ovr_weights()
+        A = F.FORMULA['autoAlt']
+        rating = lambda attrs, pos: sum(attrs[k] * w for k, w in W[pos].items()) / sum(W[pos].values())
+        for r in self.records:
+            if r['position'] == 'GK' or len(r['alt']) >= 2:
+                continue
+            main = rating(r['attributes'], r['position'])
+            for pos in A['neighbors'][r['position']]:
+                if len(r['alt']) >= 2:
+                    break
+                if pos not in r['alt'] and rating(r['attributes'], pos) >= main - A['margin']:
+                    r['alt'].append(pos)
+                    self.report['autoAlt'] += 1
 
 
 def build_competitions(m):
@@ -862,7 +930,15 @@ def main():
         l['teamIds'].sort(key=lambda tid: team_order[tid])
 
     DATA.mkdir(exist_ok=True)
-    write_json(DATA / 'leagues.json', {'schemaVersion': SCHEMA_VERSION, 'leagues': m.leagues}, pretty=True)
+    # 능력치 기준 (게임 화면의 안내 문구)
+    seasons = sorted(m.stats_seasons)
+    basis = {
+        'generated': date.today().isoformat(),
+        'stats': f"{seasons[0]}-{str(seasons[0] + 1)[2:]}" + (f" ~ {seasons[-1]}-{str(seasons[-1] + 1)[2:]} 진행분" if len(seasons) > 1 else ''),
+        'marketValues': TM.TM_SNAPSHOT if m.report.get('tmMatched') else None,
+        'marketValueSource': 'Transfermarkt (transfermarkt-datasets, CC0)' if m.report.get('tmMatched') else None,
+    }
+    write_json(DATA / 'leagues.json', {'schemaVersion': SCHEMA_VERSION, 'basis': basis, 'leagues': m.leagues}, pretty=True)
     write_json(DATA / 'teams.json', {'schemaVersion': SCHEMA_VERSION, 'teams': teams}, pretty=True)
     (DATA / 'nations.json').write_text(list_json('nations', sorted(m.nations.used.values(), key=lambda n: n['code'])), encoding='utf-8')
     (DATA / 'players.json').write_text(list_json('players', players), encoding='utf-8')

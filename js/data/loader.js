@@ -38,6 +38,7 @@ export function buildIndex(raw) {
   const allTeams = everyTeam.filter((t) => !t.guest);
   const guestTeams = everyTeam.filter((t) => t.guest);
   const players = raw.players.players;
+  const basis = raw.leagues.basis ?? null; // 능력치 기준 (시장가치 시점·기록 시즌·생성일)
   const teamById = new Map(everyTeam.map((t) => [t.id, t]));
   const squads = new Map(everyTeam.map((t) => [t.id, []]));
   const guestIds = new Set(guestTeams.map((t) => t.id));
@@ -46,6 +47,7 @@ export function buildIndex(raw) {
   const leagues = raw.leagues.leagues;
 
   return {
+    basis,
     leagues,
     leagueById: new Map(leagues.map((l) => [l.id, l])),
     allTeams,

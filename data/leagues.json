@@ -1,5 +1,11 @@
 {
   "schemaVersion": 2,
+  "basis": {
+    "generated": "2026-10-29",
+    "stats": "2025-26 ~ 2026-27 진행분",
+    "marketValues": "2026-07",
+    "marketValueSource": "Transfermarkt (transfermarkt-datasets, CC0)"
+  },
   "leagues": [
     {
       "id": "epl",

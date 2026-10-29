@@ -69,6 +69,13 @@ export function ratingBar(value, { max = 100, min = 40 } = {}) {
 }
 
 // 선수 상세 모달. ctx가 있으면 이적 후 소속·부상·컨디션·가치까지 보여준다
+// 능력치 기준 안내 (data/leagues.json basis)
+export function basisText(basis) {
+  if (!basis) return '';
+  const [y, m] = (basis.marketValues ?? '').split('-');
+  return `능력치 기준: ${basis.marketValues ? `${y}년 ${Number(m)}월 시장가치(트랜스퍼마르크트) · ` : ''}${basis.stats} 시즌 기록 · 데이터 ${basis.generated}`;
+}
+
 export function openPlayerModal(dataset, player, ctx = null) {
   const game = ctx?.game;
   const teamId = game ? currentTeamId(dataset, game, player.id) : player.teamId;
@@ -129,6 +136,12 @@ export function openPlayerModal(dataset, player, ctx = null) {
       { class: 'pm-foot' },
       h('span', { class: 'muted' }, '포지션별 능력'),
       byPosition.map(({ pos, value }) => h('span', { class: 'pos-score' }, h('b', {}, pos), ` ${Math.round(value)}`)),
+    ),
+    h(
+      'p',
+      { class: 'muted small-note pm-basis' },
+      '잠재력은 23세 이하이면서 더 클 여지가 3 이상인 선수만 범위로 보입니다. ',
+      basisText(dataset.basis),
     ),
   );
   const closeModal = openModal(content);
