@@ -53,6 +53,8 @@ function initTeam(team, boost) {
     boost,
     condition,
     minutes: new Map(team.lineup.map((p) => [p.id, 0])),
+    roster: new Map([...team.lineup, ...(team.bench ?? [])].map((p) => [p.id, p])), // 평점용: 교체로 나간 선수까지
+    slotOf: new Map(), // 선수가 마지막으로 선 자리 (평점 가중치)
     yellow: new Set(),
     subsUsed: 0,
     autoSubs: team.autoSubs ?? true,
@@ -151,6 +153,48 @@ function softRatio(r) {
 
 const emptyStats = () => ({ shots: 0, shotsOnTarget: 0, possessionMinutes: 0, xg: 0, yellow: 0, red: 0 });
 
+// 선수 개인 기록 (평점용). 경기 결과를 바꾸지 않는다
+function pstat(state, id) {
+  let s = state.pstats.get(id);
+  if (!s) state.pstats.set(id, (s = { shots: 0, onTarget: 0, goals: 0, assists: 0, tackles: 0, saves: 0, conceded: 0, yellow: 0, red: 0 }));
+  return s;
+}
+
+// 선수 평점 (3.0~10.0): 6.0에서 골·도움·슈팅·수비·선방·실점·카드·팀 결과·기량으로 가감, 짧게 뛰면 6.0 쪽으로.
+// 경기용 난수는 쓰지 않는다 (평점용 별도 난수) → 경기 결과·밸런스에 영향 없음. 수치는 config.js RATING
+export function playerRatings(state) {
+  const R = C.RATING;
+  const rng = createRng(`${state.seed}:ratings`);
+  const out = {};
+  for (const side of ['home', 'away']) {
+    const t = state.teams[side];
+    const opp = opponentOf(side);
+    const diff = aggregateOf(state, side) - aggregateOf(state, opp);
+    const result = diff > 0 ? R.win : diff < 0 ? R.loss : 0;
+    const conceded = state.score[opp];
+    for (const [id, minutes] of [...t.minutes].sort((a, b) => (a[0] < b[0] ? -1 : 1))) {
+      if (!minutes) continue;
+      const p = t.roster.get(id);
+      if (!p) continue;
+      const slot = t.slotOf.get(id) ?? p.position;
+      const s = state.pstats.get(id) ?? pstat(state, id);
+      const line = slot === 'GK' ? 'gk' : ['CB', 'LB', 'RB'].includes(slot) ? 'def' : slot === 'DM' ? 'dm' : 'other';
+      let r = R.base;
+      r += s.goals * R.goal + s.assists * R.assist + s.onTarget * R.onTarget + (s.shots - s.onTarget) * R.offTarget;
+      r += s.tackles * R.tackle + s.saves * R.save;
+      r -= s.conceded * (R.conceded[line] ?? 0);
+      if (conceded === 0 && minutes >= R.cleanSheetMinutes) r += R.cleanSheet[line] ?? 0;
+      r -= s.yellow * R.yellow + s.red * R.red;
+      r += result * Math.min(1, minutes / C.MATCH_MINUTES);
+      r += ((positionRating(p, slot) * positionFit(p, slot) - state.levelRef) / R.skillScale);
+      r += (rng.next() * 2 - 1) * R.noise;
+      r = R.base + (r - R.base) * Math.min(1, minutes / R.fullMinutes); // 짧게 뛴 선수는 6.0 쪽으로
+      out[id] = Math.round(Math.max(R.min, Math.min(R.max, r)) * 10) / 10;
+    }
+  }
+  return out;
+}
+
 export function createMatch({ home, away, homeAdvantage = C.HOME_ADVANTAGE, seed = randomSeed(), knockout = null }) {
   checkTeamInput(home, 'home');
   checkTeamInput(away, 'away');
@@ -168,6 +212,7 @@ export function createMatch({ home, away, homeAdvantage = C.HOME_ADVANTAGE, seed
     subs: [],
     commentary: [],
     stats: { home: emptyStats(), away: emptyStats() },
+    pstats: new Map(),
     knockout: knockout ? { prior: knockout.prior ?? { home: 0, away: 0 } } : null,
     extraTime: false,
     penalties: null,
@@ -320,6 +365,7 @@ function resolveCards(state, side) {
   if (i < 0) return false;
   const p = t.lineup[i];
   const secondYellow = kind === 'yellow' && t.yellow.has(p.id);
+  pstat(state, p.id)[kind === 'yellow' && !secondYellow ? 'yellow' : 'red']++;
   if (kind === 'yellow' && !secondYellow) {
     t.yellow.add(p.id);
     t.cardWeights[i] *= C.CARDS.bookedFactor;
@@ -363,6 +409,7 @@ function resolveInjuries(state, side) {
 function drainCondition(t, extraTime) {
   t.lineup.forEach((p, i) => {
     if (!p) return;
+    t.slotOf.set(p.id, t.slots[i]);
     let drain = C.CONDITION.drainPerMinute * t.tf.drain * (extraTime ? C.EXTRA_TIME.drainFactor : 1) * (1 + C.CONDITION.staminaEffect * (C.SKILL_REF - p.attributes.stamina));
     if (t.slots[i] === 'GK') drain *= C.CONDITION.gkDrainFactor;
     t.condition.set(p.id, Math.max(C.CONDITION.min, t.condition.get(p.id) - drain));
@@ -410,6 +457,7 @@ function resolveShot(state, side, ratio) {
   const si = rng.weightedIndex(att.shooterWeights[typeKey]);
   if (si < 0) return;
   const shooter = att.lineup[si];
+  pstat(state, shooter.id).shots++;
   const skillDiff = att.shooterSkill[typeKey][si] - state.levelRef;
   const gkDiff = def.ratings.goalkeeping - state.levelRef;
 
@@ -432,18 +480,23 @@ function resolveShot(state, side, ratio) {
     return;
   }
   stats.shotsOnTarget++;
+  pstat(state, shooter.id).onTarget++;
 
   if (!rng.chance(pGoal)) {
+    if (def.gk) pstat(state, def.gk.id).saves++;
     comment(state, 'saved', side, { shot, gk: def.gk?.name ?? '골키퍼' }, shooter.id);
     return;
   }
 
   state.score[side]++;
+  pstat(state, shooter.id).goals++;
+  for (const p of def.lineup) if (p) pstat(state, p.id).conceded++;
   let assister = null;
   if (rng.chance(type.assistChance)) {
     const weights = att.assistWeights[typeKey].map((w, i) => (i === si ? 0 : w));
     const ai = rng.weightedIndex(weights);
     if (ai >= 0) assister = att.lineup[ai];
+    if (assister) pstat(state, assister.id).assists++;
   }
   state.goals.push({
     minute: state.minute,
@@ -486,7 +539,10 @@ export function playMinute(state) {
     } else {
       const def = teams[defSide];
       const di = rng.weightedIndex(def.defenderWeights);
-      if (di >= 0) comment(state, 'attackStopped', side, { defender: def.lineup[di].name }, def.lineup[di].id);
+      if (di >= 0) {
+        pstat(state, def.lineup[di].id).tackles++;
+        comment(state, 'attackStopped', side, { defender: def.lineup[di].name }, def.lineup[di].id);
+      }
     }
   }
 
@@ -709,6 +765,17 @@ export function getMatchResult(state) {
       conditionAfter[id] = Math.round(t.condition.get(id));
     }
   }
+  // 선수 평점과 경기 최우수 선수 (같은 평점이면 이긴 팀 쪽)
+  const ratings = playerRatings(state);
+  let potm = null;
+  for (const side of ['home', 'away']) {
+    const winBonus = aggregateOf(state, side) >= aggregateOf(state, opponentOf(side)) ? 0.05 : 0;
+    for (const [id, p] of state.teams[side].roster) {
+      if (ratings[id] == null) continue;
+      if (!potm || ratings[id] + winBonus > potm.score) potm = { id, name: p.name, team: side, rating: ratings[id], score: ratings[id] + winBonus };
+    }
+  }
+  if (potm) delete potm.score;
   return {
     seed: state.seed,
     finished: state.finished,
@@ -724,6 +791,8 @@ export function getMatchResult(state) {
     conditionAfter,
     extraTime: state.extraTime,
     penalties: state.penalties ? { home: state.penalties.home, away: state.penalties.away, kicks: state.penalties.kicks.map((k) => ({ ...k })) } : null,
+    ratings,
+    potm,
     winner: knockoutWinner(state),
     aggregate: state.knockout ? { home: aggregateOf(state, 'home'), away: aggregateOf(state, 'away') } : null,
   };

@@ -4,6 +4,7 @@ import { overall, positionFit, positionRating } from '../engine/ratings.js';
 import { formatMoney, playerValue } from '../market/value.js';
 import { availabilityOf, conditionOf, currentTeamId } from '../state/game.js';
 import { scoutedPotential } from '../state/newSeason.js';
+import { formOf, ratingClass, seasonRating } from '../state/form.js';
 import { teamBadge } from './badge.js';
 import { h } from './dom.js';
 import { ATTRIBUTE_GROUP_LABELS, ATTRIBUTE_LABELS, POSITION_NAMES, attrClass } from './format.js';
@@ -69,6 +70,21 @@ export function ratingBar(value, { max = 100, min = 40 } = {}) {
 }
 
 // 선수 상세 모달. ctx가 있으면 이적 후 소속·부상·컨디션·가치까지 보여준다
+// 최근 평점 (오래된 것부터)과 시즌 평균
+function formLine(game, id) {
+  const recent = formOf(game, id);
+  const season = seasonRating(game, id);
+  if (!recent.length && season == null) return null;
+  return h(
+    'span',
+    { class: 'pm-form' },
+    h('br'),
+    '최근 평점 ',
+    recent.length ? recent.map((r) => h('span', { class: `rt ${ratingClass(r)}` }, r.toFixed(1))) : '—',
+    season != null ? ` · 시즌 평균 ${season.toFixed(2)}` : '',
+  );
+}
+
 // 능력치 기준 안내 (data/leagues.json basis)
 export function basisText(basis) {
   if (!basis) return '';
@@ -90,6 +106,7 @@ export function openPlayerModal(dataset, player, ctx = null) {
         { class: 'muted pm-extra' },
         `가치 ${formatMoney(playerValue(player))} · 컨디션 ${conditionOf(game, player.id)}%`,
         potential ? h('span', { class: 'pm-potential' }, ` · 잠재력 ${potential.low}~${potential.high}`) : '',
+        formLine(game, player.id),
         stats ? ` · ${stats.apps ?? 0}경기 ${stats.goals}골 ${stats.assists}도움` : '',
         avail && !avail.available ? h('span', { class: `status-chip ${avail.reason}` }, `${avail.label} ${avail.rounds}경기`) : null,
       )

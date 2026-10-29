@@ -13,6 +13,7 @@ import { conditionFactor, positionFit, positionRating } from '../engine/ratings.
 import { createRng, randomSeed } from '../engine/rng.js';
 import { generateFixtures, roundCount } from '../league/fixtures.js';
 import { familiarityBoost, familiarityOf } from './familiarity.js';
+import { addRatings } from './form.js';
 import { trainingMatchBoost } from './training.js';
 import { moraleBoost, moraleOf } from './morale.js';
 import { RULES } from './rules.js';
@@ -281,6 +282,7 @@ function recordResult(game, fixture, result, full) {
     stat(g.scorerId).goals++;
     if (g.assistId) stat(g.assistId).assists++;
   }
+  addRatings(game, result, { keepForm: full }); // 평점: 시즌 평균은 모두, 최근 폼은 우리 리그 경기만
 }
 
 // 이번 라운드 결과로 생긴 부상·징계·컨디션 반영

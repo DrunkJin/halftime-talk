@@ -4,6 +4,7 @@
 //   대회: { id, name, shortName, teamIds, pots, fixtures: [경기], ties: [대진], stats, winnerId }
 //   경기: { id, comp, stage, md?, leg?, tieId?, homeId, awayId, neutral?, result? }
 //   대진: { id, comp, stage, seedId, otherId, fixtureIds, winnerId }  seedId = 리그 페이즈 순위가 높은 팀
+import { addRatings } from '../state/form.js';
 import { HOME_ADVANTAGE } from '../engine/config.js';
 import { simulateMatch } from '../engine/match.js';
 import { overall } from '../engine/ratings.js';
@@ -173,6 +174,7 @@ export function playCupEvent(dataset, game, userResult = null) {
     const r = results[i];
     const comp = cupsOf(game).comps[f.comp];
     recordCupResult(comp, f, r);
+    addRatings(game, r, { keepForm: f.homeId === game.teamId || f.awayId === game.teamId });
     applyConsequences(game, r, 'cup');
     if (f.stage === 'league') {
       const prizes = CUP.prizes[comp.id] ?? {};

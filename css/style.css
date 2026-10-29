@@ -1098,3 +1098,14 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 @media (max-width: 860px) { .tr-effects { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .pm-basis { padding: 0 18px 14px; }
 .basis-note { margin-top: 14px; text-align: center; }
+
+/* ── 선수 평점 ── */
+.rt { display: inline-block; min-width: 30px; padding: 1px 4px; border-radius: 4px; font-weight: 700; font-variant-numeric: tabular-nums; text-align: center; }
+.rt-great { background: rgba(61, 220, 151, 0.2); color: var(--accent); }
+.rt-good { background: rgba(61, 220, 151, 0.1); color: var(--accent); }
+.rt-ok { background: var(--panel-3); color: var(--text-2); }
+.rt-poor { background: rgba(242, 85, 90, 0.14); color: #ff8a8e; }
+.pm-form .rt { margin-right: 3px; }
+.ratings-table td { padding: 4px 8px; }
+.ratings-table tr.is-potm td { background: rgba(255, 209, 102, 0.08); }
+.potm { display: flex; align-items: center; gap: 8px; padding: 8px 12px; color: var(--gold); font-weight: 700; }

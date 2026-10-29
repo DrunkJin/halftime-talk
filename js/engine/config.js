@@ -212,6 +212,21 @@ export const PROB_LIMITS = { onTarget: [0.1, 0.9], goalIfOnTarget: [0.02, 0.95] 
 // 빗나간 슈팅 중 수비 블록·골대 비율 (중계 문구용, 결과에는 영향 없음)
 export const MISS_BREAKDOWN = { blocked: 0.3, woodwork: 0.05 };
 
+// ── 선수 평점 (경기 결과에는 영향 없음) ─────────────────────
+// 6.0에서 시작해 기록·팀 결과·기량으로 가감. 실점·무실점 가산은 자리(줄)별로 다르다
+export const RATING = {
+  base: 6.0, min: 3.0, max: 10.0,
+  goal: 1.0, assist: 0.7, onTarget: 0.15, offTarget: -0.04,
+  tackle: 0.12, save: 0.3,
+  conceded: { gk: 0.35, def: 0.2, dm: 0.1, other: 0.03 },
+  cleanSheet: { gk: 0.6, def: 0.45, dm: 0.2, other: 0 }, cleanSheetMinutes: 60,
+  yellow: 0.3, red: 1.5,
+  win: 0.35, loss: -0.35,
+  skillScale: 18, // (자리 능력 - 경기 기준) / skillScale 만큼 더한다
+  noise: 0.3,
+  fullMinutes: 60, // 이보다 짧게 뛰면 그 비율만큼만 6.0에서 벗어난다
+};
+
 // ── 체력(경기 중 컨디션) ─────────────────────────────────
 // 컨디션 0~100. 능력 배율 = 1 - impact × (100 - 컨디션) / 100
 export const CONDITION = {

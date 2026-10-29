@@ -1,4 +1,5 @@
 // 스쿼드: 피치 자유 배치 포메이션 + 선발 배치(드래그 또는 클릭 두 번) + 스쿼드 표 + 팀 레이팅 + 교체 명단
+import { formAverage, formOf, ratingClass, seasonRating } from '../../state/form.js';
 import { POSITIONS } from '../../data/schema.js';
 import { FORMATION_CELLS, FORMATION_IDS, GK_ROW, GRID_COLUMNS, GRID_ROWS, formationName, positionOfCell } from '../../engine/formations.js';
 import { autoSelectLineup } from '../../engine/lineup.js';
@@ -25,6 +26,18 @@ const POS_ORDER = new Map(POSITIONS.map((p, i) => [p, i]));
 
 const fitClass = (fit) => (fit >= 0.95 ? 'fit-good' : fit >= 0.8 ? 'fit-ok' : 'fit-bad');
 const sameCells = (a, b) => a.length === b.length && a.every((c, i) => c[0] === b[i][0] && c[1] === b[i][1]);
+
+// 폼 칸: 최근 5경기 평균 (시즌 평균), 마우스를 올리면 경기별 평점
+function formCell(game, id) {
+  const avg = formAverage(game, id);
+  const season = seasonRating(game, id);
+  if (avg == null && season == null) return h('td', { class: 'num muted' }, '—');
+  return h(
+    'td',
+    { class: 'num', title: `최근 ${formOf(game, id).join(' · ') || '—'}${season != null ? ` / 시즌 평균 ${season.toFixed(2)}` : ''}` },
+    h('span', { class: `rt ${ratingClass(avg ?? season)}` }, (avg ?? season).toFixed(1)),
+  );
+}
 
 export function render(ctx) {
   const { dataset, game } = ctx;
@@ -319,6 +332,7 @@ export function render(ctx) {
       h('th', { class: 'num' }, '나이'),
       h('th', {}, '국적'),
       h('th', { class: 'num', 'data-tooltip': '종합 능력치 (주 포지션 기준)' }, 'OVR'),
+      h('th', { class: 'num', 'data-tooltip': '최근 5경기 평균 평점 (시즌 평균)' }, '폼'),
       ATTR_COLUMNS.map((k) => h('th', { class: 'num', 'data-tooltip': ATTRIBUTE_LABELS[k] }, ATTR_SHORT[k])),
     );
 
@@ -344,6 +358,7 @@ export function render(ctx) {
         h('td', { class: 'num' }, p.age),
         h('td', { title: dataset.nationByCode.get(p.nationality)?.nameKo }, p.nationality),
         h('td', { class: `num ovr ${attrClass(overall(p))}` }, overall(p)),
+        formCell(game, p.id),
         ATTR_COLUMNS.map((k) => h('td', { class: `num ${attrClass(p.attributes[k])}` }, p.attributes[k])),
       );
       tr.addEventListener('click', () => onRowClick(p.id));
@@ -357,7 +372,7 @@ export function render(ctx) {
       'table',
       { class: 'data squad-table' },
       h('thead', {}, head),
-      h('tbody', {}, starters.map((p) => row(p, true)), h('tr', { class: 'divider' }, h('td', { colspan: 9 + ATTR_COLUMNS.length }, `교체 · 후보 ${bench.length}명`)), bench.map((p) => row(p, false))),
+      h('tbody', {}, starters.map((p) => row(p, true)), h('tr', { class: 'divider' }, h('td', { colspan: 10 + ATTR_COLUMNS.length }, `교체 · 후보 ${bench.length}명`)), bench.map((p) => row(p, false))),
     );
     tableHost.replaceChildren(tooltipGroup('tt-block', h('div', { class: 'table-scroll' }, table)));
   }

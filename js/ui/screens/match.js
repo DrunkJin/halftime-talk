@@ -1,7 +1,8 @@
 // 경기: 경기 전(선발·전력 비교) → 실시간 텍스트 중계 → 경기 후(다른 경기 결과)
 import { FORMATION_CELLS, formationLabel, positionOfCell } from '../../engine/formations.js';
 import { HALF_TIME_MINUTE, MATCH_MINUTES } from '../../engine/config.js';
-import { changeFormation, createMatch, getMatchResult, makeSubstitution, playMinute, setAutoSubs, setTactics, teamSnapshot } from '../../engine/match.js';
+import { changeFormation, createMatch, getMatchResult, makeSubstitution, playMinute, playerRatings, setAutoSubs, setTactics, teamSnapshot } from '../../engine/match.js';
+import { ratingClass } from '../../state/form.js';
 import { computeTeamRatings, conditionFactor, overall, positionFit, positionRating } from '../../engine/ratings.js';
 import { computeTable } from '../../league/table.js';
 import { availabilityOf, conditionOf, fixLineup, fixturesOf, isSeasonOver, leagueOf, lineupProblems, matchInput, rotateTired, roundFixtures, settingsOf, tacticsOf, userFixture } from '../../state/game.js';
@@ -749,7 +750,36 @@ function renderLive(ctx, show) {
     return li;
   }
 
+  // 우리 선수 평점 (실시간). 경기가 끝나면 최우수 선수도
+  const ratingsBody = h('tbody');
+  const potmEl = h('div', { class: 'potm' });
+  function updateRatings() {
+    const ratings = playerRatings(state);
+    const t = state.teams[mySide];
+    const rows = [...t.roster.values()].filter((p) => ratings[p.id] != null).sort((a, b) => ratings[b.id] - ratings[a.id]);
+    const subIn = new Set(state.subs.filter((x) => x.team === mySide).map((x) => x.inId));
+    let potmId = null;
+    if (state.finished) {
+      const all = Object.entries(ratings).sort((a, b) => b[1] - a[1]);
+      potmId = all[0]?.[0] ?? null;
+      const p = potmId && (state.teams.home.roster.get(potmId) ?? state.teams.away.roster.get(potmId));
+      potmEl.replaceChildren(...(p ? [h('span', {}, '경기 최우수 선수'), h('b', {}, p.name), h('span', { class: `rt ${ratingClass(ratings[potmId])}` }, ratings[potmId].toFixed(1))] : []));
+    }
+    ratingsBody.replaceChildren(
+      ...rows.map((p) =>
+        h(
+          'tr',
+          { class: p.id === potmId ? 'is-potm' : '' },
+          h('td', {}, h('span', { class: 'pos-tag' }, t.slotOf.get(p.id) ?? p.position)),
+          h('td', {}, p.name, subIn.has(p.id) ? h('span', { class: 'muted' }, ' (교체 투입)') : t.lineup.includes(p) ? '' : h('span', { class: 'muted' }, ' (교체 아웃)')),
+          h('td', { class: 'num' }, h('span', { class: `rt ${ratingClass(ratings[p.id])}` }, ratings[p.id].toFixed(1))),
+        ),
+      ),
+    );
+  }
+
   function updateStats() {
+    updateRatings();
     const r = getMatchResult(state);
     const s = r.stats;
     const rows = [
@@ -1002,7 +1032,7 @@ function renderLive(ctx, show) {
       'div',
       { class: 'live-grid' },
       panel('중계', h('div', { class: 'feed-wrap' }, feed), { className: 'feed-panel' }),
-      h('div', { class: 'live-side' }, panel('경기 기록', h('table', { class: 'data stats-table' }, statsBody)), after),
+      h('div', { class: 'live-side' }, panel('경기 기록', h('table', { class: 'data stats-table' }, statsBody)), panel('선수 평점', h('div', {}, potmEl, h('table', { class: 'data compact ratings-table' }, ratingsBody))), after),
     ),
   );
 }
