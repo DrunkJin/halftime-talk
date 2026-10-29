@@ -37,6 +37,28 @@ export const MARKET = {
   sellOffers: { max: 3, minRatio: 0.75, maxRatio: 1.1, interestGap: 6 },
 };
 
+// 임대: 시즌 끝까지만, 시즌 넘기기 때 원소속으로 복귀 (market/loans.js)
+export const LOAN = {
+  // 임대 영입: 원소속 팀 내 OVR 순위가 minRank 이상(1부터)인 선수, 어린 선수(youngAge 이하)는 youngMinRank 이상
+  // (빅클럽 고참 비주전을 싸게 빌려 오는 것만으로 전력이 크게 오르지 않게 고참은 깊은 벤치만)
+  minRank: 18,
+  youngAge: 23,
+  youngMinRank: 12,
+  // 선수가 원하는 것: 우리 팀 상위 11명의 11번째 OVR - playGap 이상이어야 (뛸 자리가 있어야) 온다
+  playGap: 2,
+  // 임대료 = 가치 × feeRatio × 리그 이적료 배율: 어린 선수는 원소속이 출전 기회를 원해 싸게, 고참은 비싸게
+  feeRatio: { young: 0.04, other: 0.15 },
+  // 빌리는 구단의 주급 부담 비율 [최소, 최대]: 어린 선수는 원소속이 성장을 위해 더 내 준다
+  wageShare: { young: [0.5, 0.8], other: [0.85, 1] },
+  maxIn: 3, // 동시에 데려올 수 있는 임대 선수
+  maxOut: 6, // 동시에 보낼 수 있는 임대 선수
+  // 임대 보내기: 받는 구단 상위 11명의 11번째 OVR + outGap 이상이면 (주전으로 쓸 수 있으면) 관심
+  outGap: 0,
+  outOffers: 3,
+  sameCountryWeight: 2.5, // 임대 보낼 구단: 같은 나라 구단을 먼저
+  reportEvery: 8, // 임대 보낸 선수 근황 소식 (라운드)
+};
+
 // 재정·계약. 금액 단위: 잔고·수입은 백만 파운드(£M), 주급은 천 파운드/주(£k)
 export const FINANCE = {
   // 기본 주급 = 가치(£M) × wagePerValue × 리그 주급 배율 (최소 minWage)

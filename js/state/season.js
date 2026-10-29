@@ -17,6 +17,7 @@ import { updateMoods } from './squadMood.js';
 import { evaluateSeason, setObjective, updateBoardAfterMatch } from './board.js';
 import { pushNews, weeklyNews } from './inbox.js';
 import { processScouting } from './scouting.js';
+import { loanReports } from '../market/loans.js';
 import { aiIdentity, squadProfile } from '../engine/tactics.js';
 
 export function createGame(dataset, teamId, options) {
@@ -87,7 +88,8 @@ export function playWeek(dataset, game, userResult) {
     game.incomingOffers = [];
   }
   const scouting = processScouting(dataset, game); // 다 된 스카우트 보고서
-  const week = { others, aiTransfers, newOffers, cups, training, moods, board, scouting };
+  const loans = isSeasonOver(game) ? [] : loanReports(dataset, game); // 임대 보낸 선수 근황
+  const week = { others, aiTransfers, newOffers, cups, training, moods, board, scouting, loans };
   weeklyNews(dataset, game, week, mine, userResult);
   return week;
 }

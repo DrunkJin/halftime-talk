@@ -5,7 +5,7 @@
 // 계약: { wage, until } — until은 계약이 끝나는 시즌 번호 (game.seasonIndex 기준)
 import { createRng } from '../engine/rng.js';
 import { computeTable } from '../league/table.js';
-import { currentTeamId, fixturesOf, squadOf } from '../state/game.js';
+import { currentTeamId, fixturesOf, loanOf, squadOf } from '../state/game.js';
 import { FINANCE } from './config.js';
 import { playerValue, topElevenOvr } from './value.js';
 
@@ -42,8 +42,12 @@ export function contractOf(dataset, game, playerId) {
 // 이번 시즌 포함 남은 시즌 수
 export const seasonsLeft = (game, contract) => Math.max(0, contract.until - game.seasonIndex + 1);
 
+// 주급 총액: 임대 선수는 빌린 구단이 wageShare만큼, 원소속이 나머지를 낸다
 export function wageBill(dataset, game, teamId) {
-  return squadOf(dataset, game, teamId).reduce((s, p) => s + contractOf(dataset, game, p.id).wage, 0);
+  let bill = 0;
+  for (const p of squadOf(dataset, game, teamId)) bill += contractOf(dataset, game, p.id).wage * (loanOf(game, p.id)?.wageShare ?? 1);
+  for (const l of game.loans ?? []) if (l.from === teamId) bill += contractOf(dataset, game, l.playerId).wage * (1 - l.wageShare);
+  return Math.round(bill);
 }
 
 // 이적·재계약 때 선수가 요구하는 계약

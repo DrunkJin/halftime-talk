@@ -41,6 +41,8 @@ export function weeklyNews(dataset, game, week, userFixture, userResult) {
   for (const e of week.moods ?? []) pushNews(game, `player.${e.kind}`, { name: e.name, id: e.id }, { important: e.kind === 'request' || e.kind === 'promiseBroken' });
   // 스카우트 보고서
   for (const r of week.scouting ?? []) pushNews(game, 'player.scoutReport', { name: r.name, id: r.id, verdict: VERDICT_LABELS[r.verdict] ?? '' }, { important: r.verdict === 'starter' });
+  // 임대 보낸 선수 근황: 꾸준히 뛰는지(임대 뒤 라운드의 절반 이상 출전)에 따라
+  for (const r of week.loans ?? []) pushNews(game, r.apps >= r.rounds * 0.5 ? 'player.loanReport' : 'player.loanBench', { name: r.name, id: r.id, club: r.club, apps: r.apps, goals: r.goals });
   // 우리 팀 부상 (이번 경기)
   if (userResult) {
     const mySide = userFixture.homeId === game.teamId ? 'home' : 'away';

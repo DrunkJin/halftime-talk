@@ -3,7 +3,8 @@ import { overall } from '../../engine/ratings.js';
 import { contractOf, renewalTerms, seasonsLeft, wageBill } from '../../market/finance.js';
 import { formatWage, renewContract } from '../../market/market.js';
 import { formatMoney, playerValue } from '../../market/value.js';
-import { squadOf } from '../../state/game.js';
+import { loanOf, squadOf } from '../../state/game.js';
+import { loansOut } from '../../market/loans.js';
 import { teamBadge } from '../badge.js';
 import { openConfirm, panel, ratingBar } from '../components.js';
 import { h } from '../dom.js';
@@ -73,8 +74,9 @@ function build(ctx, refresh) {
     ),
   );
 
-  // 계약: 주급 높은 순, 계약이 곧 끝나는 선수 강조
-  const squad = squadOf(dataset, game, game.teamId).sort((a, b) => contractOf(dataset, game, b.id).wage - contractOf(dataset, game, a.id).wage);
+  // 계약: 주급 높은 순, 계약이 곧 끝나는 선수 강조. 임대 보낸 선수도 우리 계약이라 함께 (임대 온 선수는 원소속 계약)
+  const lent = loansOut(game).map((l) => dataset.playerById.get(l.playerId)).filter(Boolean);
+  const squad = [...squadOf(dataset, game, game.teamId), ...lent].sort((a, b) => contractOf(dataset, game, b.id).wage - contractOf(dataset, game, a.id).wage);
   const contracts = h(
     'div',
     { class: 'table-scroll' },
@@ -88,6 +90,8 @@ function build(ctx, refresh) {
         squad.map((p) => {
           const c = contractOf(dataset, game, p.id);
           const left = seasonsLeft(game, c);
+          const loan = loanOf(game, p.id);
+          const borrowed = loan?.to === game.teamId;
           const renew = h('button', { class: 'btn small ghost', type: 'button' }, '재계약');
           renew.addEventListener('click', () => {
             const terms = renewalTerms(dataset, game, p.id);
@@ -108,14 +112,15 @@ function build(ctx, refresh) {
           return h(
             'tr',
             { class: left <= 1 ? 'is-expiring' : '' },
-            h('td', {}, p.name),
+            h('td', {}, p.name, loan ? h('span', { class: 'loan-tag' }, borrowed ? `임대 · ${dataset.teamById.get(loan.from)?.code ?? ''}` : `임대 중 · ${dataset.teamById.get(loan.to)?.code ?? ''}`) : null),
             h('td', {}, h('span', { class: 'pos-tag' }, p.position)),
             h('td', { class: 'num' }, p.age),
             h('td', { class: `num ${attrClass(overall(p))}` }, overall(p)),
             h('td', { class: 'num' }, formatMoney(playerValue(p))),
-            h('td', { class: 'num' }, formatWage(c.wage)),
-            h('td', { class: 'num' }, left <= 1 ? h('span', { class: 'status-chip suspension' }, `${left}년`) : `${left}년`),
-            h('td', { class: 'num' }, renew),
+            // 임대 선수는 우리가 내는 몫 (빌렸으면 wageShare, 보냈으면 나머지)
+            h('td', { class: 'num', title: loan ? `전체 ${formatWage(c.wage)}` : '' }, formatWage(loan ? Math.round(c.wage * (borrowed ? loan.wageShare : 1 - loan.wageShare)) : c.wage)),
+            h('td', { class: 'num' }, borrowed ? h('span', { class: 'muted' }, '시즌 끝 복귀') : left <= 1 ? h('span', { class: 'status-chip suspension' }, `${left}년`) : `${left}년`),
+            h('td', { class: 'num' }, borrowed ? null : renew),
           );
         }),
       ),

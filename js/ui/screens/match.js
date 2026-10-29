@@ -1317,6 +1317,7 @@ function showSeasonSummary(ctx, summary) {
         !summary.newTeam && game.board?.objective ? h('li', {}, h('b', {}, '이사회 목표'), ` ${game.board.objective.label}`) : null,
         h('li', {}, h('b', {}, '대륙 대회'), ' ', summary.cup ? `${summary.cup} 진출` : '진출 못 함'),
         line('은퇴', summary.retired),
+        line('임대 복귀', summary.loanReturned),
         line('계약 만료로 떠남', summary.left),
         line('강등으로 팔려 간 선수', summary.sold),
         summary.parachute ? h('li', {}, h('b', {}, '낙하산 지원금'), ` ${formatMoney(summary.parachute)}이 잔고에 들어왔습니다.`) : null,

@@ -109,6 +109,9 @@ export function squadOf(dataset, game, teamId) {
 
 export const freeAgents = (dataset, game) => squadOf(dataset, game, null);
 
+// 임대 중인 선수의 임대 정보 { playerId, from(원소속), to, season, wageShare, fee } (없으면 null). market/loans.js
+export const loanOf = (game, id) => game.loans?.find((l) => l.playerId === id) ?? null;
+
 export const conditionOf = (game, id) => stateOf(game, id).condition ?? 100;
 
 // { available, reason: 'injury' | 'suspension' | null, rounds, label }

@@ -2,7 +2,7 @@
 import { ATTRIBUTE_GROUPS, POSITIONS } from '../data/schema.js';
 import { overall, positionFit, positionRating } from '../engine/ratings.js';
 import { formatMoney, playerValue } from '../market/value.js';
-import { availabilityOf, conditionOf, currentTeamId } from '../state/game.js';
+import { availabilityOf, conditionOf, currentTeamId, loanOf } from '../state/game.js';
 import { scoutedPotential } from '../state/newSeason.js';
 import { formOf, ratingClass, seasonRating } from '../state/form.js';
 import { canTalk, isRequesting, levelOf, moodOf, promiseOf, rolesOf, shareOf, talk } from '../state/squadMood.js';
@@ -71,6 +71,14 @@ export function conditionMeter(c) {
 export function ratingBar(value, { max = 100, min = 40 } = {}) {
   const pct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
   return h('span', { class: 'bar' }, h('span', { class: 'bar-fill', style: { width: `${pct}%` } }));
+}
+
+// 임대 중이면 원소속·임대 구단 한 줄
+function loanLine(dataset, game, player) {
+  const loan = game && loanOf(game, player.id);
+  if (!loan) return null;
+  const name = (id) => dataset.teamById.get(id)?.name ?? '';
+  return h('p', { class: 'pm-loan' }, h('span', { class: 'loan-tag' }, '임대'), ` ${name(loan.from)} → ${name(loan.to)} · 시즌 끝 복귀`);
 }
 
 // 선수 상세 모달. ctx가 있으면 이적 후 소속·부상·컨디션·가치까지 보여준다
@@ -218,6 +226,7 @@ export function openPlayerModal(dataset, player, ctx = null) {
         h('h2', {}, player.name),
         h('p', {}, h('span', { class: 'pos-tag' }, player.position), ` ${POSITION_NAMES[player.position]}`, player.altPositions.length ? ` · 보조 ${player.altPositions.join(', ')}` : ''),
         h('p', { class: 'muted' }, team ? [teamBadge(team, 16), ` ${team.name} · `] : '무소속 · ', `${player.age}세 · ${nation?.nameKo ?? player.nationality}`),
+        loanLine(dataset, game, player),
         extra,
       ),
       close,

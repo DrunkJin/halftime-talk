@@ -8,9 +8,10 @@ import { createRng } from '../engine/rng.js';
 import { generateFixtures, roundCount } from '../league/fixtures.js';
 import { contractOf, demandedContract, initSeasonFinances, renewalTerms, signContract, wageRoom } from '../market/finance.js';
 import { canAiBuy, transferPlayer } from '../market/market.js';
+import { loansOut, returnLoans } from '../market/loans.js';
 import { playerValue, topElevenOvr } from '../market/value.js';
 import { PROGRESSION, lookup } from '../progression/config.js';
-import { currentTeamId, fixLineup, invalidateSquads, leagueTotalRounds, squadOf } from './game.js';
+import { currentTeamId, fixLineup, invalidateSquads, leagueTotalRounds, loanOf, squadOf } from './game.js';
 import { recordSeason } from './history.js';
 import { ensureWorld, packAttributes, worldDataset } from './world.js';
 import { noteSeasonExpectation } from './career.js';
@@ -204,7 +205,13 @@ function makeYouth(dataset, w, team, squad, nameOf, rng, idOf) {
 
 // 이번 시즌 끝에 계약이 끝나는 우리 팀 선수 (결산 화면에서 재계약 여부를 고른다)
 export function expiringContracts(dataset, game) {
-  return squadOf(dataset, game, game.teamId).filter((p) => contractOf(dataset, game, p.id).until <= game.seasonIndex);
+  return ownedSquad(dataset, game).filter((p) => contractOf(dataset, game, p.id).until <= game.seasonIndex);
+}
+
+// 계약을 가진 우리 선수: 지금 스쿼드에서 임대 온 선수를 빼고, 임대 보낸 선수를 더한다
+function ownedSquad(dataset, game) {
+  const here = squadOf(dataset, game, game.teamId).filter((p) => !loanOf(game, p.id));
+  return [...here, ...loansOut(game).map((l) => dataset.playerById.get(l.playerId)).filter(Boolean)];
 }
 
 // AI 재계약 규칙: 팀 내 순위·나이로 판단 (rng 없이 쓰면 확률 없이 기준만)
@@ -216,7 +223,7 @@ function aiWouldRenew(p, rank, rng) {
 
 // 결산 화면 기본 선택: AI 규칙으로 재계약할 만한 선수
 export function suggestedRenewals(dataset, game) {
-  const ranked = squadOf(dataset, game, game.teamId).sort((a, b) => overall(b) - overall(a));
+  const ranked = ownedSquad(dataset, game).sort((a, b) => overall(b) - overall(a));
   const rank = new Map(ranked.map((p, i) => [p.id, i]));
   return expiringContracts(dataset, game).filter((p) => aiWouldRenew(p, rank.get(p.id))).map((p) => p.id);
 }
@@ -270,6 +277,8 @@ export function startNextSeason(base, game, { renew = null } = {}) {
   // 은퇴한 선수는 선발·교체 명단·받은 제안에서도 뺀다 (선발 빈자리는 새 시즌 시작 때 fixLineup이 채운다)
   game.bench = (game.bench ?? []).filter((id) => !retired.has(id));
   game.incomingOffers = (game.incomingOffers ?? []).filter((o) => !retired.has(o.playerId));
+  // 임대 선수는 모두 원소속으로 (계약 만료·재계약은 원소속 기준)
+  summary.loanReturned = returnLoans(ds0, game, retired);
   invalidateSquads(game);
 
   // 4) 계약 만료: 우리 팀은 재계약하지 않은 선수가 떠나고, AI 팀은 주전급을 대부분 재계약

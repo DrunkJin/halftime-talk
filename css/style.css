@@ -1201,3 +1201,25 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .pm-scout { display: grid; gap: 8px; padding: 12px 18px; border-top: 1px solid var(--line); font-size: 13px; }
 .scout-note { padding: 0 12px 8px; }
 .row-actions { display: flex; gap: 6px; justify-content: flex-end; }
+
+/* ── 임대 ── */
+.loan-tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: rgba(130, 170, 255, 0.14);
+  color: #a9c3ff;
+  font-size: var(--fs-min);
+  font-weight: 700;
+  white-space: nowrap;
+  vertical-align: 1px;
+}
+.pm-loan { font-size: 12px; color: var(--text-2); }
+.pm-loan .loan-tag { margin-left: 0; }
+.loan-terms { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 12px 0; font-size: 13px; }
+.loan-terms dt { color: var(--muted); }
+.loan-terms dd { margin: 0; text-align: left; }
+.loan-panel { margin-top: 20px; }
+.loan-panel h3 { margin: 0 0 4px; font-size: 14px; }
+.loan-panel .small-note { margin: 0 0 10px; }

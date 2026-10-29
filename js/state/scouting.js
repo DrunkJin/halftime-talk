@@ -14,6 +14,7 @@ const stateOf = (game) => (game.scouting ??= { known: {}, assignments: [] });
 export function isKnown(dataset, game, p, teamId = currentTeamId(dataset, game, p.id)) {
   if (teamId === game.teamId) return true;
   if (game.scouting?.known?.[p.id] != null) return true;
+  if (game.loans?.some((l) => l.playerId === p.id && l.from === game.teamId)) return true; // 우리가 임대 보낸 선수
   if (!teamId) return false; // 무소속은 스카우트해야 안다
   if (dataset.teamById.get(teamId)?.leagueId === game.leagueId) return true;
   return Boolean(game.career?.opponents?.[teamId]); // 맞붙어 본 팀
