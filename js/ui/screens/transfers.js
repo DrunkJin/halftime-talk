@@ -362,7 +362,7 @@ export function render(ctx) {
     return h(
       'div',
       {},
-      h('div', { class: 'filter-bar' }, leagueSelect, groups.el, search, check('affordable', t('transfers.search.affordable')), check('freeOnly', t('transfers.search.freeOnly')), check('loanOnly', t('transfers.search.loanOnly')), h('span', { class: 'muted' }, t('transfers.search.count', { total: rows.length, shown: Math.min(RESULT_LIMIT, rows.length) }))),
+      h('div', { class: 'filter-bar' }, leagueSelect, groups.el, search, check('affordable', t('transfers.search.affordable')), check('freeOnly', t('transfers.search.freeOnly')), check('loanOnly', t('transfers.search.loanOnly')), h('span', { class: 'muted' }, t('transfers.search.count', { total: rows.length, shown: Math.min(RESULT_LIMIT, rows.length) })), h('span', { class: 'legend-over' }, t('transfers.legend.overBudget'))),
       h('div', { class: 'scout-note' }, scoutNote),
       h(
         'div',

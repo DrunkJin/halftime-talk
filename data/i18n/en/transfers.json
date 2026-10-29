@@ -19,7 +19,10 @@
   "transfers.windowNone": "No more windows this season",
   "transfers.windowClosed": "The transfer window is closed",
   "transfers.squad": "Squad",
-  "transfers.players": { "one": "1 player", "other": "{n} players" },
+  "transfers.players": {
+    "one": "1 player",
+    "other": "{n} players"
+  },
   "transfers.squadRange": "{min}–{max}",
   "transfers.closedTitle": "The transfer window is closed.",
   "transfers.closedBody": " Signings, sales and bids are only possible during a window. For now you can scout players, renew contracts and release players.",
@@ -30,7 +33,10 @@
   "transfers.reject": "Reject",
   "transfers.afterMatch": "Available after the match",
   "transfers.returns": "Returns at season end",
-  "transfers.years": { "one": "1 yr", "other": "{n} yrs" },
+  "transfers.years": {
+    "one": "1 yr",
+    "other": "{n} yrs"
+  },
   "transfers.offer.amountAria": "Bid amount (£M)",
   "transfers.offer.feeAria": "Signing-on fee (£M)",
   "transfers.offer.wants": "Player wants: ",
@@ -74,6 +80,7 @@
   "transfers.search.freeOnly": "Free agents only",
   "transfers.search.loanOnly": "Loanable only",
   "transfers.search.count": "Top {shown} by OVR of {total}",
+  "transfers.legend.overBudget": "Red fee: beyond your current budget",
   "transfers.scout.max": "Up to {n} scouts at a time",
   "transfers.scout.watching": "Scouting ({n}R)",
   "transfers.scout.button": "Scout",
@@ -101,7 +108,10 @@
   "transfers.log.mine": "My club",
   "transfers.log.league": "My league",
   "transfers.log.all": "All",
-  "transfers.log.count": { "one": "1 transfer", "other": "{n} transfers" },
+  "transfers.log.count": {
+    "one": "1 transfer",
+    "other": "{n} transfers"
+  },
   "transfers.log.empty": "No transfers yet.",
   "transfers.log.retired": "(retired)",
   "transfers.log.loanEnd": "Loan return",

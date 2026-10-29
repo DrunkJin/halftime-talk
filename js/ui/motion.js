@@ -170,6 +170,11 @@ export function showToast(content, { duration = 2600, tone = '' } = {}) {
   setTimeout(() => closeToast(toast), duration);
 }
 
+// 장면이 바뀔 때(라커룸 등) 떠 있는 알림을 걷는다
+export function clearToasts() {
+  for (const toast of toastHost?.querySelectorAll('.toast.is-open') ?? []) closeToast(toast);
+}
+
 function closeToast(toast) {
   if (!toast.classList.contains('is-open')) return;
   toast.classList.remove('is-open');

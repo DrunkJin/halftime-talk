@@ -4,9 +4,6 @@
   "match.morale.bigDown": "선수단 분위기가 크게 가라앉았습니다.",
   "match.morale.down": "선수단 분위기가 조금 가라앉았습니다.",
   "match.morale.flat": "선수단은 담담합니다.",
-  "match.cmp.even": "비슷함",
-  "match.cmp.homeEdge": "홈 우세",
-  "match.cmp.awayEdge": "원정 우세",
   "match.lineup.slot": "슬롯",
   "match.lineup.condition": "컨디션",
   "match.lineup.bench": "교체 명단 {n}명",
@@ -50,6 +47,15 @@
   "match.cmp.attack": "공격",
   "match.cmp.midfield": "중원",
   "match.cmp.defence": "수비",
+  "match.cmp.gk": "골문",
+  "match.cmp.say.bigUs": "{unit}은(는) 우리가 크게 앞섭니다",
+  "match.cmp.say.us": "{unit}은(는) 우리가 조금 앞섭니다",
+  "match.cmp.say.even": "{unit}은(는) 팽팽합니다",
+  "match.cmp.say.them": "{unit}은(는) 상대가 조금 앞섭니다",
+  "match.cmp.say.bigThem": "{unit}은(는) 상대가 크게 앞섭니다",
+  "match.pre.settings": "중계 설정",
+  "match.pre.settingsDone": "확인",
+  "match.press.preLead": "경기장에 나가기 전, 기자들이 기다리고 있습니다.",
   "match.pre.tactics": "전술 지시",
   "match.pre.analysis": "상대 분석",
   "match.pre.oppTactics": "상대와 전술",
@@ -123,7 +129,7 @@
   "match.brief.importantUnread": "읽지 않은 중요 소식 {n}개",
   "match.brief.noImportant": "중요한 새 소식 없음",
   "match.brief.st.ok": "완료",
-  "match.brief.st.warn": "확인",
+  "match.brief.st.warn": "점검",
   "match.brief.st.todo": "아직",
   "match.brief.st.idle": "기본",
   "match.brief.allSet": "손볼 것이 없습니다. 킥오프만 남았습니다.",
@@ -286,6 +292,26 @@
     "예상했던 결과지만 쉽게 무너지지는 않았습니다.",
     "전력 차를 넘지 못했습니다. 그래도 배울 건 있었습니다.",
     "강팀다운 상대였습니다. 우리가 갈 길이 보입니다."
+  ],
+  "match.after.verdict.loss.unlucky": [
+    "내용은 우리가 앞섰는데 결과가 따라오지 않았습니다. 이런 날도 있습니다.",
+    "기회는 우리가 더 많이 만들었습니다. 마무리 하나가 아쉽습니다.",
+    "경기는 우리가 쥐고 있었습니다. 이대로만 하면 결과는 따라올 겁니다."
+  ],
+  "match.after.verdict.win.lucky": [
+    "솔직히 내용은 밀렸습니다. 그래도 이기는 법을 알았습니다.",
+    "운이 따랐습니다. 다음에도 이렇게 버틸 수 있을지는 생각해 봐야 합니다.",
+    "끝까지 버텨서 가져온 승점입니다. 경기력은 다시 손봐야 합니다."
+  ],
+  "match.after.verdict.draw.dominant": [
+    "이겼어야 할 경기입니다. 기회는 충분했습니다.",
+    "경기를 지배하고도 1점입니다. 마무리가 아쉽습니다.",
+    "내용만 보면 우리 경기였습니다. 결과가 그걸 따라오지 못했습니다."
+  ],
+  "match.after.verdict.draw.survived": [
+    "많이 밀렸는데 승점을 지켰습니다. 수비가 버텨 줬습니다.",
+    "오늘은 이 1점이 고맙습니다. 내용은 냉정하게 돌아봐야 합니다.",
+    "힘든 경기였습니다. 지지 않은 것만으로도 다행입니다."
   ],
   "match.after.pensSuffix": " · 승부차기 {a}-{b}",
   "match.after.cupWon": "{comp} 우승!{pens}",

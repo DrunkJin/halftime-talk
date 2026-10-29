@@ -4,9 +4,6 @@
   "match.morale.bigDown": "Squad morale has dropped sharply.",
   "match.morale.down": "Squad morale has dipped slightly.",
   "match.morale.flat": "The squad takes it in their stride.",
-  "match.cmp.even": "Even",
-  "match.cmp.homeEdge": "Home edge",
-  "match.cmp.awayEdge": "Away edge",
   "match.lineup.slot": "Pos",
   "match.lineup.condition": "Cond",
   "match.lineup.bench": {
@@ -71,6 +68,15 @@
   "match.cmp.attack": "Attack",
   "match.cmp.midfield": "Midfield",
   "match.cmp.defence": "Defence",
+  "match.cmp.gk": "In goal",
+  "match.cmp.say.bigUs": "{unit}: we're well ahead",
+  "match.cmp.say.us": "{unit}: we have the edge",
+  "match.cmp.say.even": "{unit}: evenly matched",
+  "match.cmp.say.them": "{unit}: they have the edge",
+  "match.cmp.say.bigThem": "{unit}: they're well ahead",
+  "match.pre.settings": "Match settings",
+  "match.pre.settingsDone": "Done",
+  "match.press.preLead": "The press are waiting before you head out.",
   "match.pre.tactics": "Tactics",
   "match.pre.analysis": "Opposition report",
   "match.pre.oppTactics": "Opposition & tactics",
@@ -337,6 +343,26 @@
     "The result we feared, but we didn't fold.",
     "We couldn't bridge the gap. Still, there are lessons in that.",
     "They played like a top side. It shows us where we need to get to."
+  ],
+  "match.after.verdict.loss.unlucky": [
+    "We were the better side and still lost. Football does that sometimes.",
+    "We created more. One finish would have changed everything.",
+    "We controlled that game. Keep playing like that and the results will come."
+  ],
+  "match.after.verdict.win.lucky": [
+    "Honestly, we were second best. But we found a way to win.",
+    "We rode our luck. We need to ask if we can survive like that again.",
+    "We hung on for those points. The performance needs work."
+  ],
+  "match.after.verdict.draw.dominant": [
+    "That's one we should have won. We had the chances.",
+    "We dominated and came away with a point. The finishing let us down.",
+    "On the balance of play it was ours. The result didn't follow."
+  ],
+  "match.after.verdict.draw.survived": [
+    "We were pushed back a lot but held on. The defence stood firm.",
+    "I'll take this point today. We need to be honest about the performance.",
+    "A tough afternoon. Not losing is something."
   ],
   "match.after.pensSuffix": " · Pens {a}-{b}",
   "match.after.cupWon": "{comp} winners!{pens}",

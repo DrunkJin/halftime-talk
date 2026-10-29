@@ -7,7 +7,7 @@
   "inbox.loading": "불러오는 중…",
   "inbox.filter.all": "전체",
   "inbox.markAllRead": "모두 읽음",
-  "inbox.when": "{season}시즌 {round}R",
+  "inbox.when": "시즌 {season} · {round}라운드",
   "inbox.title": "받은 편지함",
   "inbox.titleUnread": "받은 편지함 · 읽지 않음 {n}",
   "inbox.empty": "소식이 없습니다."

@@ -19,6 +19,22 @@ export function teamAccent(team) {
   return luminance(secondary) >= 0.05 ? secondary : '#c8ced8';
 }
 
+// 경기 한 화면에 나란히 놓을 두 팀 색: 너무 비슷하면(둘 다 빨강 등) 원정 팀은 보조 색, 그래도 비슷하면 회색
+const rgb = (hex) => {
+  const n = parseInt(hex.slice(1), 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+};
+const distance = (a, b) => Math.hypot(...rgb(a).map((v, i) => v - rgb(b)[i]));
+export function matchAccents(home, away) {
+  const a = teamAccent(home);
+  let b = teamAccent(away);
+  if (distance(a, b) < 90) {
+    const alt = away.colors.secondary;
+    b = luminance(alt) >= 0.05 && distance(a, alt) >= 90 ? alt : '#c8ced8';
+  }
+  return [a, b];
+}
+
 export function teamBadge(team, size = 24) {
   const wrap = h('span', { class: 'badge', style: { '--size': `${size}px` }, title: team.name });
   const circle = h(

@@ -69,10 +69,13 @@ function build(media, kind, situation, vars) {
   // 전용 답이 있는 질문은 그 답에서만 (질문과 답이 어긋나지 않게)
   const q = pick(s.questions);
   const pool = typeof q === 'string' ? s.answers : q.answers;
-  const answers = Object.entries(STANCES[kind]).map(([stance, label]) => {
+  const all = Object.entries(STANCES[kind]).map(([stance, label]) => {
     const options = pool.filter((a) => a.stance === stance);
     return { stance, label, text: fill(pick(options).text, vars) };
   });
+  // 보이는 답은 4개: 성향 하나를 빼서 경기마다 조합이 달라진다 (매번 같은 5지선다는 금방 지친다)
+  const drop = pick(all);
+  const answers = all.filter((a) => a !== drop);
   return { kind, situation, question: fill(typeof q === 'string' ? q : q.text, vars), answers };
 }
 

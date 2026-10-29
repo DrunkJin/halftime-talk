@@ -1,6 +1,7 @@
 // 여러 화면에서 쓰는 UI 조각
 import { ATTRIBUTE_GROUPS, POSITIONS } from '../data/schema.js';
 import { overall, positionFit, positionRating } from '../engine/ratings.js';
+import { POSITION_RATING_WEIGHTS } from '../engine/config.js';
 import { formatMoney, playerValue } from '../market/value.js';
 import { availabilityOf, conditionOf, currentTeamId, loanOf } from '../state/game.js';
 import { fitLabel, rolesFor } from '../engine/roles.js';
@@ -109,8 +110,8 @@ function moodSection(dataset, game, player, ctx) {
       'p',
       { class: 'pm-mood-facts' },
       h('span', { class: `mood-chip mood-${level.id}` }, level.label),
-      t('components.mood.expect', { role: role?.label ?? '', pct: Math.round((role?.expect ?? 0) * 100) }),
-      share != null ? t('components.mood.recent', { n: MOOD.window, pct: Math.round(share * 100) }) : t('components.mood.noRecord'),
+      t('components.mood.expect', { role: role?.label ?? '', want: t(`components.mood.want.${role?.id ?? 'backup'}`) }),
+      share != null ? t(`components.mood.recent.${share >= 0.8 ? 'lots' : share >= 0.5 ? 'some' : share > 0 ? 'few' : 'none'}`) : t('components.mood.noRecord'),
       promise ? t('components.mood.promise', { left: promise.left, starts: Math.max(0, promise.starts - promise.got) }) : '',
     );
     const options = Object.entries(MOOD.talks).map(([id, opt]) => {
@@ -185,6 +186,20 @@ export function basisText(basis) {
   return basis.marketValues ? t('components.basis.full', vars) : t('components.basis.short', vars);
 }
 
+// 직접 본 적 없는 선수: 능력치 대신 평판(범위 가운데 기준)과 그 포지션에서 알려진 강점 세 가지
+function reputation(player, view) {
+  const mid = (view.low + view.high) / 2;
+  const level = mid >= 88 ? 'world' : mid >= 82 ? 'elite' : mid >= 76 ? 'established' : mid >= 70 ? 'solid' : 'squad';
+  const keys = Object.keys(POSITION_RATING_WEIGHTS[player.position] ?? {});
+  const strengths = keys.sort((a, b) => player.attributes[b] - player.attributes[a]).slice(0, 3).map((k) => ATTRIBUTE_LABELS[k] ?? k);
+  return h(
+    'section',
+    { class: 'pm-reputation' },
+    h('p', {}, h('span', { class: 'muted' }, t('components.rep.label')), h('b', {}, t(`components.rep.${level}`))),
+    h('p', {}, h('span', { class: 'muted' }, t('components.rep.strengths')), strengths.join(' · ')),
+  );
+}
+
 // 포지션 전환으로 익히고 있는 자리 (숫자 대신 단계 말로)
 function learnedLine(player) {
   // 데이터에 이미 보조 포지션인 자리는 '새 포지션'이 아니다
@@ -208,7 +223,7 @@ export function openPlayerModal(dataset, player, ctx = null) {
     ? h(
         'p',
         { class: 'muted pm-extra' },
-        t('components.player.valueCond', { value: formatMoney(playerValue(player)), cond: conditionOf(game, player.id) }),
+        teamId === game.teamId ? t('components.player.valueCond', { value: formatMoney(playerValue(player)), cond: conditionOf(game, player.id) }) : t('components.player.value', { value: formatMoney(playerValue(player)) }),
         potential ? h('span', { class: 'pm-potential' }, t('components.player.potential', { low: potential.low, high: potential.high })) : '',
         formLine(game, player.id),
         stats ? t('components.player.stats', { apps: stats.apps ?? 0, goals: stats.goals, assists: stats.assists }) : '',
@@ -255,7 +270,7 @@ export function openPlayerModal(dataset, player, ctx = null) {
     ),
     game && ctx && teamId === game.teamId ? moodSection(dataset, game, player, ctx) : null,
     hidden && ctx ? scoutSection(dataset, game, player, ctx) : null,
-    h('div', { class: 'attr-groups' }, groups),
+    hidden ? reputation(player, view) : h('div', { class: 'attr-groups' }, groups),
     h(
       'footer',
       { class: 'pm-foot' },
@@ -263,12 +278,7 @@ export function openPlayerModal(dataset, player, ctx = null) {
       hidden ? h('span', { class: 'muted' }, t('components.player.scoutToSee')) : byPosition.map(({ pos, value }) => h('span', { class: 'pos-score' }, h('b', {}, pos), ` ${Math.round(value)}`)),
     ),
     hidden ? null : suitedRoles(player),
-    h(
-      'p',
-      { class: 'muted small-note pm-basis' },
-      t('components.player.potentialNote'),
-      basisText(dataset.basis),
-    ),
+    h('details', { class: 'pm-basis' }, h('summary', {}, t('components.player.dataNote')), h('p', { class: 'muted small-note' }, t('components.player.potentialNote'), basisText(dataset.basis))),
   );
   const closeModal = openModal(content);
   close.addEventListener('click', closeModal);

@@ -74,6 +74,7 @@
   "transfers.search.freeOnly": "무소속만",
   "transfers.search.loanOnly": "임대 가능만",
   "transfers.search.count": "{total}명 중 OVR 상위 {shown}명",
+  "transfers.legend.overBudget": "빨간 금액: 지금 예산으로는 부족",
   "transfers.scout.max": "스카우트는 동시에 {n}명까지",
   "transfers.scout.watching": "관찰 중 ({n}R)",
   "transfers.scout.button": "스카우트",

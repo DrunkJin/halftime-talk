@@ -7,7 +7,7 @@
   "inbox.loading": "Loading…",
   "inbox.filter.all": "All",
   "inbox.markAllRead": "Mark all read",
-  "inbox.when": "S{season} R{round}",
+  "inbox.when": "Season {season} · Round {round}",
   "inbox.title": "Inbox",
   "inbox.titleUnread": "Inbox · {n} unread",
   "inbox.empty": "No news."
