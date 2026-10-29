@@ -214,11 +214,20 @@ export function render(ctx) {
     fill();
   });
 
+  // 처음 온 사람: 빈 슬롯 대신 이 게임이 무엇이고 무엇부터 하는지. 저장된 게임이 있으면 이어하기가 먼저
+  const firstVisit = ctx.slots.every((s) => !s.game && !s.invalid);
+  const intro = h(
+    'div',
+    { class: 'welcome' },
+    h('h1', {}, '어느 팀의 감독이 되시겠습니까?'),
+    h('p', { class: 'welcome-lede' }, `${dataset.leagues.length}개 리그 ${dataset.allTeams.length}팀 중 한 곳을 맡습니다. 선발과 전술을 정하고, 하프타임 라커룸에서 선수들에게 말을 걸고, 이사회의 기대에 답하세요.`),
+    h('p', { class: 'muted' }, '리그를 고르고 팀 카드를 누르면 시작합니다. 강팀으로 우승을 노려도, 약팀으로 생존을 걸어도 됩니다.'),
+  );
   return h(
     'div',
     { class: 'team-select' },
-    panel('저장된 게임', slotsHost, { className: 'slots-panel' }),
-    h('div', { class: 'page-head' }, h('div', {}, h('h1', {}, '팀 선택'), leagueMeta), sort.el),
+    firstVisit ? intro : panel('저장된 게임', slotsHost, { className: 'slots-panel' }),
+    h('div', { class: 'page-head' }, h('div', {}, h(firstVisit ? 'h2' : 'h1', { class: firstVisit ? 'page-title' : '' }, '팀 선택'), leagueMeta), sort.el),
     h('div', { class: 'league-tabs' }, leagueTabs.el),
     grid,
     h('p', { class: 'muted small-note basis-note' }, basisText(ctx.dataset.basis), ' · 실제 선수 이름만 쓰며, 능력치는 기록과 시장가치로 자체 계산한 값입니다.'),

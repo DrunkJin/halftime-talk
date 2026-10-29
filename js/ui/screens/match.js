@@ -326,6 +326,7 @@ function renderPre(ctx, show) {
   return h(
     'div',
     { class: 'match-pre' },
+    firstDayCard(ctx),
     panel('매치데이 브리핑', briefing.el, { className: 'briefing-panel' }),
     panel(
       cupFx ? `${cupFixtureLabel(game, cupFx)} · 주중 경기${cupFx.neutral ? ' · 중립 경기장' : ` · ${home.stadium ?? ''}`}` : `라운드 ${game.round} · ${home.stadium ?? ''}`,
@@ -378,6 +379,38 @@ function renderPre(ctx, show) {
       h('div', { class: 'pre-grid' }, panel('홈 선발', lineupTable(ctx, home, input.home)), panel('원정 선발', lineupTable(ctx, away, input.away)), panel('같은 라운드', fixtureList(ctx, others))),
     ),
   );
+}
+
+// ── 부임 첫날: 새 게임의 첫 경기 전에만. 이사회 목표와 첫 경기까지의 3단계 (닫거나 첫 경기를 치르면 사라진다) ──
+function firstDayCard(ctx) {
+  const { dataset, game } = ctx;
+  if (game.seasonIndex !== 1 || game.round !== 1 || game.onboarding?.dismissed) return null;
+  const team = dataset.teamById.get(game.teamId);
+  const objective = game.board?.objective;
+  const ok = h('button', { class: 'btn primary', type: 'button' }, '시작하겠습니다');
+  const card = h(
+    'section',
+    { class: 'first-day', style: { '--team': teamAccent(team) } },
+    h('div', { class: 'fd-head' }, teamBadge(team, 44), h('div', {}, h('h2', {}, `${team.name} 감독 부임 첫날`), objective ? h('p', {}, `이사회가 바라는 건 `, h('b', {}, objective.label), objective.expected ? `입니다. 시즌 전 예상은 ${objective.expected}위.` : '입니다.') : null)),
+    h(
+      'ol',
+      { class: 'fd-steps' },
+      h('li', {}, h('b', {}, '브리핑'), ' 아래 체크리스트에서 \'아직\'인 항목을 확인합니다. 누르면 바로 그 화면으로 갑니다.'),
+      h('li', {}, h('b', {}, '상대와 전술'), ' 상대 분석의 코치 메모를 읽고 전술을 고릅니다. 승률 같은 정답은 없습니다. 감독의 판단입니다.'),
+      h('li', {}, h('b', {}, '킥오프'), ' 경기 중에는 \'감독 지시\'로 교체·전술을 바꾸고, 하프타임에는 라커룸에서 선수들에게 말을 겁니다.'),
+    ),
+    h('div', { class: 'fd-foot' }, h('p', { class: 'muted small-note' }, '스쿼드에서 선수를 누르면 역할과 교체를, 편지함에서 이사회·선수 소식을 볼 수 있습니다.'), ok),
+  );
+  ok.addEventListener('click', () => {
+    game.onboarding = { ...game.onboarding, dismissed: true };
+    // 카드가 이사회 목표 편지를 대신했으니 그 편지는 읽음으로
+    for (const m of game.inbox ?? []) if (m.kind === 'board.objective' && m.season === game.seasonIndex) m.read = true;
+    ctx.persist();
+    ctx.refreshTopbar();
+    card.classList.add('is-leaving');
+    setTimeout(() => card.remove(), 200);
+  });
+  return card;
 }
 
 // ── 매치데이 브리핑: 이번 경기 준비 상태를 한곳에 ──

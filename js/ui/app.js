@@ -62,7 +62,7 @@ export function createApp(root, dataset, savedSlots = []) {
       ctx.game = game;
       ctx.slots = ctx.slots.map((s) => (s.slot === game.slot ? { slot: s.slot, game, invalid: false } : s));
       buildTopbar();
-      navigate('squad');
+      navigate('match'); // 매치데이 브리핑이 첫 경기까지의 길잡이 (부임 첫날 카드도 여기)
       persist();
     },
     // Worker가 돌려준 새 game으로 바꿔 끼운다
