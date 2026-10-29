@@ -7,7 +7,8 @@
 import { AI_FORMATION_CANDIDATES, FORMATIONS, FORMATION_CELLS, slotsFromCells } from '../engine/formations.js';
 import { autoSelectBench, autoSelectLineup, bestFormation } from '../engine/lineup.js';
 import { CUP } from '../competitions/config.js';
-import { TACTICS } from '../engine/config.js';
+import { DEFAULT_PARITY, LEAGUE_PARITY, TACTICS } from '../engine/config.js';
+import { topElevenOvr } from '../market/value.js';
 import { simulateMatch } from '../engine/match.js';
 import { conditionFactor, overall, positionFit, positionRating } from '../engine/ratings.js';
 import { createRng, randomSeed } from '../engine/rng.js';
@@ -236,6 +237,29 @@ function userBench(dataset, game, available, lineup, size, factor) {
 
 const DEFAULT_BENCH = 9; // 리그가 없는 게스트 팀
 
+// 리그 경쟁 균형 (config.js LEAGUE_PARITY): 리그 평균보다 강한 팀은 조금 깎고 약한 팀은 조금 더한다.
+// 리그 평균 전력은 스쿼드가 바뀔 때만 다시 구한다
+const parityCache = new WeakMap();
+function leagueStrength(dataset, game, leagueId) {
+  const key = `${game.transfers.length}:${game.seasonIndex}:${game.world?.version ?? 0}`;
+  let c = parityCache.get(game);
+  if (!c || c.key !== key || c.dataset !== dataset) parityCache.set(game, (c = { key, dataset, mean: new Map(), team: new Map() }));
+  if (!c.mean.has(leagueId)) {
+    const ids = dataset.leagueById.get(leagueId)?.teamIds ?? [];
+    for (const id of ids) c.team.set(id, topElevenOvr(squadOf(dataset, game, id)));
+    c.mean.set(leagueId, ids.reduce((s, id) => s + c.team.get(id), 0) / Math.max(1, ids.length));
+  }
+  return c;
+}
+export function parityBoost(dataset, game, teamId, scope = 'league') {
+  const leagueId = dataset.teamById.get(teamId)?.leagueId;
+  const k = LEAGUE_PARITY[leagueId] ?? DEFAULT_PARITY;
+  if (scope !== 'league' || k === 1 || !leagueId) return 0;
+  const c = leagueStrength(dataset, game, leagueId);
+  const mean = c.mean.get(leagueId);
+  return mean ? ((k - 1) * ((c.team.get(teamId) ?? mean) - mean)) / mean : 0;
+}
+
 // 강등 후유증: 이번 시즌 내려온 팀은 초반 레이팅 배율이 깎이고 리그 진행에 따라 사라진다 (newSeason.js가 기록)
 export function hangoverBoost(dataset, game, teamId) {
   const hg = game.hangover;
@@ -276,7 +300,7 @@ export function teamInput(dataset, game, teamId, scope = 'league') {
   // 사기: 최근 흐름(모든 팀) + 인터뷰·팀 토크(사용자 팀). 사용자 팀은 전술 숙련도도 (AI 팀은 기준 수준이라 0)
   // 사용자 팀은 전술 숙련도와 이번 주 경기 준비 훈련도
   // 주장: 경기장에 있으면 리더십만큼 (AI 팀도 리더십이 가장 좋은 선발이 주장)
-  const boost = moraleBoost(moraleOf(dataset, game, teamId)) + captainBoost(lineup, mine ? game.captain : null) + hangoverBoost(dataset, game, teamId) + (mine ? familiarityBoost(familiarityOf(game)) + trainingMatchBoost(game) : 0);
+  const boost = moraleBoost(moraleOf(dataset, game, teamId)) + captainBoost(lineup, mine ? game.captain : null) + hangoverBoost(dataset, game, teamId) + parityBoost(dataset, game, teamId, scope) + (mine ? familiarityBoost(familiarityOf(game)) + trainingMatchBoost(game) : 0);
   const takers = mine ? { penaltyTakerId: game.penaltyTaker ?? null, setPieceTakerId: game.setPieceTaker ?? null } : {};
   const roles = mine ? userRoles(dataset, game) : undefined; // AI 팀은 엔진이 선수 구성에 맞게 고른다
   return { id: teamId, name: team.shortName, slots, formation, lineup, bench, condition, autoSubs, tactics, autoTactics: !mine, boost, roles, ...takers };

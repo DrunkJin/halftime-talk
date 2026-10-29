@@ -8,7 +8,7 @@ export const PROGRESSION = {
   // 대신 낙하산 지원금 = 지난 시즌 수입 × parachute
   // 강등 후유증: 내려간 시즌 초반 레이팅 배율 -hangover, 리그 진행률 hangoverFade까지 서서히 0으로 (물갈이된 선수단·가라앉은 분위기)
   // (리그 간 능력치 격차 때문에 선수를 많이 팔아도 강등 팀 선수층이 2부 상위권보다 두꺼워 독주하던 것을 누른다)
-  relegation: { topTeams: 3, gap: -2, starCount: 4, starChance: 0.9, chance: 0.65, maxLeaving: 10, feeFactor: 0.7, starterGap: 2, parachute: 0.2, hangover: 0.04, hangoverFade: 0.4 },
+  relegation: { topTeams: 3, gap: -2, starCount: 4, starChance: 0.9, chance: 0.65, maxLeaving: 10, feeFactor: 0.7, starterGap: 2, parachute: 0.2, hangover: 0.05, hangoverFade: 0.5 },
   scout: { maxAge: 23, minHeadroom: 3, width: 5 }, // 선수 정보 창의 잠재력 범위 표시
   potential: { headroom: [[17, 26], [19, 21], [21, 15], [23, 9], [25, 4], [27, 1], [99, 0]], skew: 1.4 },
   // 성장 (27세 이하): OVR 변화 = (잠재력 - OVR) × 비율 × (기본 + 출전 보너스 × 출전 비중) ± 편차

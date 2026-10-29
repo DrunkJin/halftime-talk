@@ -6,7 +6,7 @@ import { formationLabel } from '../engine/formations.js';
 // 숙련도 기준: 포메이션 + 공격 방식
 export const systemKey = (game, tactics = game.tactics) => `${formationLabel(game.formation.cells)}|${tactics?.style ?? TACTICS.defaults.style}`;
 
-// 처음 쓰는 게임(예전 세이브 포함)은 지금 쓰는 체계를 AI 팀 수준에서 시작한다
+// 처음 쓰는 게임(예전 세이브 포함)은 지금 쓰는 체계를 start에서 시작한다 (부임 직후라 AI 팀보다 조금 낮다)
 function table(game) {
   game.familiarity ??= { [systemKey(game)]: FAMILIARITY.start };
   return game.familiarity;
@@ -17,8 +17,8 @@ export const familiarityOf = (game, tactics = game.tactics) => table(game)[syste
 
 // 숙련도 → 경기 레이팅 배율 보정 (AI 팀 수준이면 0)
 export function familiarityBoost(value) {
-  const { max, aiLevel } = FAMILIARITY;
-  return value >= aiLevel ? (max * (value - aiLevel)) / (1 - aiLevel) : (-(max / 2) * (aiLevel - value)) / aiLevel;
+  const { max, under, aiLevel } = FAMILIARITY;
+  return value >= aiLevel ? (max * (value - aiLevel)) / (1 - aiLevel) : (-under * (aiLevel - value)) / aiLevel;
 }
 
 // 사용자 팀이 경기를 치른 뒤: 쓴 체계는 오르고, 나머지는 조금씩 잊는다

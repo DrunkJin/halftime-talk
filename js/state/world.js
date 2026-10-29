@@ -2,6 +2,7 @@
 // 원본 위에 덮어 쓴 '이 게임의 데이터'를 만들어 화면·Worker가 같이 쓴다.
 //
 // game.world = {
+//   id,                               이 게임 월드 고유 값 (캐시 키 — 시드·슬롯이 같은 다른 게임과 섞이지 않게)
 //   version,                          바뀔 때마다 +1 (파생 데이터 캐시 키)
 //   leagueTeams: { [리그 id]: [팀 id] }  승강 반영된 리그 구성
 //   seasons: { [리그 id]: '2027-28' }   리그별 시즌 표기
@@ -20,6 +21,7 @@ const cache = new WeakMap(); // 원본 데이터 → { key, dataset }
 // 첫 시즌에는 world가 없다: 처음 바꿀 때(시즌 넘기기·훈련 성장) 지금 데이터 기준으로 만든다
 export function ensureWorld(dataset, game) {
   return (game.world ??= {
+    id: `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
     version: 0,
     leagueTeams: Object.fromEntries(dataset.leagues.map((l) => [l.id, [...l.teamIds]])),
     seasons: {},
@@ -33,7 +35,7 @@ export function ensureWorld(dataset, game) {
 export function worldDataset(base, game) {
   const w = game?.world;
   if (!w) return base;
-  const key = `${game.seed}:${game.slot}:${w.version}`;
+  const key = `${w.id ?? `${game.seed}:${game.slot}`}:${w.version}`; // id가 없는 예전 세이브는 시드·슬롯
   const hit = cache.get(base);
   if (hit?.key === key) return hit.dataset;
 

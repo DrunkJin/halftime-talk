@@ -74,6 +74,11 @@ export const ATTACK_PROB_MAX = 0.75;
 // 큰 전력 차 완화: (공격 / 상대 수비) 비가 knee를 넘으면 넘는 만큼을 slope 배로 줄인다 (약한 쪽도 대칭).
 // 비슷한 전력끼리는 그대로, 압도적인 매치업만 덜 일방적으로 — 리그 안 전력 차가 큰 리그의 독주를 줄인다
 export const RATIO_SOFTCAP = { knee: 1.15, slope: 0.25 };
+// 리그별 경쟁 균형: 리그 경기에서 팀 레이팅 배율 += (값 - 1) × (팀 전력 - 리그 평균) / 리그 평균 (전력 = 주전 11명 OVR 평균)
+// 1보다 작으면 리그 안 전력 차를 줄인다. 데이터 능력치 분포가 실제 경쟁 구도보다 넓게 나오는 리그만 (목표: 최근 시즌 평균 우승·꼴찌 승점)
+// 우리 팀과 AI 팀에 똑같이, 대륙 대회에는 쓰지 않는다. 확인: scratchpad balance.mjs의 리그별 우승·꼴찌 승점
+export const LEAGUE_PARITY = { championship: 0.75, laliga: 0.68, bundesliga: 0.7, 'ligue-1': 0.55, 'j1-league': 0.55 };
+export const DEFAULT_PARITY = 1;
 // 공격 시도가 슈팅까지 이어질 확률 (나머지는 수비 차단)
 export const SHOT_AFTER_ATTACK = 0.78;
 
@@ -139,10 +144,13 @@ export const MATCHUPS = {
 //   (선수 구성이 맞는 팀만) — 상대를 분석해 상성을 노리는 것이 사용자 감독의 무기
 export const AI_IDENTITY = { threshold: 0.5, favoriteStyle: 'short', underdogPressing: null };
 
-// 전술 숙련도: 같은 포메이션·압박·스타일로 경기할수록 손발이 맞는다 (사용자 팀). AI 팀은 aiLevel 수준으로 본다
-//   경기 레이팅 배율 = max × (숙련도 - aiLevel) / (1 - aiLevel) (aiLevel 아래면 같은 비율로 손해, 최저 -max/2)
+// 전술 숙련도: 같은 포메이션·압박·스타일로 경기할수록 손발이 맞는다 (사용자 팀).
+// AI 팀은 늘 자기 체계를 쓰므로 경기로 닿는 수준(aiLevel = matchCap)에 익숙하다고 본다 → 꾸준히 쓰면 AI와 같고,
+// 자주 바꾸거나 새로 부임하면 손해, 전술 훈련으로 그 위를 쌓으면 이득 (예전에는 기준이 0.5라 가만히 있어도 +2.4%였다)
+//   aiLevel 이상: 경기 레이팅 배율 = max × (숙련도 - aiLevel) / (1 - aiLevel)
+//   aiLevel 아래: -under × (aiLevel - 숙련도) / aiLevel
 // 경기만으로는 matchCap까지, 그 위는 전술 훈련으로 채운다 (state/training.js)
-export const FAMILIARITY = { max: 0.04, aiLevel: 0.5, start: 0.5, gain: 0.07, decay: 0.85, matchCap: 0.8 };
+export const FAMILIARITY = { max: 0.02, under: 0.03, aiLevel: 0.8, start: 0.65, gain: 0.07, decay: 0.85, matchCap: 0.8 };
 
 // AI 감독 전술: 경기 전 전력 차(필드 레이팅 평균 차)로 멘탈리티, fromMinute 이후 스코어로 조정
 export const AI_TACTICS = {
