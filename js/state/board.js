@@ -136,6 +136,7 @@ export function moveToTeam(dataset, game, teamId, { reason = 'offer' } = {}) {
   game.bench = [];
   game.tactics = { ...TACTICS.defaults, ...aiIdentity(squadProfile(userSlots(game), game.lineup.map((id) => dataset.playerById.get(id))), 0) };
   delete game.familiarity;
+  delete game.roles;
   delete game.training;
   delete game.squadMood;
   game.morale = { adjust: 0 };

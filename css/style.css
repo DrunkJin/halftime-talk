@@ -1223,3 +1223,26 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .loan-panel { margin-top: 20px; }
 .loan-panel h3 { margin: 0 0 4px; font-size: 14px; }
 .loan-panel .small-note { margin: 0 0 10px; }
+
+/* ── 선수 역할 ── */
+.slot-role { grid-column: 1 / -1; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--fs-min); font-weight: 700; color: var(--info); line-height: 1.1; }
+.role-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px; }
+.role-btn { display: flex; justify-content: space-between; align-items: center; gap: 8px; min-height: 40px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; background: transparent; color: var(--text); font-size: 13px; text-align: left; cursor: pointer; transition: border-color var(--duration-quick) var(--ease-out), background-color var(--duration-quick) var(--ease-out); }
+.role-btn:hover, .role-btn:focus-visible { border-color: var(--info); }
+.role-btn.is-active { border-color: var(--accent); background: var(--accent-dim); font-weight: 700; }
+.role-fit { font-size: var(--fs-min); font-weight: 700; white-space: nowrap; }
+.role-fit.fit-good { color: var(--accent); }
+.role-fit.fit-ok { color: var(--text-2); }
+.role-fit.fit-bad { color: var(--warn); }
+.role-desc { margin: 8px 0 4px; min-height: 2.6em; }
+.slot-picker h4 { margin: 10px 0 6px; font-size: 12px; font-weight: 600; }
+.cmd-players { display: grid; gap: 8px; }
+.pi-row { display: grid; gap: 6px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; }
+.pi-who { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.pi-who b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+.pi-who .cond { margin-left: auto; flex: none; }
+.pi-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); gap: 6px 10px; }
+.pi-controls label { display: grid; gap: 2px; font-size: var(--fs-min); min-width: 0; }
+.pi-controls .select { width: 100%; min-width: 0; }
+.pm-roles { margin: -4px 0 0; padding: 0 18px 10px; font-size: 12px; }
+.btn.is-blocked { opacity: 0.5; }

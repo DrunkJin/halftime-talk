@@ -6,8 +6,9 @@ import { formAverage, formOf, ratingClass, seasonRating } from '../../state/form
 import { POSITIONS } from '../../data/schema.js';
 import { FORMATION_CELLS, FORMATION_IDS, GK_ROW, GRID_COLUMNS, GRID_ROWS, formationName, positionOfCell } from '../../engine/formations.js';
 import { autoSelectLineup } from '../../engine/lineup.js';
+import { defaultRole, fitLabel, roleOf, rolesFor, slotMods } from '../../engine/roles.js';
 import { computeTeamRatings, conditionFactor, overall, positionFit, positionRating } from '../../engine/ratings.js';
-import { availabilityOf, conditionOf, fixLineup, leagueOf, lineupProblems, previewUserBench, squadOf, userSlots } from '../../state/game.js';
+import { availabilityOf, conditionOf, fixLineup, leagueOf, lineupProblems, previewUserBench, squadOf, userRoles, userSlots } from '../../state/game.js';
 import { condClass, conditionMeter, openPlayerModal, panel, ratingBar, segmented, statusChip, tooltipGroup } from '../components.js';
 import { h } from '../dom.js';
 import { ATTRIBUTE_LABELS, POSITION_NAMES, attrClass, fmt1, shortName } from '../format.js';
@@ -154,6 +155,14 @@ export function render(ctx) {
     changed();
   }
 
+  // 역할: 자리(슬롯)에 붙는다. 처음 바꿀 때 코치진 추천 전체를 세이브에 고정
+  const roleAt = (i) => roleOf(userSlots(game)[i], userRoles(dataset, game)[i]);
+  function setRoleAt(i, roleId) {
+    game.roles = [...userRoles(dataset, game)];
+    game.roles[i] = roleId;
+    changed([i]);
+  }
+
   // 슬롯을 빈 칸으로 옮긴다 → 그 칸의 포지션이 슬롯 포지션이 된다
   function moveSlotToCell(slotIndex, cell) {
     if (game.formation.cells[slotIndex][1] === GK_ROW) {
@@ -168,8 +177,10 @@ export function render(ctx) {
     const cells = FORMATION_CELLS[id].map((c) => [...c]);
     if (sameCells(cells, game.formation.cells)) return;
     // 지금 선발 11명을 유지한 채 새 포메이션 슬롯에 다시 배치
+    const prevRoles = new Map(game.lineup.map((id, i) => [id, { pos: userSlots(game)[i], role: userRoles(dataset, game)[i] }]));
     game.lineup = autoSelectLineup(lineupPlayers(), cells.map(positionOfCell), factorOf).map((p) => p.id);
     game.formation.cells = cells;
+    if (game.roles) game.roles = game.lineup.map((id, i) => (prevRoles.get(id)?.pos === userSlots(game)[i] ? prevRoles.get(id).role : null));
     changed(game.lineup.map((_, i) => i));
   }
 
@@ -237,13 +248,31 @@ export function render(ctx) {
       showToast('옮길 빈 칸을 누르세요 (다시 누르면 취소)');
     });
     const cancel = h('button', { type: 'button', class: 'btn ghost' }, '닫기');
+    // 역할: 누르면 바로 바뀐다. 적합도는 지금 이 자리 선수 기준 (숫자 없이 단계로)
+    const roleHost = h('div', { class: 'role-picker' });
+    const renderRoles = () => {
+      const now = roleAt(i);
+      const buttons = rolesFor(pos).map((r) => {
+        const fl = fitLabel(current, pos, r);
+        const b = h('button', { type: 'button', class: `role-btn${r.id === now?.id ? ' is-active' : ''}`, 'aria-pressed': String(r.id === now?.id) }, h('span', {}, r.label), fl ? h('small', { class: `role-fit ${fl.cls}` }, fl.label) : h('small', { class: 'role-fit muted' }, '기본'));
+        b.addEventListener('click', () => {
+          setRoleAt(i, r.id);
+          renderRoles();
+        });
+        return b;
+      });
+      roleHost.replaceChildren(h('div', { class: 'role-list' }, buttons), h('p', { class: 'role-desc muted small-note' }, now?.desc ?? ''));
+    };
+    renderRoles();
     close = openModal(
       h(
         'div',
         { class: 'confirm-modal slot-picker' },
-        h('h2', {}, `${pos} ${current.name} 빼고 넣을 선수`),
+        h('h2', {}, `${pos} ${current.name}`),
+        rolesFor(pos).length > 1 ? [h('h3', {}, '역할'), roleHost] : null,
+        h('h3', {}, '대신 넣을 선수'),
         h('p', { class: 'muted small-note' }, `오른쪽 숫자는 ${pos} 자리에서 낼 능력(컨디션 반영)입니다. 누르면 바로 바뀌고, 빠진 선수는 후보로 내려갑니다.`),
-        h('h3', {}, `후보 ${subs.length}명`),
+        h('h4', { class: 'muted' }, `후보 ${subs.length}명`),
         h('div', { class: 'pick-list' }, subRows),
         h('details', { class: 'pick-swap' }, h('summary', {}, '선발끼리 자리 바꾸기'), h('div', { class: 'pick-list' }, swapRows)),
         h('div', { class: 'confirm-actions' }, info, move, cancel),
@@ -347,11 +376,12 @@ export function render(ctx) {
           type: 'button',
           class: `slot ${fitClass(fit)}${selected ? ' is-selected' : ''}${flash.includes(i) ? ' is-flash' : ''}${avail.available ? '' : ' is-unavailable'}`,
           style: { left: `${COL_X[col]}%`, top: `${ROW_Y[row]}%` },
-          title: `${POSITION_NAMES[pos]} · ${p.name} · 컨디션 ${cond}%${fit < 1 ? ` · 적합도 ${Math.round(fit * 100)}%` : ''}${avail.available ? '' : ` · ${avail.label}`}`,
+          title: `${POSITION_NAMES[pos]} · ${roleAt(i)?.label ?? ''} · ${p.name} · 컨디션 ${cond}%${fit < 1 ? ` · 적합도 ${Math.round(fit * 100)}%` : ''}${avail.available ? '' : ` · ${avail.label}`}`,
         },
         h('span', { class: 'slot-pos' }, pos),
         h('span', { class: `slot-ovr ${attrClass(value)}` }, value),
         h('span', { class: 'slot-name' }, shortName(p.name)),
+        roleAt(i)?.short ? h('span', { class: 'slot-role' }, roleAt(i).short) : null,
         h('span', { class: `slot-cond ${condClass(cond)}` }, h('span', { style: { width: `${cond}%` } })),
         avail.available ? null : h('span', { class: `slot-flag ${avail.reason}` }, avail.reason === 'injury' ? '+' : '!'),
       );
@@ -499,7 +529,7 @@ export function render(ctx) {
   }
 
   function updateRatings() {
-    const r = computeTeamRatings(userSlots(game), lineupPlayers(), factorOf);
+    const r = computeTeamRatings(userSlots(game), lineupPlayers(), factorOf, slotMods(userSlots(game), lineupPlayers(), userRoles(dataset, game)));
     for (const [key] of UNITS) {
       setDigits(ratingRows[key].digits, fmt1(r[key]));
       const pct = Math.max(0, Math.min(100, ((r[key] - 55) / 35) * 100));

@@ -8,7 +8,9 @@
 //   getMatchResult(m)
 //
 // 팀 입력: { id, name, formation: '4-3-3' | slots: ['GK', ...], lineup: Player[11], bench?: Player[], condition?: { [id]: 0~100 },
-//            autoSubs?: boolean, tactics?: { mentality, pressing, style }, autoTactics?: boolean, boost?: number }
+//            autoSubs?: boolean, tactics?: { mentality, pressing, style }, autoTactics?: boolean, boost?: number,
+//            roles?: [역할 id (슬롯 순서)], instructions?: { [선수 id]: { shooting?, runs?, mark? } } }
+//   roles가 없으면 AI처럼 선수 능력에 뚜렷하게 맞는 역할을 스스로 고른다 (roles.js)
 //   lineup[i]가 i번째 슬롯에 선다. bench가 없으면 교체 없이 진행
 //   autoSubs: false면 체력 교체를 하지 않는다 (사용자가 makeSubstitution으로 직접). 부상 교체는 항상 자동
 //   autoTactics: true(기본)면 AI 감독처럼 경기 전 전력 차·60분 이후 스코어로 멘탈리티를 정한다. 사용자 팀은 false
@@ -22,6 +24,7 @@ import { autoSelectLineup } from './lineup.js';
 import { computeTeamRatings, conditionFactor, positionFit, positionRating, weightedSkill } from './ratings.js';
 import { createRng, randomSeed } from './rng.js';
 import { aiIdentity, fitScale, matchupFactors, squadProfile } from './tactics.js';
+import { aiRoleIds, roleMix, roleOf, slotMods } from './roles.js';
 
 const opponentOf = (side) => (side === 'home' ? 'away' : 'home');
 const clamp = (v, [min, max]) => Math.min(max, Math.max(min, v));
@@ -67,6 +70,10 @@ function initTeam(team, boost) {
     profile: null, // 선수 구성 프로필 (tactics.js)
     mx: null, // 상성 배율
     baseMentality: null, // AI가 경기 전에 정한 멘탈리티 (스코어 조정 후 돌아갈 값)
+    roles: team.roles ? [...team.roles] : null, // 슬롯별 역할 id
+    autoRoles: !team.roles, // 역할을 정해 오지 않았으면 선수 구성에 맞게 스스로 (교체·포메이션 변경 때도)
+    instructions: structuredClone(team.instructions ?? {}), // 선수별 개별 지시
+    opp: null, // 상대 팀 (전담 마크 효과)
   };
   recalc(t);
   return t;
@@ -110,7 +117,10 @@ const aggregateOf = (state, side) => state.score[side] + (state.knockout?.prior[
 // 선발·컨디션이 바뀌면 다시 계산하는 값들
 function recalc(t) {
   const factorOf = factorFor(t);
-  const base = computeTeamRatings(t.slots, t.lineup, factorOf);
+  if (t.autoRoles) t.roles = aiRoleIds(t.slots, t.lineup);
+  t.mods = slotMods(t.slots, t.lineup, t.roles, t.instructions); // 역할 + 개별 지시
+  t.mix = roleMix(t.mods);
+  const base = computeTeamRatings(t.slots, t.lineup, factorOf, t.mods);
   const mult = 1 + t.boost;
   const mx = t.mx ?? { attack: 1, midfield: 1, defense: 1, attempts: 1, bigChance: 1, header: 1 };
   const tf = tacticFactors(t.tactics, t.profile);
@@ -128,9 +138,13 @@ function recalc(t) {
 
   const skillOf = (weights, i) => {
     const p = t.lineup[i];
-    return p ? weightedSkill(p.attributes, weights) * positionFit(p, t.slots[i]) * factorOf(p) : 0;
+    return p ? weightedSkill(p.attributes, weights) * positionFit(p, t.slots[i]) * factorOf(p) * t.mods[i].fit : 0;
   };
   const pickWeight = (slotWeights, skill, i) => (t.lineup[i] ? slotWeights[t.slots[i]] * (skill / C.SKILL_REF) ** C.PLAYER_PICK_SKILL_EXP : 0);
+  // 상대가 전담 마크를 붙인 우리 선수 (마크하는 선수가 경기장에 있을 때만)
+  const marked = new Set();
+  for (const [markerId, ins] of Object.entries(t.opp?.instructions ?? {})) if (ins.mark && t.opp.lineup.some((q) => q?.id === markerId)) marked.add(ins.mark);
+  const markOf = (i, k) => (marked.has(t.lineup[i]?.id) ? C.INSTRUCTIONS.mark[k] : 1);
 
   t.shooterSkill = {};
   t.shooterWeights = {};
@@ -138,15 +152,15 @@ function recalc(t) {
   for (const key of SHOT_TYPE_KEYS) {
     const type = C.SHOT_TYPES[key];
     t.shooterSkill[key] = t.slots.map((_, i) => skillOf(type.shooterSkill, i));
-    t.shooterWeights[key] = t.slots.map((_, i) => pickWeight(C.SHOOTER_SLOT_WEIGHTS[key], t.shooterSkill[key][i], i));
-    t.assistWeights[key] = t.slots.map((_, i) => pickWeight(C.ASSIST_SLOT_WEIGHTS[key], skillOf(type.assistSkill, i), i));
+    t.shooterWeights[key] = t.slots.map((_, i) => pickWeight(C.SHOOTER_SLOT_WEIGHTS[key], t.shooterSkill[key][i], i) * t.mods[i].shoot[key] * markOf(i, 'targetShoot'));
+    t.assistWeights[key] = t.slots.map((_, i) => pickWeight(C.ASSIST_SLOT_WEIGHTS[key], skillOf(type.assistSkill, i), i) * t.mods[i].assist[key] * markOf(i, 'targetAssist'));
   }
   t.defenderWeights = t.slots.map((_, i) => pickWeight(C.UNIT_SLOT_WEIGHTS.defense, skillOf(C.UNIT_SKILL_WEIGHTS.defense, i), i));
   t.cardWeights = t.slots.map((pos, i) => {
     const p = t.lineup[i];
     if (!p) return 0;
     const booked = t.yellow.has(p.id) ? C.CARDS.bookedFactor : 1;
-    return C.CARDS.slotWeights[pos] * (1 + C.CARDS.composureEffect * (C.SKILL_REF - p.attributes.composure)) * booked;
+    return C.CARDS.slotWeights[pos] * (1 + C.CARDS.composureEffect * (C.SKILL_REF - p.attributes.composure)) * booked * t.mods[i].cards;
   });
   t.gk = t.lineup[t.slots.indexOf('GK')];
 }
@@ -225,6 +239,8 @@ export function createMatch({ home, away, homeAdvantage = C.HOME_ADVANTAGE, seed
     extraTime: false,
     penalties: null,
   };
+  state.teams.home.opp = state.teams.away;
+  state.teams.away.opp = state.teams.home;
   state.levelRef = levelReference(state.teams);
   for (const t of Object.values(state.teams)) t.profile = squadProfile(t.slots, t.lineup);
   for (const side of ['home', 'away']) aiPreMatchTactics(state, side);
@@ -418,7 +434,7 @@ function drainCondition(t, extraTime) {
   t.lineup.forEach((p, i) => {
     if (!p) return;
     t.slotOf.set(p.id, t.slots[i]);
-    let drain = C.CONDITION.drainPerMinute * t.tf.drain * (extraTime ? C.EXTRA_TIME.drainFactor : 1) * (1 + C.CONDITION.staminaEffect * (C.SKILL_REF - p.attributes.stamina));
+    let drain = C.CONDITION.drainPerMinute * t.tf.drain * t.mods[i].drain * (extraTime ? C.EXTRA_TIME.drainFactor : 1) * (1 + C.CONDITION.staminaEffect * (C.SKILL_REF - p.attributes.stamina));
     if (t.slots[i] === 'GK') drain *= C.CONDITION.gkDrainFactor;
     t.condition.set(p.id, Math.max(C.CONDITION.min, t.condition.get(p.id) - drain));
     t.minutes.set(p.id, (t.minutes.get(p.id) ?? 0) + 1);
@@ -448,8 +464,8 @@ function fatigueSubs(state, side) {
   if (made > 0) recalc(t);
 }
 
-// 슈팅 종류 비중 배율: 결정적 찬스는 압도할수록·전술로, 헤더는 상성(크로스 vs 내려앉기)으로
-const shotTypeFactor = (t, k, ratio) => (k === 'big' ? ratio ** C.BIG_CHANCE_EXP * t.tf.bigChance : k === 'header' ? t.tf.header * (t.spFactor ?? 1) : 1);
+// 슈팅 종류 비중 배율: 결정적 찬스는 압도할수록·전술로, 헤더는 상성(크로스 vs 내려앉기)으로, 그리고 역할 구성(타깃맨·윙백 등)으로
+const shotTypeFactor = (t, k, ratio) => (k === 'big' ? ratio ** C.BIG_CHANCE_EXP * t.tf.bigChance : k === 'header' ? t.tf.header * (t.spFactor ?? 1) : 1) * t.mix[k];
 
 // 전담 키커: 지정한 선수가 경기장에 있으면 그 선수, 아니면 그 능력이 가장 좋은 선수
 const onPitch = (t, id) => (id ? t.lineup.find((p) => p?.id === id) ?? null : null);
@@ -726,6 +742,43 @@ export function setTactics(state, side, partial) {
   return { ok: true, message: `전술 변경: ${changes.join(', ')}` };
 }
 
+// 경기 중 역할 변경: slotIndex 자리의 역할 → { ok, message }
+export function setRole(state, side, slotIndex, roleId) {
+  const t = state.teams[side];
+  if (state.finished) return { ok: false, message: '경기가 끝났습니다.' };
+  const pos = t.slots[slotIndex];
+  const role = roleOf(pos, roleId);
+  if (!role || role.id !== roleId) return { ok: false, message: '그 자리에 없는 역할입니다.' };
+  t.roles = t.slots.map((_, i) => t.mods[i].role?.id ?? null);
+  t.autoRoles = false;
+  if (t.roles[slotIndex] === roleId) return { ok: true, message: '바뀐 역할이 없습니다.' };
+  t.roles[slotIndex] = roleId;
+  refreshMatchups(state);
+  const p = t.lineup[slotIndex];
+  comment(state, 'tactic', side, { change: `${p?.name ?? pos} — ${role.label}` });
+  return { ok: true, message: `${p?.name ?? pos}: ${role.label}` };
+}
+
+// 경기 중 개별 지시: kind 'shooting' | 'runs' | 'mark', value는 선택지 id (mark는 상대 선수 id), null이면 해제 → { ok, message }
+export function setInstruction(state, side, playerId, kind, value) {
+  const t = state.teams[side];
+  if (state.finished) return { ok: false, message: '경기가 끝났습니다.' };
+  const p = t.lineup.find((q) => q?.id === playerId);
+  if (!p) return { ok: false, message: '경기장에 없는 선수입니다.' };
+  if (kind === 'mark') {
+    if (value && !t.opp.lineup.some((q) => q?.id === value)) return { ok: false, message: '상대 경기장에 없는 선수입니다.' };
+    // 한 상대 선수에게는 한 명만 붙인다
+    if (value) for (const ins of Object.values(t.instructions)) if (ins.mark === value) delete ins.mark;
+  } else if (value && !C.INSTRUCTIONS[kind]?.[value]) return { ok: false, message: '알 수 없는 지시입니다.' };
+  const ins = (t.instructions[playerId] ??= {});
+  if (value) ins[kind] = value;
+  else delete ins[kind];
+  refreshMatchups(state);
+  const label = kind === 'mark' ? (value ? `${C.INSTRUCTIONS.mark.label}: ${t.opp.roster.get(value)?.name ?? ''}` : '전담 마크 해제') : value ? C.INSTRUCTIONS[kind][value].label : '지시 해제';
+  comment(state, 'tactic', side, { change: `${p.name} ${label}` });
+  return { ok: true, message: `${p.name}: ${label}` };
+}
+
 // 경기 중 포메이션 변경: 지금 뛰는 선수를 새 자리에 가장 잘 맞게 다시 배치한다.
 // 퇴장으로 빈 자리 수는 그대로 (가장 덜 아까운 자리를 비운다). → { ok, message }
 export function changeFormation(state, side, formationOrSlots) {
@@ -773,6 +826,8 @@ export function teamSnapshot(state, side) {
     tactics: { ...t.tactics },
     formation: t.formation,
     ratings: { ...t.ratings },
+    roles: t.mods.map((m) => m.role?.id ?? null),
+    instructions: structuredClone(t.instructions),
   };
 }
 
@@ -910,14 +965,16 @@ export function previewMatch(input, side = 'home') {
   for (const t of Object.values(state.teams)) {
     t.lineup.forEach((p, i) => {
       if (!p) return;
-      let drain = C.CONDITION.drainPerMinute * t.tf.drain * (1 + C.CONDITION.staminaEffect * (C.SKILL_REF - p.attributes.stamina));
+      let drain = C.CONDITION.drainPerMinute * t.tf.drain * t.mods[i].drain * (1 + C.CONDITION.staminaEffect * (C.SKILL_REF - p.attributes.stamina));
       if (t.slots[i] === 'GK') drain *= C.CONDITION.gkDrainFactor;
       t.condition.set(p.id, Math.max(C.CONDITION.min, t.condition.get(p.id) - drain * PREVIEW_LATE_MINUTE));
     });
   }
   refreshMatchups(state);
   const xg = (s) => (early[s] + expectedGoals(state, s)) / 2;
-  const team = (s) => ({ tactics: { ...state.teams[s].tactics }, profile: state.teams[s].profile, xg: xg(s), ratings: ratings[s] });
+  // 기본이 아닌 역할을 맡은 선수 (상대 분석용)
+  const keyRoles = (t) => t.lineup.map((p, i) => (p && t.mods[i].role?.skill ? { pos: t.slots[i], name: p.name, role: t.mods[i].role } : null)).filter(Boolean);
+  const team = (s) => ({ tactics: { ...state.teams[s].tactics }, profile: state.teams[s].profile, xg: xg(s), ratings: ratings[s], roles: keyRoles(state.teams[s]) });
   const home = team('home');
   const away = team('away');
   const mine = side === 'home' ? home : away;

@@ -4,8 +4,9 @@ import { loadBoardText } from '../../media/boardText.js';
 import { pushNews } from '../../state/inbox.js';
 import { boardLine, mustChooseClub, sackedPanel, seasonBoardPanel } from '../board.js';
 import { FORMATION_CELLS, formationLabel, positionOfCell } from '../../engine/formations.js';
-import { HALF_TIME_MINUTE, HOME_ADVANTAGE, MATCH_MINUTES } from '../../engine/config.js';
-import { changeFormation, createMatch, getMatchResult, makeSubstitution, playMinute, playerRatings, setAutoSubs, setTactics, teamSnapshot } from '../../engine/match.js';
+import { HALF_TIME_MINUTE, HOME_ADVANTAGE, INSTRUCTIONS, MATCH_MINUTES } from '../../engine/config.js';
+import { aiRoleIds, fitLabel, roleOf, rolesFor, slotMods } from '../../engine/roles.js';
+import { changeFormation, createMatch, getMatchResult, makeSubstitution, playMinute, playerRatings, setAutoSubs, setInstruction, setRole, setTactics, teamSnapshot } from '../../engine/match.js';
 import { ratingClass } from '../../state/form.js';
 import { computeTeamRatings, conditionFactor, overall, positionFit, positionRating } from '../../engine/ratings.js';
 import { computeTable } from '../../league/table.js';
@@ -119,7 +120,7 @@ function compareRow(label, a, b) {
   );
 }
 
-const inputRatings = (input) => computeTeamRatings(input.slots, input.lineup, (p) => conditionFactor(input.condition[p.id]));
+const inputRatings = (input) => computeTeamRatings(input.slots, input.lineup, (p) => conditionFactor(input.condition[p.id]), slotMods(input.slots, input.lineup, input.roles ?? aiRoleIds(input.slots, input.lineup)));
 
 function lineupTable(ctx, team, input) {
   const { game } = ctx;
@@ -743,6 +744,7 @@ function renderLive(ctx, show) {
         { id: 'subs', label: '교체' },
         { id: 'formation', label: '포메이션' },
         { id: 'tactics', label: '전술' },
+        { id: 'players', label: '선수 지시' },
       ],
       tab,
       (id) => {
@@ -837,11 +839,60 @@ function renderLive(ctx, show) {
       return h('div', {}, tacticsPicker(draft, (t) => (draft = t)), h('div', { class: 'btn-row end' }, apply));
     }
 
+    // 선수 지시: 자리별 역할 + 선수별 개별 지시 (이 경기 동안만). 고르면 바로 적용
+    function playersBody() {
+      const snap = teamSnapshot(state, mySide);
+      const opp = teamSnapshot(state, mySide === 'home' ? 'away' : 'home');
+      const select = (label, options, value, onChange) => {
+        const s = h('select', { class: 'select small', 'aria-label': label }, options.map((o) => h('option', { value: o.id, selected: o.id === value || null }, o.label)));
+        s.addEventListener('change', () => onChange(s.value || null));
+        return s;
+      };
+      const choices = (kind) => [{ id: '', label: '기본' }, ...Object.entries(INSTRUCTIONS[kind]).map(([id, o]) => ({ id, label: o.label }))];
+      // 전담 마크 대상: 상대 경기장 선수 (역할이 있으면 함께)
+      const ORDER = ['ST', 'AM', 'LW', 'RW', 'CM', 'DM', 'LB', 'RB', 'CB'];
+      const targets = [
+        { id: '', label: '없음' },
+        ...opp.lineup
+          .map((q, i) => (q && opp.slots[i] !== 'GK' ? { id: q.id, pos: opp.slots[i], label: `${opp.slots[i]} ${q.name}${roleOf(opp.slots[i], opp.roles[i])?.short ? ` (${roleOf(opp.slots[i], opp.roles[i]).label})` : ''}` } : null))
+          .filter(Boolean)
+          .sort((a, b) => ORDER.indexOf(a.pos) - ORDER.indexOf(b.pos)), // 공격진부터
+      ];
+      const rows = snap.lineup.map((p, i) => {
+        if (!p) return null;
+        const pos = snap.slots[i];
+        const ins = snap.instructions[p.id] ?? {};
+        const roles = rolesFor(pos).map((r) => {
+          const fl = fitLabel(p, pos, r);
+          return { id: r.id, label: fl ? `${r.label} · ${fl.label}` : r.label };
+        });
+        return h(
+          'div',
+          { class: 'pi-row' },
+          h('div', { class: 'pi-who' }, h('span', { class: 'slot-tag' }, pos), h('b', {}, p.name), conditionMeter(snap.condition(p.id))),
+          h(
+            'div',
+            { class: 'pi-controls' },
+            roles.length > 1 ? h('label', {}, h('span', { class: 'muted' }, '역할'), select(`${p.name} 역할`, roles, snap.roles[i], (v) => applied(setRole(state, mySide, i, v)))) : null,
+            pos === 'GK' ? null : h('label', {}, h('span', { class: 'muted' }, '슈팅'), select(`${p.name} 슈팅`, choices('shooting'), ins.shooting ?? '', (v) => applied(setInstruction(state, mySide, p.id, 'shooting', v)))),
+            pos === 'GK' ? null : h('label', {}, h('span', { class: 'muted' }, '움직임'), select(`${p.name} 움직임`, choices('runs'), ins.runs ?? '', (v) => applied(setInstruction(state, mySide, p.id, 'runs', v)))),
+            pos === 'GK' ? null : h('label', {}, h('span', { class: 'muted' }, '전담 마크'), select(`${p.name} 전담 마크`, targets, ins.mark ?? '', (v) => applied(setInstruction(state, mySide, p.id, 'mark', v)))),
+          ),
+        );
+      });
+      return h(
+        'div',
+        { class: 'cmd-players' },
+        h('p', { class: 'muted small-note' }, '고르면 바로 적용됩니다. 역할은 자리에 남고(교체로 들어온 선수가 이어 받음), 개별 지시는 그 선수에게만 이번 경기 동안 적용됩니다. 전담 마크는 상대 핵심 선수를 묶는 대신 카드와 체력 부담이 늘어납니다.'),
+        rows.filter(Boolean),
+      );
+    }
+
     function renderBody() {
       const snap = teamSnapshot(state, mySide);
       title.textContent = `감독 지시 · ${state.minute}분 · ${home.shortName} ${state.score.home}-${state.score.away} ${away.shortName}`;
       tabs.el.querySelector('[data-id="subs"]').textContent = `교체 (${snap.subsLeft}장)`;
-      body.replaceChildren(tab === 'subs' ? subsBody() : tab === 'formation' ? formationBody() : tacticsBody());
+      body.replaceChildren(tab === 'subs' ? subsBody() : tab === 'formation' ? formationBody() : tab === 'players' ? playersBody() : tacticsBody());
     }
 
     renderBody();

@@ -323,7 +323,9 @@ export function render(ctx) {
           // 임대: 원소속이 내줄 만한 선수만 버튼을 보인다
           let loan = null;
           if (teamId && isLoanable(dataset, game, p, teamId)) {
-            loan = h('button', { class: 'btn small ghost', type: 'button', disabled: open ? null : true, title: open ? '시즌 끝까지 임대' : '이적시장이 닫혀 있습니다' }, '임대');
+            // 조건이 안 맞으면(주급 한도 등) 흐리게 — 눌러서 이유와 조건은 볼 수 있다
+            const t = open ? loanInTerms(dataset, game, p) : null;
+            loan = h('button', { class: `btn small ghost${t && !t.ok ? ' is-blocked' : ''}`, type: 'button', disabled: open ? null : true, title: !open ? '이적시장이 닫혀 있습니다' : t.ok ? '시즌 끝까지 임대' : t.reason }, '임대');
             loan.addEventListener('click', () => loanInModal(p));
           }
           const name = h('button', { class: 'link', type: 'button' }, p.name);

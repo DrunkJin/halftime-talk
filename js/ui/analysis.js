@@ -33,8 +33,18 @@ function coachMemos(mine, opp) {
   if (strong.includes('speed')) memos.push({ kind: 'warn', text: '상대 공격진이 빠릅니다. 라인을 올리면 위험할 수 있습니다.' });
   if (strong.includes('aerial')) memos.push({ kind: 'warn', text: '상대는 크로스와 제공권이 강점입니다.' });
   if (strong.includes('energy')) memos.push({ kind: 'warn', text: '상대는 많이 뛰는 팀입니다. 후반 체력 싸움이 될 수 있습니다.' });
+  // 상대의 눈에 띄는 역할: 무엇을 경계할지 (어떻게 막을지는 감독이 고른다)
+  const role = (id) => opp.roles?.find((r) => r.role.id === id);
+  const tm = role('targetMan');
+  if (tm) memos.push({ kind: 'warn', text: `상대 ${tm.name}은(는) 타깃맨입니다. 크로스와 공중볼 경합이 많아질 겁니다.` });
+  const dlp = role('deepLyingPlaymaker') ?? role('advancedPlaymaker');
+  if (dlp) memos.push({ kind: 'chance', text: `상대 공격은 ${dlp.name}의 발끝에서 시작됩니다. 이 선수를 묶으면 흐름이 끊길 수 있습니다.` });
+  const wb = opp.roles?.filter((r) => r.role.id === 'wingBack') ?? [];
+  if (wb.length) memos.push({ kind: 'chance', text: `상대 ${wb.map((r) => r.name).join('·')}이(가) 윙백으로 높이 오릅니다. 그 뒤 측면 공간이 빕니다.` });
+  const finisher = role('poacher') ?? role('shadowStriker') ?? role('insideForward');
+  if (finisher) memos.push({ kind: 'warn', text: `상대 ${finisher.name}은(는) ${finisher.role.label}로 박스 안 마무리를 노립니다.` });
   if (myStrong.length) memos.push({ kind: 'self', text: `우리 쪽 강점: ${myStrong.map((k) => PROFILE_LABELS[k]).join(', ')}.` });
-  return memos.slice(0, 5);
+  return memos.slice(0, 6);
 }
 
 // game: 사용자 게임, makeInput(game) → 엔진 경기 입력, mySide: 'home' | 'away'
@@ -61,6 +71,7 @@ export function analysisPanel(game, makeInput, mySide) {
               traits(opp.profile, -1).length ? h('span', {}, h('span', { class: 'muted' }, '약점 '), label(traits(opp.profile, -1))) : null,
             )
           : null,
+        opp.roles?.length ? h('p', { class: 'an-roles' }, h('span', { class: 'muted' }, '눈에 띄는 역할 '), opp.roles.map((r) => `${r.pos} ${r.name} (${r.role.label})`).join(', ')) : null,
       ].filter(Boolean),
     );
     memos.replaceChildren(...coachMemos(mine, opp).map((m) => h('li', { class: `memo-${m.kind}` }, m.text)));

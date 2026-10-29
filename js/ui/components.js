@@ -3,6 +3,7 @@ import { ATTRIBUTE_GROUPS, POSITIONS } from '../data/schema.js';
 import { overall, positionFit, positionRating } from '../engine/ratings.js';
 import { formatMoney, playerValue } from '../market/value.js';
 import { availabilityOf, conditionOf, currentTeamId, loanOf } from '../state/game.js';
+import { fitLabel, rolesFor } from '../engine/roles.js';
 import { scoutedPotential } from '../state/newSeason.js';
 import { formOf, ratingClass, seasonRating } from '../state/form.js';
 import { canTalk, isRequesting, levelOf, moodOf, promiseOf, rolesOf, shareOf, talk } from '../state/squadMood.js';
@@ -71,6 +72,13 @@ export function conditionMeter(c) {
 export function ratingBar(value, { max = 100, min = 40 } = {}) {
   const pct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
   return h('span', { class: 'bar' }, h('span', { class: 'bar-fill', style: { width: `${pct}%` } }));
+}
+
+// 주 포지션에서 능력치가 잘 맞는 역할 (없으면 줄을 그리지 않는다)
+function suitedRoles(player) {
+  const roles = rolesFor(player.position).filter((r) => fitLabel(player, player.position, r)?.cls === 'fit-good');
+  if (!roles.length) return null;
+  return h('p', { class: 'pm-roles' }, h('span', { class: 'muted' }, '어울리는 역할 '), roles.map((r) => r.label).join(', '));
 }
 
 // 임대 중이면 원소속·임대 구단 한 줄
@@ -240,6 +248,7 @@ export function openPlayerModal(dataset, player, ctx = null) {
       h('span', { class: 'muted' }, '포지션별 능력'),
       hidden ? h('span', { class: 'muted' }, '스카우트하면 볼 수 있습니다') : byPosition.map(({ pos, value }) => h('span', { class: 'pos-score' }, h('b', {}, pos), ` ${Math.round(value)}`)),
     ),
+    hidden ? null : suitedRoles(player),
     h(
       'p',
       { class: 'muted small-note pm-basis' },

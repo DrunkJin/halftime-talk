@@ -69,17 +69,18 @@ const REFERENCE_SUMS = Object.fromEntries(
 // formation: 포메이션 ID 또는 슬롯 배열. lineup[i]가 i번째 슬롯에 선다.
 // lineup[i]가 null이면 빈 슬롯(퇴장 등) — 가중치 합이 줄어 그 유닛이 약해진다.
 // factorOf(player): 컨디션 등 능력 배율 (기본 1)
-export function computeTeamRatings(formation, lineup, factorOf = () => 1) {
+// mods[i]: 역할·개별 지시 효과 (roles.js slotMods) — 자리 가중치 증감(unit)과 역할 적합도(fit)
+export function computeTeamRatings(formation, lineup, factorOf = () => 1, mods = null) {
   const slots = resolveSlots(formation);
   const ratings = {};
   for (const unit of FIELD_UNITS) {
     let sum = 0;
     let total = 0;
     slots.forEach((pos, i) => {
-      const w = UNIT_SLOT_WEIGHTS[unit][pos];
+      const w = Math.max(0, UNIT_SLOT_WEIGHTS[unit][pos] + (mods?.[i]?.unit[unit] ?? 0));
       const p = lineup[i];
       if (!w || !p) return;
-      sum += w * weightedSkill(p.attributes, UNIT_SKILL_WEIGHTS[unit]) * positionFit(p, pos) * factorOf(p);
+      sum += w * weightedSkill(p.attributes, UNIT_SKILL_WEIGHTS[unit]) * positionFit(p, pos) * factorOf(p) * (mods?.[i]?.fit ?? 1);
       total += w;
     });
     // 슬롯 가중치 합이 기준 포메이션보다 크면 그 유닛이 강해진다 (예: 4-4-2의 공격)

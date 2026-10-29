@@ -18,6 +18,7 @@ import { trainingMatchBoost } from './training.js';
 import { captainBoost } from './captain.js';
 import { moraleBoost, moraleOf } from './morale.js';
 import { RULES } from './rules.js';
+import { aiRoleIds } from '../engine/roles.js';
 
 export const SAVE_VERSION = 5;
 export const DEFAULT_FORMATION = '4-3-3';
@@ -130,6 +131,12 @@ const factorOf = (game) => (p) => conditionFactor(conditionOf(game, p.id));
 // ── 사용자 선발 ───────────────────────────────────────
 
 export const userSlots = (game) => slotsFromCells(game.formation.cells);
+
+// 사용자 팀 역할 (슬롯 순서). 직접 정한 적이 없으면 코치진 추천(AI와 같은 방식)을 그때그때
+export function userRoles(dataset, game) {
+  if (game.roles) return game.roles;
+  return aiRoleIds(userSlots(game), game.lineup.map((id) => dataset.playerById.get(id)));
+}
 
 // 선발에 있으면 안 되는 선수 (부상·출장정지·이적으로 팀을 떠남)
 export function lineupProblems(dataset, game, scope = 'league') {
@@ -260,7 +267,8 @@ export function teamInput(dataset, game, teamId, scope = 'league') {
   // 주장: 경기장에 있으면 리더십만큼 (AI 팀도 리더십이 가장 좋은 선발이 주장)
   const boost = moraleBoost(moraleOf(dataset, game, teamId)) + captainBoost(lineup, mine ? game.captain : null) + (mine ? familiarityBoost(familiarityOf(game)) + trainingMatchBoost(game) : 0);
   const takers = mine ? { penaltyTakerId: game.penaltyTaker ?? null, setPieceTakerId: game.setPieceTaker ?? null } : {};
-  return { id: teamId, name: team.shortName, slots, formation, lineup, bench, condition, autoSubs, tactics, autoTactics: !mine, boost, ...takers };
+  const roles = mine ? userRoles(dataset, game) : undefined; // AI 팀은 엔진이 선수 구성에 맞게 고른다
+  return { id: teamId, name: team.shortName, slots, formation, lineup, bench, condition, autoSubs, tactics, autoTactics: !mine, boost, roles, ...takers };
 }
 
 // 스쿼드 화면용: 지금 경기를 하면 쓰일 교체 명단
