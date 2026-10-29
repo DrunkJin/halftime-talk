@@ -7,7 +7,8 @@ import { overall } from '../engine/ratings.js';
 import { createRng } from '../engine/rng.js';
 import { generateFixtures, roundCount } from '../league/fixtures.js';
 import { contractOf, demandedContract, initSeasonFinances, renewalTerms, signContract, wageRoom } from '../market/finance.js';
-import { canAiBuy, transferPlayer } from '../market/market.js';
+import { canAiBuy, transferPlayer, transferWindows } from '../market/market.js';
+import { openFreeAgency } from '../market/freeAgency.js';
 import { loansOut, returnLoans } from '../market/loans.js';
 import { playerValue, topElevenOvr } from '../market/value.js';
 import { PROGRESSION, lookup } from '../progression/config.js';
@@ -225,7 +226,7 @@ function ownedSquad(dataset, game) {
 function aiWouldRenew(p, rank, rng) {
   const C = P.contracts;
   const keep = (rank < C.keepTop && p.age + 1 < C.maxAge) || (p.age <= C.youngAge && rank < C.youngKeepTop);
-  return keep && (!rng || rng.next() < C.renewChance);
+  return keep && (!rng || rng.next() < (rank < C.keyTop ? C.keyRenewChance : C.renewChance));
 }
 
 // 결산 화면 기본 선택: AI 규칙으로 재계약할 만한 선수
@@ -296,6 +297,7 @@ export function startNextSeason(base, game, { renew = null } = {}) {
       .sort((a, b) => overall(b) - overall(a))
       .forEach((p, i) => rankInTeam.set(p.id, i));
   }
+  const expired = []; // 이번에 계약이 끝나 풀린 선수 → 새 시즌 경쟁 입찰 (market/freeAgency.js)
   for (const [id, c] of Object.entries(game.contracts)) {
     if (c.until > game.seasonIndex || retired.has(id)) continue;
     const p = ds0.playerById.get(id);
@@ -314,6 +316,7 @@ export function startNextSeason(base, game, { renew = null } = {}) {
     }
     (game.players[id] ??= {}).teamId = null;
     delete game.contracts[id];
+    expired.push({ id, from: teamId });
   }
 
   invalidateSquads(game);
@@ -364,8 +367,12 @@ export function startNextSeason(base, game, { renew = null } = {}) {
   const ds1 = worldDataset(base, game);
 
   // 8) 보강: 인원이 모자란 팀은 무소속 선수로 채운다 (우리 팀은 최소 인원까지만, 알림)
+  // 막 계약이 끝난 선수 중 주전으로 쓸 구단이 있으면 경쟁 입찰로 (결정 라운드는 새 일정이 나온 뒤 정한다).
+  // 주급 한도는 지난 시즌 재정 기준으로 먼저 보고, 결정 때 새 재정으로 다시 확인한다. 보강은 입찰이 붙지 않은 선수로
+  const contested = openFreeAgency(ds1, game, expired, null, createRng(`${game.seed}:freeagency:${game.seasonIndex}`));
+  const reserved = new Set(contested.map((c) => c.playerId));
   const free = squadOf(ds1, game, null)
-    .filter((p) => p.age < P.aiFill.maxAge)
+    .filter((p) => p.age < P.aiFill.maxAge && !reserved.has(p.id))
     .sort((a, b) => overall(b) - overall(a));
   const F = P.aiFill;
   const levelCap = new Map(
@@ -435,12 +442,23 @@ export function startNextSeason(base, game, { renew = null } = {}) {
   noteSeasonExpectation(ds1, game);
   initSeasonFinances(ds1, game, { firstSeason: false });
   createCups(ds1, game, competitions.length ? competitions : undefined);
+  // 계약 만료 선수 경쟁 입찰: 여름 이적시장 마지막 라운드 경기 뒤 결정
+  game.freeAgency.decideRound = transferWindows(game)[0].to;
   // 이사회: 옮기기로 한 구단이 있으면 부임, 아니면 신뢰도를 이어 받고 새 목표
   const moving = game.board?.pendingMove?.teamId ?? null;
   startBoardSeason(ds1, game);
   const myTeam = ds1.teamById.get(game.teamId).shortName;
   if (moving) pushNews(game, 'board.welcome', { club: myTeam }, { important: true });
   pushNews(game, 'board.objective', { team: myTeam, goal: game.board.objective.label, kind: game.board.objective.kind }, { important: true });
+  if (contested.length) {
+    const top = contested.map((c) => ({ ...c, p: ds1.playerById.get(c.playerId) })).sort((a, b) => overall(b.p) - overall(a.p)).slice(0, 8);
+    const club = (id) => ds1.teamById.get(id)?.shortName ?? '무소속';
+    pushNews(game, 'transfer.freeAgency', {
+      count: contested.length,
+      round: game.freeAgency.decideRound,
+      lines: top.map((c) => `${c.p.name} (${c.p.position}, ${c.p.age}세, 전 소속 ${club(c.from)}) — 관심 구단 ${c.bids.length}곳`),
+    });
+  }
   if (moving) {
     summary.newTeam = ds1.teamById.get(moving)?.name ?? moving;
     summary.newLeague = null; // 승강 안내 대신 새 구단 안내

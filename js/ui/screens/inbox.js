@@ -19,6 +19,8 @@ function actionOf(ctx, msg) {
   };
   if (msg.kind.startsWith('player.') && id && ctx.dataset.playerById.get(id)) return go('선수 보기', () => openPlayerModal(ctx.dataset, ctx.dataset.playerById.get(id), ctx));
   if (msg.kind === 'transfer.offer') return go('받은 제안 보기', () => ctx.navigate('transfers'));
+  if (msg.kind === 'transfer.freeAgency') return go('이적 화면으로', () => ctx.navigate('transfers'));
+  if ((msg.kind === 'transfer.faWon' || msg.kind === 'transfer.faLost') && id && ctx.dataset.playerById.get(id)) return go('선수 보기', () => openPlayerModal(ctx.dataset, ctx.dataset.playerById.get(id), ctx));
   if (msg.kind === 'transfer.rumor' && msg.vars?.mine && id && ctx.dataset.playerById.get(id)) return go('선수 보기', () => openPlayerModal(ctx.dataset, ctx.dataset.playerById.get(id), ctx));
   if (msg.kind === 'board.offer' || msg.kind === 'board.sacked') return go('경기 탭으로', () => ctx.navigate('match'));
   if (msg.kind === 'player.training') return go('훈련 탭으로', () => ctx.navigate('training'));

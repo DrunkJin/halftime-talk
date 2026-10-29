@@ -26,8 +26,9 @@ export const PROGRESSION = {
   // 유스: 팀당 인원, 나이, OVR = 팀 주전 평균 - 차이, 잠재력 = OVR + 여유 (가끔 대형 유망주)
   youth: { perTeam: [2, 3], age: [16, 18], belowTeam: [14, 24], potentialAbove: [6, 32], potentialSkew: 1.8, homeNation: 0.85, contractYears: 3 },
   // 계약 만료 시 AI 팀(과 자동 진행 중인 사용자 팀): 팀 내 OVR 상위 keepTop 명 안이고 maxAge 미만이면 renewChance 확률로 재계약.
-  // youngAge 이하 유망주는 상위 youngKeepTop 명 안이면 재계약
-  contracts: { keepTop: 23, maxAge: 34, renewChance: 0.9, youngAge: 23, youngKeepTop: 32 },
+  // youngAge 이하 유망주는 상위 youngKeepTop 명 안이면 재계약. 상위 keyTop 명(주전)은 keyRenewChance (에이스는 거의 붙잡는다)
+  // 재계약하지 않은 선수는 새 시즌 여름 이적시장에서 경쟁 입찰 (market/freeAgency.js)
+  contracts: { keepTop: 23, maxAge: 34, renewChance: 0.9, keyTop: 11, keyRenewChance: 0.97, youngAge: 23, youngKeepTop: 32 },
   // 새 시즌 보강: 인원이 minSquad보다 적으면 무소속 선수로 채운다. mustSquad보다 적으면 주급 한도를 넘어서라도
   // 그 리그 상위 3팀 주전 평균 + levelGap을 넘는 무소속은 데려오지 않는다 (계약 끝난 스타가 하부 리그 팀에 공짜로 가지 않게)
   aiFill: { minSquad: 23, mustSquad: 20, maxAge: 33, levelGap: 2 },

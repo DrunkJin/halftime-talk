@@ -3,6 +3,7 @@ import { autoSelectLineup } from '../../engine/lineup.js';
 import { computeTeamRatings, overall } from '../../engine/ratings.js';
 import { GAME_LENGTHS } from '../../state/game.js';
 import { createGame } from '../../state/season.js';
+import { track } from '../analytics.js';
 import { teamBadge } from '../badge.js';
 import { openConfirm, panel, ratingBar, segmented, basisText } from '../components.js';
 import { h } from '../dom.js';
@@ -107,6 +108,7 @@ function startModal(ctx, team) {
   cancel.addEventListener('click', close);
   start.addEventListener('click', () => {
     close();
+    track('game-start', { team: team.shortName, league: ctx.dataset.leagueById.get(team.leagueId)?.name ?? team.leagueId, years });
     ctx.startGame(createGame(ctx.dataset, team.id, { years, slot }));
   });
 }

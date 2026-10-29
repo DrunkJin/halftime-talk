@@ -13,6 +13,7 @@ import { computeTable } from '../../league/table.js';
 import { availabilityOf, benchedRegulars, conditionOf, fixLineup, fixturesOf, isSeasonOver, leagueOf, lineupProblems, matchInput, rotateTired, roundFixtures, settingsOf, tacticsOf, userFixture } from '../../state/game.js';
 import { RULES } from '../../state/rules.js';
 import { advanceCup, advanceRound, advanceSeason, simulateRest } from '../../state/simulation.js';
+import { track } from '../analytics.js';
 import { expiringContracts, suggestedRenewals } from '../../state/newSeason.js';
 import { contractOf, renewalTerms } from '../../market/finance.js';
 import { formatWage } from '../../market/market.js';
@@ -575,15 +576,23 @@ function moraleMeter(ctx) {
 }
 
 // 인터뷰·팀 토크 선택지. onAnswer(stance), onSkip()
+// 답은 되돌릴 수 없고 사기에 영향을 주므로, 누르면 먼저 고르기만 하고 '이렇게 답하기'로 확정한다 (모바일 오터치 방지)
 function interviewView(iv, onAnswer, onSkip, skipLabel) {
+  let chosen = null;
+  const confirm = h('button', { type: 'button', class: 'btn small primary', disabled: true }, '이렇게 답하기');
   const buttons = iv.answers.map((a) => {
-    const b = h('button', { type: 'button', class: 'answer-btn' }, h('span', { class: 'stance-chip' }, a.label), h('span', { class: 'answer-text' }, a.text));
-    b.addEventListener('click', () => onAnswer(a.stance));
+    const b = h('button', { type: 'button', class: 'answer-btn', 'aria-pressed': 'false' }, h('span', { class: 'stance-chip' }, a.label), h('span', { class: 'answer-text' }, a.text));
+    b.addEventListener('click', () => {
+      chosen = a.stance;
+      for (const x of buttons) x.setAttribute('aria-pressed', String(x === b));
+      confirm.disabled = false;
+    });
     return b;
   });
+  confirm.addEventListener('click', () => chosen && onAnswer(chosen));
   const skip = h('button', { type: 'button', class: 'btn small ghost' }, skipLabel);
   skip.addEventListener('click', onSkip);
-  return h('div', { class: `interview ${iv.kind}` }, h('p', { class: 'iv-question' }, iv.question), h('div', { class: 'iv-answers' }, buttons), h('div', { class: 'btn-row end' }, skip));
+  return h('div', { class: `interview ${iv.kind}` }, h('p', { class: 'iv-question' }, iv.question), h('div', { class: 'iv-answers', role: 'group' }, buttons), h('div', { class: 'btn-row end' }, skip, confirm));
 }
 
 function answeredView(question, label, text, note) {
@@ -1481,6 +1490,7 @@ function nextSeasonPanel(ctx, show) {
   start.addEventListener('click', async () => {
     const r = await ctx.runBusy('다음 시즌 준비 중 (성장·노화·이적·일정)', () => advanceSeason(ctx.baseDataset, ctx.game, { renew: [...chosen] }));
     const moved = r.game.teamId !== ctx.game.teamId;
+    track('season-next', { season: r.game.seasonIndex, team: r.game.teamId, moved });
     ctx.setGame(r.game);
     if (moved) ctx.rebuildTopbar?.();
     show();

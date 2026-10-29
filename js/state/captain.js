@@ -1,13 +1,14 @@
 // 주장·전담 키커: 주장은 경기장에 있으면 팀 경기력 보너스(리더십), 지정하지 않으면 리더십이 가장 좋은 선발.
 // 페널티·세트피스 키커는 엔진이 지정 선수(경기장에 없으면 가장 잘 차는 선수)를 쓴다. 수치는 engine/config.js CAPTAIN·SET_PIECES
 import { CAPTAIN } from '../engine/config.js';
-import { weightedSkill } from '../engine/ratings.js';
+import { overall, weightedSkill } from '../engine/ratings.js';
 
-// 리더십 (0~100): 침착성·활동량·경험(나이)
+// 리더십 (0~100 근처): 침착성·활동량·경험(나이)·팀 내 비중(OVR) + 포지션 보정
 export function leadership(p) {
   const W = CAPTAIN.weights;
   const experience = Math.max(40, Math.min(100, 40 + (p.age - 18) * 4));
-  return p.attributes.composure * W.composure + p.attributes.workRate * W.workRate + experience * W.experience;
+  const base = p.attributes.composure * W.composure + p.attributes.workRate * W.workRate + experience * W.experience + overall(p) * W.overall;
+  return base + (CAPTAIN.positionBonus[p.position] ?? 0);
 }
 
 // 주장이 주는 경기력 배율 보정 (0 ~ max)

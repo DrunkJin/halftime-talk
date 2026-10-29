@@ -2,8 +2,10 @@
 // 이 파일이 문구 데이터의 계약이다: 상황 id, 답변 성향(stance), 상황별로 쓸 수 있는 치환 자리
 //
 // 데이터 형식 (kind별 파일 하나):
-// { schemaVersion: 1, kind, situations: { [상황 id]: { questions: [문자열], answers: [{ stance, text }] } } }
+// { schemaVersion: 1, kind, situations: { [상황 id]: { questions: [문자열 | { text, answers }], answers: [{ stance, text }] } } }
 //   questions: 기자 질문 (talk는 라커룸 분위기 묘사)
+//     문자열: 어느 답과도 어울리는 일반 질문 → 상황 공용 answers에서 고른다
+//     { text, answers }: 구체적인 질문 (휴식·로테이션·스코어 예상·특정 선수 평가 등) → 그 질문 전용 답에서만 고른다
 //   answers: 감독의 답 (talk는 선수단에게 하는 말)
 //   문자열 안의 {자리}는 경기 상황에 맞게 바뀐다. 자리 바로 뒤에 조사(을/를, 이/가 등)를 붙이지 말 것
 
@@ -181,4 +183,5 @@ export const MIN_COUNTS = {
   answersPerStance: { pre: 6, post: 4, talk: 9 }, // 상황마다 성향마다
   cupAnswersPerStance: { pre: 6, post: 4, talk: 10 }, // 대륙 대회 상황
   questionsPerSituation: 3,
+  dedicatedPerStance: 2, // 전용 답이 있는 질문: 성향마다 최소
 };

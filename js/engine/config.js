@@ -224,8 +224,14 @@ export const MISS_BREAKDOWN = { blocked: 0.3, woodwork: 0.05 };
 // 페널티킥: 결정적 찬스(big) 중 penaltyShare가 페널티킥이 된다 (성공 확률은 PENALTIES 공식, 키커 vs GK)
 // 세트피스 키커: 헤더 비중 × (1 + (키커 크로스 - 경기 기준) × headerSlope), 헤더 골 도움이 키커에게 갈 확률 takerAssist
 export const SET_PIECES = { penaltyShare: 0.09, headerSlope: 0.006, headerRange: [0.85, 1.2], takerAssist: 0.5 };
-// 주장: 경기장에 있으면 레이팅 배율 + (리더십 - 70) / 10 × perUnit + base (0 ~ max). 리더십 = 침착성·활동량·경험
-export const CAPTAIN = { base: 0.004, perUnit: 0.004, max: 0.02, weights: { composure: 0.5, workRate: 0.3, experience: 0.2 } };
+// 주장: 경기장에 있으면 레이팅 배율 + (리더십 - 70) / 10 × perUnit + base (0 ~ max).
+// 리더십 = 침착성·활동량·경험(나이)·팀 내 비중(OVR) 가중합 + 포지션 보정.
+// 실제 주장은 센터백·중앙 미드필더가 많고 측면 공격수는 드물다 (골키퍼는 침착성이 높게 계산되므로 보정을 작게)
+export const CAPTAIN = {
+  base: 0.004, perUnit: 0.004, max: 0.02,
+  weights: { composure: 0.4, workRate: 0.2, experience: 0.25, overall: 0.15 },
+  positionBonus: { CB: 5, DM: 4, CM: 3, GK: 0, LB: 0, RB: 0, AM: 0, ST: 0, LW: -3, RW: -3 },
+};
 
 // ── 선수 평점 (경기 결과에는 영향 없음) ─────────────────────
 // 6.0에서 시작해 기록·팀 결과·기량으로 가감. 실점·무실점 가산은 자리(줄)별로 다르다

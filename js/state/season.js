@@ -1,9 +1,13 @@
 // 한 주(사용자 라운드) 진행 순서를 묶는다: 경기(모든 리그) → 재정 정산 → AI 이적·받은 제안 → 주중 대륙 대회 → 시즌 종료 상금.
 // 메인 스레드와 Web Worker가 같은 함수를 쓴다.
 import { simulateMatch } from '../engine/match.js';
+import { overall } from '../engine/ratings.js';
 import { aiTransferRound, expireIncomingOffers, generateIncomingOffers } from '../market/ai.js';
 import { applyWeekFinances, awardSeasonPrizes, initSeasonFinances } from '../market/finance.js';
-import { windowStatus } from '../market/market.js';
+import { transferPlayer, windowStatus } from '../market/market.js';
+import { demandedContract } from '../market/finance.js';
+import { resolveFreeAgency } from '../market/freeAgency.js';
+import { formatMoney } from '../market/value.js';
 import { createCups, cupMatchInput, cupsOf, dueCupEvent, playCupEvent, userCupFixture } from '../competitions/cups.js';
 import { noteSeasonExpectation, trackUserMatch } from './career.js';
 import { autoPickLineup, completeRound, isSeasonOver, matchInput, newGame, userFixture, userSlots } from './game.js';
@@ -61,6 +65,7 @@ export function playCupWeek(dataset, game, userResult) {
 // → { others: 사용자 리그의 다른 경기 [{ fixture, result }], aiTransfers, newOffers }
 export function playWeek(dataset, game, userResult) {
   const windowOpen = windowStatus(game).open; // 이번 라운드가 이적시장 기간인지 (진행 전 기준)
+  const playedRound = game.round;
   const mine = userFixture(game);
   trackUserMatch(dataset, game, mine, userResult, dataset.leagueById.get(game.leagueId)?.name);
   const others = completeRound(dataset, game, userResult);
@@ -72,7 +77,10 @@ export function playWeek(dataset, game, userResult) {
   const training = applyTrainingWeek(dataset, game); // 경기 사이 한 주 훈련
   let aiTransfers = [];
   let newOffers = [];
-  if (windowOpen) aiTransfers = aiTransferRound(dataset, game);
+  if (windowOpen) {
+    freeAgencyDecisions(dataset, game, playedRound); // 계약 만료 선수 경쟁 입찰 결과 (AI 영입보다 먼저)
+    aiTransfers = aiTransferRound(dataset, game);
+  }
   // 받은 제안은 다음 라운드에도 시장이 열려 있어야 답할 수 있다. 시장이 닫히면 남은 제안도 사라진다
   if (windowStatus(game).open) {
     newOffers = generateIncomingOffers(dataset, game);
@@ -92,6 +100,25 @@ export function playWeek(dataset, game, userResult) {
   const week = { others, aiTransfers, newOffers, cups, training, moods, board, scouting, loans };
   weeklyNews(dataset, game, week, mine, userResult);
   return week;
+}
+
+// 경쟁 입찰 결정: 선수가 구단을 고르고, 우리가 입찰한 선수는 결과를 따로 알린다
+function freeAgencyDecisions(dataset, game, playedRound) {
+  const sign = (id, teamId, bonus) => {
+    const p = dataset.playerById.get(id);
+    transferPlayer(dataset, game, id, teamId, bonus, { contract: demandedContract(dataset, game, p, teamId), by: teamId === game.teamId ? 'user' : 'ai' });
+  };
+  const results = resolveFreeAgency(dataset, game, playedRound, sign);
+  if (!results.length) return;
+  const team = (id) => dataset.teamById.get(id)?.shortName ?? '무소속';
+  const name = (id) => dataset.playerById.get(id)?.name ?? id;
+  for (const r of results.filter((x) => x.userBid != null)) {
+    if (r.teamId === game.teamId) pushNews(game, 'transfer.faWon', { name: name(r.playerId), id: r.playerId, bonus: formatMoney(r.bonus) }, { important: true });
+    else pushNews(game, 'transfer.faLost', { name: name(r.playerId), id: r.playerId, club: team(r.teamId) }, { important: true });
+  }
+  const ovr = (id) => (dataset.playerById.get(id) ? overall(dataset.playerById.get(id)) : 0);
+  const moved = results.filter((r) => r.teamId && r.teamId !== game.teamId).sort((a, b) => ovr(b.playerId) - ovr(a.playerId)).slice(0, 8);
+  if (moved.length) pushNews(game, 'transfer.faSettled', { count: results.length, lines: moved.map((r) => `${name(r.playerId)} → ${team(r.teamId)} (계약금 ${formatMoney(r.bonus)})`) });
 }
 
 // 시즌 끝 이사회 소식: 평가, 경질 또는 제안

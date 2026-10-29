@@ -2,10 +2,11 @@
 import { SCOUT, assignmentOf, isKnown, ovrView, scoutSlotsLeft, sendScout } from '../../state/scouting.js';
 import { overall } from '../../engine/ratings.js';
 import { contractOf, releaseCost, seasonsLeft, wageRoom } from '../../market/finance.js';
-import { acceptSellOffer, askingPrice, formatWage, makeOffer, offerTerms, releasePlayer, respondIncomingOffer, sellOffers, windowStatus } from '../../market/market.js';
+import { acceptSellOffer, askingPrice, formatWage, makeOffer, offerTerms, releasePlayer, respondIncomingOffer, sellOffers, signedThisWindow, windowStatus } from '../../market/market.js';
 import { LOAN } from '../../market/config.js';
 import { isLoanable, loanIn, loanInTerms, loanOut, loanOutBlock, loanOutOffers, loanStats, loansIn, loansOut } from '../../market/loans.js';
 import { formatMoney, playerValue } from '../../market/value.js';
+import { freeAgentOutlook, pendingFreeAgent } from '../../market/freeAgency.js';
 import { availabilityOf, currentTeamId, loanOf, squadOf } from '../../state/game.js';
 import { RULES } from '../../state/rules.js';
 import { teamBadge } from '../badge.js';
@@ -74,26 +75,44 @@ export function render(ctx) {
     );
   }
 
+  // 스카우트 전이면 범위로 (목록과 같은 값, 실제 OVR이 새지 않게)
+  const ovrLabel = (p) => {
+    const v = ovrView(dataset, game, p);
+    return v.known ? v.ovr : `${v.low}~${v.high}`;
+  };
+
   // ── 영입 제안 모달 ──────────────────────────────────
   function offerModal(player) {
     const from = currentTeamId(dataset, game, player.id);
     const { asking, contract, wageOk } = offerTerms(dataset, game, player.id);
-    const input = h('input', { type: 'number', class: 'money-input', min: '0', step: '0.5', value: String(asking), 'aria-label': '제안 금액 (백만 파운드)' });
+    // 무소속: 이적료 대신 선수에게 주는 계약금. 계약 만료 스타는 다른 구단과 경쟁 입찰
+    const fa = from ? null : freeAgentOutlook(dataset, game, player.id);
+    const start = fa ? (fa.userBid ?? fa.hint[0]) : asking;
+    const input = h('input', { type: 'number', class: 'money-input', min: '0', step: '0.5', value: String(start), 'aria-label': from ? '제안 금액 (백만 파운드)' : '계약금 (백만 파운드)' });
     const terms = h(
       'div',
       { class: `contract-terms${wageOk ? '' : ' bad'}` },
       h('span', {}, '선수 요구: ', h('b', {}, formatWage(contract.wage)), ` · ${contract.years}년 계약`),
       h('span', { class: 'muted' }, `주급 여유 ${formatWage(Math.max(0, wageRoom(dataset, game, game.teamId)))}${wageOk ? '' : ' — 한도 초과'}`),
     );
-    const message = h('p', { class: 'offer-msg muted' }, from ? `구단 예상 요구액 약 ${formatMoney(asking)} · 가치 ${formatMoney(playerValue(player))}` : '무소속: 이적료 없이 영입할 수 있습니다.');
-    const submit = h('button', { class: 'btn primary', type: 'button' }, from ? '제안하기' : '영입하기');
+    const clubs = fa ? fa.clubs.map((id) => dataset.teamById.get(id).shortName).join(', ') : '';
+    const message = h(
+      'p',
+      { class: 'offer-msg muted' },
+      from
+        ? `구단 예상 요구액 약 ${formatMoney(asking)} · 가치 ${formatMoney(playerValue(player))}`
+        : fa
+          ? `경쟁 입찰 · 관심 구단: ${clubs}. ${fa.decideRound}라운드 경기 뒤 선수가 고릅니다. 선수는 계약금과 구단 이름값을 함께 봅니다. 에이전트 귀띔: 계약금 ${formatMoney(fa.hint[0])}~${formatMoney(fa.hint[1])}은 돼야 해볼 만합니다.${fa.userBid != null ? ` 지금 우리 제시액 ${formatMoney(fa.userBid)}.` : ''}`
+          : `무소속: 이적료는 없고, 계약금으로 최소 ${formatMoney(asking)}을 원합니다.`,
+    );
+    const submit = h('button', { class: 'btn primary', type: 'button' }, from ? '제안하기' : fa ? (fa.userBid != null ? '입찰 고치기' : '입찰하기') : '영입하기');
     const cancel = h('button', { class: 'btn ghost', type: 'button' }, '닫기');
     const close = openModal(
       h(
         'div',
         { class: 'confirm-modal' },
-        h('h2', {}, `${player.name} 영입 제안`),
-        h('p', { class: 'muted' }, `${teamName(from)}${from ? ` (${leagueName(from)})` : ''} · ${player.position} · ${player.age}세 · OVR ${overall(player)}`),
+        h('h2', {}, `${player.name} ${from ? '영입 제안' : fa ? '계약 입찰' : '자유계약'}`),
+        h('p', { class: 'muted' }, `${teamName(from)}${from ? ` (${leagueName(from)})` : ''} · ${player.position} · ${player.age}세 · OVR ${ovrLabel(player)}`),
         h('label', { class: 'money-field' }, h('span', {}, '£'), input, h('span', {}, 'M')),
         terms,
         message,
@@ -102,11 +121,11 @@ export function render(ctx) {
     );
     cancel.addEventListener('click', close);
     submit.addEventListener('click', () => {
-      const amount = from ? Math.round(Number(input.value) * 10) / 10 : 0;
+      const amount = Math.round(Number(input.value) * 10) / 10;
       const res = makeOffer(dataset, game, player.id, amount);
       message.textContent = res.message;
-      message.className = `offer-msg ${res.accepted ? 'ok' : 'bad'}`;
-      if (res.accepted) {
+      message.className = `offer-msg ${res.accepted || res.bid ? 'ok' : 'bad'}`;
+      if (res.accepted || res.bid) {
         ctx.persist();
         ctx.refreshTopbar();
         showToast(res.message, { tone: 'goal' });
@@ -234,7 +253,7 @@ export function render(ctx) {
             }),
           ),
         )
-      : h('p', { class: 'empty muted' }, '이 선수에게 관심 있는 구단이 없습니다.');
+      : h('p', { class: 'empty muted' }, signedThisWindow(game, player.id) ? '이번 이적시장에 영입한 선수입니다. 다음 이적시장부터 팔 수 있습니다.' : '이 선수에게 관심 있는 구단이 없습니다.');
     close = openModal(
       h(
         'div',
@@ -318,7 +337,8 @@ export function render(ctx) {
       const shown = rows.filter(({ p }) => !qq || p.name.toLowerCase().includes(qq)).slice(0, RESULT_LIMIT);
       tbody.replaceChildren(
         ...shown.map(({ p, teamId, view, asking }) => {
-          const offer = h('button', { class: 'btn small', type: 'button', disabled: open ? null : true, title: open ? '' : '이적시장이 닫혀 있습니다' }, teamId ? '제안' : '영입');
+          const contested = !teamId && pendingFreeAgent(game, p.id);
+          const offer = h('button', { class: 'btn small', type: 'button', disabled: open ? null : true, title: open ? '' : '이적시장이 닫혀 있습니다' }, teamId ? '제안' : contested ? (contested.user ? '입찰 중' : '입찰') : '영입');
           offer.addEventListener('click', () => offerModal(p));
           // 임대: 원소속이 내줄 만한 선수만 버튼을 보인다
           let loan = null;
@@ -339,7 +359,7 @@ export function render(ctx) {
             h('td', { class: 'num' }, p.age),
             h('td', { class: `num ovr ${view.known ? attrClass(view.ovr) : 'ovr-range'}`, title: view.known ? '' : '스카우트하면 정확한 능력치를 볼 수 있습니다' }, view.known ? view.ovr : `${view.low}~${view.high}`),
             h('td', { class: 'num' }, formatMoney(playerValue(p))),
-            h('td', { class: 'num' }, teamId ? formatMoney(asking) : '—'),
+            h('td', { class: 'num', title: teamId ? '' : '무소속은 이적료 대신 계약금' }, teamId ? formatMoney(asking) : contested ? '경쟁 입찰' : `계약금 ${formatMoney(asking)}`),
             h('td', {}, statusChip(game, p.id)),
             h('td', { class: 'num row-actions' }, view.known ? null : scoutButton(p), loan, offer),
           );
@@ -548,7 +568,7 @@ export function render(ctx) {
                     h('td', {}, dataset.playerById.get(t.playerId)?.name ?? '(은퇴)'),
                     h('td', {}, teamCell(t.from)),
                     h('td', {}, teamCell(t.to)),
-                    h('td', { class: 'num pts' }, t.by === 'loanEnd' ? '임대 복귀' : t.loan ? `임대${t.fee > 0 ? ` · ${formatMoney(t.fee)}` : ''}` : t.fee > 0 ? formatMoney(t.fee) : t.to ? '자유' : t.by === 'expiry' ? '계약 만료' : '해지'),
+                    h('td', { class: 'num pts' }, t.by === 'loanEnd' ? '임대 복귀' : t.loan ? `임대${t.fee > 0 ? ` · ${formatMoney(t.fee)}` : ''}` : t.fee > 0 ? (t.from ? formatMoney(t.fee) : `자유 · 계약금 ${formatMoney(t.fee)}`) : t.to ? '자유' : t.by === 'expiry' ? '계약 만료' : '해지'),
                   ),
                 ),
               ),

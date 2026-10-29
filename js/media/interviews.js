@@ -62,11 +62,14 @@ function chooseSituation(kind, matched) {
 // 상황 → { situation, question, answers: [{ stance, label, text }] }
 function build(media, kind, situation, vars) {
   const s = media[kind].situations[situation];
+  // 전용 답이 있는 질문은 그 답에서만 (질문과 답이 어긋나지 않게)
+  const q = pick(s.questions);
+  const pool = typeof q === 'string' ? s.answers : q.answers;
   const answers = Object.entries(STANCES[kind]).map(([stance, label]) => {
-    const options = s.answers.filter((a) => a.stance === stance);
+    const options = pool.filter((a) => a.stance === stance);
     return { stance, label, text: fill(pick(options).text, vars) };
   });
-  return { kind, situation, question: fill(pick(s.questions), vars), answers };
+  return { kind, situation, question: fill(typeof q === 'string' ? q : q.text, vars), answers };
 }
 
 function tableOf(dataset, game) {

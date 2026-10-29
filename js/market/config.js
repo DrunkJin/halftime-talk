@@ -37,6 +37,20 @@ export const MARKET = {
   sellOffers: { max: 3, minRatio: 0.75, maxRatio: 1.1, interestGap: 6 },
 };
 
+// 계약 만료 선수 경쟁 입찰 (market/freeAgency.js). 금액은 가치 배율
+// 시즌을 넘길 때 재계약하지 않은 선수 중 주전으로 쓸 AI 구단이 있으면, 여름 이적시장 동안 구단들이 계약금을 걸고
+// 시장 마지막 라운드 경기 뒤 선수가 고른다. 선수 눈에는 계약금 + 구단 명성(전체 구단 전력 순위 0~1) × 가치 × appeal
+export const FREE_AGENCY = {
+  starterGap: 0, // 그 구단 주전 11명 평균 OVR + starterGap 이상이면 관심
+  maxBidders: 3, // 관심 구단 중 명성 높은 순으로
+  bid: [0.3, 0.6], // AI 구단 계약금 = 가치 × 이 범위
+  maxBudgetShare: 0.5, // 잔고 대비 최대 계약금
+  appeal: 0.3,
+  minBonus: 0.2, // 경쟁이 없는 무소속 선수의 계약금 하한 = 가치 × 이 값 (AI 구단도 같다)
+  hint: 0.15, // 에이전트가 흘리는 '이 정도는 돼야' 범위 (±)
+  hintNoise: 0.15, // 그 범위의 중심도 실제 필요액에서 ± 이만큼 빗나간다 (선수마다 고정)
+};
+
 // 임대: 시즌 끝까지만, 시즌 넘기기 때 원소속으로 복귀 (market/loans.js)
 export const LOAN = {
   // 임대 영입: 원소속 팀 내 OVR 순위가 minRank 이상(1부터)인 선수, 어린 선수(youngAge 이하)는 youngMinRank 이상

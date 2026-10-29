@@ -5,7 +5,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { INTERVIEW_SCHEMA_VERSION, MIN_COUNTS, PLACEHOLDERS, SITUATIONS, STANCES, allowedPlaceholders } from '../js/media/situations.js';
 
-const DIR = join(dirname(fileURLToPath(import.meta.url)), '../data/interviews');
+const DIR = process.env.INTERVIEW_DIR ?? join(dirname(fileURLToPath(import.meta.url)), '../data/interviews'); // 합치기 전 검사용으로 바꿀 수 있다
 const kinds = process.argv[2] ? [process.argv[2]] : Object.keys(SITUATIONS);
 // 자리 바로 뒤에 오면 안 되는 조사 (받침에 따라 달라지는 것)
 const JOSA = /\}(을|를|이|가|은|는|과|와|으로|로|이라|라|이랑|랑|아|야)(?![가-힣])/;
@@ -46,7 +46,18 @@ for (const kind of kinds) {
       seen.add(text);
     };
     if ((s.questions?.length ?? 0) < MIN_COUNTS.questionsPerSituation) err(`${id}: 질문 ${s.questions?.length ?? 0}개 (최소 ${MIN_COUNTS.questionsPerSituation})`);
-    (s.questions ?? []).forEach((q, i) => check(q, `질문${i}`));
+    (s.questions ?? []).forEach((q, i) => {
+      if (typeof q === 'string') return check(q, `질문${i}`);
+      // 전용 답이 있는 질문: 성향마다 dedicatedPerStance개 이상
+      check(q?.text, `질문${i}`);
+      const n = Object.fromEntries(Object.keys(STANCES[kind]).map((k) => [k, 0]));
+      for (const [j, a] of (q?.answers ?? []).entries()) {
+        if (!(a.stance in n)) err(`${id} 질문${i} 답${j}: 알 수 없는 성향 ${a.stance}`);
+        else n[a.stance]++;
+        check(a.text, `질문${i} 답${j}`);
+      }
+      for (const [k, c] of Object.entries(n)) if (c < MIN_COUNTS.dedicatedPerStance) err(`${id} 질문${i}: ${k} 전용 답 ${c}개 (최소 ${MIN_COUNTS.dedicatedPerStance})`);
+    });
     const byStance = Object.fromEntries(Object.keys(STANCES[kind]).map((k) => [k, 0]));
     for (const [i, a] of (s.answers ?? []).entries()) {
       if (!(a.stance in byStance)) err(`${id} 답${i}: 알 수 없는 성향 ${a.stance}`);

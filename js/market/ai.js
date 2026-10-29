@@ -10,7 +10,8 @@ import { aiFormationOf, availabilityOf, currentTeamId, loanOf, squadOf } from '.
 import { RULES } from '../state/rules.js';
 import { AI_MARKET } from './config.js';
 import { demandedContract } from './finance.js';
-import { askingPrice, canAiBuy, transferPlayer } from './market.js';
+import { pendingFreeAgent } from './freeAgency.js';
+import { askingPrice, canAiBuy, signedThisWindow, transferPlayer } from './market.js';
 import { playerValue, topElevenOvr } from './value.js';
 
 const round1 = (v) => Math.round(v * 10) / 10;
@@ -22,6 +23,7 @@ function candidatesByPosition(dataset, game) {
     const teamId = currentTeamId(dataset, game, p.id);
     // 게스트 팀(대륙 대회 전용, 재정 없음) 선수는 이적시장에 나오지 않는다
     if (teamId === game.teamId || dataset.isGuest(teamId) || p.age > AI_MARKET.maxAge || !availabilityOf(game, p.id).available || loanOf(game, p.id)) continue;
+    if (teamId === null && pendingFreeAgent(game, p.id)) continue; // 경쟁 입찰 중인 선수는 결정 라운드에 (freeAgency.js)
     byPos.get(p.position).push({ p, ovr: overall(p) });
   }
   for (const list of byPos.values()) list.sort((a, b) => b.ovr - a.ovr);
@@ -80,7 +82,7 @@ export function generateIncomingOffers(dataset, game) {
   const fresh = [];
   for (const p of squad) {
     // 이적을 요청한(허락한) 선수는 주전급이 아니어도, 더 자주 제안이 온다
-    if (loanOf(game, p.id)) continue; // 임대 온 선수는 원소속 선수
+    if (loanOf(game, p.id) || signedThisWindow(game, p.id)) continue; // 임대 온 선수는 원소속 선수, 막 영입한 선수는 다음 시장부터
     const requested = isRequesting(game, p.id);
     if ((!requested && overall(p) < bar) || !rng.chance(AI_MARKET.incomingChance * (requested ? MOOD.requestOfferBoost : 1))) continue;
     if ((game.incomingOffers ?? []).some((o) => o.playerId === p.id)) continue;
