@@ -34,7 +34,7 @@ import { trainingMatchBoost, trainingOf } from '../../state/training.js';
 import { captainBoost, captainFor } from '../../state/captain.js';
 import { TRAINING as TRAINING_CONFIG } from '../../state/trainingConfig.js';
 import { isRequesting, moodOf, rolesOf } from '../../state/squadMood.js';
-import { openModal, setDigits, showToast, streamText } from '../motion.js';
+import { cssMs, openModal, setDigits, showToast, streamText } from '../motion.js';
 import { getLang, t } from '../../i18n.js';
 
 const SPEEDS = [
@@ -421,7 +421,7 @@ function firstDayCard(ctx) {
     ctx.persist();
     ctx.refreshTopbar();
     card.classList.add('is-leaving');
-    setTimeout(() => card.remove(), 200);
+    setTimeout(() => card.remove(), cssMs('--duration-medium', 350)); // .first-day 페이드와 같은 시간
   });
   return card;
 }

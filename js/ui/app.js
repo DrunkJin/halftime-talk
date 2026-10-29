@@ -8,7 +8,7 @@ import { teamBadge } from './badge.js';
 import { openConfirm, segmented } from './components.js';
 import { h } from './dom.js';
 import { t } from '../i18n.js';
-import { showToast, swapPanel } from './motion.js';
+import { cssMs, showToast, swapPanel } from './motion.js';
 import * as careerScreen from './screens/career.js';
 import * as cupsScreen from './screens/cups.js';
 import * as financeScreen from './screens/finance.js';
@@ -88,7 +88,7 @@ export function createApp(root, dataset, savedSlots = []) {
         throw err;
       } finally {
         overlay.classList.remove('is-open');
-        setTimeout(() => overlay.remove(), 250);
+        setTimeout(() => overlay.remove(), cssMs('--duration-fast', 250)); // .busy-overlay 페이드와 같은 시간
       }
     },
   };

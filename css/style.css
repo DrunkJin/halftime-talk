@@ -400,7 +400,10 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 /* 스크롤해도 점수가 보이게 상단 바 아래에 붙는다. 붙으면 한 줄로 줄인다 (득점자 목록·합계는 숨김) */
 .match-live { position: relative; }
 .sb-sentinel { position: absolute; top: 0; left: 0; width: 1px; height: 1px; pointer-events: none; }
-.scoreboard { position: sticky; top: var(--topbar-h, 0px); z-index: 20; }
+.scoreboard { position: sticky; top: var(--topbar-h, 0px); z-index: 20; transition: padding var(--duration-fast) var(--ease-smooth-out), box-shadow var(--duration-fast) var(--ease-smooth-out); }
+.scoreboard .sb-score { transition: font-size var(--duration-fast) var(--ease-smooth-out); }
+.scoreboard .sb-team .badge { transition: width var(--duration-fast) var(--ease-smooth-out), height var(--duration-fast) var(--ease-smooth-out); }
+@media (prefers-reduced-motion: reduce) { .scoreboard, .scoreboard .sb-score, .scoreboard .sb-team .badge { transition: none; } }
 .scoreboard.is-stuck { padding-block: 8px; box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45); }
 .scoreboard.is-stuck .badge { --size: 28px !important; }
 .scoreboard.is-stuck .sb-score { font-size: 26px; }
@@ -1047,7 +1050,7 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .career-cta { margin-top: 4px; }
 /* 차례로 떠오르기 (첫 화면 연출). 움직임 줄이기 설정이면 바로 보인다 */
 .career-end .reveal { animation: cc-rise var(--duration-slow, 400ms) var(--ease-smooth-out, ease-out) both; animation-delay: calc(var(--i, 0) * 140ms); }
-@keyframes cc-rise { from { opacity: 0; transform: translateY(14px); filter: blur(3px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes cc-rise { from { opacity: 0; transform: translateY(var(--distance-medium)); filter: blur(var(--blur-medium)); } to { opacity: 1; transform: none; filter: none; } }
 @media (prefers-reduced-motion: reduce) { .career-end .reveal { animation: none; } }
 @media (max-width: 860px) {
   .cc-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1399,7 +1402,7 @@ input::placeholder { color: var(--muted); opacity: 1; }
 .page-title { font-size: 18px; }
 
 /* ── 부임 첫날 카드 (첫 경기 전에만) ── */
-.first-day { display: grid; gap: 14px; padding: 18px 20px; border: 1px solid color-mix(in srgb, var(--team) 45%, var(--line)); border-radius: var(--radius); background: linear-gradient(135deg, color-mix(in srgb, var(--team) 14%, var(--panel)), var(--panel) 60%); transition: opacity 200ms ease; }
+.first-day { display: grid; gap: 14px; padding: 18px 20px; border: 1px solid color-mix(in srgb, var(--team) 45%, var(--line)); border-radius: var(--radius); background: linear-gradient(135deg, color-mix(in srgb, var(--team) 14%, var(--panel)), var(--panel) 60%); transition: opacity var(--duration-medium) var(--ease-smooth-out); }
 .first-day.is-leaving { opacity: 0; }
 .fd-head { display: flex; align-items: center; gap: 14px; }
 .fd-head h2 { font-size: 18px; }

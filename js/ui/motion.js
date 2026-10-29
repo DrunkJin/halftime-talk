@@ -1,7 +1,7 @@
 // transitions.dev 오케스트레이션 스니펫을 여러 요소에 쓸 수 있도록 함수로 감싼 것.
 // 로직은 원문(~/.claude/skills/transitions-dev/*.md)과 같고, 시간 값은 CSS 변수에서 읽는다.
 
-const cssMs = (name, fallback) =>
+export const cssMs = (name, fallback) =>
   parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name)) || fallback;
 
 // ── Tabs sliding (16) ─────────────────────────────────
