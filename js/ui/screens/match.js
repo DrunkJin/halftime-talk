@@ -848,7 +848,8 @@ function renderLive(ctx, show) {
       return h('div', {}, tacticsPicker(now, give), h('p', { class: 'muted small-note' }, '고르면 바로 선수들에게 지시가 전달됩니다.'));
     }
 
-    // 선수 지시: 자리별 역할 + 선수별 개별 지시 (이 경기 동안만). 고르면 바로 적용
+    // 선수 지시: 한 줄 목록(지금 걸린 역할·지시는 칩) → 누른 선수만 펼쳐 고친다. 고르면 바로 적용
+    let piOpen = null; // 펼친 선수 (지시를 바꿔 다시 그려도 그대로)
     function playersBody() {
       const snap = teamSnapshot(state, mySide);
       const opp = teamSnapshot(state, mySide === 'home' ? 'away' : 'home');
@@ -875,10 +876,26 @@ function renderLive(ctx, show) {
           const fl = fitLabel(p, pos, r);
           return { id: r.id, label: fl ? `${r.label} · ${fl.label}` : r.label };
         });
-        return h(
-          'div',
-          { class: 'pi-row' },
-          h('div', { class: 'pi-who' }, h('span', { class: 'slot-tag' }, pos), h('b', {}, p.name), conditionMeter(snap.condition(p.id))),
+        // 지금 걸린 것: 기본이 아닌 역할, 개별 지시, 전담 마크 대상
+        const role = roleOf(pos, snap.roles[i]);
+        const markName = ins.mark ? opp.lineup.find((q) => q?.id === ins.mark)?.name : null;
+        const chips = [
+          role?.skill ? h('span', { class: 'pi-chip role' }, role.label) : null,
+          ins.shooting ? h('span', { class: 'pi-chip' }, INSTRUCTIONS.shooting[ins.shooting].label) : null,
+          ins.runs ? h('span', { class: 'pi-chip' }, INSTRUCTIONS.runs[ins.runs].label) : null,
+          markName ? h('span', { class: 'pi-chip mark' }, `마크 ${markName}`) : null,
+        ].filter(Boolean);
+        const row = h(
+          'details',
+          { class: `pi-row${ins.shooting || ins.runs || ins.mark ? ' has-orders' : ''}`, open: piOpen === p.id || null },
+          h(
+            'summary',
+            { class: 'pi-who' },
+            h('span', { class: 'slot-tag' }, pos),
+            h('b', {}, p.name),
+            h('span', { class: 'pi-chips' }, chips.length ? chips : h('span', { class: 'muted' }, role?.label ?? '')),
+            conditionMeter(snap.condition(p.id)),
+          ),
           h(
             'div',
             { class: 'pi-controls' },
@@ -888,11 +905,18 @@ function renderLive(ctx, show) {
             pos === 'GK' ? null : h('label', {}, h('span', { class: 'muted' }, '전담 마크'), select(`${p.name} 전담 마크`, targets, ins.mark ?? '', (v) => applied(setInstruction(state, mySide, p.id, 'mark', v)))),
           ),
         );
+        // 한 번에 한 선수만 펼친다
+        row.addEventListener('toggle', () => {
+          if (!row.open) return piOpen === p.id && (piOpen = null);
+          piOpen = p.id;
+          row.parentElement?.querySelectorAll('details.pi-row[open]').forEach((d) => d !== row && (d.open = false));
+        });
+        return row;
       });
       return h(
         'div',
         { class: 'cmd-players' },
-        h('p', { class: 'muted small-note' }, '고르면 바로 적용됩니다. 역할은 자리에 남고(교체로 들어온 선수가 이어 받음), 개별 지시는 그 선수에게만 이번 경기 동안 적용됩니다. 전담 마크는 상대 핵심 선수를 묶는 대신 카드와 체력 부담이 늘어납니다.'),
+        h('p', { class: 'muted small-note' }, '선수를 누르면 역할과 지시를 고칠 수 있고, 고르면 바로 적용됩니다. 역할은 자리에 남고(교체로 들어온 선수가 이어 받음), 개별 지시는 이번 경기 동안 그 선수에게만. 전담 마크는 상대 핵심 선수를 묶는 대신 카드와 체력 부담이 늘어납니다.'),
         rows.filter(Boolean),
       );
     }

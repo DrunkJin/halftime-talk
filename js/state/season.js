@@ -15,7 +15,7 @@ import { trainFamiliarity } from './familiarity.js';
 import { applyTrainingWeek } from './training.js';
 import { updateMoods } from './squadMood.js';
 import { evaluateSeason, setObjective, updateBoardAfterMatch } from './board.js';
-import { pushNews, weeklyNews } from './inbox.js';
+import { digestFinish, digestStart, pushNews, weeklyNews } from './inbox.js';
 import { processScouting } from './scouting.js';
 import { loanReports } from '../market/loans.js';
 import { aiIdentity, squadProfile } from '../engine/tactics.js';
@@ -110,6 +110,7 @@ export function simulateRestOfSeason(dataset, game) {
     input[fixture.homeId === game.teamId ? 'home' : 'away'].autoTactics = true;
     return simulateMatch(input);
   };
+  const digest = digestStart(dataset, game); // 끝나면 그 기간을 편지함 한 통으로 (inbox.js)
   while (!isSeasonOver(game)) {
     if (game.board?.sacked) break; // 경질: 새 구단을 골라야 이어 갈 수 있다
     const cup = userCupFixture(game);
@@ -123,4 +124,5 @@ export function simulateRestOfSeason(dataset, game) {
     playWeek(dataset, game, f ? autoPlay(matchInput(dataset, game, f), f) : null);
     game.incomingOffers = [];
   }
+  digestFinish(dataset, game, digest);
 }

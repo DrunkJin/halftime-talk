@@ -45,7 +45,9 @@ export function render(ctx) {
       });
       const items = list.map((m) => {
         const t = renderNews(text, m);
-        const body = h('div', { class: 'news-body', hidden: true }, h('p', {}, t.body), actionOf(ctx, m));
+        // 결산처럼 줄 목록이 있는 소식은 본문 아래에 목록으로
+        const lines = Array.isArray(m.vars?.lines) ? h('ul', { class: 'digest-lines' }, m.vars.lines.map((l) => h('li', {}, l))) : null;
+        const body = h('div', { class: 'news-body', hidden: true }, h('p', {}, t.body), lines, actionOf(ctx, m));
         const row = h(
           'li',
           { class: `news${m.read ? '' : ' unread'}${m.important ? ' important' : ''}` },
