@@ -165,11 +165,12 @@ export function showToast(content, { duration = 2600, tone = '' } = {}) {
 
 // ── Modal (06) ────────────────────────────────────────
 // 배경(.modal-backdrop)과 대화상자(.t-modal)를 만들고 닫기 함수를 돌려준다
-export function openModal(content, { onClose } = {}) {
+// variant: 창 모양 이름 (예: 'locker' → 화면 전체를 쓰는 하프타임 라커룸)
+export function openModal(content, { onClose, variant = '' } = {}) {
   const backdrop = document.createElement('div');
-  backdrop.className = 'modal-backdrop';
+  backdrop.className = `modal-backdrop${variant ? ` is-${variant}` : ''}`;
   const modal = document.createElement('div');
-  modal.className = 't-modal modal';
+  modal.className = `t-modal modal${variant ? ` modal-${variant}` : ''}`;
   modal.setAttribute('role', 'dialog');
   modal.setAttribute('aria-modal', 'true');
   modal.tabIndex = -1;

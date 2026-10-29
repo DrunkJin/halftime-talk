@@ -1320,3 +1320,53 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 input::placeholder { color: var(--muted); opacity: 1; }
 .squad-table tbody tr[tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .digest-lines { display: grid; gap: 4px; margin: 8px 0 4px; padding-left: 18px; font-size: 13px; line-height: 1.5; }
+
+/* ── 하프타임 라커룸: 화면 전체를 쓰는 장면 ── */
+.modal-backdrop.is-locker { padding: 0; background: rgba(5, 7, 10, 0.86); }
+.modal.modal-locker { width: 100%; max-width: none; height: 100%; max-height: none; border: 0; border-radius: 0; background: transparent; }
+.locker {
+  position: relative; display: grid; gap: 18px; align-content: start;
+  width: min(760px, 100%); min-height: 100%; margin: 0 auto; padding: 40px 24px 48px;
+}
+/* 우리 팀 색 조명: 위쪽에서 은은하게. 이기고 있으면 조금 더 밝게, 지고 있으면 어둡게 */
+.locker::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(120% 60% at 50% -10%, color-mix(in srgb, var(--us) 34%, transparent), transparent 70%),
+    linear-gradient(180deg, #0d1117, #07090c 70%);
+}
+.locker.is-trail::before { background: radial-gradient(120% 60% at 50% -10%, color-mix(in srgb, var(--us) 18%, transparent), transparent 70%), linear-gradient(180deg, #0b0e13, #050608 70%); }
+.lk-head { display: grid; justify-items: center; gap: 8px; text-align: center; }
+.lk-score { display: flex; align-items: center; gap: 22px; }
+.lk-score h2 { font-size: clamp(40px, 9vw, 64px); font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+.lk-mood { margin: 0; color: var(--text-2); font-size: 15px; }
+.locker.is-lead .lk-mood { color: var(--accent); }
+.locker.is-trail .lk-mood { color: #ff8a8e; }
+.lk-goals { margin: 0; font-size: 12px; }
+.lk-coach { display: grid; gap: 4px; margin: 0; padding: 14px 16px; border-radius: 10px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); }
+.lk-coach span { font-size: var(--fs-min); font-weight: 700; letter-spacing: 0.04em; }
+.lk-coach p { margin: 0; font-size: 17px; line-height: 1.5; color: var(--text); }
+.lk-stats { display: grid; gap: 6px; }
+.lk-stat { display: grid; grid-template-columns: 64px minmax(0, 1fr) 64px; align-items: center; text-align: center; font-size: 13px; }
+.lk-stat b:first-child { color: var(--text); }
+.lk-stat b:last-child { color: var(--text-2); }
+.lk-players { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.lk-players li { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 8px 12px; border-radius: 8px; background: rgba(255, 255, 255, 0.03); font-size: 13px; }
+.lk-players li b { flex: none; max-width: 45%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lk-players li > span:not(.slot-tag):not(.cond) { flex: 1 1 auto; min-width: 0; color: var(--text-2); }
+.lk-players li .cond { flex: none; margin-left: auto; }
+.lk-players li.tone-good b { color: var(--accent); }
+.lk-players li.tone-bad b { color: #ff8a8e; }
+.lk-players li.tone-warn b { color: var(--warn); }
+.locker-talk { display: grid; gap: 12px; padding-top: 6px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+.locker-talk .iv-question { font-size: 16px; }
+.locker-talk .answer-btn { padding: 12px 14px; font-size: 14px; background: rgba(255, 255, 255, 0.02); }
+.locker-actions { display: flex; justify-content: flex-end; align-items: center; gap: 10px; flex-wrap: wrap; padding-top: 4px; }
+@media (max-width: 640px) {
+  .locker { padding: 24px 16px 32px; gap: 14px; }
+  .lk-score { gap: 14px; }
+  .lk-score .badge { --size: 44px !important; }
+  .lk-coach p { font-size: 15px; }
+  .locker-actions .btn { flex: 1 1 0; }
+}
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }

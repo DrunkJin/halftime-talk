@@ -945,18 +945,96 @@ function renderLive(ctx, show) {
     }
   }
 
-  // 하프타임 팀 토크: 고른 말에 따라 후반 레이팅·사기가 바뀐다
+  // ── 하프타임 라커룸 ──
+  // 화면 전체를 쓰는 장면: 스코어와 분위기 → 수석코치 한마디 → 전반 기록 → 눈에 띄는 선수 → 팀 토크.
+  // 숫자로 '정답'을 주지 않고 상황을 말로 읽어 준다. talkHost: 팀 토크(질문·답·반응)가 들어갈 자리
+  function lockerScene(moment, talkHost) {
+    const opp = mySide === 'home' ? 'away' : 'home';
+    const us = sideTeam[mySide];
+    const them = sideTeam[opp];
+    const my = state.score[mySide];
+    const their = state.score[opp];
+    const extra = moment === 'extraTime';
+    const s = state.stats;
+    const possTotal = s.home.possessionMinutes + s.away.possessionMinutes || 1;
+    const poss = Math.round((100 * s[mySide].possessionMinutes) / possTotal);
+    const xgGap = s[mySide].xg - s[opp].xg;
+    const mood = extra ? 'level' : my > their ? 'lead' : my < their ? 'trail' : 'level';
+    const moodLine = extra ? '합계 동점. 30분이 더 남았습니다.' : { lead: '앞선 채 라커룸에 들어왔습니다.', trail: '뒤진 채 라커룸에 들어왔습니다.', level: '동점으로 라커룸에 들어왔습니다.' }[mood];
+    // 수석코치: 기록에서 가장 눈에 띄는 한 가지
+    const coach =
+      my < their && xgGap > 0.3 ? '찬스는 우리가 더 만들었습니다. 결정력만 돌아오면 됩니다.'
+      : my > their && xgGap < -0.3 ? '스코어보다 경기 내용은 밀렸습니다. 운이 따랐다고 봐야 합니다.'
+      : poss <= 40 ? '중원 싸움에서 밀려 공을 거의 못 만졌습니다.'
+      : poss >= 60 && s[mySide].shotsOnTarget <= s[opp].shotsOnTarget ? '공은 오래 가졌는데 위협적인 장면이 부족합니다.'
+      : s[mySide].shotsOnTarget === 0 ? '골문으로 향한 슈팅이 아직 하나도 없습니다.'
+      : my > their ? '계획대로 가고 있습니다. 집중력만 유지하면 됩니다.'
+      : my < their ? `${extra ? '30분' : '아직 45분'}이 남았습니다. 무엇을 바꿀지가 중요합니다.`
+      : '팽팽합니다. 작은 차이가 승부를 가를 겁니다.';
+    // 눈에 띄는 선수 (최대 4명, 한 선수는 한 번만): 이끄는 선수, 고전하는 선수, 지친 선수, 경고를 안은 선수
+    const snap = teamSnapshot(state, mySide);
+    const ratings = playerRatings(state);
+    const onPitch = snap.lineup.map((p, i) => (p ? { p, pos: snap.slots[i], r: ratings[p.id] ?? 6, c: snap.condition(p.id) } : null)).filter(Boolean);
+    const booked = new Set(state.cards.filter((c) => c.team === mySide && c.type === 'yellow').map((c) => c.playerId));
+    const picked = new Set();
+    const notes = [];
+    const note = (x, text, tone) => {
+      if (!x || picked.has(x.p.id) || notes.length >= 4) return;
+      picked.add(x.p.id);
+      notes.push({ ...x, text, tone });
+    };
+    // 전반에는 평점 차가 작으므로 기준을 낮게 잡는다
+    const scored = new Map();
+    for (const g of state.goals) if (g.team === mySide) scored.set(g.scorerId, (scored.get(g.scorerId) ?? 0) + 1);
+    const byRating = [...onPitch].sort((a, b) => b.r - a.r);
+    for (const [id, n] of scored) note(onPitch.find((x) => x.p.id === id), n >= 2 ? `${n}골, 오늘 감이 좋습니다` : '골을 넣고 기세가 올랐습니다', 'good');
+    if (byRating[0]?.r >= 6.7) note(byRating[0], '경기를 이끌고 있습니다', 'good');
+    if (byRating.at(-1)?.r <= 6.0) note(byRating.at(-1), '고전하고 있습니다', 'bad');
+    const tired = onPitch.filter((x) => x.pos !== 'GK' && x.c < 76).sort((a, b) => a.c - b.c)[0];
+    note(tired, '지쳐 보입니다', 'warn');
+    note(onPitch.find((x) => booked.has(x.p.id)), '경고를 안고 있습니다 — 거친 태클은 위험합니다', 'warn');
+    const goals = state.goals.map((g) => `${g.minute}' ${g.scorerName}${g.team === mySide ? '' : ` (${sideTeam[g.team].shortName})`}`);
+    const stat = (label, a, b) => h('div', { class: 'lk-stat' }, h('b', { class: 'num' }, a), h('span', { class: 'muted' }, label), h('b', { class: 'num' }, b));
+    const line = (n, ...children) => h('div', { class: `t-stagger-line t-stagger-line--${n}` }, ...children);
+    const el = h(
+      'div',
+      { class: `locker t-stagger is-${mood}`, style: { '--us': teamAccent(us), '--them': teamAccent(them) } },
+      line(
+        1,
+        h(
+          'header',
+          { class: 'lk-head' },
+          h('div', { class: 'lk-score' }, teamBadge(us, 56), h('h2', { class: 'num' }, h('span', { class: 'sr-only' }, `${extra ? '연장 직전' : '하프타임'} 라커룸, ${us.shortName} `), `${my} – ${their}`, h('span', { class: 'sr-only' }, ` ${them.shortName}`)), teamBadge(them, 56)),
+          h('p', { class: 'lk-mood' }, `${extra ? '연장 직전' : '하프타임'} · ${us.shortName} 대 ${them.shortName}. ${moodLine}`),
+          goals.length ? h('p', { class: 'lk-goals muted' }, goals.join(' · ')) : null,
+        ),
+      ),
+      line(2, h('blockquote', { class: 'lk-coach' }, h('span', { class: 'muted' }, '수석코치'), h('p', {}, coach))),
+      line(3, h('div', { class: 'lk-stats' }, stat('점유', `${poss}%`, `${100 - poss}%`), stat('슈팅', s[mySide].shots, s[opp].shots), stat('유효 슈팅', s[mySide].shotsOnTarget, s[opp].shotsOnTarget))),
+      notes.length ? line(4, h('ul', { class: 'lk-players' }, notes.map((x) => h('li', { class: `tone-${x.tone}` }, h('span', { class: 'slot-tag' }, x.pos), h('b', {}, x.p.name), h('span', {}, x.text), conditionMeter(Math.round(x.c)))))) : null,
+      line(5, talkHost),
+    );
+    const reveal = () => {
+      el.classList.remove('is-shown');
+      void el.offsetHeight;
+      requestAnimationFrame(() => el.classList.add('is-shown'));
+    };
+    return { el, reveal };
+  }
+
+  // 하프타임 팀 토크: 고른 말에 따라 후반 레이팅·사기가 바뀐다 (라커룸 장면 안에서)
   async function openTeamTalk(moment = 'half') {
     const media = await loadMedia();
     if (live?.state !== state) return;
     if (!media) return showToast('교체하거나 재개를 누르세요', { duration: 3500 });
     const talk = live.cup ? cupTeamTalk(media, dataset, ctx.game, state, mySide, live.gap ?? 0, fixture, moment) : teamTalk(media, dataset, ctx.game, state, mySide, live.gap ?? 0);
-    const body = h('div', {});
-    const heading = moment === 'extraTime' ? '연장전 직전 팀 토크' : '하프타임 팀 토크';
-    const close = openModal(h('div', { class: 'confirm-modal talk-modal' }, h('h2', {}, `${heading} · ${home.shortName} ${state.score.home}-${state.score.away} ${away.shortName}`), body));
+    const body = h('div', { class: 'locker-talk' });
+    const { el: scene, reveal } = lockerScene(moment, body);
+    const close = openModal(scene, { variant: 'locker' });
+    reveal();
     const after = (reaction) => {
-      const cmd = h('button', { class: 'btn ghost', type: 'button' }, '감독 지시 (교체·전술)');
-      const go = h('button', { class: 'btn primary', type: 'button' }, moment === 'extraTime' ? '연장 시작' : '후반 시작');
+      const cmd = h('button', { class: 'btn', type: 'button' }, '감독 지시 (교체·전술)');
+      const go = h('button', { class: 'btn primary big', type: 'button' }, moment === 'extraTime' ? '연장 시작' : '후반 시작');
       cmd.addEventListener('click', () => {
         close();
         openCommandModal('subs');
@@ -965,7 +1043,8 @@ function renderLive(ctx, show) {
         close();
         resume();
       });
-      body.append(reaction ?? '', h('div', { class: 'confirm-actions' }, cmd, go));
+      body.append(reaction ?? '', h('div', { class: 'locker-actions' }, cmd, go));
+      go.focus();
     };
     body.replaceChildren(
       interviewView(
@@ -975,7 +1054,7 @@ function renderLive(ctx, show) {
           ctx.persist();
           const a = talk.answers.find((x) => x.stance === stance);
           body.replaceChildren(answeredView(talk.question, a.label, a.text));
-          after(h('p', { class: `talk-reaction ${r.tone}` }, r.reaction, h('span', { class: 'muted' }, ` ${moraleShift(r.morale)}`)));
+          after(h('p', { class: `talk-reaction ${r.tone}` }, r.reaction)); // 반응 문장이 분위기 변화를 이미 말한다
           updateStats();
         },
         () => {
