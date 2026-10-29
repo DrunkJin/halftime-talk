@@ -350,7 +350,7 @@ export function render(ctx) {
             h('td', { class: 'num' }, p.age),
             h('td', { class: `num ovr ${view.known ? attrClass(view.ovr) : 'ovr-range'}`, title: view.known ? '' : t('transfers.row.scoutToSee') }, view.known ? view.ovr : `${view.low}~${view.high}`),
             h('td', { class: 'num' }, formatMoney(playerValue(p))),
-            h('td', { class: 'num', title: teamId ? '' : t('transfers.row.feeTitle') }, teamId ? formatMoney(asking) : contested ? t('transfers.row.contested') : t('transfers.row.signOn', { fee: formatMoney(asking) })),
+            h('td', { class: `num${asking > budget ? ' over-budget' : ''}`, title: teamId ? '' : t('transfers.row.feeTitle') }, teamId ? formatMoney(asking) : contested ? t('transfers.row.contested') : t('transfers.row.signOn', { fee: formatMoney(asking) })),
             h('td', {}, statusChip(game, p.id)),
             h('td', { class: 'num row-actions' }, view.known ? null : scoutButton(p), loan, offer),
           );

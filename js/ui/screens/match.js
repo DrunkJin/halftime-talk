@@ -755,7 +755,7 @@ function renderLive(ctx, show) {
   const controls = h('div', { class: 'live-controls' }, pauseBtn, subBtn, tacticLine, h('div', { class: 'speed' }, h('span', { class: 'muted' }, t('match.live.speed')), speed.el), autoToggle, skipBtn);
 
   // 중계 · 기록
-  const feed = h('ol', { class: 'feed' });
+  const feed = h('ol', { class: 'feed', role: 'log', 'aria-label': t('match.live.feed') }); // 새 중계 줄을 화면 낭독기가 읽는다
   const statsBody = h('tbody');
   const after = h('div', { class: 'after' });
 

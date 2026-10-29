@@ -118,7 +118,9 @@ export function createApp(root, dataset, savedSlots = []) {
 
   const topbar = h('header', { class: 'topbar' });
   const panelEl = h('div', { class: 't-panel-slide screen', 'data-open': 'false' });
-  root.replaceChildren(topbar, h('main', { class: 'main' }, panelEl));
+  // 화면 낭독기용 페이지 제목 (팀 선택 화면은 자기 h1이 있다)
+  const pageTitle = h('h1', { class: 'sr-only' });
+  root.replaceChildren(topbar, h('main', { class: 'main' }, pageTitle, panelEl));
 
   let current = null;
   let nav = null;
@@ -190,6 +192,8 @@ export function createApp(root, dataset, savedSlots = []) {
     current = name;
     nav?.select(name);
     inboxBtn?.classList.toggle('is-active', name === 'inbox');
+    pageTitle.hidden = name === 'select';
+    if (ctx.game) pageTitle.textContent = `${ctx.dataset.teamById.get(ctx.game.teamId).name} · ${name === 'inbox' ? t('app.topbar.inbox') : t(`app.nav.${name}`)}`;
     // 모바일 하단 탭 줄은 가로로 넘치므로 지금 화면 탭을 가운데로
     nav?.el.querySelector(`[data-id="${name}"]`)?.scrollIntoView({ block: 'nearest', inline: 'center' });
     swapPanel(panelEl, () => {

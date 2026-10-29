@@ -141,17 +141,23 @@ export function streamText(block, text) {
 }
 
 // ── Toast (22) ────────────────────────────────────────
+// 알림 자리는 미리 만들어 둔다: 실시간 영역은 내용이 들어오기 전에 있어야 화면 낭독기가 확실히 읽는다
 let toastHost = null;
+function ensureToastHost() {
+  if (toastHost || typeof document === 'undefined' || !document.body) return toastHost;
+  toastHost = document.createElement('div');
+  toastHost.className = 'toast-host';
+  toastHost.setAttribute('role', 'status');
+  toastHost.setAttribute('aria-live', 'polite');
+  document.body.appendChild(toastHost);
+  return toastHost;
+}
+ensureToastHost();
 
 export function showToast(content, { duration = 2600, tone = '' } = {}) {
-  if (!toastHost) {
-    toastHost = document.createElement('div');
-    toastHost.className = 'toast-host';
-    document.body.appendChild(toastHost);
-  }
+  ensureToastHost();
   const toast = document.createElement('div');
   toast.className = `t-toast toast ${tone}`;
-  toast.setAttribute('role', 'status');
   if (typeof content === 'string') toast.textContent = content;
   else toast.append(content);
   toastHost.appendChild(toast);
