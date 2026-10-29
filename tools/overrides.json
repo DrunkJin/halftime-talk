@@ -141,6 +141,451 @@
       "altPositions": [
         "LW"
       ]
+    },
+    "p219847": {
+      "_name": "Kai Havertz",
+      "altPositions": [
+        "AM",
+        "CM"
+      ]
+    },
+    "p184029": {
+      "_name": "Martin Ødegaard",
+      "altPositions": [
+        "CM",
+        "RW"
+      ]
+    },
+    "p466075": {
+      "_name": "Riccardo Calafiori",
+      "altPositions": [
+        "CB"
+      ]
+    },
+    "p448104": {
+      "_name": "Piero Hincapié",
+      "altPositions": [
+        "LB"
+      ]
+    },
+    "p462424": {
+      "_name": "William Saliba",
+      "altPositions": [
+        "RB"
+      ]
+    },
+    "p195384": {
+      "_name": "Mikel Merino",
+      "altPositions": [
+        "ST",
+        "DM"
+      ]
+    },
+    "p472769": {
+      "_name": "Nico O'Reilly",
+      "altPositions": [
+        "CM"
+      ]
+    },
+    "p477064": {
+      "_name": "Rico Lewis",
+      "altPositions": [
+        "CM",
+        "LB"
+      ]
+    },
+    "p437730": {
+      "_name": "Antoine Semenyo",
+      "altPositions": [
+        "LW",
+        "ST"
+      ]
+    },
+    "p424876": {
+      "_name": "Dominik Szoboszlai",
+      "altPositions": [
+        "CM",
+        "RB"
+      ]
+    },
+    "p494595": {
+      "_name": "Florian Wirtz",
+      "altPositions": [
+        "LW",
+        "CM"
+      ]
+    },
+    "p216094": {
+      "_name": "Jeremie Frimpong",
+      "altPositions": [
+        "RW"
+      ]
+    },
+    "p219168": {
+      "_name": "Alexander Isak",
+      "altPositions": [
+        "LW"
+      ]
+    },
+    "p510663": {
+      "_name": "Hugo Ekitike",
+      "altPositions": [
+        "LW"
+      ]
+    },
+    "p244851": {
+      "_name": "Cole Palmer",
+      "altPositions": [
+        "RW",
+        "ST"
+      ]
+    },
+    "p475168": {
+      "_name": "João Pedro",
+      "altPositions": [
+        "AM"
+      ]
+    },
+    "p460028": {
+      "_name": "Levi Colwill",
+      "altPositions": [
+        "LB"
+      ]
+    },
+    "p482609": {
+      "_name": "Malo Gusto",
+      "altPositions": [
+        "LB"
+      ]
+    },
+    "p486672": {
+      "_name": "Moisés Caicedo",
+      "altPositions": [
+        "CM",
+        "RB"
+      ]
+    },
+    "p221820": {
+      "_name": "Lisandro Martínez",
+      "altPositions": [
+        "LB"
+      ]
+    },
+    "p106760": {
+      "_name": "Luke Shaw",
+      "altPositions": [
+        "CB"
+      ]
+    },
+    "p446008": {
+      "_name": "Bryan Mbeumo",
+      "altPositions": [
+        "ST",
+        "LW"
+      ]
+    },
+    "p184341": {
+      "_name": "Mason Mount",
+      "altPositions": [
+        "CM"
+      ]
+    },
+    "p441164": {
+      "_name": "Pedro Porro",
+      "altPositions": [
+        "RW"
+      ]
+    },
+    "p487053": {
+      "_name": "Destiny Udogie",
+      "altPositions": [
+        "LW"
+      ]
+    },
+    "p172780": {
+      "_name": "James Maddison",
+      "altPositions": [
+        "CM",
+        "LW"
+      ]
+    },
+    "p212319": {
+      "_name": "Richarlison",
+      "altPositions": [
+        "LW"
+      ]
+    },
+    "p122806": {
+      "_name": "John McGinn",
+      "altPositions": [
+        "AM",
+        "LW"
+      ]
+    },
+    "p226944": {
+      "_name": "Boubacar Kamara",
+      "altPositions": [
+        "CM",
+        "CB"
+      ]
+    },
+    "fd3374": {
+      "_name": "Kylian Mbappé",
+      "altPositions": [
+        "LW"
+      ]
+    },
+    "fd1556": {
+      "_name": "Vinicius Junior",
+      "altPositions": [
+        "ST"
+      ]
+    },
+    "fd96": {
+      "_name": "Federico Valverde",
+      "altPositions": [
+        "DM",
+        "RB"
+      ]
+    },
+    "fd125010": {
+      "_name": "Jude Bellingham",
+      "altPositions": [
+        "CM"
+      ]
+    },
+    "fd8514": {
+      "_name": "Aurélien Tchouameni",
+      "altPositions": [
+        "CB",
+        "CM"
+      ]
+    },
+    "fd102343": {
+      "_name": "Eduardo Camavinga",
+      "altPositions": [
+        "DM",
+        "LB"
+      ]
+    },
+    "fd7867": {
+      "_name": "Trent Alexander-Arnold",
+      "altPositions": [
+        "CM"
+      ]
+    },
+    "fd1324": {
+      "_name": "Rodrygo",
+      "altPositions": [
+        "LW",
+        "ST"
+      ]
+    },
+    "fd3254": {
+      "_name": "Bernardo Silva",
+      "altPositions": [
+        "CM",
+        "RW"
+      ]
+    },
+    "fd1337": {
+      "_name": "Éder Militão",
+      "altPositions": [
+        "RB"
+      ]
+    },
+    "fd133860": {
+      "_name": "Pedri",
+      "altPositions": [
+        "AM"
+      ]
+    },
+    "fd8499": {
+      "_name": "Jules Koundé",
+      "altPositions": [
+        "CB"
+      ]
+    },
+    "fd7559": {
+      "_name": "Frenkie de Jong",
+      "altPositions": [
+        "DM"
+      ]
+    },
+    "fd23132": {
+      "_name": "Dani Olmo",
+      "altPositions": [
+        "LW",
+        "CM"
+      ]
+    },
+    "fd214533": {
+      "_name": "Fermín López",
+      "altPositions": [
+        "CM",
+        "LW"
+      ]
+    },
+    "fd70": {
+      "_name": "Marcos Llorente",
+      "altPositions": [
+        "CM",
+        "RW"
+      ]
+    },
+    "fd112": {
+      "_name": "Koke",
+      "altPositions": [
+        "DM"
+      ]
+    },
+    "fd15542": {
+      "_name": "Dávid Hancko",
+      "altPositions": [
+        "LB"
+      ]
+    },
+    "fd171964": {
+      "_name": "Giuliano Simeone",
+      "altPositions": [
+        "LW"
+      ]
+    },
+    "fd359": {
+      "_name": "Joshua Kimmich",
+      "altPositions": [
+        "RB",
+        "CM"
+      ]
+    },
+    "fd113765": {
+      "_name": "Michael Olise",
+      "altPositions": [
+        "AM"
+      ]
+    },
+    "fd22396": {
+      "_name": "Luis Díaz",
+      "altPositions": [
+        "ST",
+        "RW"
+      ]
+    },
+    "fd9549": {
+      "_name": "Konrad Laimer",
+      "altPositions": [
+        "CM",
+        "DM"
+      ]
+    },
+    "fd21288": {
+      "_name": "Alphonso Davies",
+      "altPositions": [
+        "LW"
+      ]
+    },
+    "fd9541": {
+      "_name": "Dayot Upamecano",
+      "altPositions": [
+        "RB"
+      ]
+    },
+    "fd311": {
+      "_name": "Serge Gnabry",
+      "position": "RW",
+      "altPositions": [
+        "LW",
+        "ST"
+      ]
+    },
+    "fd133903": {
+      "_name": "Maximilian Beier",
+      "altPositions": [
+        "LW",
+        "AM"
+      ]
+    },
+    "fd3183": {
+      "_name": "Emre Can",
+      "altPositions": [
+        "DM"
+      ]
+    },
+    "fd30821": {
+      "_name": "Federico Dimarco",
+      "altPositions": [
+        "LW"
+      ]
+    },
+    "fd1834": {
+      "_name": "Alessandro Bastoni",
+      "altPositions": [
+        "LB"
+      ]
+    },
+    "fd8685": {
+      "_name": "Marcus Thuram-Ulien",
+      "altPositions": [
+        "LW"
+      ]
+    },
+    "fd143": {
+      "_name": "Manuel Akanji",
+      "altPositions": [
+        "RB"
+      ]
+    },
+    "fd145": {
+      "_name": "Christian Pulisic",
+      "altPositions": [
+        "ST",
+        "LW"
+      ]
+    },
+    "fd43": {
+      "_name": "Luka Modrić",
+      "altPositions": [
+        "AM"
+      ]
+    },
+    "fd3654": {
+      "_name": "Kevin De Bruyne",
+      "altPositions": [
+        "CM"
+      ]
+    },
+    "fd2487": {
+      "_name": "Giovanni Di Lorenzo",
+      "altPositions": [
+        "CB"
+      ]
+    },
+    "fd178722": {
+      "_name": "Vitinha",
+      "position": "CM",
+      "altPositions": [
+        "DM",
+        "AM"
+      ]
+    },
+    "fd3373": {
+      "_name": "Ousmane Dembélé",
+      "altPositions": [
+        "RW",
+        "AM"
+      ]
+    },
+    "fd53": {
+      "_name": "Achraf Hakimi",
+      "altPositions": [
+        "RW"
+      ]
+    },
+    "fd144570": {
+      "_name": "Nuno Mendes",
+      "altPositions": [
+        "LW"
+      ]
     }
   }
 }

@@ -50,7 +50,8 @@ FORMULA = {
     'autoAlt': {
         'margin': 3.5,
         'neighbors': {
-            'CB': ['RB', 'LB', 'DM'], 'LB': ['RB', 'LW', 'CB'], 'RB': ['LB', 'RW', 'CB'], 'DM': ['CM', 'CB'],
+            # 능력치가 비슷해도 실제로는 잘 서지 않는 조합(CB↔DM, 풀백→CB)은 넣지 않는다 — 그런 자리는 라인업 기록이 있을 때만
+            'CB': ['RB', 'LB'], 'LB': ['RB', 'LW'], 'RB': ['LB', 'RW'], 'DM': ['CM'],
             'CM': ['DM', 'AM'], 'AM': ['CM', 'LW', 'RW', 'ST'], 'LW': ['RW', 'AM', 'ST'], 'RW': ['LW', 'AM', 'ST'], 'ST': ['LW', 'RW', 'AM'],
         },
     },

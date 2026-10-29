@@ -720,6 +720,7 @@ class Merger:
                 r['position'] = ov['position']
             if 'altPositions' in ov:
                 r['alt'] = ov['altPositions']
+                r['altFixed'] = True  # 직접 지정한 보조 포지션: 자동 보완하지 않는다
             if 'nationality' in ov:
                 r['nationality'] = ov['nationality']
             r['attributes'] = F.compute_attributes(r, r['quality'], ctx)
@@ -731,7 +732,7 @@ class Merger:
         A = F.FORMULA['autoAlt']
         rating = lambda attrs, pos: sum(attrs[k] * w for k, w in W[pos].items()) / sum(W[pos].values())
         for r in self.records:
-            if r['position'] == 'GK' or len(r['alt']) >= 2:
+            if r['position'] == 'GK' or len(r['alt']) >= 2 or r.get('altFixed'):
                 continue
             main = rating(r['attributes'], r['position'])
             for pos in A['neighbors'][r['position']]:
