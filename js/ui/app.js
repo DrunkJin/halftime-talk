@@ -8,7 +8,7 @@ import { teamBadge } from './badge.js';
 import { openConfirm, segmented } from './components.js';
 import { h } from './dom.js';
 import { t } from '../i18n.js';
-import { cssMs, showToast, swapPanel } from './motion.js';
+import { cssMs, openModal, showToast, swapPanel } from './motion.js';
 import * as careerScreen from './screens/career.js';
 import * as cupsScreen from './screens/cups.js';
 import * as financeScreen from './screens/finance.js';
@@ -31,6 +31,8 @@ const NAV = ['squad', 'match', 'schedule', 'training', 'table', 'cups', 'transfe
     return t(`app.nav.${id}`);
   },
 }));
+// 모바일 하단 탭은 자주 쓰는 4개 + '더보기'. 나머지는 더보기 창에서 (넓은 화면에서는 전부 보인다)
+const NAV_MORE = new Set(['schedule', 'table', 'cups', 'finance', 'history']);
 const SAVE_DELAY = 400;
 
 // 저장된 게임이 지금 데이터·버전과 맞는지
@@ -141,6 +143,20 @@ export function createApp(root, dataset, savedSlots = []) {
     roundLabel = h('span', { class: 'muted' });
     budgetLabel = h('span', { class: 'budget num' });
     nav = segmented(NAV, current && current !== 'select' ? current : 'squad', (id) => navigate(id));
+    for (const tab of nav.el.querySelectorAll('.t-tab')) tab.classList.toggle('is-more', NAV_MORE.has(tab.dataset.id));
+    const moreBtn = h('button', { class: 'nav-more', type: 'button', 'aria-haspopup': 'dialog' }, t('app.nav.more'));
+    moreBtn.addEventListener('click', () => {
+      const list = h('div', { class: 'more-list' });
+      const close = openModal(h('div', { class: 'more-sheet' }, h('h2', {}, t('app.nav.more')), list), { variant: 'sheet' });
+      for (const item of NAV.filter((n) => NAV_MORE.has(n.id))) {
+        const b = h('button', { class: `more-item${item.id === current ? ' is-active' : ''}`, type: 'button', 'aria-current': item.id === current ? 'page' : null }, item.label);
+        b.addEventListener('click', () => {
+          close();
+          navigate(item.id);
+        });
+        list.append(b);
+      }
+    });
     // 받은 편지함 (읽지 않은 수)
     inboxBtn = h('button', { class: 'btn ghost small inbox-btn', type: 'button' }, t('app.topbar.inbox'), h('span', { class: 'inbox-count' }));
     inboxBtn.addEventListener('click', () => navigate('inbox'));
@@ -156,7 +172,7 @@ export function createApp(root, dataset, savedSlots = []) {
     topbar.replaceChildren(
       brand,
       h('div', { class: 'topbar-team' }, teamBadge(team, 22), h('b', {}, team.shortName), roundLabel, budgetLabel),
-      h('nav', { class: 'topbar-nav' }, nav.el),
+      h('nav', { class: 'topbar-nav' }, nav.el, moreBtn),
       h('div', { class: 'topbar-actions' }, inboxBtn, toSelect),
     );
     refreshTopbar();

@@ -856,6 +856,48 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .bench-actions { padding: 8px 12px; align-items: center; justify-content: flex-end; }
 .bench-actions .muted { margin-right: auto; font-size: 11px; }
 .bench-drop.is-over { outline: 2px dashed var(--info); outline-offset: -4px; }
+/* 이적 검색 목록: 좁은 화면에서는 선수마다 카드처럼 (이름·OVR / 포지션·나이·소속·요구액 / 상태·버튼). 시장가치는 선수 창에서 */
+@media (max-width: 640px) {
+  .market-table, .market-table tbody { display: block; }
+  .market-table thead { display: none; }
+  .market-table tr {
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    grid-template-areas: "name name name ovr" "pos age team ask" "status status act act";
+    align-items: center;
+    gap: 4px 8px;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .market-table td { padding: 0; border: 0; }
+  .market-table td:nth-child(1) { grid-area: name; min-width: 0; font-size: 14px; }
+  .market-table td:nth-child(2) { grid-area: team; min-width: 0; overflow: hidden; color: var(--muted); white-space: nowrap; }
+  .market-table td:nth-child(3) { grid-area: pos; }
+  .market-table td:nth-child(4) { grid-area: age; color: var(--text-2); }
+  .market-table td:nth-child(5) { grid-area: ovr; font-size: 15px; }
+  .market-table td:nth-child(6) { display: none; }
+  .market-table td:nth-child(7) { grid-area: ask; font-weight: 600; }
+  .market-table td:nth-child(8) { grid-area: status; }
+  .market-table td:nth-child(9) { grid-area: act; justify-self: end; }
+  .market-table td:nth-child(8):empty { display: none; }
+}
+
+/* 선수 창: 포지션 전환으로 익히는 자리 (자리 · 단계는 한 칩으로, 줄바꿈 없이) */
+.pm-learned { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
+.pm-learn-chip { padding: 1px 8px; border-radius: 999px; background: var(--panel-3); color: var(--text-2); font-size: 12px; white-space: nowrap; }
+.pm-learn-chip b { color: var(--text); }
+.pm-learn-chip.lv-familiar, .pm-learn-chip.lv-natural { background: var(--accent-dim); color: var(--accent); }
+
+/* 더보기 창 (모바일 하단 탭에서 빠진 화면들) */
+.nav-more { display: none; }
+.modal-sheet { width: min(420px, 100%); }
+.more-sheet { display: grid; gap: 12px; padding: 18px; }
+.more-sheet h2 { font-size: 16px; }
+.more-list { display: grid; gap: 6px; }
+.more-item { min-height: 48px; padding: 0 16px; border: 1px solid var(--line-2); border-radius: var(--radius); background: var(--panel-2); color: var(--text); font: inherit; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; }
+.more-item:hover { background: var(--panel-3); }
+.more-item.is-active { border-color: var(--accent); color: var(--accent); }
+@media (max-width: 640px) { .modal-backdrop.is-sheet { align-items: end; padding-bottom: calc(var(--bottom-nav, 56px) + 12px + env(safe-area-inset-bottom)); } }
 .tr-summary .window-closed { flex-basis: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(245, 184, 75, 0.35); background: rgba(245, 184, 75, 0.08); font-size: 13px; color: var(--muted); }
 .tr-summary .window-closed b { color: var(--warn); }
 
@@ -1370,6 +1412,13 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
   .topbar-nav::-webkit-scrollbar { display: none; }
   .topbar-nav .t-tab { height: 40px; padding: 0 14px; }
   .topbar-nav .t-tabs-pill { height: 40px; }
+  /* 하단 탭은 4개 + 더보기만: 가로 스크롤 없이 엄지로 닿게 */
+  .topbar-nav { display: flex; align-items: center; gap: 4px; overflow-x: visible; }
+  .topbar-nav .t-tabs { flex: 4 1 0; min-width: 0; }
+  .topbar-nav .t-tab { flex: 1 1 0; min-width: 0; padding: 0 4px; }
+  .topbar-nav .t-tab.is-more { display: none; }
+  .nav-more { display: block; flex: 1 1 0; min-width: 0; height: 40px; border: 0; border-radius: 48px; background: transparent; color: var(--tabs-text-muted); font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+  .topbar-nav:has(.t-tab.is-more[aria-selected="true"]) .nav-more { background: var(--tabs-pill-bg); color: var(--tabs-text-active); }
   .main { padding-bottom: calc(var(--bottom-nav) + 24px + env(safe-area-inset-bottom)); }
   .kickoff-bar { bottom: calc(var(--bottom-nav) + 8px + env(safe-area-inset-bottom)); }
   .toast-host { top: 56px; bottom: auto; }

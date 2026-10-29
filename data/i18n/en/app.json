@@ -11,6 +11,7 @@
   "app.nav.finance": "Finances",
   "app.nav.history": "History",
   "app.nav.career": "Career",
+  "app.nav.more": "More",
   "app.busy.failed": "Something went wrong ({label}). Please try again.",
   "app.save.failed": "Could not save (check your browser storage)",
   "app.topbar.worldSize": "{leagues} leagues · {teams} clubs",

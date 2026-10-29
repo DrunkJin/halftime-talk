@@ -187,9 +187,10 @@ export function basisText(basis) {
 
 // 포지션 전환으로 익히고 있는 자리 (숫자 대신 단계 말로)
 function learnedLine(player) {
-  const entries = Object.entries(player.posLearn ?? {}).filter(([, v]) => learnLevel(v) !== 'new').sort((a, b) => b[1] - a[1]);
+  // 데이터에 이미 보조 포지션인 자리는 '새 포지션'이 아니다
+  const entries = Object.entries(player.posLearn ?? {}).filter(([pos, v]) => learnLevel(v) !== 'new' && !player.altPositions.includes(pos)).sort((a, b) => b[1] - a[1]);
   if (!entries.length) return null;
-  return h('p', { class: 'pm-learned' }, h('span', { class: 'muted' }, t('components.player.learning')), entries.map(([pos, v], i) => [i ? ' · ' : ' ', h('b', {}, pos), ` ${learnWord(v)}`]));
+  return h('p', { class: 'pm-learned' }, h('span', { class: 'muted' }, t('components.player.learning')), entries.map(([pos, v]) => h('span', { class: `pm-learn-chip lv-${learnLevel(v)}` }, h('b', {}, pos), ` · ${learnWord(v)}`)));
 }
 
 export function openPlayerModal(dataset, player, ctx = null) {

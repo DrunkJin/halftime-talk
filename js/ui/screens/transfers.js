@@ -369,7 +369,7 @@ export function render(ctx) {
         { class: 'table-scroll' },
         h(
           'table',
-          { class: 'data' },
+          { class: 'data market-table' }, // 좁은 화면에서는 선수마다 카드 (css .market-table)
           h('thead', {}, h('tr', {}, h('th', {}, t('transfers.th.name')), h('th', {}, t('transfers.th.team')), h('th', {}, t('transfers.th.pos')), h('th', { class: 'num' }, t('transfers.th.age')), h('th', { class: 'num' }, 'OVR'), h('th', { class: 'num' }, t('transfers.th.value')), h('th', { class: 'num' }, t('transfers.th.asking')), h('th', {}, t('transfers.th.status')), h('th', {}))),
           tbody,
         ),

@@ -11,6 +11,7 @@
   "app.nav.finance": "재정",
   "app.nav.history": "기록",
   "app.nav.career": "커리어",
+  "app.nav.more": "더보기",
   "app.busy.failed": "{label} 중 오류가 났습니다. 다시 시도해 주세요.",
   "app.save.failed": "저장하지 못했습니다 (브라우저 저장소를 확인하세요)",
   "app.topbar.worldSize": "{leagues}개 리그 · {teams}팀",
