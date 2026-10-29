@@ -121,6 +121,8 @@ export function createApp(root, dataset, savedSlots = []) {
   // 화면 낭독기용 페이지 제목 (팀 선택 화면은 자기 h1이 있다)
   const pageTitle = h('h1', { class: 'sr-only' });
   root.replaceChildren(topbar, h('main', { class: 'main' }, pageTitle, panelEl));
+  // 상단 바 높이: 그 아래에 붙는 요소(경기 중 스코어보드)가 쓴다
+  new ResizeObserver(() => document.documentElement.style.setProperty('--topbar-h', `${topbar.offsetHeight}px`)).observe(topbar);
 
   let current = null;
   let nav = null;

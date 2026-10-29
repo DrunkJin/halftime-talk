@@ -88,6 +88,8 @@ export function reset() {
 }
 
 // 진행 중(끝나지 않은) 경기가 있는지 — 이 동안에는 선수 판매·해지를 막는다
+let stuckObserver = null; // 스코어보드 상단 고정 감시 (다시 그릴 때 앞의 것을 끊는다)
+
 export const isMatchInProgress = () => Boolean(live && !live.done);
 
 export function leave() {
@@ -1404,9 +1406,17 @@ function renderLive(ctx, show) {
   else if (state.finished) finalize(); // 결과만 보기, 또는 반영 실패 뒤 돌아온 경우
   else if (!live.paused) schedule();
 
+  // 스크롤해서 스코어보드가 상단에 붙으면 한 줄로 줄인다 (점수·시간만)
+  const sentinel = h('div', { class: 'sb-sentinel', 'aria-hidden': 'true' });
+  stuckObserver?.disconnect();
+  const topbarH = document.querySelector('.topbar')?.offsetHeight ?? 0;
+  stuckObserver = new IntersectionObserver(([e]) => scoreboard.classList.toggle('is-stuck', !e.isIntersecting && e.boundingClientRect.top < topbarH), { rootMargin: `-${topbarH}px 0px 0px 0px` });
+  stuckObserver.observe(sentinel);
+
   return h(
     'div',
     { class: 'match-live' },
+    sentinel,
     scoreboard,
     live.done ? null : controls,
     after, // 경기가 끝나면 결과·인터뷰·다음 경기가 스코어보드 바로 아래에

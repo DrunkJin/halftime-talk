@@ -397,6 +397,15 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
     linear-gradient(90deg, color-mix(in srgb, var(--home) 20%, transparent), transparent 35%, transparent 65%, color-mix(in srgb, var(--away) 20%, transparent)),
     var(--panel);
 }
+/* 스크롤해도 점수가 보이게 상단 바 아래에 붙는다. 붙으면 한 줄로 줄인다 (득점자 목록·합계는 숨김) */
+.match-live { position: relative; }
+.sb-sentinel { position: absolute; top: 0; left: 0; width: 1px; height: 1px; pointer-events: none; }
+.scoreboard { position: sticky; top: var(--topbar-h, 0px); z-index: 20; }
+.scoreboard.is-stuck { padding-block: 8px; box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45); }
+.scoreboard.is-stuck .badge { --size: 28px !important; }
+.scoreboard.is-stuck .sb-score { font-size: 26px; }
+.scoreboard.is-stuck .goal-list, .scoreboard.is-stuck .sb-agg { display: none; }
+.scoreboard.is-stuck .sb-center { gap: 2px; }
 .sb-team { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .sb-team.right { justify-content: flex-end; text-align: right; }
 .sb-team b { font-size: 16px; }
@@ -1323,6 +1332,7 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
   .main { padding-bottom: calc(var(--bottom-nav) + 24px + env(safe-area-inset-bottom)); }
   .kickoff-bar { bottom: calc(var(--bottom-nav) + 8px + env(safe-area-inset-bottom)); }
   .toast-host { top: 56px; bottom: auto; }
+  body:has(.scoreboard.is-stuck) .toast-host { top: calc(var(--topbar-h, 48px) + 64px); }
   .sb-full { display: none; }
   .sb-short { display: inline; }
 }
