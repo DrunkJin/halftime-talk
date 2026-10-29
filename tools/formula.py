@@ -46,6 +46,7 @@ FORMULA = {
     'minMinutesForStats': 450,
     # 처진 공격수 판정 (merge.reclassify_second_strikers): 득점 지표 점수 이하 · 키패스 점수 이상 · 둘의 차 (점수 -1~1, 출전 신뢰도 반영)
     'pivot': {'defendingEdge': 0.15},
+    'altProfileWeight': 0.4,  # 능력치 모양: 보조 포지션 템플릿을 하나당 이 비율로 섞는다 (formula.blended_profile)
     # 보조 포지션 자동 보완 (merge.auto_alt_positions): 이웃 자리 능력이 주 포지션과 margin 이내면 보조로 (최대 2개)
     'autoAlt': {
         'margin': 3.5,
@@ -169,6 +170,21 @@ def profile_shift(position):
         mean = sum(PROFILES[position].get(k, 0) * v for k, v in w.items()) / sum(w.values())
         _SHIFTS[position] = mean - FORMULA['profileOvrOffset']
     return _SHIFTS[position]
+
+
+def blended_profile(position, alts):
+    """주 포지션 템플릿에 보조 포지션 템플릿을 섞는다 (보조 하나당 altProfileWeight).
+    보조 자리에서 실제로 뛰는 선수는 그 자리에 필요한 능력치도 갖추고 있어야 해서. 주 포지션 OVR은 shift로 그대로 맞춘다"""
+    alts = [a for a in alts if a in PROFILES and a != 'GK' and position != 'GK']
+    if not alts:
+        return PROFILES[position], profile_shift(position)
+    w = FORMULA['altProfileWeight']
+    total = 1 + w * len(alts)
+    keys = set(PROFILES[position]) | {k for a in alts for k in PROFILES[a]}
+    blended = {k: (PROFILES[position].get(k, 0) + w * sum(PROFILES[a].get(k, 0) for a in alts)) / total for k in keys}
+    weights = ovr_weights()[position]
+    mean = sum(blended.get(k, 0) * v for k, v in weights.items()) / sum(weights.values())
+    return blended, mean - FORMULA['profileOvrOffset']
 
 
 ROLE_CLASS = {'GK': 'GK', 'CB': 'DEF', 'LB': 'DEF', 'RB': 'DEF', 'DM': 'MID', 'CM': 'MID', 'AM': 'MID', 'LW': 'FWD', 'RW': 'FWD', 'ST': 'FWD'}
@@ -358,8 +374,7 @@ def compute_attributes(r, quality, ctx):
         for k in keys:
             tweaks[k] = tweaks.get(k, 0.0) + score * FORMULA['statTweakRange']
 
-    profile = PROFILES[r['position']]
-    shift = profile_shift(r['position'])
+    profile, shift = blended_profile(r['position'], r.get('alt') or [])
     A = FORMULA['attribute']
     # 기록 보정·나이·고정 편차는 능력치의 '모양'만 바꾸고 OVR은 움직이지 않게:
     # 그 포지션 OVR 가중치로 본 평균을 0으로 맞춘다 (전체 수준은 이미 품질에 반영됨)
