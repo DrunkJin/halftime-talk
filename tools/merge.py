@@ -597,12 +597,13 @@ class Merger:
             self.missing.append('트랜스퍼마르크트 데이터 없음 (tools/transfermarkt.py 참고) → 포지션·능력치는 라인업·기록만으로')
             return
         year = self.sources['seasonStartYear']
+        team_names = {t['id']: t['name'] for t in self.teams}
         for r in self.records:
-            e = TM.match(tm, r['name'], (r.get('stats') or {}).get('birth'), r['age'], year)
+            e = TM.match(tm, r['name'], (r.get('stats') or {}).get('birth'), r['age'], year, team_names.get(r['teamId'], ''))
             if not e:
                 continue
             self.report['tmMatched'] += 1
-            r['tm'] = {'value': e['value'], 'peak': e['peak']}
+            r['tm'] = {'value': e['value'] if e['recent'] else None, 'peak': e['peak']}
             if not e['position']:
                 continue
             pos, extra = e['position']

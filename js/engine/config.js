@@ -68,7 +68,7 @@ export const POSSESSION_EXP = 2.2;
 
 // ── 공격 ───────────────────────────────────────────────
 // 점유 1분당 공격 시도 확률 = ATTACK_BASE × (공격 / 상대 수비)^ATTACK_EXP
-export const ATTACK_BASE = 0.375; // AI 팀 전술 성향 도입 뒤 리그 평균 골 수(2.6~3.0)에 맞춤
+export const ATTACK_BASE = 0.365; // 리그 평균 골 수(2.6~3.0)에 맞춤 — 시장가치 반영으로 팀 간 차가 조금 벌어진 만큼 낮춤
 export const ATTACK_EXP = 1.5;
 export const ATTACK_PROB_MAX = 0.75;
 // 큰 전력 차 완화: (공격 / 상대 수비) 비가 knee를 넘으면 넘는 만큼을 slope 배로 줄인다 (약한 쪽도 대칭).
