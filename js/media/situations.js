@@ -9,6 +9,8 @@
 //   answers: 감독의 답 (talk는 선수단에게 하는 말)
 //   문자열 안의 {자리}는 경기 상황에 맞게 바뀐다. 자리 바로 뒤에 조사(을/를, 이/가 등)를 붙이지 말 것
 
+import { t } from '../i18n.js';
+
 export const INTERVIEW_SCHEMA_VERSION = 1;
 
 // 모든 상황에서 쓸 수 있는 자리
@@ -47,28 +49,28 @@ export const PLACEHOLDERS = {
   injured: '부상당한 우리 선수 이름',
 };
 
-// 답변 성향. 효과는 성향 단위로 정해지고(config.js MORALE), 문구는 같은 성향 안의 변주다
+// 답변 성향. 효과는 성향 단위로 정해지고(config.js MORALE), 문구는 같은 성향 안의 변주다 (라벨은 getter — 읽을 때 지금 언어)
 export const STANCES = {
   pre: {
-    confident: '자신감',
-    cautious: '신중',
-    respect: '상대 존중',
-    demand: '선수단에 요구',
-    deflect: '말 아끼기',
+    get confident() { return t('media.stance.pre.confident'); },
+    get cautious() { return t('media.stance.pre.cautious'); },
+    get respect() { return t('media.stance.pre.respect'); },
+    get demand() { return t('media.stance.pre.demand'); },
+    get deflect() { return t('media.stance.pre.deflect'); },
   },
   post: {
-    praise: '선수단 칭찬',
-    critical: '쓴소리',
-    blame: '외부 탓',
-    humble: '차분하게',
-    forward: '다음 경기로',
+    get praise() { return t('media.stance.post.praise'); },
+    get critical() { return t('media.stance.post.critical'); },
+    get blame() { return t('media.stance.post.blame'); },
+    get humble() { return t('media.stance.post.humble'); },
+    get forward() { return t('media.stance.post.forward'); },
   },
   talk: {
-    praise: '칭찬',
-    encourage: '격려',
-    demand: '질책',
-    calm: '침착하게',
-    passion: '열정 호소',
+    get praise() { return t('media.stance.talk.praise'); },
+    get encourage() { return t('media.stance.talk.encourage'); },
+    get demand() { return t('media.stance.talk.demand'); },
+    get calm() { return t('media.stance.talk.calm'); },
+    get passion() { return t('media.stance.talk.passion'); },
   },
 };
 

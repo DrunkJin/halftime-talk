@@ -1,16 +1,20 @@
 // 무거운 진행(모든 리그 라운드 진행, 시즌 끝까지 시뮬레이션)을 메인 스레드 밖에서 돌린다.
-// 메시지: { id, type: 'completeRound' | 'cupWeek' | 'newSeason' | 'simulateRest' | 'warm', dataUrl, game, userResult? }
+// 메시지: { id, type: 'completeRound' | 'cupWeek' | 'newSeason' | 'simulateRest' | 'warm', dataUrl, lang, game, userResult? }
 // 응답:   { id, ok, game, otherFixtureIds?, aiTransfers?, newOffers?, cups?, error? } — game은 진행이 반영된 새 사본
 import { loadDataset } from '../data/loader.js';
+import { loadLang } from '../i18n.js';
 import { playCupWeek, playWeek, simulateRestOfSeason, startNextSeason } from '../state/season.js';
 import { worldDataset } from '../state/world.js';
 
 let datasetPromise = null;
+let langPromise = null;
 
 self.onmessage = async ({ data }) => {
-  const { id, type, dataUrl, game, userResult } = data;
+  const { id, type, dataUrl, lang, game, userResult } = data;
   try {
     datasetPromise ??= loadDataset(dataUrl);
+    langPromise ??= loadLang(lang, dataUrl); // 소식·결산 문장이 메인 화면과 같은 언어로
+    await langPromise;
     const base = await datasetPromise;
     if (type === 'warm') return self.postMessage({ id, ok: true }); // 데이터만 미리 읽어 둔다
     const dataset = worldDataset(base, game);

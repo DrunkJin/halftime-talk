@@ -1,20 +1,24 @@
 // 이사회 (사용자 팀): 시즌 목표·신뢰도, 경질, 다른 구단의 제안과 부임. 수치는 boardConfig.js, 문구는 data/board.json
 //
 // game.board = { confidence, objective: { target, kind, label, size }, alerts: { warn, ultimatum, praise },
+//   (label은 만들 때 언어로 저장된 예전 값 — 화면은 objectiveLabel(objective)로 kind·target에서 다시 만든다)
 //                sacked: { offers, midSeason } | null, offers: [teamId] | null, seasonEval, pendingMove }
 // game.jobs = [{ seasonIndex, round, teamId, reason: 'start'|'sacked'|'offer' }]
 import { rebuildCupSchedule } from '../competitions/cups.js';
 import { FORMATION_CELLS } from '../engine/formations.js';
 import { autoSelectLineup, bestFormation } from '../engine/lineup.js';
 import { createRng } from '../engine/rng.js';
+import { t } from '../i18n.js';
 import { aiIdentity, squadProfile } from '../engine/tactics.js';
 import { TACTICS } from '../engine/config.js';
 import { computeTable } from '../league/table.js';
 import { topElevenOvr } from '../market/value.js';
-import { BOARD as B } from './boardConfig.js';
+import { BOARD as B, objectiveLabel } from './boardConfig.js';
 import { noteSeasonExpectation } from './career.js';
 import { pushNews } from './inbox.js';
 import { fixturesOf, leagueTotalRounds, squadOf, userSlots } from './game.js';
+
+export { objectiveLabel };
 
 const clamp = (v) => Math.max(0, Math.min(100, v));
 export const boardOf = (game) => (game.board ??= { confidence: B.start, objective: null, alerts: {}, sacked: null, offers: null, seasonEval: null, pendingMove: null });
@@ -28,14 +32,14 @@ export function setObjective(dataset, game) {
   const safe = size - (league.relegation?.spots ?? B.defaultRelegationSpots);
   const target = Math.max(1, Math.min(safe, exp + B.slack - (exp === 1 ? 1 : 0)));
   const rule = B.labels.find((l) => (l.maxTarget != null ? target <= l.maxTarget : target / size <= l.maxShare)) ?? B.labels.at(-1);
-  board.objective = { target, kind: rule.kind, label: rule.label.replace('{target}', target), size, expected: exp, seasonIndex: game.seasonIndex };
+  board.objective = { target, kind: rule.kind, label: objectiveLabel({ kind: rule.kind, target }), size, expected: exp, seasonIndex: game.seasonIndex };
   board.alerts = {};
   board.seasonEval = null;
   board.offers = null;
   return board.objective;
 }
 
-const levelOf = (c) => (c >= 80 ? '굳건함' : c >= 60 ? '좋음' : c >= 40 ? '보통' : c >= 20 ? '불안' : '위기');
+const levelOf = (c) => t(`state.board.confidence.${c >= 80 ? 'solid' : c >= 60 ? 'good' : c >= 40 ? 'ok' : c >= 20 ? 'shaky' : 'crisis'}`);
 export const confidenceLabel = (game) => levelOf(boardOf(game).confidence);
 
 function positionOf(dataset, game) {
@@ -93,8 +97,11 @@ export function recentRecord(game, n = B.recentGames) {
   return r;
 }
 
-// 경질 통보에 적을 사실: 목표·순위·예상·최근 흐름
-const sackReason = (game, position) => ({ goal: game.board.objective.label, position, expected: game.board.objective.expected, recent: recentRecord(game) });
+// 경질 통보에 적을 사실: 목표·순위·예상·최근 흐름 (목표는 kind·target으로 남겨 화면에서 이름을 만든다. goal은 예전 세이브용)
+const sackReason = (game, position) => {
+  const o = game.board.objective;
+  return { goal: o.label, goalKind: o.kind, target: o.target, position, expected: o.expected, recent: recentRecord(game) };
+};
 
 // 시즌 끝 평가 (playWeek에서 시즌이 끝날 때, recordSeason 뒤). → { verdict, delta, sacked, offers }
 export function evaluateSeason(dataset, game) {
@@ -112,7 +119,7 @@ export function evaluateSeason(dataset, game) {
   // 시즌 전 예상 순위 이상으로 마쳤으면 경질하지 않는다 (신뢰는 불안 수준에서 다음 시즌으로)
   const beatExpectation = rec.mine.position <= (board.objective.expected ?? 0); // 강등 후보로 꼽힌 팀이 예상대로 강등돼도 마찬가지
   if (beatExpectation && board.confidence < B.seasonEndSackBelow) board.confidence = B.seasonEndSackBelow;
-  board.seasonEval = { verdict, delta, target: board.objective.target, label: board.objective.label, position: rec.mine.position, expected: board.objective.expected, confidence: board.confidence, trophies: rec.trophies.length };
+  board.seasonEval = { verdict, delta, target: board.objective.target, kind: board.objective.kind, label: board.objective.label, position: rec.mine.position, expected: board.objective.expected, confidence: board.confidence, trophies: rec.trophies.length };
   if (board.confidence < B.seasonEndSackBelow) {
     board.sacked = { midSeason: false, offers: findOffers(dataset, game, 'worse'), reason: sackReason(game, rec.mine.position) };
   } else if (board.confidence >= B.offers.goodFrom && (verdict === 'exceeded' || rec.trophies.length)) {
@@ -185,7 +192,7 @@ export function acceptOffer(dataset, game, teamId) {
   if (board.sacked?.midSeason) {
     moveToTeam(dataset, game, teamId, { reason: 'sacked' });
     pushNews(game, 'board.welcome', { club: dataset.teamById.get(teamId).shortName }, { important: true });
-    pushNews(game, 'board.objective', { team: dataset.teamById.get(teamId).shortName, goal: board.objective.label, kind: board.objective.kind }, { important: true });
+    pushNews(game, 'board.objective', { team: dataset.teamById.get(teamId).shortName, kind: board.objective.kind, goalKind: board.objective.kind, goalTarget: board.objective.target }, { important: true });
     return;
   }
   board.pendingMove = { teamId, reason: board.sacked ? 'sacked' : 'offer' };

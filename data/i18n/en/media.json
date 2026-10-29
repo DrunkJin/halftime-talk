@@ -1,0 +1,35 @@
+{
+  "media.news.freeAgent": "Free agent",
+  "media.stance.pre.confident": "Confident",
+  "media.stance.pre.cautious": "Cautious",
+  "media.stance.pre.respect": "Respect opponent",
+  "media.stance.pre.demand": "Demand more",
+  "media.stance.pre.deflect": "Give little away",
+  "media.stance.post.praise": "Praise the squad",
+  "media.stance.post.critical": "Be critical",
+  "media.stance.post.blame": "Blame others",
+  "media.stance.post.humble": "Stay calm",
+  "media.stance.post.forward": "Look ahead",
+  "media.stance.talk.praise": "Praise",
+  "media.stance.talk.encourage": "Encourage",
+  "media.stance.talk.demand": "Demand more",
+  "media.stance.talk.calm": "Calm",
+  "media.stance.talk.passion": "Passionate",
+  "media.venue.home": "home",
+  "media.venue.away": "away",
+  "media.reaction.good": [
+    "There is a new look in the players’ eyes.",
+    "A roar goes up around the dressing room.",
+    "The players slap each other on the back as they head out."
+  ],
+  "media.reaction.neutral": [
+    "The players nod along.",
+    "The players quietly re-tie their boots.",
+    "No real reaction — they just get ready for the second half."
+  ],
+  "media.reaction.bad": [
+    "A few players look unhappy.",
+    "If anything, the mood has dropped.",
+    "The players avoid each other’s eyes."
+  ]
+}

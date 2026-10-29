@@ -18,6 +18,7 @@
 // 경기 옵션 knockout: { prior: { home, away } | null } — 토너먼트. prior는 앞선 1차전에서 이 경기 홈·원정 팀이 넣은 골.
 //   90분 뒤 합계가 같으면 연장 30분, 그래도 같으면 승부차기. 결과의 winner로 진출 팀을 알 수 있다
 import * as C from './config.js';
+import { t as tr } from '../i18n.js';
 import { commentText, shotPhrase } from './commentary.js';
 import { resolveSlots } from './formations.js';
 import { autoSelectLineup } from './lineup.js';
@@ -25,6 +26,7 @@ import { computeTeamRatings, conditionFactor, positionFit, positionRating, weigh
 import { createRng, randomSeed } from './rng.js';
 import { aiIdentity, fitScale, matchupFactors, squadProfile } from './tactics.js';
 import { aiRoleIds, roleMix, roleOf, slotMods } from './roles.js';
+import { tx } from './text.js';
 
 const opponentOf = (side) => (side === 'home' ? 'away' : 'home');
 const clamp = (v, [min, max]) => Math.min(max, Math.max(min, v));
@@ -32,12 +34,12 @@ const SHOT_TYPE_KEYS = Object.keys(C.SHOT_TYPES);
 
 function checkTeamInput(team, side) {
   const slots = resolveSlots(team?.slots ?? team?.formation);
-  if (slots.filter((p) => p === 'GK').length !== 1) throw new Error(`${side}: GK 슬롯은 정확히 1개여야 합니다`);
+  if (slots.filter((p) => p === 'GK').length !== 1) throw new Error(tx('engine.error.gkSlot', { side }));
   if (!Array.isArray(team.lineup) || team.lineup.length !== slots.length) {
-    throw new Error(`${side}: 선발 ${slots.length}명이 필요합니다`);
+    throw new Error(tx('engine.error.lineupSize', { side, n: slots.length }));
   }
   const ids = [...team.lineup, ...(team.bench ?? [])].map((p) => p.id);
-  if (new Set(ids).size !== ids.length) throw new Error(`${side}: 선발·교체 명단에 중복 선수`);
+  if (new Set(ids).size !== ids.length) throw new Error(tx('engine.error.duplicatePlayer', { side }));
 }
 
 // ── 팀 상태 ───────────────────────────────────────────
@@ -422,7 +424,7 @@ function resolveInjuries(state, side) {
     const type = C.INJURY.types[rng.weightedIndex(C.INJURY.types.map((x) => x.weight))];
     const matchesOut = type.min + Math.floor(rng.next() * (type.max - type.min + 1));
     state.injuries.push({ minute: state.minute, team: side, playerId: p.id, playerName: p.name, type: type.name, matchesOut });
-    comment(state, 'injury', side, { player: p.name, injury: type.name }, p.id);
+    comment(state, 'injury', side, { player: p.name, injury: C.injuryLabel(type.name) }, p.id);
     t.lineup[i] = null;
     fillInjuryVacancy(state, side, i, p);
     changed = true;
@@ -496,7 +498,7 @@ function resolvePenalty(state, side) {
       ps.onTarget++;
       if (gk) pstat(state, gk.id).saves++;
     }
-    comment(state, saved ? 'penaltySaved' : 'penaltyMissed', side, { player: taker.name, gk: gk?.name ?? '골키퍼' }, taker.id);
+    comment(state, saved ? 'penaltySaved' : 'penaltyMissed', side, { player: taker.name, gk: gk?.name ?? tr('commentary.gk') }, taker.id);
     return;
   }
   state.stats[side].shotsOnTarget++;
@@ -551,7 +553,7 @@ function resolveShot(state, side, ratio) {
 
   if (!rng.chance(pGoal)) {
     if (def.gk) pstat(state, def.gk.id).saves++;
-    comment(state, 'saved', side, { shot, gk: def.gk?.name ?? '골키퍼' }, shooter.id);
+    comment(state, 'saved', side, { shot, gk: def.gk?.name ?? tr('commentary.gk') }, shooter.id);
     return;
   }
 
@@ -578,7 +580,7 @@ function resolveShot(state, side, ratio) {
     shotType: typeKey,
   });
   const line = comment(state, 'goal', side, { shot }, shooter.id);
-  line.text += `${assister ? ` (도움: ${assister.name})` : ''} ${scoreText(state)}`;
+  line.text += `${assister ? ` ${tr('commentary.assist', { name: assister.name })}` : ''} ${scoreText(state)}`;
 }
 
 export function playMinute(state) {
@@ -658,8 +660,8 @@ export function playMinute(state) {
 
 function finish(state) {
   state.finished = true;
-  const pens = state.penalties ? ` (승부차기 ${state.penalties.home}-${state.penalties.away})` : '';
-  comment(state, 'fulltime', null, { score: `${scoreText(state)}${state.extraTime ? ' (연장)' : ''}${pens}` });
+  const pens = state.penalties ? ` ${tr('commentary.pens', { home: state.penalties.home, away: state.penalties.away })}` : '';
+  comment(state, 'fulltime', null, { score: `${scoreText(state)}${state.extraTime ? ` ${tr('commentary.aet')}` : ''}${pens}` });
 }
 
 // 진출 팀: 합계 → 승부차기 (토너먼트가 아니면 null)
@@ -699,7 +701,7 @@ function penaltyShootout(state) {
       const scored = rng.chance(p);
       if (scored) pen[side]++;
       pen.kicks.push({ team: side, playerId: taker.id, playerName: taker.name, scored });
-      comment(state, scored ? 'penScored' : state.textRng.chance(0.6) ? 'penSaved' : 'penMissed', side, { player: taker.name, gk: gk?.name ?? '골키퍼', tally: `${pen.home}-${pen.away}` }, taker.id);
+      comment(state, scored ? 'penScored' : state.textRng.chance(0.6) ? 'penSaved' : 'penMissed', side, { player: taker.name, gk: gk?.name ?? tr('commentary.gk'), tally: `${pen.home}-${pen.away}` }, taker.id);
       // 5번씩 차기 전이라도 남은 키커로 따라잡을 수 없으면 끝
       if (round < P.rounds) {
         const kicked = (s) => pen.kicks.filter((k) => k.team === s).length;
@@ -714,44 +716,44 @@ function penaltyShootout(state) {
 // 직접 교체: slotIndex 자리 선수를 벤치의 playerId로. → { ok, message }
 export function makeSubstitution(state, side, slotIndex, playerId) {
   const t = state.teams[side];
-  if (state.finished) return { ok: false, message: '경기가 끝났습니다.' };
-  if (t.subsUsed >= subLimit(state)) return { ok: false, message: `교체는 ${subLimit(state)}명까지입니다.` };
-  if (!t.lineup[slotIndex]) return { ok: false, message: '빈 자리는 교체할 수 없습니다 (퇴장).' };
+  if (state.finished) return { ok: false, message: tr('engine.msg.finished') };
+  if (t.subsUsed >= subLimit(state)) return { ok: false, message: tr('engine.msg.subLimit', { n: subLimit(state) }) };
+  if (!t.lineup[slotIndex]) return { ok: false, message: tr('engine.msg.emptySlot') };
   const incoming = t.bench.find((p) => p.id === playerId);
-  if (!incoming) return { ok: false, message: '교체 명단에 없는 선수입니다.' };
+  if (!incoming) return { ok: false, message: tr('engine.msg.notOnBench') };
   const outName = t.lineup[slotIndex].name;
   substitute(state, side, slotIndex, incoming, 'manual');
   recalc(t);
-  return { ok: true, message: `${incoming.name} 투입, ${outName} 아웃` };
+  return { ok: true, message: tr('engine.msg.subMade', { in: incoming.name, out: outName }) };
 }
 
 // 전술 지시 변경: partial = { mentality?, pressing?, style? } → { ok, message }
 export function setTactics(state, side, partial) {
   const t = state.teams[side];
-  if (state.finished) return { ok: false, message: '경기가 끝났습니다.' };
+  if (state.finished) return { ok: false, message: tr('engine.msg.finished') };
   const changes = [];
   for (const [kind, value] of Object.entries(partial)) {
-    if (!C.TACTICS[kind]?.[value]) return { ok: false, message: `알 수 없는 전술: ${kind}=${value}` };
+    if (!C.TACTICS[kind]?.[value]) return { ok: false, message: tr('engine.msg.unknownTactic', { kind, value }) };
     if (t.tactics[kind] === value) continue;
     t.tactics[kind] = value;
     changes.push(C.TACTICS[kind][value].label);
   }
-  if (changes.length === 0) return { ok: true, message: '바뀐 지시가 없습니다.' };
+  if (changes.length === 0) return { ok: true, message: tr('engine.msg.noChange') };
   refreshMatchups(state);
   comment(state, 'tactic', side, { change: changes.join(', ') });
-  return { ok: true, message: `전술 변경: ${changes.join(', ')}` };
+  return { ok: true, message: tr('engine.msg.tacticsChanged', { changes: changes.join(', ') }) };
 }
 
 // 경기 중 역할 변경: slotIndex 자리의 역할 → { ok, message }
 export function setRole(state, side, slotIndex, roleId) {
   const t = state.teams[side];
-  if (state.finished) return { ok: false, message: '경기가 끝났습니다.' };
+  if (state.finished) return { ok: false, message: tr('engine.msg.finished') };
   const pos = t.slots[slotIndex];
   const role = roleOf(pos, roleId);
-  if (!role || role.id !== roleId) return { ok: false, message: '그 자리에 없는 역할입니다.' };
+  if (!role || role.id !== roleId) return { ok: false, message: tr('engine.msg.roleNotHere') };
   t.roles = t.slots.map((_, i) => t.mods[i].role?.id ?? null);
   t.autoRoles = false;
-  if (t.roles[slotIndex] === roleId) return { ok: true, message: '바뀐 역할이 없습니다.' };
+  if (t.roles[slotIndex] === roleId) return { ok: true, message: tr('engine.msg.roleUnchanged') };
   t.roles[slotIndex] = roleId;
   refreshMatchups(state);
   const p = t.lineup[slotIndex];
@@ -762,20 +764,20 @@ export function setRole(state, side, slotIndex, roleId) {
 // 경기 중 개별 지시: kind 'shooting' | 'runs' | 'mark', value는 선택지 id (mark는 상대 선수 id), null이면 해제 → { ok, message }
 export function setInstruction(state, side, playerId, kind, value) {
   const t = state.teams[side];
-  if (state.finished) return { ok: false, message: '경기가 끝났습니다.' };
+  if (state.finished) return { ok: false, message: tr('engine.msg.finished') };
   const p = t.lineup.find((q) => q?.id === playerId);
-  if (!p) return { ok: false, message: '경기장에 없는 선수입니다.' };
+  if (!p) return { ok: false, message: tr('engine.msg.notOnPitch') };
   if (kind === 'mark') {
-    if (value && !t.opp.lineup.some((q) => q?.id === value)) return { ok: false, message: '상대 경기장에 없는 선수입니다.' };
+    if (value && !t.opp.lineup.some((q) => q?.id === value)) return { ok: false, message: tr('engine.msg.oppNotOnPitch') };
     // 한 상대 선수에게는 한 명만 붙인다
     if (value) for (const ins of Object.values(t.instructions)) if (ins.mark === value) delete ins.mark;
-  } else if (value && !C.INSTRUCTIONS[kind]?.[value]) return { ok: false, message: '알 수 없는 지시입니다.' };
+  } else if (value && !C.INSTRUCTIONS[kind]?.[value]) return { ok: false, message: tr('engine.msg.unknownInstruction') };
   const ins = (t.instructions[playerId] ??= {});
   if (value) ins[kind] = value;
   else delete ins[kind];
   refreshMatchups(state);
-  const label = kind === 'mark' ? (value ? `${C.INSTRUCTIONS.mark.label}: ${t.opp.roster.get(value)?.name ?? ''}` : '전담 마크 해제') : value ? C.INSTRUCTIONS[kind][value].label : '지시 해제';
-  comment(state, 'tactic', side, { change: `${p.name} ${label}` });
+  const label = kind === 'mark' ? (value ? tr('engine.msg.markOn', { name: t.opp.roster.get(value)?.name ?? '' }) : tr('engine.msg.markOff')) : value ? C.INSTRUCTIONS[kind][value].label : tr('engine.msg.instructionOff');
+  comment(state, 'tactic', side, { change: tr('engine.msg.instructionChange', { name: p.name, label }) });
   return { ok: true, message: `${p.name}: ${label}` };
 }
 
@@ -783,9 +785,9 @@ export function setInstruction(state, side, playerId, kind, value) {
 // 퇴장으로 빈 자리 수는 그대로 (가장 덜 아까운 자리를 비운다). → { ok, message }
 export function changeFormation(state, side, formationOrSlots) {
   const t = state.teams[side];
-  if (state.finished) return { ok: false, message: '경기가 끝났습니다.' };
+  if (state.finished) return { ok: false, message: tr('engine.msg.finished') };
   const slots = [...resolveSlots(formationOrSlots)];
-  if (slots.length !== t.slots.length || slots.filter((p) => p === 'GK').length !== 1) return { ok: false, message: '포메이션 형식이 맞지 않습니다.' };
+  if (slots.length !== t.slots.length || slots.filter((p) => p === 'GK').length !== 1) return { ok: false, message: tr('engine.msg.badFormation') };
   const gkSlot = slots.indexOf('GK');
   const gk = t.lineup[t.slots.indexOf('GK')];
   const field = t.lineup.filter((p, i) => p && i !== t.slots.indexOf('GK'));
@@ -810,7 +812,7 @@ export function changeFormation(state, side, formationOrSlots) {
   refreshMatchups(state);
   const name = t.formation ?? formationOrSlots.join('-');
   comment(state, 'formation', side, { formation: name });
-  return { ok: true, message: `포메이션 변경: ${name}` };
+  return { ok: true, message: tr('engine.msg.formationChanged', { name }) };
 }
 
 // 화면용: 경기 중 팀 상태 (선발·벤치·컨디션·남은 교체)

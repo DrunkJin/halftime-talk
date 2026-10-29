@@ -1,5 +1,7 @@
 // 커리어 카드 이미지 (1080×1350 PNG): 칭호·등급·통산 기록·트로피·순위 흐름·팬 한마디를 한 장에 그려 내려받는다
 import { teamAccent } from './badge.js';
+import { ordinal } from './format.js';
+import { t } from '../i18n.js';
 
 const W = 1080;
 const H = 1350;
@@ -50,7 +52,7 @@ function draw(ctx, { review: r, title, team, quote }, logo) {
   let y = 110;
   ctx.fillStyle = C.muted;
   ctx.font = `600 26px ${FONT}`;
-  ctx.fillText('HALFTIME TALK · 감독 커리어', x0, y);
+  ctx.fillText(t('components.card.header'), x0, y);
 
   // 로고 + 팀·기간
   y += 60;
@@ -62,7 +64,7 @@ function draw(ctx, { review: r, title, team, quote }, logo) {
   ctx.fillText(team.name, x0 + 150, y + 50);
   ctx.fillStyle = C.text2;
   ctx.font = `500 28px ${FONT}`;
-  ctx.fillText(`${first.season}${last !== first ? ` ~ ${last.season}` : ''} · ${r.seasons.length}시즌`, x0 + 150, y + 96);
+  ctx.fillText(`${first.season}${last !== first ? ` ~ ${last.season}` : ''} · ${t('components.card.seasons', { n: r.seasons.length })}`, x0 + 150, y + 96);
 
   // 칭호 + 등급
   y += 230;
@@ -75,7 +77,7 @@ function draw(ctx, { review: r, title, team, quote }, logo) {
   ctx.fillText(r.grade, W - x0, y + 10);
   ctx.fillStyle = C.muted;
   ctx.font = `600 28px ${FONT}`;
-  ctx.fillText(`평가 ${r.score}점`, W - x0, y + 52);
+  ctx.fillText(t('components.card.score', { score: r.score }), W - x0, y + 52);
   ctx.textAlign = 'left';
   if (title.summary) {
     ctx.fillStyle = C.text2;
@@ -86,10 +88,10 @@ function draw(ctx, { review: r, title, team, quote }, logo) {
   // 통산 기록 4칸
   y += 130;
   const cells = [
-    ['경기', `${r.totals.played}`, `${r.totals.won}승 ${r.totals.drawn}무 ${r.totals.lost}패`],
-    ['승률', `${Math.round(r.totals.winRate * 100)}%`, `득 ${r.totals.goalsFor} 실 ${r.totals.goalsAgainst}`],
-    ['트로피', `${r.totals.trophies.length}`, r.counts.promotions ? `승격 ${r.counts.promotions}회` : ''],
-    ['최고 순위', r.totals.bestFinish ? `${r.totals.bestFinish.position}위` : '—', r.totals.bestFinish?.season ?? ''],
+    [t('components.card.played'), `${r.totals.played}`, t('components.card.record', { w: r.totals.won, d: r.totals.drawn, l: r.totals.lost })],
+    [t('components.card.winRate'), `${Math.round(r.totals.winRate * 100)}%`, t('components.card.goals', { gf: r.totals.goalsFor, ga: r.totals.goalsAgainst })],
+    [t('components.card.trophies'), `${r.totals.trophies.length}`, r.counts.promotions ? t('components.card.promotions', { n: r.counts.promotions }) : ''],
+    [t('components.card.bestFinish'), r.totals.bestFinish ? ordinal(r.totals.bestFinish.position) : '—', r.totals.bestFinish?.season ?? ''],
   ];
   const cw = (W - x0 * 2) / 4;
   ctx.strokeStyle = C.line;
@@ -115,20 +117,20 @@ function draw(ctx, { review: r, title, team, quote }, logo) {
   y += 190;
   ctx.fillStyle = C.muted;
   ctx.font = `600 24px ${FONT}`;
-  ctx.fillText('트로피', x0, y);
+  ctx.fillText(t('components.card.trophies'), x0, y);
   ctx.font = `600 30px ${FONT}`;
   const trophies = r.totals.trophies.slice(0, 6);
   if (!trophies.length) {
     ctx.fillStyle = C.text2;
-    ctx.fillText(r.counts.promotions ? '승격이라는 값진 결과' : '기록은 남았습니다', x0, y + 46);
+    ctx.fillText(t(r.counts.promotions ? 'components.card.noTrophyPromoted' : 'components.card.noTrophy'), x0, y + 46);
   }
-  trophies.forEach((t, i) => {
+  trophies.forEach((tr, i) => {
     const tx = x0 + (i % 2) * ((W - x0 * 2) / 2);
     const ty = y + 46 + Math.floor(i / 2) * 44;
     ctx.fillStyle = C.gold;
     ctx.fillRect(tx, ty - 22, 8, 26);
     ctx.fillStyle = C.text;
-    ctx.fillText(`${t.season} ${t.name}`, tx + 22, ty);
+    ctx.fillText(`${tr.season} ${tr.name}`, tx + 22, ty);
   });
 
   // 순위 흐름 (작은 꺾은선)
@@ -140,7 +142,7 @@ function draw(ctx, { review: r, title, team, quote }, logo) {
   const py = (pos) => y + 20 + ((pos - 1) * (chartH - 40)) / Math.max(1, maxSize - 1);
   ctx.fillStyle = C.muted;
   ctx.font = `600 24px ${FONT}`;
-  ctx.fillText('시즌별 순위', x0, y);
+  ctx.fillText(t('components.card.finishes'), x0, y);
   ctx.lineWidth = 4;
   ctx.strokeStyle = C.actual;
   ctx.beginPath();
@@ -154,7 +156,7 @@ function draw(ctx, { review: r, title, team, quote }, logo) {
     ctx.fillStyle = C.text;
     ctx.font = `700 24px ${FONT}`;
     ctx.textAlign = 'center';
-    ctx.fillText(`${s.position}위`, px(i), py(s.position) - 20);
+    ctx.fillText(ordinal(s.position), px(i), py(s.position) - 20);
     ctx.textAlign = 'left';
   });
 
@@ -172,13 +174,13 @@ function draw(ctx, { review: r, title, team, quote }, logo) {
     .forEach((line, i) => ctx.fillText(line, x0 + 84, y + 52 + i * 42));
   ctx.fillStyle = C.muted;
   ctx.font = `600 22px ${FONT}`;
-  ctx.fillText('— 팬', x0 + 84, y + 152);
+  ctx.fillText(t('components.card.fan'), x0 + 84, y + 152);
 
   // 맨 아래 한 줄: 통산 득점왕 · 기대 대비 · 최대 승리
   const foot = [
-    r.topScorer ? `통산 득점왕 ${r.topScorer.name} ${r.topScorer.goals}골` : null,
-    `기대 대비 ${r.avgOver > 0 ? '+' : ''}${r.avgOver.toFixed(1)}위`,
-    r.bestWin ? `최대 승리 ${r.bestWin.gf}-${r.bestWin.ga} ${r.bestWin.opponent}` : null,
+    r.topScorer ? t('components.card.topScorer', { name: r.topScorer.name, goals: r.topScorer.goals }) : null,
+    t('components.card.vsExpected', { diff: `${r.avgOver > 0 ? '+' : ''}${r.avgOver.toFixed(1)}` }),
+    r.bestWin ? t('components.card.bestWin', { gf: r.bestWin.gf, ga: r.bestWin.ga, opponent: r.bestWin.opponent }) : null,
   ].filter(Boolean);
   ctx.fillStyle = C.text2;
   ctx.font = `500 24px ${FONT}`;
@@ -195,7 +197,7 @@ export async function saveCareerCard(data) {
   const logo = data.team.logo ? await loadImage(`assets/logos/${data.team.logo}`) : null;
   draw(ctx, data, logo);
   const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
-  if (!blob) throw new Error('이미지를 만들지 못했습니다');
+  if (!blob) throw new Error(t('components.card.imageFailed'));
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;

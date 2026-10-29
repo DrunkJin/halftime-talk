@@ -1,0 +1,29 @@
+{
+  "app.boot.errorTitle": "The game could not start",
+  "app.boot.fileProtocol": "Opening the file directly does not work. Run python3 -m http.server in the project folder, then open http://localhost:8000.",
+  "app.nav.squad": "Squad",
+  "app.nav.match": "Match",
+  "app.nav.schedule": "Fixtures",
+  "app.nav.training": "Training",
+  "app.nav.table": "Table",
+  "app.nav.cups": "Europe",
+  "app.nav.transfers": "Transfers",
+  "app.nav.finance": "Finances",
+  "app.nav.history": "History",
+  "app.busy.failed": "Something went wrong ({label}). Please try again.",
+  "app.save.failed": "Could not save (check your browser storage)",
+  "app.topbar.worldSize": "{leagues} leagues · {teams} clubs",
+  "app.topbar.inbox": "Inbox",
+  "app.topbar.inboxUnread": {
+    "one": "Inbox, 1 unread item",
+    "other": "Inbox, {n} unread items"
+  },
+  "app.topbar.toSelect": "Main menu",
+  "app.topbar.seasonOf": " · Season {i}/{n}",
+  "app.topbar.seasonOver": "Season over",
+  "app.topbar.round": "Round {r}/{n}",
+  "app.topbar.status": "{league} {year}{season} · {progress}",
+  "app.leave.title": "Return to the main menu?",
+  "app.leave.body": "Your game will be saved to slot {slot}. From the main menu you can continue it or start a new game.",
+  "app.leave.confirm": "Go"
+}

@@ -4,6 +4,7 @@
 import { FAMILIARITY, POSITION_RATING_WEIGHTS } from '../engine/config.js';
 import { overall } from '../engine/ratings.js';
 import { createRng } from '../engine/rng.js';
+import { t } from '../i18n.js';
 import { systemKey } from './familiarity.js';
 import { squadOf } from './game.js';
 import { potentialFor } from './newSeason.js';
@@ -94,7 +95,7 @@ export function applyTrainingWeek(dataset, game) {
     // 2) 훈련 중 부상 (이미 다친 선수 제외)
     if (week.injury && !s.injury && rng.next() < week.injury) {
       const weeks = randInt(rng, T.injuryWeeks);
-      s.injury = { type: '훈련 중 부상', matchesOut: weeks };
+      s.injury = { type: t('state.injury.training'), typeKey: 'state.injury.training', matchesOut: weeks }; // 화면은 typeKey로 (game.js injuryLabel)
       injuries.push({ id: p.id, name: p.name, weeks });
     }
     // 3) 성장 (잠재력까지)

@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "note": "Player talk lines (js/state/squadMood.js, shown in the player profile window). Placeholders: {name} player name, {role} squad status (key player, first team, rotation, backup, prospect), {team} team name",
+  "opening": {
+    "happy": [
+      "I'm loving my football here. I want things to carry on just like this.",
+      "I'm feeling sharp at the moment and I'm happy with my minutes.",
+      "You've given me real confidence, boss. There's more to come from me.",
+      "Nothing in particular to report. I'll just keep doing what I'm doing.",
+      "The mood in the camp is great. I want to pull my weight too."
+    ],
+    "ok": [
+      "It's not bad. I'd just like to be playing a bit more.",
+      "When the chance comes, I'm ready to take it.",
+      "I understand my status here — {role}. Still, I do worry about my match sharpness.",
+      "I'm confident in training. I just need time on the pitch to show it.",
+      "I'm fine for now. I'm waiting to see how things go."
+    ],
+    "unhappy": [
+      "Boss, to be honest, I'm barely playing at the moment.",
+      "I was told my status was {role}, but all I do is sit on the bench. It's frustrating.",
+      "I'd like to hear why I keep getting left out of the starting eleven.",
+      "I'm worried my career is going to stall if this carries on.",
+      "Even my family keep asking why I'm not playing. I don't know what to tell them.",
+      "I'm giving everything in training, but I never get the chance to prove it in a match."
+    ],
+    "request": [
+      "Boss, I can't go on like this. I want to leave.",
+      "I've spoken to my agent. I'd like you to let me look at other clubs.",
+      "I don't think there's a place for me here. I want a transfer.",
+      "I've made up my mind. I want to go somewhere I'll play.",
+      "I love this club, but right now I think leaving is the right thing."
+    ]
+  },
+  "reply": {
+    "promise": [
+      "That's a promise, right? I'll trust you. I won't let you down.",
+      "That's all I needed to hear. I'll repay you on the pitch.",
+      "Good. Just make sure I get my chance this time.",
+      "Thanks. I'll prove myself in the next few games.",
+      "Understood. I'll be remembering that promise."
+    ],
+    "competeAccept": [
+      "Fair enough. I'll show you more in training.",
+      "Understood. I'll win my place myself.",
+      "I accept that. There are still parts of my game to work on. I'll keep grafting.",
+      "Fine by me. If it's a fight for a place, I fancy my chances.",
+      "I'll be ready for when the chance comes."
+    ],
+    "competeHurt": [
+      "I still have to prove myself? That stings a bit.",
+      "So what I've shown so far isn't enough, then.",
+      "Understood. But I see it differently.",
+      "…If that's how you see it, I've got nothing to say.",
+      "I thought I'd already won the battle for a starting spot."
+    ],
+    "reassure": [
+      "I'll wait. Just not for too long.",
+      "I'll take you at your word.",
+      "Understood. I'll get my head right and be ready.",
+      "Thanks. I feel a bit better about it now.",
+      "Still, I can't help wanting to be out there playing."
+    ],
+    "allowTransfer": [
+      "Thanks for understanding. I'll stay professional until the day I leave.",
+      "Thank you, boss. I'll find myself a good club.",
+      "It can't have been an easy decision. I appreciate it.",
+      "I'll keep giving my all for the time I've got left here.",
+      "I hope our paths cross again one day."
+    ],
+    "cooldown": [
+      "We only spoke the other day. I'll wait and see for now.",
+      "Nothing's changed since our last chat."
+    ],
+    "promised": [
+      "You've already given me your word. Just keep an eye on it."
+    ]
+  },
+  "news": {
+    "unhappy": ["{name} has made his unhappiness with his playing time known.", "{name} is looking downcast. A chat might be needed."],
+    "request": ["{name} has formally requested a transfer.", "{name}'s camp have made it known that he wants to leave."],
+    "promiseKept": ["{name}: Thank you for keeping your word.", "{name} is pleased to be getting the playing time he was promised."],
+    "promiseBroken": ["{name}: You broke your promise. I'm disappointed.", "{name} is deeply disappointed that the promise of playing time wasn't kept. The mood in the dressing room has dipped too."]
+  }
+}

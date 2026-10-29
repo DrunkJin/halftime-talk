@@ -1,0 +1,3792 @@
+{
+  "schemaVersion": 1,
+  "kind": "talk",
+  "situations": {
+    "redCardUs": {
+      "questions": [
+        "{score}. With {redPlayer} gone, the dressing room feels strangely big.",
+        "{score}. The sending-off hangs over the dressing room like a heavy cloud.",
+        "{redPlayer} sits alone in the corner, head bowed, while the rest sip water in silence.",
+        "{score}, and one shirt short. A few of the players are still fuming about the decision.",
+        "Forty-five minutes with ten men ahead of them, and every pair of eyes turns to the manager."
+      ],
+      "answers": [
+        {
+          "stance": "praise",
+          "text": "Down to ten and the shape never broke. That concentration in the first half was brilliant."
+        },
+        {
+          "stance": "praise",
+          "text": "You didn't look like a team a man down. Everyone ran that extra yard for each other, and I saw it."
+        },
+        {
+          "stance": "praise",
+          "text": "{player}, you held the midfield on your own after the red. Thank you. I mean it."
+        },
+        {
+          "stance": "praise",
+          "text": "A man short and you still kept the distances between the lines. That's this team right there."
+        },
+        {
+          "stance": "praise",
+          "text": "You covered for {redPlayer} as well as yourselves. I'm proud of you. Just keep doing that."
+        },
+        {
+          "stance": "praise",
+          "text": "Honestly, I thought we'd wobble more. But you stood firm. Outstanding."
+        },
+        {
+          "stance": "praise",
+          "text": "Not many sides keep the ball like that with ten men. You fought superbly out there."
+        },
+        {
+          "stance": "praise",
+          "text": "The cover was spot on. Every time a flank opened up, somebody got across."
+        },
+        {
+          "stance": "praise",
+          "text": "{score}? Forget the numbers. The attitude you showed matters more. Superb."
+        },
+        {
+          "stance": "praise",
+          "text": "{opponent} couldn't make the extra man count. That's down to how well you defended."
+        },
+        {
+          "stance": "encourage",
+          "text": "Ten is enough. What we've worked on holds up even in a situation like this."
+        },
+        {
+          "stance": "encourage",
+          "text": "We're a man short, so we make it up with our legs. You lot can do this."
+        },
+        {
+          "stance": "encourage",
+          "text": "{player}, you hold it together and the rest will follow. I believe in you."
+        },
+        {
+          "stance": "encourage",
+          "text": "We're outnumbered on the pitch, but not in here. We can do this."
+        },
+        {
+          "stance": "encourage",
+          "text": "One counter-attack, that's all we need. The chance will come, so be patient till the end."
+        },
+        {
+          "stance": "encourage",
+          "text": "{redPlayer} will be cheering you on from behind the bench. Ten of us is plenty."
+        },
+        {
+          "stance": "encourage",
+          "text": "Hold on for forty-five minutes. You've already got what it takes to do it."
+        },
+        {
+          "stance": "encourage",
+          "text": "Sometimes ten men are tighter than eleven. Today's going to be one of those days."
+        },
+        {
+          "stance": "encourage",
+          "text": "The mistake is behind us. Now it's time to show how strong we really are."
+        },
+        {
+          "stance": "encourage",
+          "text": "{score}, and nothing's decided yet. Heads up, and let's get back out there."
+        },
+        {
+          "stance": "demand",
+          "text": "If anyone thinks being down to ten means walking about, say so now. You'll have to run twice as hard."
+        },
+        {
+          "stance": "demand",
+          "text": "That can never happen again. Lose your head and the whole team pays for it."
+        },
+        {
+          "stance": "demand",
+          "text": "The gaps are far too big. Two banks of four, no more than ten yards apart!"
+        },
+        {
+          "stance": "demand",
+          "text": "When you get the ball, don't just give it away. A man down and handing them possession too? That's the end of us."
+        },
+        {
+          "stance": "demand",
+          "text": "{player}, your positioning is lazy. Drop in another yard and help out."
+        },
+        {
+          "stance": "demand",
+          "text": "One man's gone, so the other ten each do one man's extra work. I'm not seeing it."
+        },
+        {
+          "stance": "demand",
+          "text": "We're losing every second ball. The fewer we are, the more of those we have to win!"
+        },
+        {
+          "stance": "demand",
+          "text": "Enough moaning about the referee. Put that energy into the game."
+        },
+        {
+          "stance": "demand",
+          "text": "The cover on the flanks is too slow. The second anyone switches off, we're through. Wake up."
+        },
+        {
+          "stance": "demand",
+          "text": "{redPlayer}'s red card is a problem for later. Right now the problem is your concentration."
+        },
+        {
+          "stance": "calm",
+          "text": "Get your breath back first. Even with ten, we can hold out if we stay organised."
+        },
+        {
+          "stance": "calm",
+          "text": "Don't get worked up. What we need now is clear heads, not anger."
+        },
+        {
+          "stance": "calm",
+          "text": "We're going 4-4-1. Hold your positions and it's not difficult. One thing at a time."
+        },
+        {
+          "stance": "calm",
+          "text": "That's the last word on the referee. We focus only on what we can control."
+        },
+        {
+          "stance": "calm",
+          "text": "{redPlayer}, it's fine. It's done. Everyone, leave that in here and move on."
+        },
+        {
+          "stance": "calm",
+          "text": "No rush. When we've got the ball, take it slow and let us set the tempo."
+        },
+        {
+          "stance": "calm",
+          "text": "Managing your energy is key. Don't press recklessly, just keep the block."
+        },
+        {
+          "stance": "calm",
+          "text": "{score}. Looked at coolly, this is still a game we can get something from."
+        },
+        {
+          "stance": "calm",
+          "text": "Panic and we concede. Stay calm and this is on our terms."
+        },
+        {
+          "stance": "calm",
+          "text": "{player}, you control the tempo. Don't hurry, let's use up the clock."
+        },
+        {
+          "stance": "passion",
+          "text": "Ten men beating eleven. That's the best feeling football can give you!"
+        },
+        {
+          "stance": "passion",
+          "text": "Fight for {redPlayer} too! We can't lose this, if only for him!"
+        },
+        {
+          "stance": "passion",
+          "text": "Look at those stands. They're singing every single one of your names!"
+        },
+        {
+          "stance": "passion",
+          "text": "Numbers can't beat our hearts. Go out there and prove it!"
+        },
+        {
+          "stance": "passion",
+          "text": "Run till your legs give out. You'll remember these forty-five minutes for the rest of your lives!"
+        },
+        {
+          "stance": "passion",
+          "text": "You wear the {team} shirt, so even with ten we don't take a backward step!"
+        },
+        {
+          "stance": "passion",
+          "text": "Your families are watching. Show them a son, a husband, a dad who held on to the very end!"
+        },
+        {
+          "stance": "passion",
+          "text": "The harder it gets, the hotter we burn! This is our stage to show who we are!"
+        },
+        {
+          "stance": "passion",
+          "text": "{player}, lead from the front. You light the fire and everyone else will catch it!"
+        },
+        {
+          "stance": "passion",
+          "text": "One man's gone, so ten men become one body. That's what a team is!"
+        }
+      ]
+    },
+    "redCardThem": {
+      "questions": [
+        "{score}. The dressing room is buzzing at the news that the opposition are down a man.",
+        "Half-time with the extra man. Anticipation spreads across the players' faces.",
+        "{score}. A few are already grinning like it's won; others quietly re-tie their boots.",
+        "Everyone in the dressing room can feel the game has turned since the red card."
+      ],
+      "answers": [
+        {
+          "stance": "praise",
+          "text": "They're down to ten because of your pressing. Well done."
+        },
+        {
+          "stance": "praise",
+          "text": "Upping the tempo straight after the red was spot on."
+        },
+        {
+          "stance": "praise",
+          "text": "{player}, your running tormented them all half. That's what got the red card."
+        },
+        {
+          "stance": "praise",
+          "text": "Keeping the ball and wearing them down. That's exactly the picture I wanted."
+        },
+        {
+          "stance": "praise",
+          "text": "What I liked most was you didn't get carried away. You played our football. Excellent."
+        },
+        {
+          "stance": "praise",
+          "text": "Good movement finding the gaps. Let's carry that on."
+        },
+        {
+          "stance": "praise",
+          "text": "It's {score}, but in terms of the football, we were clearly the better side."
+        },
+        {
+          "stance": "praise",
+          "text": "Quick switches of play. Against ten men, that's what hurts most."
+        },
+        {
+          "stance": "praise",
+          "text": "You never shied away from a challenge, and that's why they cracked. Credit to you."
+        },
+        {
+          "stance": "praise",
+          "text": "That last fifteen minutes of the half was exactly the team I want to see."
+        },
+        {
+          "stance": "encourage",
+          "text": "We've got the extra man. Our passing will find the gap, I promise you."
+        },
+        {
+          "stance": "encourage",
+          "text": "Time is on our side. Keep moving it and the chances will come on their own."
+        },
+        {
+          "stance": "encourage",
+          "text": "{player}, this is your stage now. There'll be space, so go and enjoy it."
+        },
+        {
+          "stance": "encourage",
+          "text": "Use the extra man and the second half is ours. Go out there with confidence."
+        },
+        {
+          "stance": "encourage",
+          "text": "They'll tire more and more. And you'll only get stronger."
+        },
+        {
+          "stance": "encourage",
+          "text": "Chances like this don't come along often. We're good enough to take it."
+        },
+        {
+          "stance": "encourage",
+          "text": "{score}, doesn't matter. Eleven against ten, the odds are heavily in our favour."
+        },
+        {
+          "stance": "encourage",
+          "text": "Just keep doing what you've been doing. The goals will follow, trust me."
+        },
+        {
+          "stance": "encourage",
+          "text": "Once they start cracking, they'll keep cracking. Go after the next goal. You can do it."
+        },
+        {
+          "stance": "encourage",
+          "text": "Feel how much lighter your legs are? Trust that feeling and go."
+        },
+        {
+          "stance": "demand",
+          "text": "We've got an extra man and this is what you give me?! Why aren't we using it?!"
+        },
+        {
+          "stance": "demand",
+          "text": "Stop just passing it sideways and go forward. The extra man is there so we can push on."
+        },
+        {
+          "stance": "demand",
+          "text": "If anyone thinks this is already won, wake up. Nothing's finished yet."
+        },
+        {
+          "stance": "demand",
+          "text": "Get it wide! You keep forcing it through the middle and it's all getting blocked."
+        },
+        {
+          "stance": "demand",
+          "text": "{player}, all that space and that's all you can do? Be braver."
+        },
+        {
+          "stance": "demand",
+          "text": "I won't accept being caught on the break by ten men. Watch the space in behind!"
+        },
+        {
+          "stance": "demand",
+          "text": "The tempo is far too slow. One-touch, move them about!"
+        },
+        {
+          "stance": "demand",
+          "text": "We've got the extra man and we're still losing second balls? It makes no sense."
+        },
+        {
+          "stance": "demand",
+          "text": "Switch off and you'll lose even to ten men. I don't want to see that."
+        },
+        {
+          "stance": "demand",
+          "text": "There's nobody in the box! When the cross goes in, I want at least three bodies there."
+        },
+        {
+          "stance": "calm",
+          "text": "Don't get carried away. Having an extra man doesn't win you the game by itself."
+        },
+        {
+          "stance": "calm",
+          "text": "No need to rush. Keep the ball and let them tire themselves out."
+        },
+        {
+          "stance": "calm",
+          "text": "Patience is everything. The chance will come, so don't force it."
+        },
+        {
+          "stance": "calm",
+          "text": "They'll sit deep now. The more they do, the more calmly we move it side to side."
+        },
+        {
+          "stance": "calm",
+          "text": "Don't fly into rash tackles. Lose a man ourselves and it all goes out the window."
+        },
+        {
+          "stance": "calm",
+          "text": "{score}. Don't just look at the numbers, read the flow of the game. Stay calm."
+        },
+        {
+          "stance": "calm",
+          "text": "{player}, when you get it, take one more look before you decide. You've got time."
+        },
+        {
+          "stance": "calm",
+          "text": "No rushing crosses in. Wait until we've made a clear-cut chance."
+        },
+        {
+          "stance": "calm",
+          "text": "Just watch out for the one counter. Keep the back line organised right to the end."
+        },
+        {
+          "stance": "calm",
+          "text": "Catch your breath, get some water. Second half, we play at our rhythm."
+        },
+        {
+          "stance": "passion",
+          "text": "Let this chance slip and you'll regret it forever! Let's go and finish them!"
+        },
+        {
+          "stance": "passion",
+          "text": "They're rocking! Get at them now and don't give them time to breathe!"
+        },
+        {
+          "stance": "passion",
+          "text": "You know what the crowd wants? Goals! Go and give them goals!"
+        },
+        {
+          "stance": "passion",
+          "text": "In the name of {team}, let's make sure this game is ours today!"
+        },
+        {
+          "stance": "passion",
+          "text": "{player}, today you're the star. Make this pitch your own!"
+        },
+        {
+          "stance": "passion",
+          "text": "Backing off against ten men isn't how we do things. Go at them!"
+        },
+        {
+          "stance": "passion",
+          "text": "Let's give our families a proper win to celebrate. We can do this!"
+        },
+        {
+          "stance": "passion",
+          "text": "This chance has been handed to us. Throw everything at it and grab it!"
+        },
+        {
+          "stance": "passion",
+          "text": "Let's turn today into a nightmare for {opponent}!"
+        },
+        {
+          "stance": "passion",
+          "text": "Can you feel your heart pounding? Take that fire out there with you!"
+        }
+      ]
+    },
+    "derbyTrailing": {
+      "questions": [
+        "{score}. Behind in the {derby}, and the away fans' songs drift in from outside.",
+        "Half-time in the {derby}. {score}, and the players stare at the floor.",
+        "The rivals' anthem booms through the dressing room wall. Somebody thumps a locker.",
+        "{score}. Losing to the old enemy weighs on every pair of shoulders."
+      ],
+      "answers": [
+        {
+          "stance": "praise",
+          "text": "We might be behind, but we were the better side in that half. I mean that."
+        },
+        {
+          "stance": "praise",
+          "text": "The intensity of our pressing was the best it's been. The result just hasn't caught up yet."
+        },
+        {
+          "stance": "praise",
+          "text": "{player}, you kept their defence on edge all half. Keep doing exactly that."
+        },
+        {
+          "stance": "praise",
+          "text": "Even with all the heat of the {derby}, you played our football. Well done."
+        },
+        {
+          "stance": "praise",
+          "text": "Take away the goal and there was nothing to fault. That concentration deserves credit."
+        },
+        {
+          "stance": "praise",
+          "text": "The plan to get at them down the flanks worked. It's just the finishing left."
+        },
+        {
+          "stance": "praise",
+          "text": "Having that much of the ball against your rivals isn't easy. That was impressive."
+        },
+        {
+          "stance": "praise",
+          "text": "You didn't lose a single physical battle. In a derby, that's what matters most."
+        },
+        {
+          "stance": "praise",
+          "text": "The scoreboard says {score}. But for the whole half, you were the better team."
+        },
+        {
+          "stance": "praise",
+          "text": "After the goal you didn't fold, you hit straight back. I liked that."
+        },
+        {
+          "stance": "encourage",
+          "text": "Games like the {derby} often flip in the second half. We'll be the ones to flip it."
+        },
+        {
+          "stance": "encourage",
+          "text": "One goal and the whole mood changes. You can do this."
+        },
+        {
+          "stance": "encourage",
+          "text": "{player}, one strike from you is all it takes. I believe in you."
+        },
+        {
+          "stance": "encourage",
+          "text": "Still forty-five minutes. Let's make this a second half the derby history books remember."
+        },
+        {
+          "stance": "encourage",
+          "text": "They're nervous too. Score first and they'll crumble."
+        },
+        {
+          "stance": "encourage",
+          "text": "{score}? We're a team that can turn this around."
+        },
+        {
+          "stance": "encourage",
+          "text": "Keep doing what you did in the first half and the goal will come. Keep believing."
+        },
+        {
+          "stance": "encourage",
+          "text": "There's nothing better than a derby comeback, you all know that. Let's go and do it."
+        },
+        {
+          "stance": "encourage",
+          "text": "Our fans haven't gone anywhere. We've got no reason to give up either."
+        },
+        {
+          "stance": "encourage",
+          "text": "How many chances did we make? The next one goes in. Heads up."
+        },
+        {
+          "stance": "demand",
+          "text": "Are you just going to let your rivals push you around like this? I won't accept it."
+        },
+        {
+          "stance": "demand",
+          "text": "That kind of fight isn't good enough in the {derby}. Win every single duel!"
+        },
+        {
+          "stance": "demand",
+          "text": "{opponent} are out there laughing. Are you going to put up with that?"
+        },
+        {
+          "stance": "demand",
+          "text": "We're a beat late reacting to every second ball. In a derby, that's fatal."
+        },
+        {
+          "stance": "demand",
+          "text": "{player}, you're the main man here. I didn't see you in that half. Show me in this one."
+        },
+        {
+          "stance": "demand",
+          "text": "We gave away the space in behind far too easily. If the line goes up, the press goes up with it!"
+        },
+        {
+          "stance": "demand",
+          "text": "Lose this and you won't hold your heads up all week. Remember that when you're out there."
+        },
+        {
+          "stance": "demand",
+          "text": "Don't just go backwards because nobody's free. Move and create the angles!"
+        },
+        {
+          "stance": "demand",
+          "text": "Hesitate on one tackle and the derby's gone. Get stuck in harder."
+        },
+        {
+          "stance": "demand",
+          "text": "{score}. Is that really how good we are? No, it isn't. Prove it."
+        },
+        {
+          "stance": "calm",
+          "text": "Don't get swept up in the atmosphere. The bigger the derby, the colder the head."
+        },
+        {
+          "stance": "calm",
+          "text": "Lose your temper and you'll pick up a card and that's that. Park the emotion, stick to the plan."
+        },
+        {
+          "stance": "calm",
+          "text": "One goal at a time. Don't try to win it all back at once."
+        },
+        {
+          "stance": "calm",
+          "text": "{score}. There's plenty of time. Our patterns, step by step."
+        },
+        {
+          "stance": "calm",
+          "text": "Don't react to their wind-ups. Just do our jobs."
+        },
+        {
+          "stance": "calm",
+          "text": "First fifteen minutes of the half, calm possession. Get impatient and we'll get caught on the break."
+        },
+        {
+          "stance": "calm",
+          "text": "{player}, when you're on the ball, control the tempo. No need to hurry."
+        },
+        {
+          "stance": "calm",
+          "text": "Big deep breath, everyone. Leave the derby fever to the crowd. We'll play football."
+        },
+        {
+          "stance": "calm",
+          "text": "Panic and we'll concede more. Calmly, let's fix things one by one."
+        },
+        {
+          "stance": "calm",
+          "text": "Let's build slowly down the flanks. The chance will come."
+        },
+        {
+          "stance": "passion",
+          "text": "This isn't just any game. Today is the {derby}, and the pride of this city is on the line!"
+        },
+        {
+          "stance": "passion",
+          "text": "Hear that song? In the second half, let's drown it out with our own roar!"
+        },
+        {
+          "stance": "passion",
+          "text": "There are fans who've waited for this game since their grandparents' day. Run for them!"
+        },
+        {
+          "stance": "passion",
+          "text": "Grab the {team} badge on your chest. This is what we're fighting for!"
+        },
+        {
+          "stance": "passion",
+          "text": "Losing to them isn't just losing. We don't let that happen without a fight!"
+        },
+        {
+          "stance": "passion",
+          "text": "{player}, be the hero today. A derby winner gets talked about forever!"
+        },
+        {
+          "stance": "passion",
+          "text": "Set your chests on fire! Show {opponent} the second half is when it really starts!"
+        },
+        {
+          "stance": "passion",
+          "text": "If you want to walk down the street with your head up tomorrow morning, turn this around now!"
+        },
+        {
+          "stance": "passion",
+          "text": "The moment we leave this room, we're a different team. Run like madmen!"
+        },
+        {
+          "stance": "passion",
+          "text": "Isn't your blood boiling? Derbies are played with the heart!"
+        }
+      ]
+    },
+    "derbyLeading": {
+      "questions": [
+        "{score}. Ahead in the {derby}, and the dressing room is shaking with noise.",
+        "Half-time in the {derby}. The players slap each other on the back, unable to hide the buzz.",
+        "{score}. Our fans' songs seep in through the gap under the door.",
+        "We're ahead of our rivals, but a few of the old heads already look worried about the second half."
+      ],
+      "answers": [
+        {
+          "stance": "praise",
+          "text": "That's a derby! You battered them for the whole half. Brilliant."
+        },
+        {
+          "stance": "praise",
+          "text": "{player}, you're running this game today. Superb."
+        },
+        {
+          "stance": "praise",
+          "text": "Play like that in the {derby} and the fans won't sleep tonight. Well done."
+        },
+        {
+          "stance": "praise",
+          "text": "You won every duel. Your fight simply crushed them."
+        },
+        {
+          "stance": "praise",
+          "text": "Everything we worked on came off. You executed it perfectly."
+        },
+        {
+          "stance": "praise",
+          "text": "The defensive organisation was especially good today. They had nothing."
+        },
+        {
+          "stance": "praise",
+          "text": "{score}, and you deserved every bit of it. That's no fluke."
+        },
+        {
+          "stance": "praise",
+          "text": "Keeping the ball that calmly against your rivals. That deserves credit."
+        },
+        {
+          "stance": "praise",
+          "text": "The timing of the press up top was perfect. That's where the goal came from."
+        },
+        {
+          "stance": "praise",
+          "text": "Everyone ran that extra yard. This is what this team really looks like."
+        },
+        {
+          "stance": "encourage",
+          "text": "Just keep doing this. This game is ours."
+        },
+        {
+          "stance": "encourage",
+          "text": "You'll be the stronger side in the second half too. Go out there with confidence."
+        },
+        {
+          "stance": "encourage",
+          "text": "{player}, keep doing what you're doing. There's another goal in you."
+        },
+        {
+          "stance": "encourage",
+          "text": "They're the ones chasing now. We can play with a bit of freedom."
+        },
+        {
+          "stance": "encourage",
+          "text": "A win in the {derby} is within touching distance. Let's see it through."
+        },
+        {
+          "stance": "encourage",
+          "text": "Stick to what we prepared and we'll hold on comfortably. Trust it."
+        },
+        {
+          "stance": "encourage",
+          "text": "One more goal and that's game over. You lot will get it."
+        },
+        {
+          "stance": "encourage",
+          "text": "We're fitter than them. The second half might even be easier."
+        },
+        {
+          "stance": "encourage",
+          "text": "Same rhythm. You're the ones in charge of this game."
+        },
+        {
+          "stance": "encourage",
+          "text": "Don't stop at {score}. This team has more in it."
+        },
+        {
+          "stance": "demand",
+          "text": "Save the celebrations for the final whistle! There's still forty-five minutes."
+        },
+        {
+          "stance": "demand",
+          "text": "A derby is at its most dangerous when you're ahead. Relax and they'll punish you."
+        },
+        {
+          "stance": "demand",
+          "text": "I saw the concentration drop at the end of the half. See it again and you're coming off."
+        },
+        {
+          "stance": "demand",
+          "text": "{player}, I need more from you defensively. You can't just play up top."
+        },
+        {
+          "stance": "demand",
+          "text": "We look shaky at set pieces. Get tight to your man!"
+        },
+        {
+          "stance": "demand",
+          "text": "This is no time to be smiling. {opponent} are going to come out like men possessed."
+        },
+        {
+          "stance": "demand",
+          "text": "When you've got the ball, don't give it away cheaply. The longer we lead, the more possession matters."
+        },
+        {
+          "stance": "demand",
+          "text": "Don't get drunk on the score. One goal or two, derbies get turned around."
+        },
+        {
+          "stance": "demand",
+          "text": "Anyone who gets dragged into a wind-up and picks up a card will answer to me."
+        },
+        {
+          "stance": "demand",
+          "text": "Keep the intensity of the press exactly where it is. If anyone runs a yard less, I'll know."
+        },
+        {
+          "stance": "calm",
+          "text": "Let's calm down. When you're in front, the cool-headed team wins."
+        },
+        {
+          "stance": "calm",
+          "text": "{score}. This is a good position. Which is exactly why we stay calm."
+        },
+        {
+          "stance": "calm",
+          "text": "They'll throw caution to the wind. Stay patient, wait, then hit them on the break."
+        },
+        {
+          "stance": "calm",
+          "text": "Don't get swept along by the crowd. We set the tempo."
+        },
+        {
+          "stance": "calm",
+          "text": "Don't chase a second goal and leave space in behind. Keep the balance."
+        },
+        {
+          "stance": "calm",
+          "text": "{player}, take your time on the ball. The clock is on our side."
+        },
+        {
+          "stance": "calm",
+          "text": "If they wind you up, don't bite. Let the result do the talking."
+        },
+        {
+          "stance": "calm",
+          "text": "The first ten minutes of the half are key. Set the block calmly and start from there."
+        },
+        {
+          "stance": "calm",
+          "text": "Everybody get some water, catch your breath. The job is the same as in the first half."
+        },
+        {
+          "stance": "calm",
+          "text": "Don't try anything special just because it's a derby. We're strongest when we're ourselves."
+        },
+        {
+          "stance": "passion",
+          "text": "Winning the {derby}! This is what the fans have been waiting for! Let's take it all the way!"
+        },
+        {
+          "stance": "passion",
+          "text": "Win this today and you'll have a story for the rest of your lives. Don't let it slip!"
+        },
+        {
+          "stance": "passion",
+          "text": "Hear that song? Our fans are singing. Keep them singing till the very end!"
+        },
+        {
+          "stance": "passion",
+          "text": "Bring our rivals to their knees! Finish them off in the second half!"
+        },
+        {
+          "stance": "passion",
+          "text": "Let's make today a day that goes down in {team} history!"
+        },
+        {
+          "stance": "passion",
+          "text": "{player}, tonight this whole city will be singing your name!"
+        },
+        {
+          "stance": "passion",
+          "text": "Your families, your mates, they're all watching. Give them a derby win!"
+        },
+        {
+          "stance": "passion",
+          "text": "Even if your heart bursts, guard this lead with your life!"
+        },
+        {
+          "stance": "passion",
+          "text": "Let's give {opponent} nightmares about today!"
+        },
+        {
+          "stance": "passion",
+          "text": "We've waited a whole year for this moment. Leave every last drop out there!"
+        }
+      ]
+    },
+    "favoriteTrailing": {
+      "questions": [
+        "{score}. Nobody saw this coming, and the dressing room has frozen.",
+        "{score}. It's hard to believe this silent room belongs to one of the big sides.",
+        "Behind to {opponent} at half-time. A few players shake their heads in disbelief.",
+        "{score}. Someone lets out a quiet sigh, and every gaze drops to the floor."
+      ],
+      "answers": [
+        {
+          "stance": "praise",
+          "text": "We dominated that half. Look at the shot count. The goal will come."
+        },
+        {
+          "stance": "praise",
+          "text": "{player}, your movement in the first half was good. You were just unlucky."
+        },
+        {
+          "stance": "praise",
+          "text": "Possession, chances, we were ahead on all of it. You're doing well."
+        },
+        {
+          "stance": "praise",
+          "text": "Their keeper is just having the game of his life. Your football was excellent."
+        },
+        {
+          "stance": "praise",
+          "text": "Apart from the goal, we controlled the whole half."
+        },
+        {
+          "stance": "praise",
+          "text": "Our passing today is as good as it's been all season. Keep it going."
+        },
+        {
+          "stance": "praise",
+          "text": "{opponent} scored with what, one or two shots? We've been the better side."
+        },
+        {
+          "stance": "praise",
+          "text": "The press was good and the transitions were quick. Credit where it's due."
+        },
+        {
+          "stance": "praise",
+          "text": "You got everything right except the result. And we change that in the second half."
+        },
+        {
+          "stance": "praise",
+          "text": "Nearly every run down the flanks came off. We just need to add the finish."
+        },
+        {
+          "stance": "encourage",
+          "text": "We're one of the best sides in this league. We turn games like this around."
+        },
+        {
+          "stance": "encourage",
+          "text": "{score}? With your ability, you can change that easily."
+        },
+        {
+          "stance": "encourage",
+          "text": "One goal and they'll crumble. And that goal is going to come from you lot."
+        },
+        {
+          "stance": "encourage",
+          "text": "{player}, this is exactly why you're here, to turn games like this. I believe in you."
+        },
+        {
+          "stance": "encourage",
+          "text": "Think of that half as getting the bad luck out of the way. The second half is the real thing."
+        },
+        {
+          "stance": "encourage",
+          "text": "Go out and show them why we're one of the top sides."
+        },
+        {
+          "stance": "encourage",
+          "text": "They'll tire. We'll stay strong right to the end."
+        },
+        {
+          "stance": "encourage",
+          "text": "We've come through plenty of tight spots like this. We can do it again."
+        },
+        {
+          "stance": "encourage",
+          "text": "The chances keep coming. Keep knocking and the door will open."
+        },
+        {
+          "stance": "encourage",
+          "text": "I've never doubted your ability. Today is no different."
+        },
+        {
+          "stance": "demand",
+          "text": "What on earth was that against {opponent}? Where's the quality you're known for?!"
+        },
+        {
+          "stance": "demand",
+          "text": "You underestimated them, didn't you? And that attitude showed on the pitch."
+        },
+        {
+          "stance": "demand",
+          "text": "Price tags and reputations count for nothing. The side that runs wins. So run!"
+        },
+        {
+          "stance": "demand",
+          "text": "{player}, you're the best player in this team. So play like it."
+        },
+        {
+          "stance": "demand",
+          "text": "Sloppy passes, slow transitions. That's not our football."
+        },
+        {
+          "stance": "demand",
+          "text": "They're quicker to every second ball. Who's the hungrier team here?"
+        },
+        {
+          "stance": "demand",
+          "text": "{score}. Aren't you embarrassed by that? Put it right in the second half."
+        },
+        {
+          "stance": "demand",
+          "text": "I saw who lost the ball and walked back. Do it once more and you're off."
+        },
+        {
+          "stance": "demand",
+          "text": "Coasting on your reputation stops today. Prove yourselves from now on."
+        },
+        {
+          "stance": "demand",
+          "text": "The flanks are wide open. Full-backs, every time you go forward, you get back!"
+        },
+        {
+          "stance": "calm",
+          "text": "No need to panic. We're still the better team, and that doesn't change."
+        },
+        {
+          "stance": "calm",
+          "text": "Get impatient and you walk into their trap. Stay calm and keep doing what we do."
+        },
+        {
+          "stance": "calm",
+          "text": "{score}. Forty-five minutes is plenty of time. Let's not rush."
+        },
+        {
+          "stance": "calm",
+          "text": "They'll sit deep. Stretch them wide and be patient."
+        },
+        {
+          "stance": "calm",
+          "text": "If the shooting angle isn't there, don't force it. Recycle it once more."
+        },
+        {
+          "stance": "calm",
+          "text": "{player}, don't try to do it all on your own. Use your teammates."
+        },
+        {
+          "stance": "calm",
+          "text": "The tactics stay the same. We just need to sharpen up in front of goal."
+        },
+        {
+          "stance": "calm",
+          "text": "Get worked up and the mistakes creep in. Take a breath and start again."
+        },
+        {
+          "stance": "calm",
+          "text": "Up to the hour mark, possession first. When their legs go, we pile on."
+        },
+        {
+          "stance": "calm",
+          "text": "Forget the result. Just think about the next pass."
+        },
+        {
+          "stance": "passion",
+          "text": "Feel the weight of the {team} shirt! We can't lose like this!"
+        },
+        {
+          "stance": "passion",
+          "text": "The fans take it for granted that we win. Let's repay that faith!"
+        },
+        {
+          "stance": "passion",
+          "text": "Doesn't that hurt your pride? In the second half, put that anger into every touch!"
+        },
+        {
+          "stance": "passion",
+          "text": "{player}, turning this game around is what your name is worth. Go!"
+        },
+        {
+          "stance": "passion",
+          "text": "A big club shows its true face when it's losing. Let's show them ours!"
+        },
+        {
+          "stance": "passion",
+          "text": "If it ends like this, we're tomorrow's back-page laughing stock. No chance!"
+        },
+        {
+          "stance": "passion",
+          "text": "Don't make your families hang their heads. Turn it round and make them proud!"
+        },
+        {
+          "stance": "passion",
+          "text": "Let's teach {opponent} there are no miracles today!"
+        },
+        {
+          "stance": "passion",
+          "text": "Has the fire in your chest gone out? No, it hasn't! Light it up again!"
+        },
+        {
+          "stance": "passion",
+          "text": "Prove with everything you've got why we're at the top!"
+        }
+      ]
+    },
+    "underdogLeading": {
+      "questions": [
+        "{score}. Nobody can quite believe the score, and the dressing room is full of laughter and shouting.",
+        "Half-time and ahead of one of the giants. The players look at each other and grin in disbelief.",
+        "{score}. For all the joy, nobody can sit still. They pace around the room.",
+        "Ahead against {opponent}, and it still hasn't quite sunk in for anyone."
+      ],
+      "answers": [
+        {
+          "stance": "praise",
+          "text": "You're unbelievable. Playing like that against that lot."
+        },
+        {
+          "stance": "praise",
+          "text": "The defensive block we worked on was perfect. They couldn't do a thing."
+        },
+        {
+          "stance": "praise",
+          "text": "{player}, that was a magnificent half from you. Best player on the pitch."
+        },
+        {
+          "stance": "praise",
+          "text": "Underdogs? On that half, we were the stronger team."
+        },
+        {
+          "stance": "praise",
+          "text": "The timing of the counters was perfect. Exactly like we drilled it."
+        },
+        {
+          "stance": "praise",
+          "text": "Every single one of you defended together. That's a team."
+        },
+        {
+          "stance": "praise",
+          "text": "{score}, and that's not luck. That's what you've earned."
+        },
+        {
+          "stance": "praise",
+          "text": "Did you see {opponent} panicking? You did that to them."
+        },
+        {
+          "stance": "praise",
+          "text": "The movement off the ball was superb. You didn't give them an inch of space."
+        },
+        {
+          "stance": "praise",
+          "text": "Everyone did their job. As your manager, I'm proud of you."
+        },
+        {
+          "stance": "encourage",
+          "text": "You've already proved you can do it. Keep going in the second half."
+        },
+        {
+          "stance": "encourage",
+          "text": "Don't be scared of their name. We're the ones who won that half."
+        },
+        {
+          "stance": "encourage",
+          "text": "Forty-five more minutes. Your legs have got plenty left in them."
+        },
+        {
+          "stance": "encourage",
+          "text": "{player}, keep doing exactly that. You're lifting everyone around you."
+        },
+        {
+          "stance": "encourage",
+          "text": "You can be the story of the season. No, you will be."
+        },
+        {
+          "stance": "encourage",
+          "text": "Even if they throw everything at us, we can hold firm. You showed it in that half."
+        },
+        {
+          "stance": "encourage",
+          "text": "Be confident. Right now, we're the best team on this pitch."
+        },
+        {
+          "stance": "encourage",
+          "text": "There'll be a chance for another goal too. Don't be afraid to go for it."
+        },
+        {
+          "stance": "encourage",
+          "text": "{score}. You've got more than enough to hold on to this."
+        },
+        {
+          "stance": "encourage",
+          "text": "Nobody thought we'd get this far. Let's take it all the way."
+        },
+        {
+          "stance": "demand",
+          "text": "Get comfortable now and we're finished. The second half will be twice as hard."
+        },
+        {
+          "stance": "demand",
+          "text": "That lot will throw the kitchen sink at us. Don't switch off for a single second."
+        },
+        {
+          "stance": "demand",
+          "text": "When you clear it, clear it properly! Half-hearted clearances and we lose every second ball."
+        },
+        {
+          "stance": "demand",
+          "text": "{player}, when you get it, keep it. Lose it cheaply and we concede."
+        },
+        {
+          "stance": "demand",
+          "text": "We can't drop too deep. Don't give them the space in front of the box!"
+        },
+        {
+          "stance": "demand",
+          "text": "This score isn't a gift. It only means something if we hold on to it."
+        },
+        {
+          "stance": "demand",
+          "text": "Our concentration dropped at the end of the half. One mistake like that and it's all gone."
+        },
+        {
+          "stance": "demand",
+          "text": "Watch the fouls. Give that side a free-kick near the box and they'll score."
+        },
+        {
+          "stance": "demand",
+          "text": "Enjoy it by all means, but keep your heads screwed on. We're only halfway there."
+        },
+        {
+          "stance": "demand",
+          "text": "{opponent}'s set-piece takers are dangerous. Don't lose your man!"
+        },
+        {
+          "stance": "calm",
+          "text": "Let's calm down. We haven't won anything yet."
+        },
+        {
+          "stance": "calm",
+          "text": "{score}. It's a good score, but let's stay calm and focus on the job in front of us."
+        },
+        {
+          "stance": "calm",
+          "text": "If they press, don't panic. Our block is solid."
+        },
+        {
+          "stance": "calm",
+          "text": "On the ball, no rushing. Simple passes first."
+        },
+        {
+          "stance": "calm",
+          "text": "In the second half, the clock is our friend. It's fine to slow the tempo down."
+        },
+        {
+          "stance": "calm",
+          "text": "When a big side comes at you, breaking up the rhythm is key. Calmly, and without fouling."
+        },
+        {
+          "stance": "calm",
+          "text": "{player}, when it comes to you, give us a breather. We need to control the tempo."
+        },
+        {
+          "stance": "calm",
+          "text": "Same as the first half. Don't try anything fancy."
+        },
+        {
+          "stance": "calm",
+          "text": "Catch your breath and get some water. Managing your legs is the key to the second half."
+        },
+        {
+          "stance": "calm",
+          "text": "Forget the result. Just the next five minutes, then the five after that."
+        },
+        {
+          "stance": "passion",
+          "text": "You're making history! You'll be telling people about these forty-five minutes forever!"
+        },
+        {
+          "stance": "passion",
+          "text": "Nobody believed in us. Go and show them they were all wrong!"
+        },
+        {
+          "stance": "passion",
+          "text": "Look at the stands! Our fans are going mad! Let's go all the way together!"
+        },
+        {
+          "stance": "passion",
+          "text": "Let's make the whole league learn the name {team} today!"
+        },
+        {
+          "stance": "passion",
+          "text": "{player}, tonight you can become a legend. Hold on till the end!"
+        },
+        {
+          "stance": "passion",
+          "text": "Throw your bodies on the line! Block every single shot!"
+        },
+        {
+          "stance": "passion",
+          "text": "Let's give your families a story they'll be telling for the rest of their lives!"
+        },
+        {
+          "stance": "passion",
+          "text": "Let's show them giants can fall! We're the stone in the sling!"
+        },
+        {
+          "stance": "passion",
+          "text": "Your legs might be heavy, but your hearts are light! Run with those hearts!"
+        },
+        {
+          "stance": "passion",
+          "text": "Let's make today a day {opponent} will never forget!"
+        }
+      ]
+    },
+    "trailingHeavy": {
+      "questions": [
+        "{score}. A heavy silence hangs over the dressing room.",
+        "{score}. Nobody wants to speak first. They just fiddle with their towels.",
+        "More than two goals down at the break. A few already have that look of resignation.",
+        "{score}. The only sound in the room is a water bottle being hurled to the floor.",
+        "That {score} on the scoreboard won't leave anyone's head."
+      ],
+      "answers": [
+        {
+          "stance": "praise",
+          "text": "The scoreboard is cruel, but I saw how hard you worked."
+        },
+        {
+          "stance": "praise",
+          "text": "Take away the goals and there was plenty of decent football. Let's remember that."
+        },
+        {
+          "stance": "praise",
+          "text": "{player}, thank you for running till the end even in a situation like this. That's the attitude."
+        },
+        {
+          "stance": "praise",
+          "text": "You never stopped knocking on the door. I want to give you credit for that."
+        },
+        {
+          "stance": "praise",
+          "text": "The last ten minutes of the half were good. Let's carry that on."
+        },
+        {
+          "stance": "praise",
+          "text": "We created chances too. We just didn't finish them."
+        },
+        {
+          "stance": "praise",
+          "text": "After conceding, nobody pointed fingers. That's what a good team looks like."
+        },
+        {
+          "stance": "praise",
+          "text": "We had a few good moments out wide, didn't we? That was genuinely well done."
+        },
+        {
+          "stance": "praise",
+          "text": "Whatever the score, I respect your fight. Take that fight into the second half."
+        },
+        {
+          "stance": "praise",
+          "text": "The battle in midfield wasn't bad. Let's build from there."
+        },
+        {
+          "stance": "encourage",
+          "text": "It's not over yet. One goal and this game comes back to life."
+        },
+        {
+          "stance": "encourage",
+          "text": "In football, two goals is a smaller gap than you think. Let's prove it."
+        },
+        {
+          "stance": "encourage",
+          "text": "{player}, you get the first one and the whole mood flips. Believe it."
+        },
+        {
+          "stance": "encourage",
+          "text": "Everything depends on when the first goal of the half comes. You can do this."
+        },
+        {
+          "stance": "encourage",
+          "text": "Plenty of teams have come back from scores like this. Let's be one of them."
+        },
+        {
+          "stance": "encourage",
+          "text": "Heads up. You're a far better team than this."
+        },
+        {
+          "stance": "encourage",
+          "text": "One goal at a time. Get one and the next one comes into view."
+        },
+        {
+          "stance": "encourage",
+          "text": "Treat the second half as a fresh start. Pretend it's nil-nil and go."
+        },
+        {
+          "stance": "encourage",
+          "text": "They'll get complacent. That's the gap we go through."
+        },
+        {
+          "stance": "encourage",
+          "text": "The next forty-five minutes are your chance to prove yourselves. It's still on."
+        },
+        {
+          "stance": "demand",
+          "text": "{score}. There's no excuse for this. That first half was a disgrace."
+        },
+        {
+          "stance": "demand",
+          "text": "What are you all doing? Can you honestly call that a professional performance?"
+        },
+        {
+          "stance": "demand",
+          "text": "We didn't win a single duel properly. You just stood and watched."
+        },
+        {
+          "stance": "demand",
+          "text": "{player}, live up to your name. In that half you looked like you weren't even on the pitch."
+        },
+        {
+          "stance": "demand",
+          "text": "The back line is a shambles. Nobody even knows who they're marking!"
+        },
+        {
+          "stance": "demand",
+          "text": "Anyone who loses the ball and walks back will be on the bench in the second half."
+        },
+        {
+          "stance": "demand",
+          "text": "Nobody's coming to show for the ball. You're all hiding."
+        },
+        {
+          "stance": "demand",
+          "text": "Finish like this and you won't be able to face the fans. Sort yourselves out!"
+        },
+        {
+          "stance": "demand",
+          "text": "Every second ball was theirs. That means nobody ran the extra yard."
+        },
+        {
+          "stance": "demand",
+          "text": "From now on, if I see anyone going through the motions, they're off. All of you, be ready."
+        },
+        {
+          "stance": "calm",
+          "text": "Right, take a breath. What's gone is gone."
+        },
+        {
+          "stance": "calm",
+          "text": "Getting worked up won't change anything. Let's fix things one by one."
+        },
+        {
+          "stance": "calm",
+          "text": "{score}. Let's look at it coolly. Start with what we can change."
+        },
+        {
+          "stance": "calm",
+          "text": "If we all charge forward, we'll concede more. Keep our balance and get one goal first."
+        },
+        {
+          "stance": "calm",
+          "text": "No blaming each other. This is the time to put our heads together."
+        },
+        {
+          "stance": "calm",
+          "text": "I'm tweaking the formation a little. I'll explain calmly, so listen carefully."
+        },
+        {
+          "stance": "calm",
+          "text": "{player}, don't try to do it all yourself. Keep calm and link up."
+        },
+        {
+          "stance": "calm",
+          "text": "Forget the result. Just focus on the next bit of play."
+        },
+        {
+          "stance": "calm",
+          "text": "Concede again early in the half and it's over. The first ten minutes, we stay solid."
+        },
+        {
+          "stance": "calm",
+          "text": "No panicking. Play our patterns and the chances will come."
+        },
+        {
+          "stance": "passion",
+          "text": "Is this how you want it to end? In front of our fans? No way!"
+        },
+        {
+          "stance": "passion",
+          "text": "If you've got any pride left, show it in the second half! Leave everything out there!"
+        },
+        {
+          "stance": "passion",
+          "text": "Anyone who wears the {team} shirt never gives up!"
+        },
+        {
+          "stance": "passion",
+          "text": "Your families are watching. Let's show them a team that fought to the end!"
+        },
+        {
+          "stance": "passion",
+          "text": "{player}, lead the way! You stand up, and everyone stands up with you!"
+        },
+        {
+          "stance": "passion",
+          "text": "Miracles only come to those who believe. And we believe! Let's go!"
+        },
+        {
+          "stance": "passion",
+          "text": "Those fans are still in their seats. Run for them, if nothing else!"
+        },
+        {
+          "stance": "passion",
+          "text": "Losing I can live with. But losing this limply, I can't stand!"
+        },
+        {
+          "stance": "passion",
+          "text": "Show {opponent} that we don't go down easily!"
+        },
+        {
+          "stance": "passion",
+          "text": "Run till your lungs burst! Put everything on these forty-five minutes!"
+        }
+      ]
+    },
+    "trailingNarrow": {
+      "questions": [
+        "{score}. Frustrated sighs escape from every corner of the dressing room.",
+        "{score}. They know one goal will do it, and there's still life in their eyes.",
+        "A goal down at the break. A couple of players raise their voices over the goal they conceded.",
+        "{score}. The room is half nerves, half hope."
+      ],
+      "answers": [
+        {
+          "stance": "praise",
+          "text": "The performance isn't bad. That one goal is the only thing that hurts."
+        },
+        {
+          "stance": "praise",
+          "text": "{player}, you were good in the first half. Keep doing that and the goal will come."
+        },
+        {
+          "stance": "praise",
+          "text": "The press up top was excellent. They kept having to hit it long to escape."
+        },
+        {
+          "stance": "praise",
+          "text": "The build-up to the chances was perfect. It's just the final touch missing."
+        },
+        {
+          "stance": "praise",
+          "text": "You didn't wobble after the goal. That's what pleased me most."
+        },
+        {
+          "stance": "praise",
+          "text": "We're winning the battle in midfield. Be proud of that."
+        },
+        {
+          "stance": "praise",
+          "text": "{score}. Apart from the result, there was more to praise than criticise in that half."
+        },
+        {
+          "stance": "praise",
+          "text": "The timing of the overlaps was good. Keep doing that."
+        },
+        {
+          "stance": "praise",
+          "text": "The defensive shape was fine. Apart from that one moment."
+        },
+        {
+          "stance": "praise",
+          "text": "I like the attitude you showed in that half. With that attitude, the goal will come."
+        },
+        {
+          "stance": "encourage",
+          "text": "It's just one goal. And we're more than capable of getting it."
+        },
+        {
+          "stance": "encourage",
+          "text": "{score}? We'll turn this round in no time. Be confident."
+        },
+        {
+          "stance": "encourage",
+          "text": "{player}, the equaliser is going to come off your boot. I believe in you."
+        },
+        {
+          "stance": "encourage",
+          "text": "In forty-five minutes we can score two, never mind one."
+        },
+        {
+          "stance": "encourage",
+          "text": "They'll get tired from all the defending. That's when our chance comes."
+        },
+        {
+          "stance": "encourage",
+          "text": "We turned a game like this round last time. We'll do it again."
+        },
+        {
+          "stance": "encourage",
+          "text": "No need to hang your heads. We're playing good football."
+        },
+        {
+          "stance": "encourage",
+          "text": "Get one and the momentum is all ours. Let's go."
+        },
+        {
+          "stance": "encourage",
+          "text": "Keep knocking and it will open. Trust your ability."
+        },
+        {
+          "stance": "encourage",
+          "text": "The equaliser is only a matter of time. No rushing, just confidence."
+        },
+        {
+          "stance": "demand",
+          "text": "That goal was a lapse in concentration. Don't ever make that mistake again."
+        },
+        {
+          "stance": "demand",
+          "text": "Nobody's getting into the box! When the cross goes in, get in there!"
+        },
+        {
+          "stance": "demand",
+          "text": "{player}, don't be shy about shooting. If the chance is there, hit it!"
+        },
+        {
+          "stance": "demand",
+          "text": "It's only one goal, so why are we so timid? Be braver!"
+        },
+        {
+          "stance": "demand",
+          "text": "You're far too slow to the second balls. Get there a step earlier!"
+        },
+        {
+          "stance": "demand",
+          "text": "Our reaction to their counters is a mess. Lose the ball and press straight away!"
+        },
+        {
+          "stance": "demand",
+          "text": "{score}. This isn't a game we should be losing, but we are. Each of you think about why."
+        },
+        {
+          "stance": "demand",
+          "text": "Every pass is a beat too late. Get your head up and look early!"
+        },
+        {
+          "stance": "demand",
+          "text": "Run like you did in the first half and nothing changes in the second. Run more."
+        },
+        {
+          "stance": "demand",
+          "text": "Don't just hang crosses in from the flanks. Take another look and be accurate!"
+        },
+        {
+          "stance": "calm",
+          "text": "One goal is nothing. Let's stay calm."
+        },
+        {
+          "stance": "calm",
+          "text": "Don't get impatient. Rush it and we'll get caught on the break."
+        },
+        {
+          "stance": "calm",
+          "text": "{score}. There's still plenty of time. Stick to our patterns."
+        },
+        {
+          "stance": "calm",
+          "text": "Fewer hopeful long shots. Keep moving it until we've made a proper chance."
+        },
+        {
+          "stance": "calm",
+          "text": "Forget the goal we conceded. What matters is from here."
+        },
+        {
+          "stance": "calm",
+          "text": "{player}, stay calm on the ball and wait until you see the opening."
+        },
+        {
+          "stance": "calm",
+          "text": "Keep the balance until about the hour, then we go for it."
+        },
+        {
+          "stance": "calm",
+          "text": "Don't get wound up and make reckless fouls. Cards only cost us."
+        },
+        {
+          "stance": "calm",
+          "text": "Get some water, catch your breath. The job hasn't changed."
+        },
+        {
+          "stance": "calm",
+          "text": "The goal will come, I promise you. Just don't lose your composure."
+        },
+        {
+          "stance": "passion",
+          "text": "It's one goal! Put everything into that one goal!"
+        },
+        {
+          "stance": "passion",
+          "text": "I can't even bear to imagine losing like this! Neither can you, right?"
+        },
+        {
+          "stance": "passion",
+          "text": "Hear the fans? We owe them an answer!"
+        },
+        {
+          "stance": "passion",
+          "text": "You're playing for the name {team}! Let's turn this round!"
+        },
+        {
+          "stance": "passion",
+          "text": "{player}, today you're going to change this game! Lead the way!"
+        },
+        {
+          "stance": "passion",
+          "text": "Legs might be heavy, but keep your spirits light! Let's go and get the equaliser!"
+        },
+        {
+          "stance": "passion",
+          "text": "Our families and our mates are all watching. Let's not show them a team that gives up!"
+        },
+        {
+          "stance": "passion",
+          "text": "The second half is our time! Pile on the pressure!"
+        },
+        {
+          "stance": "passion",
+          "text": "Show {opponent} this is no time for them to be laughing!"
+        },
+        {
+          "stance": "passion",
+          "text": "Run with your heart! The goal will come!"
+        }
+      ]
+    },
+    "leadingComfortably": {
+      "questions": [
+        "{score}. Relaxed laughter fills the dressing room.",
+        "{score}. The players exchange high-fives as they relive the first half.",
+        "A healthy lead at the break. A few have already stretched their legs out, the tension gone.",
+        "{score}. The mood is bright, but the captain is telling his teammates it isn't over yet."
+      ],
+      "answers": [
+        {
+          "stance": "praise",
+          "text": "That was a perfect half. I couldn't ask for more."
+        },
+        {
+          "stance": "praise",
+          "text": "{player}, you're outstanding today. You're running this pitch."
+        },
+        {
+          "stance": "praise",
+          "text": "{score}, and that's all your doing. Genuinely, well played."
+        },
+        {
+          "stance": "praise",
+          "text": "The press, the transitions, the finishing, all of it was good. That was a textbook half."
+        },
+        {
+          "stance": "praise",
+          "text": "The defence was excellent too. You gave them absolutely nothing."
+        },
+        {
+          "stance": "praise",
+          "text": "This is the football we built on the training ground. Brilliant work."
+        },
+        {
+          "stance": "praise",
+          "text": "You kept the ball and suffocated them. Superb."
+        },
+        {
+          "stance": "praise",
+          "text": "Everyone played unselfishly. That's why the goals kept coming."
+        },
+        {
+          "stance": "praise",
+          "text": "The way we went at the flanks was perfect. Their full-backs didn't know what day it was."
+        },
+        {
+          "stance": "praise",
+          "text": "Well done, all of you. That first half belongs on the season highlights reel."
+        },
+        {
+          "stance": "encourage",
+          "text": "With this momentum, we can get more. Keep enjoying it."
+        },
+        {
+          "stance": "encourage",
+          "text": "{player}, go and get another. It's your day today."
+        },
+        {
+          "stance": "encourage",
+          "text": "Keep going with confidence. You're the stronger side in the second half too."
+        },
+        {
+          "stance": "encourage",
+          "text": "The rhythm is good right now. Just carry it on."
+        },
+        {
+          "stance": "encourage",
+          "text": "Feel free to try new things. Today is your stage."
+        },
+        {
+          "stance": "encourage",
+          "text": "Stretching the lead helps the goal difference too. Let's keep going."
+        },
+        {
+          "stance": "encourage",
+          "text": "{opponent} are already rattled. Just keep doing what you've been doing."
+        },
+        {
+          "stance": "encourage",
+          "text": "Let's stay on the front foot in the second half. You've got more than enough to do it."
+        },
+        {
+          "stance": "encourage",
+          "text": "Let's not stop at {score}. We can paint an even better picture."
+        },
+        {
+          "stance": "encourage",
+          "text": "Play like this and nobody can stop us. Keep going."
+        },
+        {
+          "stance": "demand",
+          "text": "You've seen plenty of teams in front collapse in the second half. Don't get sloppy."
+        },
+        {
+          "stance": "demand",
+          "text": "No time for smiling. Concede the first goal of the half and the momentum swings straight away."
+        },
+        {
+          "stance": "demand",
+          "text": "{player}, don't start showboating. Keep it simple."
+        },
+        {
+          "stance": "demand",
+          "text": "Anyone who gets carried away by the score and stops tracking back is coming off."
+        },
+        {
+          "stance": "demand",
+          "text": "Don't lower your standards because we're well ahead. I want a clean sheet too."
+        },
+        {
+          "stance": "demand",
+          "text": "Twice at the end of the half we let them in behind. I won't accept that."
+        },
+        {
+          "stance": "demand",
+          "text": "I can see more and more individual play creeping in. Play as a team!"
+        },
+        {
+          "stance": "demand",
+          "text": "Getting injured or booked in a game like this would be stupid. Stay switched on."
+        },
+        {
+          "stance": "demand",
+          "text": "If the pressing drops off, it'll show straight away. Keep it up to the end."
+        },
+        {
+          "stance": "demand",
+          "text": "Respect the opposition. Take the second half as seriously as the first."
+        },
+        {
+          "stance": "calm",
+          "text": "Good. Now let's manage the game. No need to overdo it."
+        },
+        {
+          "stance": "calm",
+          "text": "{score}. We've got breathing room, so let's focus on keeping the ball."
+        },
+        {
+          "stance": "calm",
+          "text": "Control the tempo and drain their energy. There's no hurry."
+        },
+        {
+          "stance": "calm",
+          "text": "Saving your legs matters too. Let's think about the next game as well."
+        },
+        {
+          "stance": "calm",
+          "text": "No reckless tackles. An injury now would only hurt us."
+        },
+        {
+          "stance": "calm",
+          "text": "{player}, bring the tempo down in the second half. Let's close this out quietly."
+        },
+        {
+          "stance": "calm",
+          "text": "No need to get excited. Just stay calm like you are now."
+        },
+        {
+          "stance": "calm",
+          "text": "Only attack when it's on. The rest of the time, keep possession."
+        },
+        {
+          "stance": "calm",
+          "text": "Get the back line organised before we go out. The aim is to finish without conceding."
+        },
+        {
+          "stance": "calm",
+          "text": "Everyone get some water and rest. The job is exactly the same as the first half."
+        },
+        {
+          "stance": "passion",
+          "text": "Let's dedicate this game to the fans! Keep putting on a show till the end!"
+        },
+        {
+          "stance": "passion",
+          "text": "The stands are bouncing! Pour more fuel on that fire!"
+        },
+        {
+          "stance": "passion",
+          "text": "The whole league is watching what {team} football looks like. Prove it to the end!"
+        },
+        {
+          "stance": "passion",
+          "text": "{player}, on a day like this, a hat-trick isn't a dream. Go and get it!"
+        },
+        {
+          "stance": "passion",
+          "text": "Enjoy this moment! This is the kind of day you play football for!"
+        },
+        {
+          "stance": "passion",
+          "text": "Let's give your families the best night out. Keep the goals coming in the second half!"
+        },
+        {
+          "stance": "passion",
+          "text": "One more! One more! Make the fans sing themselves hoarse!"
+        },
+        {
+          "stance": "passion",
+          "text": "We carry this momentum all the way to the end of the season! Today is where it starts!"
+        },
+        {
+          "stance": "passion",
+          "text": "Let's brand our strength into {opponent}'s memory!"
+        },
+        {
+          "stance": "passion",
+          "text": "Run the way your heart is beating. Today is our day!"
+        }
+      ]
+    },
+    "leadingNarrow": {
+      "questions": [
+        "{score}. We're in front, but there's tension in the dressing room.",
+        "{score}. The players quietly encourage one another as they catch their breath.",
+        "A one-goal lead. In this room, the nerves look a touch bigger than the joy.",
+        "{score}. Someone mutters \"just like this\", and a few heads nod."
+      ],
+      "answers": [
+        {
+          "stance": "praise",
+          "text": "Good half. You've more than earned that lead."
+        },
+        {
+          "stance": "praise",
+          "text": "{player}, that was a brilliant half. You're flying today."
+        },
+        {
+          "stance": "praise",
+          "text": "The defensive concentration was excellent. Every time we were in trouble, someone stepped in."
+        },
+        {
+          "stance": "praise",
+          "text": "{score}, and I'm happy with both the performance and the result. Well done."
+        },
+        {
+          "stance": "praise",
+          "text": "The press up top completely wrecked their build-up. Excellent."
+        },
+        {
+          "stance": "praise",
+          "text": "Watching you keep the ball in midfield, I was genuinely impressed."
+        },
+        {
+          "stance": "praise",
+          "text": "Set-piece defending was perfect. All that practice has paid off."
+        },
+        {
+          "stance": "praise",
+          "text": "Clean, without a single mistake. That's the game we want."
+        },
+        {
+          "stance": "praise",
+          "text": "The speed of our transitions was good. They couldn't keep up."
+        },
+        {
+          "stance": "praise",
+          "text": "You all ran your socks off. This lead is your doing."
+        },
+        {
+          "stance": "encourage",
+          "text": "Keep this up and it's three points. You lot will hold on."
+        },
+        {
+          "stance": "encourage",
+          "text": "One more goal and it gets comfortable. You're more than capable."
+        },
+        {
+          "stance": "encourage",
+          "text": "{player}, go and get the one that kills it off. You can do it."
+        },
+        {
+          "stance": "encourage",
+          "text": "The more they come out, the more space we'll get. The chances will come."
+        },
+        {
+          "stance": "encourage",
+          "text": "What you did in the first half, you can do in the second. Don't doubt it."
+        },
+        {
+          "stance": "encourage",
+          "text": "{score}. You've got what it takes to protect this lead."
+        },
+        {
+          "stance": "encourage",
+          "text": "We'll be the better team in the second half too. Go out with confidence."
+        },
+        {
+          "stance": "encourage",
+          "text": "Don't wobble and this game is ours. Trust that."
+        },
+        {
+          "stance": "encourage",
+          "text": "Just a yard more each. There's a reason you're winning."
+        },
+        {
+          "stance": "encourage",
+          "text": "Stay focused to the end and we'll walk back in here smiling. Let's do it."
+        },
+        {
+          "stance": "demand",
+          "text": "A one-goal lead isn't a lead. One mistake and it's gone."
+        },
+        {
+          "stance": "demand",
+          "text": "Concentration dropped at the end of the half. Moments like that end up as goals."
+        },
+        {
+          "stance": "demand",
+          "text": "Don't back off! Sit deep and they'll get one in the end."
+        },
+        {
+          "stance": "demand",
+          "text": "{player}, don't hold on to it too long. Lose it there and they're away on the break."
+        },
+        {
+          "stance": "demand",
+          "text": "Win every second ball! At one-nil, that's what decides it."
+        },
+        {
+          "stance": "demand",
+          "text": "We wasted chances to get a second. In the second half, those have to go in."
+        },
+        {
+          "stance": "demand",
+          "text": "Wipe those satisfied looks off your faces. Nothing's finished yet."
+        },
+        {
+          "stance": "demand",
+          "text": "We're getting turned far too easily out wide. Stand up in your one-on-ones!"
+        },
+        {
+          "stance": "demand",
+          "text": "We're giving the ball away too cheaply. The longer we lead, the more it has to be ours."
+        },
+        {
+          "stance": "demand",
+          "text": "{opponent} are going to throw everything at us in the second half. If you're not braced for it, get braced now."
+        },
+        {
+          "stance": "calm",
+          "text": "Good, stay calm. Just keep doing what we've been doing."
+        },
+        {
+          "stance": "calm",
+          "text": "{score}. Don't sit too deep trying to protect it. Play like we normally do."
+        },
+        {
+          "stance": "calm",
+          "text": "No panicky clearances. When we win it, play our way out."
+        },
+        {
+          "stance": "calm",
+          "text": "If they press, don't panic. Move it once and the space opens up."
+        },
+        {
+          "stance": "calm",
+          "text": "Time is on our side. There's no reason at all to rush."
+        },
+        {
+          "stance": "calm",
+          "text": "{player}, you control the flow of the game. It doesn't need to get frantic."
+        },
+        {
+          "stance": "calm",
+          "text": "Don't worry about conceding. Our block is solid."
+        },
+        {
+          "stance": "calm",
+          "text": "Let's cut out the fouls. No set pieces in dangerous areas."
+        },
+        {
+          "stance": "calm",
+          "text": "Catch your breath, and let's start the first five minutes of the half calmly."
+        },
+        {
+          "stance": "calm",
+          "text": "One action at a time. Just the next pass, the next tackle."
+        },
+        {
+          "stance": "passion",
+          "text": "Guard this lead with your lives! The three points are right there!"
+        },
+        {
+          "stance": "passion",
+          "text": "The fans are waiting for a win! Let's not let them down!"
+        },
+        {
+          "stance": "passion",
+          "text": "Give me forty-five minutes worthy of the {team} badge!"
+        },
+        {
+          "stance": "passion",
+          "text": "{player}, lead the way in the second half too! Your passion drives this team!"
+        },
+        {
+          "stance": "passion",
+          "text": "Block it with your body, your head, your heart! Don't give them a single goal!"
+        },
+        {
+          "stance": "passion",
+          "text": "Picture your families' faces. Let's go home with smiles on ours!"
+        },
+        {
+          "stance": "passion",
+          "text": "Win this and our season changes! Fight to the end!"
+        },
+        {
+          "stance": "passion",
+          "text": "Nobody is taking this win away from us!"
+        },
+        {
+          "stance": "passion",
+          "text": "Don't give {opponent} an inch! This is our ground!"
+        },
+        {
+          "stance": "passion",
+          "text": "Let your hearts burn right up to the final whistle!"
+        }
+      ]
+    },
+    "drawingGood": {
+      "questions": [
+        "{score}. The players grimace at a scoreline that does no justice to the football they played.",
+        "{score}. The forwards who missed their chances sit with their heads in their hands.",
+        "On top all half and still level at the break. Frustration seeps through the dressing room.",
+        "{score}. The mood isn't bad, but everyone knows something is missing."
+      ],
+      "answers": [
+        {
+          "stance": "praise",
+          "text": "We controlled the game from start to finish in that half. Really well done."
+        },
+        {
+          "stance": "praise",
+          "text": "{player}, how many chances did you create? Excellent."
+        },
+        {
+          "stance": "praise",
+          "text": "Possession, shots, we were ahead on everything. I like this flow."
+        },
+        {
+          "stance": "praise",
+          "text": "The pressing was hugely effective. They could barely get past halfway."
+        },
+        {
+          "stance": "praise",
+          "text": "The passing was alive. It was a joy to watch."
+        },
+        {
+          "stance": "praise",
+          "text": "The score's disappointing, but the performance was top class. I'm proud of you."
+        },
+        {
+          "stance": "praise",
+          "text": "The defence was perfect too. You snuffed out every counter."
+        },
+        {
+          "stance": "praise",
+          "text": "The transitions were quick. That's what kept creating chances."
+        },
+        {
+          "stance": "praise",
+          "text": "The play down the flanks was really good. The quality of the crosses was excellent too."
+        },
+        {
+          "stance": "praise",
+          "text": "As your manager, I loved watching the football you played today."
+        },
+        {
+          "stance": "encourage",
+          "text": "Keep knocking on the door like this and it will open. Trust me."
+        },
+        {
+          "stance": "encourage",
+          "text": "The goal is a matter of time. You're the better team."
+        },
+        {
+          "stance": "encourage",
+          "text": "{player}, the next chance goes in. Hit it with confidence."
+        },
+        {
+          "stance": "encourage",
+          "text": "Don't let missed chances get to you. More will come."
+        },
+        {
+          "stance": "encourage",
+          "text": "{score}. Playing like this, we can settle it in the second half."
+        },
+        {
+          "stance": "encourage",
+          "text": "Their keeper will tire sooner or later. Keep shooting."
+        },
+        {
+          "stance": "encourage",
+          "text": "The second half will be even better. You're in top form."
+        },
+        {
+          "stance": "encourage",
+          "text": "The football we're playing is right. Go out there sure of it."
+        },
+        {
+          "stance": "encourage",
+          "text": "Get one and the floodgates will open. You can do it."
+        },
+        {
+          "stance": "encourage",
+          "text": "Let's keep piling on the pressure. You deserve to win this."
+        },
+        {
+          "stance": "demand",
+          "text": "What's the point of dominating like this if we can't score? Concentrate on the finishing!"
+        },
+        {
+          "stance": "demand",
+          "text": "{player}, you had to bury that chance. In the second half, it has to go in."
+        },
+        {
+          "stance": "demand",
+          "text": "You're too greedy in the box. Give it to the teammate in a better spot!"
+        },
+        {
+          "stance": "demand",
+          "text": "Every shot is straight at the keeper. Aim for the corners!"
+        },
+        {
+          "stance": "demand",
+          "text": "Let a game like this slip and you'll regret it badly. Finish the job."
+        },
+        {
+          "stance": "demand",
+          "text": "Don't be satisfied with just having the ball. We're missing the killer pass."
+        },
+        {
+          "stance": "demand",
+          "text": "Watch out for the one counter. Conceding when you're on top is the cruellest thing."
+        },
+        {
+          "stance": "demand",
+          "text": "There are only two of us in the box when the cross comes in. Get more bodies in there!"
+        },
+        {
+          "stance": "demand",
+          "text": "The final touch is far too careless. Be as precise as you are in training!"
+        },
+        {
+          "stance": "demand",
+          "text": "Don't dither in front of goal. Stop thinking and hit it!"
+        },
+        {
+          "stance": "calm",
+          "text": "Don't get impatient. Keep doing this and the goal will come."
+        },
+        {
+          "stance": "calm",
+          "text": "{score}. The momentum is ours. No need to rush."
+        },
+        {
+          "stance": "calm",
+          "text": "Let's wait for a good chance rather than force a shot."
+        },
+        {
+          "stance": "calm",
+          "text": "Forget the missed chances. Just focus on the next moment."
+        },
+        {
+          "stance": "calm",
+          "text": "Let's calmly move the ball until they tire."
+        },
+        {
+          "stance": "calm",
+          "text": "{player}, relax when it comes to the finish. Stay calm and it'll go in."
+        },
+        {
+          "stance": "calm",
+          "text": "Just make sure we're covered against the counter, and otherwise carry on as we were."
+        },
+        {
+          "stance": "calm",
+          "text": "Rush it and the mistakes come. Let's keep our rhythm."
+        },
+        {
+          "stance": "calm",
+          "text": "After the hour mark, the space will open up. Patience until then."
+        },
+        {
+          "stance": "calm",
+          "text": "Catch your breath, then go again the same way. That's the answer."
+        },
+        {
+          "stance": "passion",
+          "text": "This is a game we should be winning! Let's prove it with the result!"
+        },
+        {
+          "stance": "passion",
+          "text": "The fans are waiting for a goal! Give them something to roar about!"
+        },
+        {
+          "stance": "passion",
+          "text": "{player}, it's all at your feet! Settle it!"
+        },
+        {
+          "stance": "passion",
+          "text": "Play this well and draw, and you won't sleep for the frustration! Let's finish it!"
+        },
+        {
+          "stance": "passion",
+          "text": "Show {team} football to the very end! Put a full stop on it with a goal!"
+        },
+        {
+          "stance": "passion",
+          "text": "Let's take a win home in front of our families!"
+        },
+        {
+          "stance": "passion",
+          "text": "Don't stop until the net bulges! Keep hammering away!"
+        },
+        {
+          "stance": "passion",
+          "text": "Feel your chest burning? Turn that heat into a goal!"
+        },
+        {
+          "stance": "passion",
+          "text": "Don't give {opponent} a moment to breathe! Pile on the pressure!"
+        },
+        {
+          "stance": "passion",
+          "text": "The second half belongs to us! Shake this stadium!"
+        }
+      ]
+    },
+    "drawingPoor": {
+      "questions": [
+        "{score}. Outplayed but still standing, the players breathe a sigh of relief.",
+        "{score}. It's level, but there's an uneasy feeling in the dressing room.",
+        "Pinned back for the whole half. The defenders lean against the wall, faces drained.",
+        "{score}. Thanks to the goalkeeper go round the room again and again."
+      ],
+      "answers": [
+        {
+          "stance": "praise",
+          "text": "Holding on while we were under the cosh was really well done."
+        },
+        {
+          "stance": "praise",
+          "text": "Defenders, I saw you throwing your bodies in today. Thank you."
+        },
+        {
+          "stance": "praise",
+          "text": "{player}, keeping the ball for us in tough moments was excellent."
+        },
+        {
+          "stance": "praise",
+          "text": "It was a hard half, and keeping the damage to a minimum deserves praise."
+        },
+        {
+          "stance": "praise",
+          "text": "The keeper's saves were huge, but everyone in front of him defended to the end as well."
+        },
+        {
+          "stance": "praise",
+          "text": "{score}. We've kept this score because of your fight."
+        },
+        {
+          "stance": "praise",
+          "text": "They came at us hard and we didn't crack. That's what matters."
+        },
+        {
+          "stance": "praise",
+          "text": "A couple of our counters were really sharp. That was good."
+        },
+        {
+          "stance": "praise",
+          "text": "Hanging in there is a skill too. Today you showed it."
+        },
+        {
+          "stance": "praise",
+          "text": "You've worked hard. Teams that hold on like this end up winning."
+        },
+        {
+          "stance": "encourage",
+          "text": "You survived a tough half. Now it's our turn."
+        },
+        {
+          "stance": "encourage",
+          "text": "It's level. We haven't lost anything yet."
+        },
+        {
+          "stance": "encourage",
+          "text": "{player}, if the space opens up, be bold. One moment is all it takes."
+        },
+        {
+          "stance": "encourage",
+          "text": "They'll start to tire now. That's when we push on."
+        },
+        {
+          "stance": "encourage",
+          "text": "{score}. Being outplayed and still level means the second half is very much there for us."
+        },
+        {
+          "stance": "encourage",
+          "text": "Our counter-attack is working. Have confidence in it."
+        },
+        {
+          "stance": "encourage",
+          "text": "The second half will be better than the first. I believe in you."
+        },
+        {
+          "stance": "encourage",
+          "text": "The team that holds on gets the last laugh. That's going to be us."
+        },
+        {
+          "stance": "encourage",
+          "text": "Seize the momentum just once and this game will swing our way."
+        },
+        {
+          "stance": "encourage",
+          "text": "We haven't seen our best yet. Let's show it in the second half."
+        },
+        {
+          "stance": "demand",
+          "text": "Keep getting pushed back like this and eventually we'll concede. Something has to change!"
+        },
+        {
+          "stance": "demand",
+          "text": "We lost everything in midfield. Get into every duel harder!"
+        },
+        {
+          "stance": "demand",
+          "text": "{player}, you're losing the ball far too easily. You need to hold on to it."
+        },
+        {
+          "stance": "demand",
+          "text": "Our pressing is late every time. Go a step earlier!"
+        },
+        {
+          "stance": "demand",
+          "text": "If it weren't for the keeper, we'd be losing right now. You need to realise that."
+        },
+        {
+          "stance": "demand",
+          "text": "Almost every second ball was theirs. That's a concentration problem."
+        },
+        {
+          "stance": "demand",
+          "text": "The line has dropped way too deep. Push up! Don't get hunted down in front of our box."
+        },
+        {
+          "stance": "demand",
+          "text": "When you get the ball, there's nobody to pass to. Everyone move!"
+        },
+        {
+          "stance": "demand",
+          "text": "We survived on luck. In the second half, survive on quality."
+        },
+        {
+          "stance": "demand",
+          "text": "The flanks keep getting breached. Wingers, track back properly!"
+        },
+        {
+          "stance": "calm",
+          "text": "It's fine. It was a tough half, but the score is level."
+        },
+        {
+          "stance": "calm",
+          "text": "{score}. Don't panic. Let's find our game again."
+        },
+        {
+          "stance": "calm",
+          "text": "I'm adjusting the press slightly. Just close the gaps in the block and it'll be much better."
+        },
+        {
+          "stance": "calm",
+          "text": "When we win it, don't just hoof it away. Let's try keeping it for a bit."
+        },
+        {
+          "stance": "calm",
+          "text": "Don't get worked up. Stay calm and the momentum will come back."
+        },
+        {
+          "stance": "calm",
+          "text": "{player}, when it comes to you, slow the tempo and give us a breather."
+        },
+        {
+          "stance": "calm",
+          "text": "Don't force it forward. Let's get our balance back first."
+        },
+        {
+          "stance": "calm",
+          "text": "The mistakes are in the past. We just need to reorganise from here."
+        },
+        {
+          "stance": "calm",
+          "text": "Catch your breath. Everyone save your legs and run smart."
+        },
+        {
+          "stance": "calm",
+          "text": "There's no rush. We hold firm and look for our chance."
+        },
+        {
+          "stance": "passion",
+          "text": "Pushed back but not knocked down! Now it's time to hit back!"
+        },
+        {
+          "stance": "passion",
+          "text": "Doesn't that hurt your pride? In the second half, we're the ones pushing!"
+        },
+        {
+          "stance": "passion",
+          "text": "The {team} badge doesn't know how to take a backward step!"
+        },
+        {
+          "stance": "passion",
+          "text": "We can't keep showing our fans a team that's being pushed around like this!"
+        },
+        {
+          "stance": "passion",
+          "text": "{player}, be the spark! We'll follow you!"
+        },
+        {
+          "stance": "passion",
+          "text": "Your families are watching. Show them a team that fights with its head held high!"
+        },
+        {
+          "stance": "passion",
+          "text": "We defended with everything in the first half. Now let's attack with everything in the second!"
+        },
+        {
+          "stance": "passion",
+          "text": "Chests out! We're not beaten yet!"
+        },
+        {
+          "stance": "passion",
+          "text": "Show {opponent} we're not a soft touch!"
+        },
+        {
+          "stance": "passion",
+          "text": "As long as our hearts are beating, we fight! Let's go!"
+        }
+      ]
+    },
+    "goallessEven": {
+      "questions": [
+        "{score}. The tension of a tight game has followed them into the dressing room.",
+        "{score}. The players sip water quietly, chewing over moments from the first half.",
+        "Goalless at the break. Not a single face looks sure of anything.",
+        "{score}. A strange stillness fills the room, and with it a sense of resolve."
+      ],
+      "answers": [
+        {
+          "stance": "praise",
+          "text": "Excellent defensive organisation. You gave them nothing at all."
+        },
+        {
+          "stance": "praise",
+          "text": "{player}, you had a good half. You kept the game balanced for us."
+        },
+        {
+          "stance": "praise",
+          "text": "In a tight game, you never lost your concentration. Credit to you."
+        },
+        {
+          "stance": "praise",
+          "text": "The clean sheet is because you've been good. Really well defended."
+        },
+        {
+          "stance": "praise",
+          "text": "You didn't lose a single duel. I loved that fight."
+        },
+        {
+          "stance": "praise",
+          "text": "Our build-up is getting better and better. Let's keep that going."
+        },
+        {
+          "stance": "praise",
+          "text": "{score}. Even so, we did everything we needed to. That was a fine half."
+        },
+        {
+          "stance": "praise",
+          "text": "You stuck to every tactical instruction. Thank you."
+        },
+        {
+          "stance": "praise",
+          "text": "We had slightly the better of the midfield. Well done."
+        },
+        {
+          "stance": "praise",
+          "text": "That was a half without mistakes. With that concentration, the second half is no problem."
+        },
+        {
+          "stance": "encourage",
+          "text": "One goal wins us this game. And that one goal is well within us."
+        },
+        {
+          "stance": "encourage",
+          "text": "{player}, you're the one who decides games like this. I believe in you."
+        },
+        {
+          "stance": "encourage",
+          "text": "The feeling-out is over. In the second half we'll be better."
+        },
+        {
+          "stance": "encourage",
+          "text": "They'll start to tire as well. That's when we push on."
+        },
+        {
+          "stance": "encourage",
+          "text": "Be confident. We created more of the good moments."
+        },
+        {
+          "stance": "encourage",
+          "text": "The second half is our time. You can do this."
+        },
+        {
+          "stance": "encourage",
+          "text": "We just need to take one chance. You're more than capable of it."
+        },
+        {
+          "stance": "encourage",
+          "text": "We're the ones who'll break this open from {score}. Let's go."
+        },
+        {
+          "stance": "encourage",
+          "text": "Be a touch braver and the goal will come. Believe it and go."
+        },
+        {
+          "stance": "encourage",
+          "text": "Stay focused to the very end and we can win this."
+        },
+        {
+          "stance": "demand",
+          "text": "We're far too passive. If you want to win, you have to take some risks!"
+        },
+        {
+          "stance": "demand",
+          "text": "We haven't had a single shot. Get near the box and hit it!"
+        },
+        {
+          "stance": "demand",
+          "text": "{player}, take your man on more. Don't just play the safe pass."
+        },
+        {
+          "stance": "demand",
+          "text": "The attacking tempo is far too slow. They're all set and waiting for us."
+        },
+        {
+          "stance": "demand",
+          "text": "We wasted every set piece. Concentrate!"
+        },
+        {
+          "stance": "demand",
+          "text": "I've no use for football that's all possession and no end product. Go forward!"
+        },
+        {
+          "stance": "demand",
+          "text": "Is anyone happy with a draw? Nobody should be."
+        },
+        {
+          "stance": "demand",
+          "text": "Don't dodge the one-on-ones out wide. Take them on and win!"
+        },
+        {
+          "stance": "demand",
+          "text": "Crank up the intensity of the press! Don't give them any time."
+        },
+        {
+          "stance": "demand",
+          "text": "Not sharp enough on the second balls. We should be winning all of them."
+        },
+        {
+          "stance": "calm",
+          "text": "It's fine. Nil-nil is not a bad score."
+        },
+        {
+          "stance": "calm",
+          "text": "{score}. Stay calm, keep doing this and the chance will come."
+        },
+        {
+          "stance": "calm",
+          "text": "Rush it and we'll make mistakes. Let's stick to our patterns."
+        },
+        {
+          "stance": "calm",
+          "text": "It's a balanced game. Not conceding comes first."
+        },
+        {
+          "stance": "calm",
+          "text": "They're just as nervous as we are. Whoever cracks first loses."
+        },
+        {
+          "stance": "calm",
+          "text": "{player}, manage the tempo well for us. Until the decisive moment comes."
+        },
+        {
+          "stance": "calm",
+          "text": "Let's wait for a clear chance rather than force the attack."
+        },
+        {
+          "stance": "calm",
+          "text": "Don't get worked up. Just focus on the next piece of play."
+        },
+        {
+          "stance": "calm",
+          "text": "This will be settled late on. Save your energy till then."
+        },
+        {
+          "stance": "calm",
+          "text": "Catch your breath, same job as before. There's a long way to go."
+        },
+        {
+          "stance": "passion",
+          "text": "We need a goal! The fans are waiting for that one goal!"
+        },
+        {
+          "stance": "passion",
+          "text": "Who wants to be the hero who breaks this deadlock?"
+        },
+        {
+          "stance": "passion",
+          "text": "Pour everything out for a {team} win!"
+        },
+        {
+          "stance": "passion",
+          "text": "{player}, be the star of the night! Settle it!"
+        },
+        {
+          "stance": "passion",
+          "text": "Let's give our families a winning goal to cheer!"
+        },
+        {
+          "stance": "passion",
+          "text": "Run the way your heart beats! Set the pitch alight in the second half!"
+        },
+        {
+          "stance": "passion",
+          "text": "Draws aren't in our blood! Let's go and win it!"
+        },
+        {
+          "stance": "passion",
+          "text": "Hear the crowd? Let's give them a goal!"
+        },
+        {
+          "stance": "passion",
+          "text": "Let's break open {opponent}'s goal no matter what it takes!"
+        },
+        {
+          "stance": "passion",
+          "text": "Put everything on one goal! This is the moment you play for!"
+        }
+      ]
+    },
+    "drawingEven": {
+      "questions": [
+        "{score}. After a first half of blow for blow, the dressing room is still running hot.",
+        "{score}. A few quick words pass between the players about the goals.",
+        "A goal apiece at half-time. Everyone's on edge about which way the next one will go.",
+        "{score}. Between the heavy breathing, boot studs scrape across the floor."
+      ],
+      "answers": [
+        {
+          "stance": "praise",
+          "text": "That was a fierce half, and you fought really well."
+        },
+        {
+          "stance": "praise",
+          "text": "{player}, you're the reason we're level. Excellent."
+        },
+        {
+          "stance": "praise",
+          "text": "Trading goals and you never wobbled. I admire that mental strength."
+        },
+        {
+          "stance": "praise",
+          "text": "The attacking build-up was really good. The goal was perfect."
+        },
+        {
+          "stance": "praise",
+          "text": "{score}. In a tight game, your concentration was excellent."
+        },
+        {
+          "stance": "praise",
+          "text": "You held your own in the midfield battle. Thank you."
+        },
+        {
+          "stance": "praise",
+          "text": "You dealt with their strengths well. Apart from that one goal."
+        },
+        {
+          "stance": "praise",
+          "text": "The speed of the transitions was good. That's the secret behind our goal."
+        },
+        {
+          "stance": "praise",
+          "text": "The fight, the organisation, all good. Just keep doing this."
+        },
+        {
+          "stance": "praise",
+          "text": "Everyone ran well. We can take this game."
+        },
+        {
+          "stance": "encourage",
+          "text": "The next goal decides it. And that's ours to get."
+        },
+        {
+          "stance": "encourage",
+          "text": "{player}, you're going to score the winner. I believe in you."
+        },
+        {
+          "stance": "encourage",
+          "text": "We've already shown we can score. Let's do it again."
+        },
+        {
+          "stance": "encourage",
+          "text": "{score}. This is a game we can win."
+        },
+        {
+          "stance": "encourage",
+          "text": "We'll get stronger in the second half. Go out with confidence."
+        },
+        {
+          "stance": "encourage",
+          "text": "One more burst of concentration and we can take the lead."
+        },
+        {
+          "stance": "encourage",
+          "text": "Their defence has been rattled too. Keep knocking."
+        },
+        {
+          "stance": "encourage",
+          "text": "You're fitter. We'll be the ones laughing at the end."
+        },
+        {
+          "stance": "encourage",
+          "text": "The flow isn't bad right now. Let's push just a little harder."
+        },
+        {
+          "stance": "encourage",
+          "text": "We can absolutely win this. Trust each other and go."
+        },
+        {
+          "stance": "demand",
+          "text": "That goal was far too easy. Never give one away like that again."
+        },
+        {
+          "stance": "demand",
+          "text": "{player}, you were slow to switch back into defence. When we lose the ball, get back straight away."
+        },
+        {
+          "stance": "demand",
+          "text": "We can't get into a slugfest. We should be the ones in control!"
+        },
+        {
+          "stance": "demand",
+          "text": "We're losing our man far too often. Concentrate!"
+        },
+        {
+          "stance": "demand",
+          "text": "The spaces in midfield have opened up. Close them and give them no room!"
+        },
+        {
+          "stance": "demand",
+          "text": "We're losing the battle for second balls. Harder!"
+        },
+        {
+          "stance": "demand",
+          "text": "Don't be satisfied with a draw. We're going out there to win."
+        },
+        {
+          "stance": "demand",
+          "text": "We're nervy on the ball. We're even misplacing simple passes."
+        },
+        {
+          "stance": "demand",
+          "text": "{score}. We can do better than this. Raise the standard."
+        },
+        {
+          "stance": "demand",
+          "text": "Concentrate on defending set pieces. We can't concede from one again."
+        },
+        {
+          "stance": "calm",
+          "text": "Let's calm down. Trading blows is exactly what they want."
+        },
+        {
+          "stance": "calm",
+          "text": "{score}. Calmly, let's pull this game back our way."
+        },
+        {
+          "stance": "calm",
+          "text": "Let's bring the tempo down a bit. Keep the ball and take control of the flow."
+        },
+        {
+          "stance": "calm",
+          "text": "No reason to wobble just because we've swapped goals. It's a fresh start."
+        },
+        {
+          "stance": "calm",
+          "text": "{player}, settle the rhythm of the game for us. No hurrying."
+        },
+        {
+          "stance": "calm",
+          "text": "Let's organise the back line. Keeping our balance comes first."
+        },
+        {
+          "stance": "calm",
+          "text": "Forcing attacks invites counters. Only go when it's on."
+        },
+        {
+          "stance": "calm",
+          "text": "Catch your breath and drink some water. The job is clear."
+        },
+        {
+          "stance": "calm",
+          "text": "The side that stays patient scores the next one. Stay calm."
+        },
+        {
+          "stance": "calm",
+          "text": "Leave the emotions in here. Let's play football with our heads."
+        },
+        {
+          "stance": "passion",
+          "text": "Let's make this game ours! The next goal is ours!"
+        },
+        {
+          "stance": "passion",
+          "text": "The fans are holding their breath. Let's turn that into a roar!"
+        },
+        {
+          "stance": "passion",
+          "text": "Show them the heart of {team}! Fight to the end!"
+        },
+        {
+          "stance": "passion",
+          "text": "{player}, you're the one who decides this game! Go!"
+        },
+        {
+          "stance": "passion",
+          "text": "Let's bring home a win in front of our families! We can do it!"
+        },
+        {
+          "stance": "passion",
+          "text": "Throw everything at it! Games like this go to whoever wants it more!"
+        },
+        {
+          "stance": "passion",
+          "text": "One step more than {opponent}, one more effort! That's how you win!"
+        },
+        {
+          "stance": "passion",
+          "text": "Light a fire in your chests! We own the second half!"
+        },
+        {
+          "stance": "passion",
+          "text": "We can't settle for a draw! Let's go and win it!"
+        },
+        {
+          "stance": "passion",
+          "text": "When the final whistle goes, we'll be the ones smiling!"
+        }
+      ]
+    },
+    "cupExtraTime": {
+      "questions": [
+        "{aggregate} on aggregate. As the ninety-minute whistle goes, the players sit down in a circle on the pitch.",
+        "Some lie flat on the grass rubbing their calves, while water bottles pass from hand to hand.",
+        "{competition} {stage}, extra time looming. The players stand in a circle, gasping for breath.",
+        "The noise from the stands hasn't dropped, but inside the circle there's an odd kind of silence.",
+        "{score}. As the physios stretch out cramping legs, the players look up at the manager in the middle of the circle."
+      ],
+      "answers": [
+        {
+          "stance": "praise",
+          "text": "Ninety minutes and you never stopped running. A team that runs like that doesn't deserve to lose. Brilliant."
+        },
+        {
+          "stance": "praise",
+          "text": "{player}, I know your legs are heavy. But you've been the best out there right to the end."
+        },
+        {
+          "stance": "praise",
+          "text": "Getting this to {aggregate} on aggregate is down to you. I'm proud of you."
+        },
+        {
+          "stance": "praise",
+          "text": "Even exhausted, you kept the distances between the lines. That's real quality."
+        },
+        {
+          "stance": "praise",
+          "text": "{opponent} look more tired than us. That's how hard you've pushed them."
+        },
+        {
+          "stance": "praise",
+          "text": "Defenders, I saw every body thrown in the way in our box. Thank you."
+        },
+        {
+          "stance": "praise",
+          "text": "Not many teams hold out like this on the {competition} stage. You've already proved yourselves."
+        },
+        {
+          "stance": "praise",
+          "text": "Even the lads who came off the bench did their job. That's a team."
+        },
+        {
+          "stance": "praise",
+          "text": "You played our football for ninety minutes. It's just thirty more, and you're doing great."
+        },
+        {
+          "stance": "praise",
+          "text": "The concentration to hold out in the last ten minutes is what got us to extra time. Outstanding."
+        },
+        {
+          "stance": "encourage",
+          "text": "Just thirty more minutes. You've still got that much in your legs. I know you have."
+        },
+        {
+          "stance": "encourage",
+          "text": "{player}, it only takes one moment. I believe you'll be the one to settle it in extra time."
+        },
+        {
+          "stance": "encourage",
+          "text": "They're just as shattered. Whoever finds one more step at the end wins. And that's us."
+        },
+        {
+          "stance": "encourage",
+          "text": "Just being here is an opportunity. Extra time in the {stage}, go out and enjoy it."
+        },
+        {
+          "stance": "encourage",
+          "text": "If it gets hard, look at the man next to you. You're all holding on together. Nobody runs alone."
+        },
+        {
+          "stance": "encourage",
+          "text": "{aggregate} on aggregate, and nobody's lost yet. We can be the ones to finish it."
+        },
+        {
+          "stance": "encourage",
+          "text": "If you cramp up, that's fine. The bench is ready. Don't worry, just run."
+        },
+        {
+          "stance": "encourage",
+          "text": "These thirty minutes will be the ones you remember longest in your careers. Let's make them special."
+        },
+        {
+          "stance": "encourage",
+          "text": "Even if it goes to penalties, we're ready. So go out there without any weight on your shoulders."
+        },
+        {
+          "stance": "encourage",
+          "text": "Everyone in a {team} shirt is right behind you. We go all the way together."
+        },
+        {
+          "stance": "demand",
+          "text": "Anyone who walks because their legs hurt is coming straight off. Thirty minutes, empty the tank."
+        },
+        {
+          "stance": "demand",
+          "text": "The line dropped far too deep in the last fifteen. In extra time, push it up ten yards!"
+        },
+        {
+          "stance": "demand",
+          "text": "{player}, you're holding on to it too long. In extra time, move it within two touches."
+        },
+        {
+          "stance": "demand",
+          "text": "Lose concentration once and it's over. Set-piece marking, stay tight to your man to the end!"
+        },
+        {
+          "stance": "demand",
+          "text": "Being tired is no excuse for lazy clearances. If you clear it, put it out of play properly."
+        },
+        {
+          "stance": "demand",
+          "text": "Not settling this in ninety minutes is on us. Put it right in extra time."
+        },
+        {
+          "stance": "demand",
+          "text": "Anyone who picks up a card for a needless foul is coming off my penalty list."
+        },
+        {
+          "stance": "demand",
+          "text": "Don't just stand there when you lose the ball. Tired or not, three seconds of pressing straight away!"
+        },
+        {
+          "stance": "demand",
+          "text": "No time for lying down. Get up, get some water, and listen to me."
+        },
+        {
+          "stance": "demand",
+          "text": "Don't waste time with backward passes. Look forward and play the brave ball!"
+        },
+        {
+          "stance": "calm",
+          "text": "Get your breath back first. Drink some water, stretch your legs out. There's no rush at all."
+        },
+        {
+          "stance": "calm",
+          "text": "First fifteen minutes of extra time, balance first. Don't push up recklessly, wait for them to tire."
+        },
+        {
+          "stance": "calm",
+          "text": "{aggregate} on aggregate. Looked at coldly, it's fifty-fifty. Whoever makes fewer mistakes wins."
+        },
+        {
+          "stance": "calm",
+          "text": "{player}, you control the tempo. On the ball, slow it down, at our rhythm."
+        },
+        {
+          "stance": "calm",
+          "text": "Get excited and your legs go first. Stay calm and keep doing what you've been doing."
+        },
+        {
+          "stance": "calm",
+          "text": "The substitutions are already decided. You just hold your positions."
+        },
+        {
+          "stance": "calm",
+          "text": "Don't think about penalties yet. Right now, just the next fifteen minutes."
+        },
+        {
+          "stance": "calm",
+          "text": "Forget the crowd noise. Just listen to our voices inside this circle."
+        },
+        {
+          "stance": "calm",
+          "text": "Saving energy is a tactic too. Don't run needlessly, just hold the space."
+        },
+        {
+          "stance": "calm",
+          "text": "Think of it as a new game starting at {score}. A thirty-minute game, played calmly."
+        },
+        {
+          "stance": "passion",
+          "text": "You've sweated all season for this moment. Squeeze out every last drop!"
+        },
+        {
+          "stance": "passion",
+          "text": "{competition} {stage}, extra time! Nights like this come only a few times in a lifetime. Put everything on it!"
+        },
+        {
+          "stance": "passion",
+          "text": "You don't run on your legs now, you run on your heart. Thirty minutes, run till it bursts!"
+        },
+        {
+          "stance": "passion",
+          "text": "{player}! This is exactly the moment you're here for. Go out and finish it!"
+        },
+        {
+          "stance": "passion",
+          "text": "Look at those stands. They're all singing your names. Give them an answer!"
+        },
+        {
+          "stance": "passion",
+          "text": "Back off now and you'll regret it forever. Not one step back!"
+        },
+        {
+          "stance": "passion",
+          "text": "{team} history is being written right here in this circle. Let's write it together!"
+        },
+        {
+          "stance": "passion",
+          "text": "You can collapse if you like. Just not until after the final whistle!"
+        },
+        {
+          "stance": "passion",
+          "text": "{aggregate} on aggregate. Now it's about who wants it more. And we want it more!"
+        },
+        {
+          "stance": "passion",
+          "text": "Hands in. In thirty minutes, we're all smiling together in this exact spot. Let's go!"
+        }
+      ]
+    },
+    "cupFinalHalftime": {
+      "questions": [
+        "Half-time in the {competition} final. Through the dressing room wall, both sets of fans roar over each other.",
+        "{score}. Maybe it's the weight of the final, but the players are quieter than usual.",
+        "Forty-five minutes from the trophy. One player's knee is bouncing; another sits with his eyes shut.",
+        "The first half of the {competition} final is over. Every gaze settles on the manager at the whiteboard.",
+        "As the players peel off their sweat-soaked shirts, nerves and excitement run through the room in equal measure."
+      ],
+      "answers": [
+        {
+          "stance": "praise",
+          "text": "Playing with that kind of swagger on a final stage was magnificent. Well done."
+        },
+        {
+          "stance": "praise",
+          "text": "{player}, you showed in that half exactly why you matter so much in the big games."
+        },
+        {
+          "stance": "praise",
+          "text": "You had every right to be nervous, but there was confidence in every pass. Excellent."
+        },
+        {
+          "stance": "praise",
+          "text": "The timing of the press in that half was exactly as we prepared. You understood it perfectly."
+        },
+        {
+          "stance": "praise",
+          "text": "Not one of you shrank because it's a final. That's what I'm proudest of."
+        },
+        {
+          "stance": "praise",
+          "text": "I saw how the defence dealt with {opponent}'s attack. Calm and composed."
+        },
+        {
+          "stance": "praise",
+          "text": "Playing like that in a {competition} final, you deserve to be on this stage."
+        },
+        {
+          "stance": "praise",
+          "text": "You were never intimidated in the midfield battle. Everyone fought superbly."
+        },
+        {
+          "stance": "praise",
+          "text": "{score}? Forget the number. I like the football you've shown more."
+        },
+        {
+          "stance": "praise",
+          "text": "All half, I could hear you talking to each other and looking after each other from the bench. That's us."
+        },
+        {
+          "stance": "encourage",
+          "text": "Forty-five minutes to go. The trophy doesn't belong to anyone yet. Let's go and take it."
+        },
+        {
+          "stance": "encourage",
+          "text": "{player}, your moment will come in the second half. Wait for it, then seize it."
+        },
+        {
+          "stance": "encourage",
+          "text": "Think about the road that brought us here. You're already a strong enough team."
+        },
+        {
+          "stance": "encourage",
+          "text": "Finals are won by whoever is smiling at the end. That's going to be us."
+        },
+        {
+          "stance": "encourage",
+          "text": "One mistake is fine. Make up for it straight away with the next action."
+        },
+        {
+          "stance": "encourage",
+          "text": "With your quality, the second half will be even better. Go out there with confidence."
+        },
+        {
+          "stance": "encourage",
+          "text": "Hear the {team} fans? They all believe in you. So do I."
+        },
+        {
+          "stance": "encourage",
+          "text": "We haven't shown even half of what we prepared yet. Let's show them in the second half."
+        },
+        {
+          "stance": "encourage",
+          "text": "I'll carry the pressure. You just go out and enjoy it."
+        },
+        {
+          "stance": "encourage",
+          "text": "In forty-five minutes you could be standing on that podium. You can do this."
+        },
+        {
+          "stance": "demand",
+          "text": "You can't freeze just because it's a final. Far too many of you aren't coming short for the ball!"
+        },
+        {
+          "stance": "demand",
+          "text": "{player}, you were hiding in that half. In the second, shout for the ball."
+        },
+        {
+          "stance": "demand",
+          "text": "We gave away second balls far too easily. In a final, that one extra yard decides it."
+        },
+        {
+          "stance": "demand",
+          "text": "The cover out wide is too slow. When one man goes forward, somebody fills in, every time!"
+        },
+        {
+          "stance": "demand",
+          "text": "Stop just hitting it long. Play the build-up we prepared, and don't be scared of it!"
+        },
+        {
+          "stance": "demand",
+          "text": "The set-piece marking was loose. In the second half, stay on your man all the way."
+        },
+        {
+          "stance": "demand",
+          "text": "Anyone who's holding back after getting all the way to a final is coming off at the start of the second half."
+        },
+        {
+          "stance": "demand",
+          "text": "I saw you walk after losing the ball a few times. In a final, that's unforgivable."
+        },
+        {
+          "stance": "demand",
+          "text": "Every pass is a beat late. Get your head up and look before the ball arrives!"
+        },
+        {
+          "stance": "demand",
+          "text": "Instead of arguing with the referee, run. One card can ruin a final."
+        },
+        {
+          "stance": "calm",
+          "text": "Let's catch our breath. A final is still ninety minutes of football. Just do what you always do."
+        },
+        {
+          "stance": "calm",
+          "text": "{score}. Forget the score, and let's just focus on the first ten minutes of the half."
+        },
+        {
+          "stance": "calm",
+          "text": "Leave the excitement to the stands. We need to keep cool heads."
+        },
+        {
+          "stance": "calm",
+          "text": "Put the trophy out of your mind. Right now, think only about the next pass."
+        },
+        {
+          "stance": "calm",
+          "text": "{player}, when you get it, slow the tempo down. There's no reason to rush."
+        },
+        {
+          "stance": "calm",
+          "text": "The tactics stay the same. Hold your positions and keep doing what we've been doing."
+        },
+        {
+          "stance": "calm",
+          "text": "It's natural to be nervous. Just turn those nerves into concentration."
+        },
+        {
+          "stance": "calm",
+          "text": "The plan for the second half is simple. Keep the distances, transition quickly. That's enough."
+        },
+        {
+          "stance": "calm",
+          "text": "Get some water and loosen your legs. Finals are often decided in the last fifteen minutes."
+        },
+        {
+          "stance": "calm",
+          "text": "They're every bit as nervous as we are. The calmer side wins in the end."
+        },
+        {
+          "stance": "passion",
+          "text": "You've dreamed of this moment all your lives! Forty-five minutes to make that dream real!"
+        },
+        {
+          "stance": "passion",
+          "text": "It's the {competition} final! A night like this may never come again. Leave everything out there!"
+        },
+        {
+          "stance": "passion",
+          "text": "The trophy is right there. Reach out and you can touch it. Go and grab it!"
+        },
+        {
+          "stance": "passion",
+          "text": "{player}! Real players shine on stages like this. Show them!"
+        },
+        {
+          "stance": "passion",
+          "text": "After tonight, your names go into this club's history. Carve them in!"
+        },
+        {
+          "stance": "passion",
+          "text": "The {team} fans have waited years to be here. Let's answer that devotion!"
+        },
+        {
+          "stance": "passion",
+          "text": "Forty-five minutes left. Even when your lungs are burning, don't stop. Rest after the trophy lift!"
+        },
+        {
+          "stance": "passion",
+          "text": "Everyone in this room is all we've got. Run for each other!"
+        },
+        {
+          "stance": "passion",
+          "text": "A final is about heart more than skill. Show them who wants it more!"
+        },
+        {
+          "stance": "passion",
+          "text": "When you walk out of this room, change the look in your eyes. Let's go and win this thing!"
+        }
+      ]
+    },
+    "cupSecondLegChasing": {
+      "questions": [
+        "{aggregate} on aggregate. The number of goals we need is scrawled in big letters on the whiteboard.",
+        "Half-time in the {stage} second leg, and the shadow of elimination reaches every corner of the room.",
+        "{score}. Behind on aggregate, the players silently pull their bootlaces tight again.",
+        "Everyone knows it has to be turned around in forty-five minutes, and the air in the room is taut.",
+        "Out of the {competition}, or a miracle. A few players are already on their feet, warming up."
+      ],
+      "answers": [
+        {
+          "stance": "praise",
+          "text": "I liked the attitude you showed in that half. With that attitude, we can turn this around."
+        },
+        {
+          "stance": "praise",
+          "text": "{player}, you tormented their defence all half. Just keep doing that."
+        },
+        {
+          "stance": "praise",
+          "text": "The intensity of the press was really good. {opponent} couldn't keep the ball properly."
+        },
+        {
+          "stance": "praise",
+          "text": "Behind on aggregate, but you never dropped your heads and kept fighting. That's what I like most."
+        },
+        {
+          "stance": "praise",
+          "text": "The way we created chances was excellent. We just need the finishing to follow."
+        },
+        {
+          "stance": "praise",
+          "text": "Going at them down the flanks worked just as we planned. Let's keep hammering that area."
+        },
+        {
+          "stance": "praise",
+          "text": "Pushing the line high and still not giving them space in behind. Excellent."
+        },
+        {
+          "stance": "praise",
+          "text": "Even under pressure, the passing was calm. That's quality."
+        },
+        {
+          "stance": "praise",
+          "text": "You weren't intimidated on the stage of a {stage} second leg. I'm proud of you."
+        },
+        {
+          "stance": "praise",
+          "text": "You must have covered far more ground than them in that half. Everyone ran well."
+        },
+        {
+          "stance": "encourage",
+          "text": "{aggregate} on aggregate, and there are still forty-five minutes left. That's plenty of time to turn it around."
+        },
+        {
+          "stance": "encourage",
+          "text": "{player}, it's going to start from your boot. Hit it with confidence."
+        },
+        {
+          "stance": "encourage",
+          "text": "One goal and the whole atmosphere in this stadium changes. Let's start with that one."
+        },
+        {
+          "stance": "encourage",
+          "text": "They'll get more and more tired from defending. The second half is our time."
+        },
+        {
+          "stance": "encourage",
+          "text": "Every year some team turns round a second leg like this. This year it's our turn."
+        },
+        {
+          "stance": "encourage",
+          "text": "Don't be afraid of mistakes. Be bold and try things. I'll take the responsibility."
+        },
+        {
+          "stance": "encourage",
+          "text": "Not a single {team} fan has left their seat. That's because they believe in you."
+        },
+        {
+          "stance": "encourage",
+          "text": "Our {competition} journey doesn't end here. You lot will do it."
+        },
+        {
+          "stance": "encourage",
+          "text": "Heads up. You're not out until the final whistle says so."
+        },
+        {
+          "stance": "encourage",
+          "text": "The attacking patterns we prepared will work in the second half. Trust them and go."
+        },
+        {
+          "stance": "demand",
+          "text": "We're behind on aggregate, so why so many back passes? Get it forward!"
+        },
+        {
+          "stance": "demand",
+          "text": "Nobody's getting into the box. When the cross goes in, I want three bodies there!"
+        },
+        {
+          "stance": "demand",
+          "text": "{player}, don't hold back on shooting. We've got nothing to save it for."
+        },
+        {
+          "stance": "demand",
+          "text": "Keep playing this politely and we're going out in the {stage}. Be braver!"
+        },
+        {
+          "stance": "demand",
+          "text": "We lost every second ball. Get there first and win it!"
+        },
+        {
+          "stance": "demand",
+          "text": "If we need goals, play like you mean to score them. Right now I'm not seeing it."
+        },
+        {
+          "stance": "demand",
+          "text": "Every cross is landing on a defender's head. Mix in the cut-backs, use your heads!"
+        },
+        {
+          "stance": "demand",
+          "text": "Lose it and win it straight back. When the chasing side slows its press, it's over."
+        },
+        {
+          "stance": "demand",
+          "text": "Concede one and it slips even further away. Even when we attack, be ready for the counter."
+        },
+        {
+          "stance": "demand",
+          "text": "Play like that in the second half and you're coming off. Each of you, prove yourselves."
+        },
+        {
+          "stance": "calm",
+          "text": "Don't get worked up. Forty-five minutes is a long time. Calmly, one goal at a time."
+        },
+        {
+          "stance": "calm",
+          "text": "{aggregate} on aggregate. I'll do the maths. You just think about the next action."
+        },
+        {
+          "stance": "calm",
+          "text": "No forcing it for the first fifteen minutes, possession first. Then we push the line up."
+        },
+        {
+          "stance": "calm",
+          "text": "Don't rush long balls forward. Build it our way and the chances will come."
+        },
+        {
+          "stance": "calm",
+          "text": "{player}, stay calm on the ball. Wait until you see a clear chance."
+        },
+        {
+          "stance": "calm",
+          "text": "Get hit on the break once and it gets much harder. Even when we attack, leave two at the back."
+        },
+        {
+          "stance": "calm",
+          "text": "The moment we panic, we lose. Keep cool heads and the chance will definitely come."
+        },
+        {
+          "stance": "calm",
+          "text": "Drink some water and catch your breath. The job is clear, and there's enough time."
+        },
+        {
+          "stance": "calm",
+          "text": "I'll make the changes around the hour. Until then, hang in there and look for the gaps."
+        },
+        {
+          "stance": "calm",
+          "text": "Don't pick up cards. If the chasing side goes down to ten, that's the end of it."
+        },
+        {
+          "stance": "passion",
+          "text": "Are you going to let it end here? No, you're not! This {competition} is still ours!"
+        },
+        {
+          "stance": "passion",
+          "text": "Going out in the {stage} is not acceptable. Forty-five minutes, put everything on it!"
+        },
+        {
+          "stance": "passion",
+          "text": "{player}! Heroes are born on nights like this. Go out and turn it around!"
+        },
+        {
+          "stance": "passion",
+          "text": "Those fans came to see a miracle. Let's give them one!"
+        },
+        {
+          "stance": "passion",
+          "text": "Run until you drop. There's time for regrets after the final whistle!"
+        },
+        {
+          "stance": "passion",
+          "text": "{aggregate} on aggregate? Let's wipe that number out with our own hands!"
+        },
+        {
+          "stance": "passion",
+          "text": "I'm saying it in the name of {team}. It does not end like this!"
+        },
+        {
+          "stance": "passion",
+          "text": "Hands up in this room if you believe in miracles. That's it, all of us, let's go!"
+        },
+        {
+          "stance": "passion",
+          "text": "These next forty-five minutes matter more than the whole season. Run with your hearts!"
+        },
+        {
+          "stance": "passion",
+          "text": "Make them afraid. Get one goal and their legs will start shaking!"
+        }
+      ]
+    },
+    "cupSecondLegProtecting": {
+      "questions": [
+        "{aggregate} on aggregate. The next round is within sight, but a strange tension runs through the room.",
+        "Half-time in the {stage} second leg, and the pressure of protecting the lead has left the players quiet.",
+        "{score}. Ahead on aggregate, the players swing between relief and unease.",
+        "\"Just forty-five minutes to hold on\" is whispered around the dressing room.",
+        "Forty-five minutes from the next round of the {competition}. The senior players pat the youngsters on the shoulder."
+      ],
+      "answers": [
+        {
+          "stance": "praise",
+          "text": "That was really clever game management. They never once got to play the way they wanted."
+        },
+        {
+          "stance": "praise",
+          "text": "{player}, the way you kept the ball was superb. You gave everyone a chance to breathe."
+        },
+        {
+          "stance": "praise",
+          "text": "The distances in the defensive block were textbook. Just keep it like that."
+        },
+        {
+          "stance": "praise",
+          "text": "I know how much sweat it took you to get to {aggregate} on aggregate. Well done."
+        },
+        {
+          "stance": "praise",
+          "text": "See {opponent} rushing? That's your doing."
+        },
+        {
+          "stance": "praise",
+          "text": "Not getting carried away and controlling the tempo, that's experience. Excellent."
+        },
+        {
+          "stance": "praise",
+          "text": "Set-piece defending was perfect. Your concentration was the best it's been today."
+        },
+        {
+          "stance": "praise",
+          "text": "Everyone ran together on the counter. That kept them nervous the whole time."
+        },
+        {
+          "stance": "praise",
+          "text": "A performance this mature in a {stage} second leg isn't easy. I'm proud of you."
+        },
+        {
+          "stance": "praise",
+          "text": "I saw you covering for each other all half. You've become a real team."
+        },
+        {
+          "stance": "encourage",
+          "text": "Just forty-five more minutes. The next round is right there. You lot will hold on."
+        },
+        {
+          "stance": "encourage",
+          "text": "{player}, keep holding us together in the second half. You're the backbone of this team."
+        },
+        {
+          "stance": "encourage",
+          "text": "If they come forward, don't panic. That only gives us more space on the break."
+        },
+        {
+          "stance": "encourage",
+          "text": "Even if we concede one, don't wobble. Our job stays the same."
+        },
+        {
+          "stance": "encourage",
+          "text": "We're the ones in the stronger position. Enjoy that advantage."
+        },
+        {
+          "stance": "encourage",
+          "text": "You're the ones who got us this far. You can manage the last forty-five as well."
+        },
+        {
+          "stance": "encourage",
+          "text": "The next round of the {competition}, you've more than earned the right to be there."
+        },
+        {
+          "stance": "encourage",
+          "text": "The lads on the bench are ready too. If it gets tough, we hold on together."
+        },
+        {
+          "stance": "encourage",
+          "text": "Don't just try to defend. If the chance comes, go and kill it off with confidence."
+        },
+        {
+          "stance": "encourage",
+          "text": "Let's send the {team} fans home happy tonight. You can do this."
+        },
+        {
+          "stance": "demand",
+          "text": "The moment you feel safe because we're ahead, they'll punish you. How many second legs have you seen turned around?"
+        },
+        {
+          "stance": "demand",
+          "text": "The line has dropped far too deep. Defend only on the edge of the box and eventually we'll break. Push up ten yards!"
+        },
+        {
+          "stance": "demand",
+          "text": "{player}, no pointless dribbling on the ball. Right now possession is everything."
+        },
+        {
+          "stance": "demand",
+          "text": "I saw the concentration slip at the end of the half. First ten minutes of the second, be fully switched on."
+        },
+        {
+          "stance": "demand",
+          "text": "When you clear it, clear it properly! Half-hearted clearances just come straight back into our box."
+        },
+        {
+          "stance": "demand",
+          "text": "Running the clock down is fine, but don't get booked. A needless yellow is poison for the next round."
+        },
+        {
+          "stance": "demand",
+          "text": "Don't stop pressing just because we're ahead. Don't give them easy time on the ball!"
+        },
+        {
+          "stance": "demand",
+          "text": "Anyone who loses their man at a set piece is coming straight off. That's where goals come from."
+        },
+        {
+          "stance": "demand",
+          "text": "Don't get drunk on {aggregate} on aggregate. Numbers can change in an instant."
+        },
+        {
+          "stance": "demand",
+          "text": "We lost the ball far too easily on the break. If you go, see it through to the end."
+        },
+        {
+          "stance": "calm",
+          "text": "There's no rush at all. Time is on our side. Let's take it slowly."
+        },
+        {
+          "stance": "calm",
+          "text": "{aggregate} on aggregate. We're in control of this. No need to force anything."
+        },
+        {
+          "stance": "calm",
+          "text": "If they push their line up, there'll be space in behind. Wait calmly, then slip it through."
+        },
+        {
+          "stance": "calm",
+          "text": "{player}, you hold the tempo. On the ball, slow it down and wear them out."
+        },
+        {
+          "stance": "calm",
+          "text": "We just need to keep the block. Distances, positions, communication. Just those three."
+        },
+        {
+          "stance": "calm",
+          "text": "Even if the crowd is screaming, don't get swept along. Our rhythm."
+        },
+        {
+          "stance": "calm",
+          "text": "If we concede, stay calm. We're not a team that collapses over one mistake."
+        },
+        {
+          "stance": "calm",
+          "text": "The plan for the second half stays the same. I've already thought about the substitutions."
+        },
+        {
+          "stance": "calm",
+          "text": "Loosen your legs and cool your heads. The second half is just more of the first."
+        },
+        {
+          "stance": "calm",
+          "text": "Don't be ashamed of passing it around at the back. Right now, that's the right answer."
+        },
+        {
+          "stance": "passion",
+          "text": "Getting through the {stage} is forty-five minutes away! Guard this lead with your lives!"
+        },
+        {
+          "stance": "passion",
+          "text": "The next round isn't handed to you. You earn it by throwing your bodies on the line!"
+        },
+        {
+          "stance": "passion",
+          "text": "{player}! Tonight you're our wall. Don't let anyone past!"
+        },
+        {
+          "stance": "passion",
+          "text": "Our {competition} journey can't stop here. Fight to the end!"
+        },
+        {
+          "stance": "passion",
+          "text": "Two, three men to every ball. That's the pride of a team that defends!"
+        },
+        {
+          "stance": "passion",
+          "text": "You built this lead with blood and sweat. Don't let anyone take it from you!"
+        },
+        {
+          "stance": "passion",
+          "text": "Not one step back until the whistle goes. Let's smile again in the next round!"
+        },
+        {
+          "stance": "passion",
+          "text": "Hear the {team} fans singing? Let's keep that song going till the end!"
+        },
+        {
+          "stance": "passion",
+          "text": "Forty-five minutes. Even when you're gasping, hang on. The next stage is waiting at the end of it!"
+        },
+        {
+          "stance": "passion",
+          "text": "This is the moment we're here for. Let's hold on together!"
+        }
+      ]
+    }
+  }
+}

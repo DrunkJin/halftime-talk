@@ -1,4 +1,6 @@
 // 대륙 대회(UCL·UEL) 형식·일정·상금. 경기 수치(연장·승부차기)는 engine/config.js
+import { t } from '../i18n.js';
+
 export const CUP = {
   leaguePhase: {
     matches: 8, // 팀당 경기 수: 포트마다 2팀 (홈 1, 원정 1)
@@ -12,7 +14,14 @@ export const CUP = {
   },
   // 단계 순서와 이름
   stages: ['league', 'playoff', 'r16', 'qf', 'sf', 'final'],
-  stageNames: { league: '리그 페이즈', playoff: '플레이오프', r16: '16강', qf: '8강', sf: '4강', final: '결승' },
+  stageNames: {
+    get league() { return t('state.cup.stage.league'); },
+    get playoff() { return t('state.cup.stage.playoff'); },
+    get r16() { return t('state.cup.stage.r16'); },
+    get qf() { return t('state.cup.stage.qf'); },
+    get sf() { return t('state.cup.stage.sf'); },
+    get final() { return t('state.cup.stage.final'); },
+  },
   // 주중 경기 일정: 사용자 리그 진행률. 이 진행률에 해당하는 라운드를 마친 뒤 경기가 열린다
   calendar: [
     { stage: 'league', md: 1, at: 0.1 },

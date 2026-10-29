@@ -936,7 +936,9 @@ def main():
     seasons = sorted(m.stats_seasons)
     basis = {
         'generated': date.today().isoformat(),
-        'stats': f"{seasons[0]}-{str(seasons[0] + 1)[2:]}" + (f" ~ {seasons[-1]}-{str(seasons[-1] + 1)[2:]} 진행분" if len(seasons) > 1 else ''),
+        # 문구('진행분' 등)는 게임 사전이 붙인다 (statsPartial: 마지막 시즌은 진행 중)
+        'stats': f"{seasons[0]}-{str(seasons[0] + 1)[2:]}" + (f" ~ {seasons[-1]}-{str(seasons[-1] + 1)[2:]}" if len(seasons) > 1 else ''),
+        'statsPartial': len(seasons) > 1,
         'marketValues': TM.TM_SNAPSHOT if m.report.get('tmMatched') else None,
         'marketValueSource': 'Transfermarkt (transfermarkt-datasets, CC0)' if m.report.get('tmMatched') else None,
     }

@@ -4,8 +4,19 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateDataset } from '../js/data/schema.js';
+import { loadLang } from '../js/i18n.js';
 
 const DATA_DIR = join(dirname(fileURLToPath(import.meta.url)), '../data');
+// 오류 문장은 게임 사전(data/i18n/ko)에서 — Node의 fetch는 파일을 못 읽으므로 사전만 파일로 읽어 준다
+globalThis.fetch = async (url) => {
+  try {
+    const body = readFileSync(join(DATA_DIR, String(url).replace(/^data\//, '')), 'utf8');
+    return { ok: true, json: async () => JSON.parse(body) };
+  } catch {
+    return { ok: false, json: async () => ({}) };
+  }
+};
+await loadLang('ko');
 const readJson = (name) => JSON.parse(readFileSync(join(DATA_DIR, `${name}.json`), 'utf8'));
 
 const dataset = Object.fromEntries(['leagues', 'teams', 'nations', 'players'].map((name) => [name, readJson(name)]));

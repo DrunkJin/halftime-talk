@@ -1,0 +1,406 @@
+{
+  "schemaVersion": 1,
+  "note": "Inbox copy (js/state/inbox.js stores the kind and variables; the screen picks a line from here). Each kind has from (sender), title and body lists",
+  "kinds": {
+    "board.objective": {
+      "from": "Board",
+      "title": [
+        "Season objective: {goal}",
+        "The board has set out its expectations",
+        "Objective for the season — {goal}"
+      ],
+      "body": [
+        "The board's objective for this season is: {goal}. The players and supporters alike have high hopes.",
+        "{team}'s objective for the season has been set: {goal}. Meet it and the board's faith in you will only grow stronger.",
+        "The board expects the following this season: {goal}. Please bear in mind that confidence will rise and fall with results."
+      ]
+    },
+    "board.warn": {
+      "from": "Board",
+      "title": [
+        "Board concerns",
+        "A warning over results",
+        "A response is needed"
+      ],
+      "body": [
+        "Recent results are drifting away from the objective ({goal}). The board is monitoring the situation closely.",
+        "Discontent among the supporters is growing. The board wants to see a response over the next few matches.",
+        "Some members of the board now feel the objective is slipping out of reach."
+      ]
+    },
+    "board.ultimatum": {
+      "from": "Board",
+      "title": [
+        "Ultimatum",
+        "The board's patience has run out",
+        "Last chance"
+      ],
+      "body": [
+        "Further poor form will not be tolerated. The board will make its decision based on the coming results.",
+        "The board is seriously considering a change of manager. Results are needed immediately.",
+        "You are running out of chances. Give everything you have for the objective ({goal})."
+      ]
+    },
+    "board.praise": {
+      "from": "Board",
+      "title": [
+        "Board confidence",
+        "An excellent season so far",
+        "A note of thanks from the board"
+      ],
+      "body": [
+        "The board is extremely pleased with your work. Please keep it up.",
+        "Several board members have remarked how much they are enjoying watching {team} play.",
+        "This is beyond expectations. There is already talk of a new contract."
+      ]
+    },
+    "board.sacked": {
+      "from": "Board",
+      "title": [
+        "Notice of dismissal",
+        "Sacked",
+        "The board's decision"
+      ],
+      "body": [
+        "The board has decided to terminate your contract. Thank you for your efforts during your time here.",
+        "Results have fallen short of the objective. The club has decided to go in a new direction.",
+        "This was a difficult decision. We wish you the very best for the future."
+      ]
+    },
+    "board.welcome": {
+      "from": "Board",
+      "title": [
+        "Welcome to {club}",
+        "A fresh start",
+        "Welcome aboard"
+      ],
+      "body": [
+        "The {club} board has every faith in you. The players are waiting for your first training session.",
+        "New club, new challenge. The {club} supporters can't wait for your first match.",
+        "Thank you for taking charge of {club}. Let's build a good season together."
+      ]
+    },
+    "board.eval.exceeded": {
+      "from": "Board",
+      "title": [
+        "Season review: objective exceeded",
+        "A season beyond expectations",
+        "The board's season review"
+      ],
+      "body": [
+        "You went beyond the objective ({goal}) with a finish in position {position}. Board confidence +{delta} → {confidence}.",
+        "Nobody saw results like this coming. Final position: {position}. Confidence: {confidence}.",
+        "A superb season. We look forward to continuing together next year. (Confidence {confidence})"
+      ]
+    },
+    "board.eval.met": {
+      "from": "Board",
+      "title": [
+        "Season review: objective met",
+        "A promise kept",
+        "The board's season review"
+      ],
+      "body": [
+        "A finish in position {position} meets the objective ({goal}). Board confidence +{delta} → {confidence}.",
+        "The season went to plan. We hope to take another step forward next year. (Confidence {confidence})",
+        "Well done. The objective has been met. (Confidence {confidence})"
+      ]
+    },
+    "board.eval.missedSlightly": {
+      "from": "Board",
+      "title": [
+        "Season review: objective narrowly missed",
+        "A season of what-ifs",
+        "The board's season review"
+      ],
+      "body": [
+        "A finish in position {position} falls just short of the objective ({goal}). Board confidence {delta} → {confidence}.",
+        "The objective was missed by a whisker. Next season will be important. (Confidence {confidence})",
+        "Finishing in position {position} is a disappointing outcome. The board is watching. (Confidence {confidence})"
+      ]
+    },
+    "board.eval.missedBadly": {
+      "from": "Board",
+      "title": [
+        "Season review: objective failed",
+        "A disappointing season",
+        "The board's season review"
+      ],
+      "body": [
+        "A finish in position {position} is a long way from the objective ({goal}). Board confidence {delta} → {confidence}.",
+        "This has been a hard season to accept. Change is needed. (Confidence {confidence})",
+        "The board is taking this season's results very seriously. (Confidence {confidence})"
+      ]
+    },
+    "board.offer": {
+      "from": "Agent",
+      "title": [
+        "Job offer from {club}",
+        "A new offer has arrived",
+        "An approach from {league}"
+      ],
+      "body": [
+        "{club} of {league} would like you to take charge. You can accept on the end-of-season screen.",
+        "The {club} board has been following your progress closely and would like you to join them from next season.",
+        "{club} have been in touch. If you're interested, you can respond on the end-of-season screen."
+      ]
+    },
+    "player.unhappy": {
+      "from": "{name}",
+      "title": [
+        "Unhappy with playing time",
+        "{name} requests a meeting",
+        "{name} is looking downcast"
+      ],
+      "body": [
+        "Boss, I've barely been playing lately. I'd like to sit down and have a chat.",
+        "{name} has made his unhappiness with his playing time known. Select him in the squad screen to hold a talk.",
+        "{name} is frustrated, saying he gives everything in training but never gets a chance."
+      ]
+    },
+    "player.request": {
+      "from": "{name}",
+      "title": [
+        "{name} hands in transfer request",
+        "Formal transfer request",
+        "{name}'s camp makes their position clear"
+      ],
+      "body": [
+        "{name} has formally requested a transfer. Expect offers from other clubs to arrive more often.",
+        "Through his agent, {name} has made it known that he wants to leave the club.",
+        "{name}: I want to go somewhere I can play. I hope you'll understand."
+      ]
+    },
+    "player.promiseKept": {
+      "from": "{name}",
+      "title": [
+        "Thank you for keeping your word",
+        "{name} says thanks"
+      ],
+      "body": [
+        "Thanks for giving me the chance like you promised. I'll repay you on the pitch.",
+        "{name} is delighted that the promise of playing time has been kept."
+      ]
+    },
+    "player.promiseBroken": {
+      "from": "{name}",
+      "title": [
+        "A promise not kept",
+        "{name} is disappointed",
+        "Broken promise"
+      ],
+      "body": [
+        "You promised me. I'm disappointed.",
+        "{name} is deeply disappointed that the promise of playing time wasn't kept. The mood in the dressing room has dipped too.",
+        "Some of the players are starting to ask whether the manager's word can be trusted."
+      ]
+    },
+    "player.injury": {
+      "from": "Head Physio",
+      "title": [
+        "{name} injured (games out: {weeks})",
+        "Medical report: {name}",
+        "Injury news"
+      ],
+      "body": [
+        "{name} will be out with an injury ({injury}). Expected games out: around {weeks}.",
+        "Scans confirm the diagnosis for {name}: {injury}. Estimated games until his return: around {weeks}.",
+        "{name} was hurt during the match ({injury}). Expected games out: {weeks}."
+      ]
+    },
+    "player.trainingInjury": {
+      "from": "Head Physio",
+      "title": [
+        "Training injury: {name}",
+        "Medical report"
+      ],
+      "body": [
+        "{name} picked up a knock in training and will miss games (expected: {weeks}). You may want to review the training intensity.",
+        "{name} reported pain after an intense session. Expected games out: {weeks}."
+      ]
+    },
+    "player.training": {
+      "from": "Coaching Staff",
+      "title": [
+        "Weekly training report",
+        "Training progress",
+        "Coaching staff report"
+      ],
+      "body": [
+        "This week's training has brought improvements for players including {names} (attributes improved: {count}). Full details are on the training tab.",
+        "Real progress in training from {names}. (Attributes improved: {count})",
+        "Coaching staff: we're seeing development from {names}. (Attributes improved: {count})"
+      ]
+    },
+    "transfer.offer": {
+      "from": "Director of Football",
+      "title": [
+        "Offer for {name}: {club}",
+        "Bid received from {club}",
+        "Transfer offer"
+      ],
+      "body": [
+        "{club} have offered £{amount}M for {name}. You can respond under offers received on the transfers tab.",
+        "An offer has come in from {club}, who want {name}. The fee is £{amount}M.",
+        "Director of Football: {club} have bid £{amount}M for {name}. How do you want to proceed?"
+      ]
+    },
+    "transfer.done": {
+      "from": "League News",
+      "title": [
+        "Transfer completed: {name}",
+        "{to} sign {name}",
+        "League transfer news"
+      ],
+      "body": [
+        "{name} leaves {from} to join {to}.",
+        "{to} have brought in {name} from {from}.",
+        "Transfer news: {name} ({from} → {to})."
+      ]
+    },
+    "transfer.rumor": {
+      "from": "Transfer Rumours",
+      "title": [
+        "{club} interested in {name}",
+        "Rumour: {name}",
+        "Big clubs are watching"
+      ],
+      "body": [
+        "Word is that {club} are keeping tabs on {team}'s {name}.",
+        "According to local media, {club} are considering a move for {name}.",
+        "Talk is that {club} scouts were in the stands to watch {name}."
+      ]
+    },
+    "league.roundup": {
+      "from": "League News",
+      "title": [
+        "The state of play after round {round}",
+        "League round-up",
+        "Title race check-in"
+      ],
+      "body": [
+        "{leader} lead the way on {leaderPts} pts (gap to second: {gap} pts). We sit in position {position} with {points} pts.",
+        "Leaders: {leader} ({leaderPts} pts). We are in position {position} with {points} pts on the board.",
+        "Round {round} is done. {leader} are top, and we're in position {position}."
+      ]
+    },
+    "match.derby": {
+      "from": "Media",
+      "title": [
+        "Build-up: {rivalry}",
+        "{rival} manager goes on the offensive",
+        "{rivalry} preview"
+      ],
+      "body": [
+        "{rival} manager: This {rivalry} is ours. They're not ready for it.",
+        "The city is buzzing ahead of the {rivalry}. Confidence is high in the {rival} camp.",
+        "The {rival} manager talked our side down in his press conference. The players have heard every word."
+      ]
+    },
+    "player.scoutReport": {
+      "from": "Chief Scout",
+      "title": [
+        "Scout report: {name}",
+        "Assessment of {name}",
+        "Scout report — {verdict}"
+      ],
+      "body": [
+        "I've been to watch {name} in person. Verdict: {verdict}. His exact attributes are now visible.",
+        "The scouting team's conclusion on {name}: {verdict}. Check the player profile for the full attributes.",
+        "We've finished assessing {name}. Measured against our squad, the verdict is: {verdict}."
+      ]
+    },
+    "player.loanReport": {
+      "from": "Loan Manager",
+      "title": [
+        "Loan update: {name}",
+        "{name} thriving at {club}",
+        "News of {name} from {club}"
+      ],
+      "body": [
+        "{name} at {club} so far — appearances: {apps}, goals: {goals}. Regular football is clearly sharpening him up.",
+        "The {club} coaching staff are pleased with {name}. Since joining on loan — appearances: {apps}, goals: {goals}. The minutes are turning into real development.",
+        "{name}'s loan is going to plan. At {club} — appearances: {apps}, goals: {goals}. He'll come back a tougher player at the end of the season.",
+        "The reports from {club} are good. {name} has nailed down a starting place — appearances: {apps}, goals: {goals}."
+      ]
+    },
+    "player.loanBench": {
+      "from": "Loan Manager",
+      "title": [
+        "Loan update: {name}'s playing time",
+        "{name} short of chances at {club}",
+        "{name}'s loan isn't going as hoped"
+      ],
+      "body": [
+        "{name} has struggled for minutes at {club} — appearances: just {apps}. At this rate the loan won't do him much good. He returns at the end of the season.",
+        "{name} has slipped down the pecking order at {club}. Appearances since joining: {apps}. If he isn't playing, his development will stall.",
+        "The news on {name} isn't great. Appearances at {club}: only {apps}. We should choose his next loan destination more carefully."
+      ]
+    },
+    "match.digest": {
+      "from": "Assistant Manager",
+      "title": [
+        "Summary: rounds {from}–{to}",
+        "Round-up of rounds {from}–{to}",
+        "Auto-play summary (rounds {from}–{to})"
+      ],
+      "body": [
+        "Here's a summary of what happened while you were away.",
+        "I've pulled together everything that happened so you can see it at a glance.",
+        "I've put together the news you missed. Anything that needs a decision has been set aside separately."
+      ]
+    },
+    "transfer.freeAgency": {
+      "from": "Chief Scout",
+      "title": [
+        "Out-of-contract players looking for a new club: {count}",
+        "The free agent market is open",
+        "Clubs are circling the out-of-contract players"
+      ],
+      "body": [
+        "Players who didn't renew their contracts are now on the market. Several clubs are competing with signing-on fees. We can bid too, and the players will choose their destinations after the round {round} matches.",
+        "Other clubs are showing interest in the players released at the end of their contracts (total: {count}). Search with 'Free agents only' on the transfers screen and put in a signing-on fee. Decisions come after the round {round} matches.",
+        "Here are the free agents worth a look. There's no transfer fee, but the bidding on signing-on fees is heating up. Players weigh the fee alongside the club's reputation. Decisions after the round {round} matches."
+      ]
+    },
+    "transfer.faWon": {
+      "from": "Head of Recruitment",
+      "title": [
+        "{name} has chosen us",
+        "{name} signing secured",
+        "We've won the race for {name}"
+      ],
+      "body": [
+        "{name} has turned down other offers and signed with us. Signing-on fee: {bonus}. He joins up with the squad for training straight away.",
+        "His agent has just been on the phone. {name} has picked us. The signing-on fee is {bonus}.",
+        "The signing of {name} is confirmed. Signing-on fee: {bonus}. The competition was fierce, but in the end he came our way."
+      ]
+    },
+    "transfer.faLost": {
+      "from": "Head of Recruitment",
+      "title": [
+        "{name} heads to {club}",
+        "{name} signing falls through",
+        "{name} has chosen a different path"
+      ],
+      "body": [
+        "{name} has accepted the offer from {club}. Their proposal must have appealed more than ours.",
+        "Unfortunately {name} has signed for {club}. A bigger signing-on fee, or a bigger club name, might have made the difference.",
+        "{name}'s agent called to apologise. He's going to {club}."
+      ]
+    },
+    "transfer.faSettled": {
+      "from": "Chief Scout",
+      "title": [
+        "Free agent market wrap-up",
+        "Where the out-of-contract players went",
+        "The free agents have found new clubs"
+      ],
+      "body": [
+        "The bidding is over. Here are the notable moves.",
+        "The out-of-contract players have picked their destinations. These are the key moves.",
+        "The free agent market has closed. Here's how it played out."
+      ]
+    }
+  }
+}

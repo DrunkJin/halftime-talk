@@ -15,6 +15,7 @@
     {
       "id": "ucl",
       "name": "UEFA 챔피언스리그",
+      "nameEn": "UEFA Champions League",
       "shortName": "UCL",
       "level": 1,
       "teamIds": [
@@ -60,6 +61,7 @@
     {
       "id": "uel",
       "name": "UEFA 유로파리그",
+      "nameEn": "UEFA Europa League",
       "shortName": "UEL",
       "level": 2,
       "teamIds": [

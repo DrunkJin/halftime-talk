@@ -1,11 +1,17 @@
 // 포메이션. 엔진은 슬롯 포지션 배열(slots)만 보고, 피치 위 위치는 격자 칸(cells)으로 표현한다.
 // 선발 명단 배열의 i번째 선수가 slots[i] / cells[i]에 선다.
+import { t } from '../i18n.js';
+import { tx } from './text.js';
 
 // 격자: 열 0~4 (왼쪽 끝 → 오른쪽 끝), 행 0~5 (0 = GK, 1 = 수비 … 5 = 공격)
 export const GRID_COLUMNS = 5;
 export const GRID_ROWS = 6;
 export const GK_ROW = 0;
-export const ROW_NAMES = ['골키퍼', '수비', '수비형 미드필드', '미드필드', '공격형 미드필드', '공격'];
+// 행 이름 (문자열 배열 모양 그대로, 읽을 때 사전에서: engine.row.*)
+export const ROW_NAMES = [];
+['gk', 'defence', 'defensiveMidfield', 'midfield', 'attackingMidfield', 'attack'].forEach((key, i) =>
+  Object.defineProperty(ROW_NAMES, i, { get: () => t(`engine.row.${key}`), enumerable: true }),
+);
 
 // 칸 → 포지션. 측면 끝 칸은 풀백/윙어 계열, 안쪽 3칸은 중앙 포지션
 const ROW_POSITIONS = [
@@ -56,6 +62,6 @@ export function formationLabel(cells) {
 export function resolveSlots(formationOrSlots) {
   if (Array.isArray(formationOrSlots)) return formationOrSlots;
   const slots = FORMATIONS[formationOrSlots];
-  if (!slots) throw new Error(`알 수 없는 포메이션: ${formationOrSlots}`);
+  if (!slots) throw new Error(tx('engine.error.unknownFormation', { id: formationOrSlots }));
   return slots;
 }

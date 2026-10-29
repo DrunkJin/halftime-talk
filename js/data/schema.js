@@ -1,6 +1,8 @@
 // 데이터 스키마 정의와 검증.
 // 게임(브라우저)과 tools/(Node) 양쪽에서 import 하므로 DOM·Node API를 쓰지 않는다.
 // 스키마 설명은 docs/data-schema.md 참고.
+// 오류 문장은 사전(engine.schema.*)에서. 사전이 없는 Node에서는 키와 값이 그대로 나온다 (engine/text.js)
+import { tx } from '../engine/text.js';
 
 export const SCHEMA_VERSION = 2;
 
@@ -44,23 +46,23 @@ const isIntIn = (v, min, max) => Number.isInteger(v) && v >= min && v <= max;
 
 function checkFields(obj, allowed, path, err, optional = []) {
   for (const key of allowed) {
-    if (!(key in obj)) err(path, `필수 필드 '${key}' 없음`);
+    if (!(key in obj)) err(path, tx('engine.schema.missingField', { key }));
   }
   for (const key of Object.keys(obj)) {
-    if (!allowed.includes(key) && !optional.includes(key)) err(path, `허용되지 않은 필드 '${key}'`);
+    if (!allowed.includes(key) && !optional.includes(key)) err(path, tx('engine.schema.unknownField', { key }));
   }
 }
 
 function checkFileHeader(fileName, file, listKey, err) {
   if (!isObject(file)) {
-    err(fileName, '최상위 값이 객체가 아님');
+    err(fileName, tx('engine.schema.topNotObject'));
     return false;
   }
   if (file.schemaVersion !== SCHEMA_VERSION) {
-    err(fileName, `schemaVersion이 ${file.schemaVersion} (기대값 ${SCHEMA_VERSION})`);
+    err(fileName, tx('engine.schema.version', { got: String(file.schemaVersion), want: SCHEMA_VERSION }));
   }
   if (listKey && !Array.isArray(file[listKey])) {
-    err(fileName, `'${listKey}' 배열 없음`);
+    err(fileName, tx('engine.schema.noList', { key: listKey }));
     return false;
   }
   return true;
@@ -68,21 +70,21 @@ function checkFileHeader(fileName, file, listKey, err) {
 
 function validateLeague(league, path, teamById, leagueIds, err) {
   checkFields(league, LEAGUE_FIELDS, path, err, LEAGUE_OPTIONAL_FIELDS);
-  if (!TEAM_ID_RE.test(league.id ?? '')) err(`${path}.id`, '소문자·숫자·하이픈만 (예: k-league-1)');
-  if (!isText(league.name)) err(`${path}.name`, '빈 문자열');
-  if (!CODE3_RE.test(league.country ?? '')) err(`${path}.country`, '국가 코드는 대문자 3글자');
-  if (!isText(league.season)) err(`${path}.season`, '빈 문자열');
-  if (!isIntIn(league.level, 1, 5)) err(`${path}.level`, '1~5 정수 (1부 = 1)');
+  if (!TEAM_ID_RE.test(league.id ?? '')) err(`${path}.id`, tx('engine.schema.leagueId'));
+  if (!isText(league.name)) err(`${path}.name`, tx('engine.schema.empty'));
+  if (!CODE3_RE.test(league.country ?? '')) err(`${path}.country`, tx('engine.schema.countryCode'));
+  if (!isText(league.season)) err(`${path}.season`, tx('engine.schema.empty'));
+  if (!isIntIn(league.level, 1, 5)) err(`${path}.level`, tx('engine.schema.level'));
 
   if (!Array.isArray(league.teamIds) || league.teamIds.length < 2) {
-    err(`${path}.teamIds`, '팀이 2개 이상 필요');
+    err(`${path}.teamIds`, tx('engine.schema.minTeams'));
   } else {
     const seen = new Set();
     for (const id of league.teamIds) {
-      if (seen.has(id)) err(`${path}.teamIds`, `중복 팀 '${id}'`);
+      if (seen.has(id)) err(`${path}.teamIds`, tx('engine.schema.duplicateTeam', { id: String(id) }));
       const team = teamById.get(id);
-      if (!team) err(`${path}.teamIds`, `teams.json에 없는 팀 '${id}'`);
-      else if (team.leagueId !== league.id) err(`${path}.teamIds`, `'${id}'의 leagueId가 '${team.leagueId}'`);
+      if (!team) err(`${path}.teamIds`, tx('engine.schema.unknownTeam', { id: String(id) }));
+      else if (team.leagueId !== league.id) err(`${path}.teamIds`, tx('engine.schema.teamLeague', { id: String(id), leagueId: String(team.leagueId) }));
       seen.add(id);
     }
   }
@@ -91,78 +93,78 @@ function validateLeague(league, path, teamById, leagueIds, err) {
     const link = league[key];
     if (link === undefined) continue;
     if (!isObject(link) || !leagueIds.has(link.league) || !isIntIn(link.spots, 1, 10)) {
-      err(`${path}.${key}`, '{ league: 리그 id, spots: 1~10 }');
+      err(`${path}.${key}`, tx('engine.schema.link'));
     }
   }
 
   const rules = league.rules;
   if (!isObject(rules)) {
-    err(`${path}.rules`, '객체가 아님');
+    err(`${path}.rules`, tx('engine.schema.notObject'));
     return;
   }
-  if (!isIntIn(rules.rounds, 1, 4)) err(`${path}.rules.rounds`, '1~4 정수');
+  if (!isIntIn(rules.rounds, 1, 4)) err(`${path}.rules.rounds`, tx('engine.schema.rounds'));
   const pts = rules.points;
   if (!isObject(pts) || !['win', 'draw', 'loss'].every((k) => Number.isInteger(pts[k]))) {
-    err(`${path}.rules.points`, 'win/draw/loss 정수 필요');
+    err(`${path}.rules.points`, tx('engine.schema.points'));
   }
   if (!Array.isArray(rules.tiebreakers) || rules.tiebreakers.length === 0) {
-    err(`${path}.rules.tiebreakers`, '비어 있음');
+    err(`${path}.rules.tiebreakers`, tx('engine.schema.emptyList'));
   } else {
     for (const t of rules.tiebreakers) {
-      if (!TIEBREAKERS.includes(t)) err(`${path}.rules.tiebreakers`, `알 수 없는 기준 '${t}'`);
+      if (!TIEBREAKERS.includes(t)) err(`${path}.rules.tiebreakers`, tx('engine.schema.unknownTiebreaker', { value: String(t) }));
     }
   }
   const md = rules.matchday;
   if (!isObject(md) || !isIntIn(md.benchSize, 0, 15) || !isIntIn(md.maxSubstitutions, 0, md.benchSize)) {
-    err(`${path}.rules.matchday`, 'benchSize(0~15), maxSubstitutions(0~benchSize) 정수 필요');
+    err(`${path}.rules.matchday`, tx('engine.schema.matchday'));
   }
 }
 
 function validateTeam(team, path, err) {
   checkFields(team, TEAM_FIELDS, path, err, ['guest', 'country']);
   // 게스트 팀: 리그 없이 대륙 대회에만 나오는 팀 (leagueId null, guest true, country 국가 코드)
-  if (team.guest !== undefined && (team.guest !== true || team.leagueId !== null || !isText(team.country))) err(path, '게스트 팀은 guest: true, leagueId: null, country 필요');
-  if (!TEAM_ID_RE.test(team.id ?? '')) err(`${path}.id`, '소문자·숫자·하이픈만 (예: man-city)');
-  if (!isText(team.name)) err(`${path}.name`, '빈 문자열');
-  if (!isText(team.shortName)) err(`${path}.shortName`, '빈 문자열');
-  if (!TEAM_CODE_RE.test(team.code ?? '')) err(`${path}.code`, '영문 대문자·숫자 3글자');
+  if (team.guest !== undefined && (team.guest !== true || team.leagueId !== null || !isText(team.country))) err(path, tx('engine.schema.guest'));
+  if (!TEAM_ID_RE.test(team.id ?? '')) err(`${path}.id`, tx('engine.schema.teamId'));
+  if (!isText(team.name)) err(`${path}.name`, tx('engine.schema.empty'));
+  if (!isText(team.shortName)) err(`${path}.shortName`, tx('engine.schema.empty'));
+  if (!TEAM_CODE_RE.test(team.code ?? '')) err(`${path}.code`, tx('engine.schema.teamCode'));
   if (!isObject(team.colors) || !HEX_COLOR_RE.test(team.colors.primary) || !HEX_COLOR_RE.test(team.colors.secondary)) {
-    err(`${path}.colors`, 'primary/secondary 모두 #RRGGBB');
+    err(`${path}.colors`, tx('engine.schema.colors'));
   }
-  if (team.stadium !== null && !isText(team.stadium)) err(`${path}.stadium`, '문자열 또는 null');
+  if (team.stadium !== null && !isText(team.stadium)) err(`${path}.stadium`, tx('engine.schema.stadium'));
   if (team.logo !== null && !LOGO_FILE_RE.test(team.logo ?? '')) {
-    err(`${path}.logo`, 'null 또는 assets/logos/ 안의 파일명 (예: arsenal.png)');
+    err(`${path}.logo`, tx('engine.schema.logo'));
   }
 }
 
 function validatePlayer(p, path, ctx, err) {
   checkFields(p, PLAYER_FIELDS, path, err);
-  if (!ID_RE.test(p.id ?? '')) err(`${path}.id`, '영문·숫자·_·- 만');
-  if (!isText(p.name)) err(`${path}.name`, '빈 문자열');
-  if (!isIntIn(p.age, AGE_MIN, AGE_MAX)) err(`${path}.age`, `${AGE_MIN}~${AGE_MAX} 정수`);
-  if (!ctx.nationCodes.has(p.nationality)) err(`${path}.nationality`, `nations.json에 없는 코드 '${p.nationality}'`);
-  if (!POSITIONS.includes(p.position)) err(`${path}.position`, `알 수 없는 포지션 '${p.position}'`);
+  if (!ID_RE.test(p.id ?? '')) err(`${path}.id`, tx('engine.schema.playerId'));
+  if (!isText(p.name)) err(`${path}.name`, tx('engine.schema.empty'));
+  if (!isIntIn(p.age, AGE_MIN, AGE_MAX)) err(`${path}.age`, tx('engine.schema.intRange', { min: AGE_MIN, max: AGE_MAX }));
+  if (!ctx.nationCodes.has(p.nationality)) err(`${path}.nationality`, tx('engine.schema.unknownNation', { code: String(p.nationality) }));
+  if (!POSITIONS.includes(p.position)) err(`${path}.position`, tx('engine.schema.unknownPosition', { pos: String(p.position) }));
 
   if (!Array.isArray(p.altPositions)) {
-    err(`${path}.altPositions`, '배열이 아님 (없으면 [])');
+    err(`${path}.altPositions`, tx('engine.schema.altNotArray'));
   } else {
-    if (new Set(p.altPositions).size !== p.altPositions.length) err(`${path}.altPositions`, '중복');
+    if (new Set(p.altPositions).size !== p.altPositions.length) err(`${path}.altPositions`, tx('engine.schema.duplicate'));
     for (const pos of p.altPositions) {
-      if (!POSITIONS.includes(pos)) err(`${path}.altPositions`, `알 수 없는 포지션 '${pos}'`);
-      if (pos === p.position) err(`${path}.altPositions`, '주 포지션과 중복');
+      if (!POSITIONS.includes(pos)) err(`${path}.altPositions`, tx('engine.schema.unknownPosition', { pos: String(pos) }));
+      if (pos === p.position) err(`${path}.altPositions`, tx('engine.schema.altIsMain'));
     }
   }
 
-  if (p.teamId !== null && !ctx.teamIds.has(p.teamId)) err(`${path}.teamId`, `teams.json에 없는 팀 '${p.teamId}'`);
+  if (p.teamId !== null && !ctx.teamIds.has(p.teamId)) err(`${path}.teamId`, tx('engine.schema.unknownTeam', { id: String(p.teamId) }));
 
   if (!isObject(p.attributes)) {
-    err(`${path}.attributes`, '객체가 아님');
+    err(`${path}.attributes`, tx('engine.schema.notObject'));
     return;
   }
   checkFields(p.attributes, ATTRIBUTE_KEYS, `${path}.attributes`, err);
   for (const key of ATTRIBUTE_KEYS) {
     if (key in p.attributes && !isIntIn(p.attributes[key], ATTRIBUTE_MIN, ATTRIBUTE_MAX)) {
-      err(`${path}.attributes.${key}`, `${ATTRIBUTE_MIN}~${ATTRIBUTE_MAX} 정수`);
+      err(`${path}.attributes.${key}`, tx('engine.schema.intRange', { min: ATTRIBUTE_MIN, max: ATTRIBUTE_MAX }));
     }
   }
 }
@@ -179,9 +181,9 @@ export function validateDataset({ leagues, teams, nations, players }) {
   if (checkFileHeader('teams.json', teams, 'teams', err)) {
     teams.teams.forEach((t, i) => {
       const path = `teams[${i}]`;
-      if (!isObject(t)) return err(path, '객체가 아님');
+      if (!isObject(t)) return err(path, tx('engine.schema.notObject'));
       validateTeam(t, path, err);
-      if (teamIds.has(t.id)) err(`${path}.id`, `중복 '${t.id}'`);
+      if (teamIds.has(t.id)) err(`${path}.id`, tx('engine.schema.duplicateId', { id: String(t.id) }));
       teamIds.add(t.id);
       teamById.set(t.id, t);
     });
@@ -191,26 +193,26 @@ export function validateDataset({ leagues, teams, nations, players }) {
   if (checkFileHeader('nations.json', nations, 'nations', err)) {
     nations.nations.forEach((n, i) => {
       const path = `nations[${i}]`;
-      if (!isObject(n)) return err(path, '객체가 아님');
+      if (!isObject(n)) return err(path, tx('engine.schema.notObject'));
       checkFields(n, NATION_FIELDS, path, err);
-      if (!CODE3_RE.test(n.code ?? '')) err(`${path}.code`, '대문자 3글자');
-      if (!isText(n.name) || !isText(n.nameKo)) err(path, 'name/nameKo 빈 문자열');
-      if (nationCodes.has(n.code)) err(`${path}.code`, `중복 '${n.code}'`);
+      if (!CODE3_RE.test(n.code ?? '')) err(`${path}.code`, tx('engine.schema.code3'));
+      if (!isText(n.name) || !isText(n.nameKo)) err(path, tx('engine.schema.nationName'));
+      if (nationCodes.has(n.code)) err(`${path}.code`, tx('engine.schema.duplicateId', { id: String(n.code) }));
       nationCodes.add(n.code);
     });
   }
 
   const leagueList = checkFileHeader('leagues.json', leagues, 'leagues', err) ? leagues.leagues : [];
   const leagueIds = new Set(leagueList.map((l) => l?.id));
-  if (leagueIds.size !== leagueList.length) err('leagues.json', '리그 id 중복');
-  leagueList.forEach((l, i) => (isObject(l) ? validateLeague(l, `leagues[${i}]`, teamById, leagueIds, err) : err(`leagues[${i}]`, '객체가 아님')));
+  if (leagueIds.size !== leagueList.length) err('leagues.json', tx('engine.schema.duplicateLeagueId'));
+  leagueList.forEach((l, i) => (isObject(l) ? validateLeague(l, `leagues[${i}]`, teamById, leagueIds, err) : err(`leagues[${i}]`, tx('engine.schema.notObject'))));
   // 모든 팀은 정확히 한 리그에 속한다
   const inLeague = new Map();
   for (const l of leagueList) for (const id of l?.teamIds ?? []) inLeague.set(id, (inLeague.get(id) ?? 0) + 1);
   for (const t of teamById.values()) {
     if (t.guest) continue;
-    if (!leagueIds.has(t.leagueId)) err(`team '${t.id}'`, `leagues.json에 없는 리그 '${t.leagueId}'`);
-    else if (inLeague.get(t.id) !== 1) err(`team '${t.id}'`, `리그 teamIds에 ${inLeague.get(t.id) ?? 0}번 등장 (정확히 1번이어야 함)`);
+    if (!leagueIds.has(t.leagueId)) err(`team '${t.id}'`, tx('engine.schema.unknownLeague', { id: String(t.leagueId) }));
+    else if (inLeague.get(t.id) !== 1) err(`team '${t.id}'`, tx('engine.schema.teamInLeagues', { n: inLeague.get(t.id) ?? 0 }));
   }
 
   const squads = new Map([...teamIds].map((id) => [id, []]));
@@ -219,12 +221,12 @@ export function validateDataset({ leagues, teams, nations, players }) {
     const names = new Set(); // 같은 팀 안의 동명이인만 경고 (리그가 많아 다른 팀 동명이인은 흔함)
     players.players.forEach((p, i) => {
       const path = `players[${i}]`;
-      if (!isObject(p)) return err(path, '객체가 아님');
+      if (!isObject(p)) return err(path, tx('engine.schema.notObject'));
       validatePlayer(p, path, { teamIds, nationCodes }, err);
-      if (playerIds.has(p.id)) err(`${path}.id`, `중복 '${p.id}'`);
+      if (playerIds.has(p.id)) err(`${path}.id`, tx('engine.schema.duplicateId', { id: String(p.id) }));
       playerIds.add(p.id);
       const nameKey = `${p.teamId}|${p.name}`;
-      if (names.has(nameKey)) warn(`${path}.name`, `같은 팀 동명이인 '${p.name}'`);
+      if (names.has(nameKey)) warn(`${path}.name`, tx('engine.schema.sameName', { name: String(p.name) }));
       names.add(nameKey);
       squads.get(p.teamId)?.push(p);
     });
@@ -238,10 +240,10 @@ export function validateDataset({ leagues, teams, nations, players }) {
       if (!squad) continue;
       const gks = squad.filter((p) => p.position === 'GK').length;
       if (squad.length < 11 || gks === 0) {
-        err(`squad '${id}'`, `${squad.length}명, GK ${gks}명 — 최소 11명·GK 1명 필요`);
+        err(`squad '${id}'`, tx('engine.schema.squadMin', { n: squad.length, gks }));
       } else {
-        if (squad.length < 11 + benchSize) warn(`squad '${id}'`, `${squad.length}명 — 교체 명단(${benchSize}명)을 다 못 채움`);
-        if (gks < 2) warn(`squad '${id}'`, `GK ${gks}명`);
+        if (squad.length < 11 + benchSize) warn(`squad '${id}'`, tx('engine.schema.squadBench', { n: squad.length, bench: benchSize }));
+        if (gks < 2) warn(`squad '${id}'`, tx('engine.schema.fewGk', { gks }));
       }
     }
   }

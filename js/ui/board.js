@@ -1,5 +1,6 @@
 // 이사회 화면 조각: 경기 전 목표·신뢰도 줄, 경질 통보와 제의 구단, 시즌 끝 평가와 제안 (state/board.js)
-import { boardOf, acceptOffer, confidenceLabel } from '../state/board.js';
+import { t } from '../i18n.js';
+import { boardOf, acceptOffer, confidenceLabel, objectiveLabel } from '../state/board.js';
 import { BOARD } from '../state/boardConfig.js';
 import { squadOf } from '../state/game.js';
 import { topElevenOvr, formatMoney } from '../market/value.js';
@@ -12,7 +13,7 @@ import { showToast } from './motion.js';
 
 const textVars = (ctx, extra = {}) => {
   const b = boardOf(ctx.game);
-  return { team: ctx.dataset.teamById.get(ctx.game.teamId)?.shortName ?? '', target: b.objective?.target ?? '', goal: b.objective?.label ?? '', ...extra };
+  return { team: ctx.dataset.teamById.get(ctx.game.teamId)?.shortName ?? '', target: b.objective?.target ?? '', goal: objectiveLabel(b.objective), ...extra };
 };
 
 // 경기 전 한 줄: 이사회 목표 · 신뢰도 막대
@@ -22,10 +23,10 @@ export function boardLine(ctx) {
   const c = Math.round(b.confidence);
   return h(
     'div',
-    { class: 'board-line', title: '이사회 신뢰도: 리그 순위와 목표의 차이, 경기 결과로 오르내립니다. 바닥나면 경질됩니다.' },
-    h('span', { class: 'muted' }, '이사회 목표 '),
-    h('b', {}, b.objective.label),
-    h('span', { class: 'muted' }, ' · 신뢰도 '),
+    { class: 'board-line', title: t('board.line.title') },
+    h('span', { class: 'muted' }, t('board.line.goal')),
+    h('b', {}, objectiveLabel(b.objective)),
+    h('span', { class: 'muted' }, t('board.line.confidence')),
     h('span', { class: `board-bar lv-${c >= 60 ? 'good' : c >= 35 ? 'ok' : 'bad'}`, style: { '--v': `${c}%` } }),
     h('b', {}, ` ${confidenceLabel(ctx.game)}`),
   );
@@ -38,8 +39,8 @@ function offerCards(ctx, offers, lines, onPick, buttonLabel) {
     'div',
     { class: 'offer-cards' },
     offers.map((id, i) => {
-      const t = dataset.teamById.get(id);
-      const league = dataset.leagueById.get(t.leagueId);
+      const team = dataset.teamById.get(id);
+      const league = dataset.leagueById.get(team.leagueId);
       const ranked = league.teamIds.map((x) => [x, topElevenOvr(squadOf(dataset, game, x))]).sort((a, b) => b[1] - a[1]);
       const rank = ranked.findIndex(([x]) => x === id) + 1;
       const pick = h('button', { class: 'btn primary small', type: 'button' }, buttonLabel);
@@ -47,9 +48,9 @@ function offerCards(ctx, offers, lines, onPick, buttonLabel) {
       return h(
         'div',
         { class: 'offer-card' },
-        h('div', { class: 'offer-head' }, teamBadge(t, 40), h('div', {}, h('b', {}, t.name), h('span', { class: 'muted' }, `${league.name} · 전력 ${rank}위 / ${league.teamIds.length}팀`))),
-        h('p', { class: 'offer-letter' }, pickTalk(lines, `${game.seed}:${id}:${i}`, { club: t.shortName, league: league.name })),
-        h('p', { class: 'muted small-note' }, `잔고 ${formatMoney(game.budgets?.[id] ?? 0)}`),
+        h('div', { class: 'offer-head' }, teamBadge(team, 40), h('div', {}, h('b', {}, team.name), h('span', { class: 'muted' }, t('board.offer.strength', { league: league.name, rank, n: league.teamIds.length })))),
+        h('p', { class: 'offer-letter' }, pickTalk(lines, `${game.seed}:${id}:${i}`, { club: team.shortName, league: league.name })),
+        h('p', { class: 'muted small-note' }, t('board.offer.balance', { money: formatMoney(game.budgets?.[id] ?? 0) })),
         pick,
       );
     }),
@@ -57,16 +58,18 @@ function offerCards(ctx, offers, lines, onPick, buttonLabel) {
 }
 
 // 경질 이유 (사실만: 목표·순위·최근 흐름). 숫자 신뢰도는 보여 주지 않는다
+// 목표는 goalKind·target으로 지금 언어에 맞게 (예전 세이브는 저장된 goal 문자열)
 function sackReasonText(reason) {
   if (!reason) return '';
-  const parts = [`목표는 ${reason.goal}였지만 ${reason.position}위에 머물렀습니다.`];
+  const goal = objectiveLabel({ kind: reason.goalKind, target: reason.target, label: reason.goal });
+  const parts = [t('board.sack.reason', { goal, position: reason.position })];
   const r = reason.recent;
-  if (r?.played >= 4) parts.push(r.w <= 1 ? `최근 ${r.played}경기 ${r.w}승 ${r.d}무 ${r.l}패, 흐름을 되돌리지 못했습니다.` : `최근 ${r.played}경기 ${r.w}승 ${r.d}무 ${r.l}패였지만 이사회의 인내심이 먼저 바닥났습니다.`);
+  if (r?.played >= 4) parts.push(t(r.w <= 1 ? 'board.sack.recentBad' : 'board.sack.recentPatience', { n: r.played, w: r.w, d: r.d, l: r.l }));
   return parts.join(' ');
 }
 
 // 신뢰 변화 → 말
-const trustShift = (d) => (d >= 15 ? '이사회의 신뢰가 크게 깊어졌습니다' : d > 0 ? '이사회의 신뢰가 조금 깊어졌습니다' : d <= -25 ? '이사회의 신뢰가 크게 흔들렸습니다' : d < 0 ? '이사회의 신뢰가 조금 줄었습니다' : '이사회의 신뢰는 그대로입니다');
+const trustShift = (d) => t(`board.trust.${d >= 15 ? 'upBig' : d > 0 ? 'up' : d <= -25 ? 'downBig' : d < 0 ? 'down' : 'same'}`);
 
 // 시즌 중 경질: 경기 화면 대신 보여준다. done() → 부임 뒤 화면 다시 그리기
 export function sackedPanel(ctx, done) {
@@ -76,28 +79,28 @@ export function sackedPanel(ctx, done) {
     const offers = b.sacked?.offers ?? [];
     host.replaceChildren(
       panel(
-        '이사회 통보',
+        t('board.sacked.panel'),
         h(
           'div',
           { class: 'board-letter' },
-          h('h2', {}, '경질'),
-          h('p', {}, pickTalk(text?.sacked, `${ctx.game.seed}:${ctx.game.seasonIndex}:${ctx.game.round}`, textVars(ctx)) || '이사회가 계약 해지를 결정했습니다.'),
-          h('p', { class: 'board-reason' }, sackReasonText(b.sacked?.reason) || `목표 ${b.objective?.label ?? ''}`),
+          h('h2', {}, t('board.sacked.title')),
+          h('p', {}, pickTalk(text?.sacked, `${ctx.game.seed}:${ctx.game.seasonIndex}:${ctx.game.round}`, textVars(ctx)) || t('board.sacked.fallback')),
+          h('p', { class: 'board-reason' }, sackReasonText(b.sacked?.reason) || t('board.sacked.goal', { goal: objectiveLabel(b.objective) })),
         ),
       ),
       panel(
-        '새 구단의 제의',
+        t('board.sacked.offersPanel'),
         h(
           'div',
           { class: 'board-offers' },
-          h('p', { class: 'muted' }, offers.length ? '아래 구단 중 한 곳을 골라 지휘봉을 잡으면 이번 시즌을 이어 갑니다.' : '제의가 없습니다.'),
+          h('p', { class: 'muted' }, t(offers.length ? 'board.sacked.offersHint' : 'board.sacked.noOffers')),
           offerCards(ctx, offers, text?.sackedOffer, (id) => {
             acceptOffer(ctx.dataset, ctx.game, id);
             ctx.persist();
             ctx.rebuildTopbar?.();
-            showToast(pickTalk(text?.welcome, `${ctx.game.seed}:${id}`, { club: ctx.dataset.teamById.get(id).shortName }) || '새 구단에 부임했습니다');
+            showToast(pickTalk(text?.welcome, `${ctx.game.seed}:${id}`, { club: ctx.dataset.teamById.get(id).shortName }) || t('board.sacked.welcomeFallback'));
             done();
-          }, '이 구단으로'),
+          }, t('board.offer.take')),
         ),
       ),
     );
@@ -113,18 +116,18 @@ export function seasonBoardPanel(ctx, redraw) {
     const b = boardOf(game);
     const e = b.seasonEval;
     if (!e && !b.sacked && !b.pendingMove) return;
-    const vars = textVars(ctx, { position: e?.position ?? '', target: e?.target ?? '', goal: e?.label ?? '' });
+    const vars = textVars(ctx, { position: e?.position ?? '', target: e?.target ?? '', goal: e ? objectiveLabel(e) : '' });
     const parts = [];
     if (e) {
-      const verdictLabel = { exceeded: '목표 초과 달성', met: '목표 달성', missedSlightly: '목표에 조금 못 미침', missedBadly: '목표 실패' }[e.verdict];
-      parts.push(h('div', { class: 'board-eval' }, h('b', {}, verdictLabel), h('span', { class: 'muted' }, ` · 목표 ${e.label} → ${e.position}위 · ${b.sacked ? '이사회가 결단을 내렸습니다' : trustShift(e.delta)}`)));
+      const verdictLabel = t(`board.verdict.${e.verdict}`);
+      parts.push(h('div', { class: 'board-eval' }, h('b', {}, verdictLabel), h('span', { class: 'muted' }, t('board.eval.line', { goal: objectiveLabel(e), position: e.position, shift: b.sacked ? t('board.eval.sacked') : trustShift(e.delta) }))));
       // 경질이면 '다음 시즌 기대' 같은 평가 문장은 빼고 통보만 (메시지가 서로 어긋나지 않게)
       if (!b.sacked) parts.push(h('p', { class: 'board-quote' }, pickTalk(text?.season?.[e.verdict], `${game.seed}:${game.seasonIndex}:eval`, vars)));
       else if (b.sacked.reason) parts.push(h('p', { class: 'board-reason' }, sackReasonText(b.sacked.reason)));
     }
     const pending = b.pendingMove ? dataset.teamById.get(b.pendingMove.teamId) : null;
     if (pending) {
-      const cancel = h('button', { class: 'btn small ghost', type: 'button' }, '취소');
+      const cancel = h('button', { class: 'btn small ghost', type: 'button' }, t('board.pending.cancel'));
       cancel.addEventListener('click', () => {
         b.offers = b.offers ?? [b.pendingMove.teamId];
         if (b.pendingMove.reason === 'sacked') b.sacked = { midSeason: false, offers: b.lastOffers ?? [b.pendingMove.teamId] };
@@ -132,15 +135,15 @@ export function seasonBoardPanel(ctx, redraw) {
         ctx.persist();
         redraw();
       });
-      parts.push(h('div', { class: 'board-pending' }, teamBadge(pending, 28), h('span', {}, `다음 시즌부터 `, h('b', {}, pending.name), ' 지휘봉을 잡습니다.'), cancel));
+      parts.push(h('div', { class: 'board-pending' }, teamBadge(pending, 28), h('span', {}, t('board.pending.before'), h('b', {}, pending.name), t('board.pending.after')), cancel));
     } else if (b.sacked) {
       parts.push(
         h('p', { class: 'board-quote bad' }, pickTalk(text?.sacked, `${game.seed}:${game.seasonIndex}:end`, vars)),
-        h('p', { class: 'muted' }, '경질됐습니다. 다음 시즌에 지휘할 구단을 골라야 이어 갈 수 있습니다.'),
-        offerCards(ctx, b.sacked.offers, text?.sackedOffer, (id) => pick(id), '이 구단으로'),
+        h('p', { class: 'muted' }, t('board.season.sackedHint')),
+        offerCards(ctx, b.sacked.offers, text?.sackedOffer, (id) => pick(id), t('board.offer.take')),
       );
     } else if (b.offers?.length) {
-      parts.push(h('h3', {}, '다른 구단의 제안'), offerCards(ctx, b.offers, text?.offer, (id) => pick(id), '수락 (다음 시즌부터)'), h('p', { class: 'muted small-note' }, '수락하지 않으면 지금 구단에 남습니다.'));
+      parts.push(h('h3', {}, t('board.season.offersTitle')), offerCards(ctx, b.offers, text?.offer, (id) => pick(id), t('board.season.accept')), h('p', { class: 'muted small-note' }, t('board.season.stayHint')));
     }
     function pick(id) {
       b.lastOffers = b.sacked?.offers ?? b.offers;
@@ -148,7 +151,7 @@ export function seasonBoardPanel(ctx, redraw) {
       ctx.persist();
       redraw();
     }
-    host.replaceChildren(panel('이사회', h('div', { class: 'board-season' }, parts)));
+    host.replaceChildren(panel(t('board.season.panel'), h('div', { class: 'board-season' }, parts)));
   });
   return host;
 }

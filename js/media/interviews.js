@@ -1,5 +1,6 @@
 // 감독 인터뷰·팀 토크: 경기 상황을 판정해 질문과 답변 선택지를 만들고, 고른 답의 효과를 반영한다.
 // 문구는 data/interviews/*.json, 라이벌은 data/rivalries.json, 효과 수치는 engine/config.js(MORALE)
+import { contentBase, t, tList, getLang } from '../i18n.js';
 import { MORALE } from '../engine/config.js';
 import { createRng } from '../engine/rng.js';
 import { adjustBoost } from '../engine/match.js';
@@ -7,7 +8,7 @@ import { computeTeamRatings, conditionFactor, overall } from '../engine/ratings.
 import { computeTable } from '../league/table.js';
 import { availabilityOf, fixturesOf, isSeasonOver, leagueOf, squadOf } from '../state/game.js';
 import { addMorale, recentResults } from '../state/morale.js';
-import { compOf, firstLegOf, leaguePhaseTable, stageName } from '../competitions/cups.js';
+import { compOf, firstLegOf, leaguePhaseTable, stageName, compName } from '../competitions/cups.js';
 import { SITUATIONS, STANCES } from './situations.js';
 
 const C = MORALE.context;
@@ -19,12 +20,13 @@ let mediaPromise = null;
 // { pre, post, talk, rivalries: Map('a|b' → rivalry) }. 실패하면 null (인터뷰 없이 진행)
 export function loadMedia(baseUrl = 'data/') {
   mediaPromise ??= (async () => {
-    const get = async (path) => {
-      const res = await fetch(`${baseUrl}${path}`);
+    // 문구는 언어별 경로, 라이벌 표(이름은 name/nameEn)는 공통
+    const get = async (path, base = contentBase(baseUrl)) => {
+      const res = await fetch(`${base}${path}`);
       if (!res.ok) throw new Error(`${path}: ${res.status}`);
       return res.json();
     };
-    const [pre, post, talk, rivalries] = await Promise.all([get('interviews/pre.json'), get('interviews/post.json'), get('interviews/talk.json'), get('rivalries.json')]);
+    const [pre, post, talk, rivalries] = await Promise.all([get('interviews/pre.json'), get('interviews/post.json'), get('interviews/talk.json'), get('rivalries.json', baseUrl)]);
     const map = new Map();
     for (const r of rivalries.rivalries) map.set(pairKey(...r.teams), r);
     return { pre, post, talk, rivalries: map };
@@ -38,6 +40,8 @@ export function loadMedia(baseUrl = 'data/') {
 
 const pairKey = (a, b) => (a < b ? `${a}|${b}` : `${b}|${a}`);
 export const rivalryBetween = (media, a, b) => media?.rivalries.get(pairKey(a, b)) ?? null;
+// 더비 이름: 한국어는 name, 다른 언어는 nameEn (data/rivalries.json)
+const rivalryName = (rivalry) => (rivalry ? (getLang() === 'ko' ? rivalry.name : rivalry.nameEn ?? rivalry.name) : undefined);
 const derbyMult = (rivalry) => MORALE.derbyMultiplier[rivalry?.intensity ?? 0];
 
 // ── 공통 ──────────────────────────────────────────────
@@ -106,12 +110,12 @@ export function preInterview(media, dataset, game, fixture, input) {
   const vars = {
     team: team.shortName,
     opponent: opp.shortName,
-    venue: mySide === 'home' ? '홈' : '원정',
+    venue: t(mySide === 'home' ? 'media.venue.home' : 'media.venue.away'),
     player: bestPlayer(input[mySide].lineup)?.name,
     oppPlayer: bestPlayer(input[oppSide].lineup)?.name,
     rank,
     oppRank,
-    derby: rivalry?.name,
+    derby: rivalryName(rivalry),
   };
   const matched = new Set(['generic']);
   if (game.round === game.totalRounds) matched.add('finalRound');
@@ -198,15 +202,15 @@ export function postInterview(media, dataset, game, fixture, result, gap) {
 
   // 골 순서대로 스코어 흐름: 앞선 적·뒤진 적이 있는지, 마지막 골
   let m = 0;
-  let t = 0;
+  let o = 0; // 상대 골 (t는 다국어 함수라 쓰지 않는다)
   let led = false;
   let trailed = false;
   let decisive = null; // 마지막으로 스코어 관계(앞섬/동점/뒤짐)를 바꾼 골
   for (const g of [...result.goals].sort((a, b) => a.minute - b.minute)) {
     if (g.team === mySide) m++;
-    else t++;
-    if (m > t) led = true;
-    if (m < t) trailed = true;
+    else o++;
+    if (m > o) led = true;
+    if (m < o) trailed = true;
     decisive = g;
   }
   const scorers = new Map();
@@ -219,11 +223,11 @@ export function postInterview(media, dataset, game, fixture, result, gap) {
   const vars = {
     team: dataset.teamById.get(game.teamId).shortName,
     opponent: dataset.teamById.get(oppId).shortName,
-    venue: mySide === 'home' ? '홈' : '원정',
+    venue: t(mySide === 'home' ? 'media.venue.home' : 'media.venue.away'),
     score: scoreText(mine, theirs),
     scorer: topScorer,
     minute: decisive?.minute,
-    derby: rivalry?.name,
+    derby: rivalryName(rivalry),
     rank,
     streak: runLength(recent, (o) => o === (outcome === 'win' ? 'W' : 'L')),
   };
@@ -301,7 +305,7 @@ export function teamTalk(media, dataset, game, state, mySide, gap) {
     opponent: dataset.teamById.get(oppId).shortName,
     score: scoreText(mine, theirs),
     player: bestPlayer(state.teams[mySide].lineup)?.name,
-    derby: rivalry?.name,
+    derby: rivalryName(rivalry),
   };
   const matched = new Set();
   const red = state.cards.find((c) => c.team === mySide && c.type === 'red');
@@ -326,11 +330,8 @@ export function teamTalk(media, dataset, game, state, mySide, gap) {
   return { ...build(media, 'talk', chooseSituation('talk', matched), vars), group, mult: derbyMult(rivalry) };
 }
 
-const REACTIONS = {
-  good: ['선수들의 눈빛이 달라졌습니다.', '라커룸에 기합 소리가 울립니다.', '선수들이 서로 어깨를 두드리며 나갑니다.'],
-  neutral: ['선수들이 고개를 끄덕입니다.', '선수들이 조용히 축구화 끈을 다시 묶습니다.', '별다른 반응 없이 후반을 준비합니다.'],
-  bad: ['몇몇 선수가 불만스러운 표정입니다.', '분위기가 오히려 가라앉았습니다.', '선수들이 서로 눈을 피합니다.'],
-};
+// 팀 토크 뒤 선수단 반응 (사전 media.reaction.{good|neutral|bad} 문장 목록)
+const reactionsOf = (tone) => tList(`media.reaction.${tone}`);
 
 // 팀 토크 효과: 후반 레이팅 보정 + 사기 보정. → { delta, morale, tone, reaction }
 export function answerTalk(game, state, mySide, talk, stance) {
@@ -341,7 +342,7 @@ export function answerTalk(game, state, mySide, talk, stance) {
   const morale = delta * T.moraleScale * talk.mult;
   addMorale(game, morale);
   const tone = delta >= T.goodAbove ? 'good' : delta < 0 ? 'bad' : 'neutral';
-  return { delta, morale, tone, reaction: pick(REACTIONS[tone]) };
+  return { delta, morale, tone, reaction: pick(reactionsOf(tone)) ?? '' };
 }
 
 // ── 대륙 대회 ─────────────────────────────────────────
@@ -349,7 +350,7 @@ export function answerTalk(game, state, mySide, talk, stance) {
 function cupContext(game, fixture, mySide) {
   const comp = compOf(game, fixture);
   const oppSide = mySide === 'home' ? 'away' : 'home';
-  const ctx = { comp, competition: comp.name.replace(/^UEFA\s*/, ''), stage: stageName(fixture.stage), matchday: fixture.md };
+  const ctx = { comp, competition: compName(comp).replace(/^UEFA\s*/, ''), stage: stageName(fixture.stage), matchday: fixture.md };
   if (fixture.stage === 'league') {
     const row = leaguePhaseTable(comp).find((r) => r.teamId === fixture[`${mySide}Id`]);
     ctx.cupRank = row?.position;
@@ -373,7 +374,7 @@ export function preCupInterview(media, dataset, game, fixture, input) {
   const vars = {
     team: dataset.teamById.get(game.teamId).shortName,
     opponent: dataset.teamById.get(fixture[`${oppSide}Id`]).shortName,
-    venue: mySide === 'home' ? '홈' : '원정',
+    venue: t(mySide === 'home' ? 'media.venue.home' : 'media.venue.away'),
     player: bestPlayer(input[mySide].lineup)?.name,
     oppPlayer: bestPlayer(input[oppSide].lineup)?.name,
     ...c,
@@ -402,7 +403,7 @@ export function postCupInterview(media, dataset, game, fixture, result, gap) {
   const vars = {
     team: dataset.teamById.get(game.teamId).shortName,
     opponent: dataset.teamById.get(fixture[`${oppSide}Id`]).shortName,
-    venue: mySide === 'home' ? '홈' : '원정',
+    venue: t(mySide === 'home' ? 'media.venue.home' : 'media.venue.away'),
     score: scoreText(mine, theirs),
     scorer,
     ...c,

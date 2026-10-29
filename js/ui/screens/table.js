@@ -4,12 +4,15 @@ import { currentTeamId, fixturesOf, leagueTotalRounds } from '../../state/game.j
 import { teamBadge } from '../badge.js';
 import { panel, segmented, tooltipGroup } from '../components.js';
 import { h } from '../dom.js';
+import { t } from '../../i18n.js';
 
-const SIDE_TABS = [
-  { id: 'goals', label: '득점' },
-  { id: 'assists', label: '도움' },
-  { id: 'results', label: '지난 라운드' },
-];
+// 탭 라벨은 렌더 때 사전에서
+const SIDE_TABS = ['goals', 'assists', 'results'].map((id) => ({
+  id,
+  get label() {
+    return t(`table.side.${id}`);
+  },
+}));
 let sideTab = 'goals';
 let viewLeagueId = null; // 보고 있는 리그 (기본: 내 리그)
 let viewKey = null; // 다른 게임·새 시즌이면 내 리그로 되돌린다
@@ -43,17 +46,17 @@ function standings(ctx, league) {
       h(
         'tr',
         {},
-        th('#', '순위'),
-        h('th', {}, '팀'),
-        th('경기', '경기 수'),
-        th('승', '승'),
-        th('무', '무승부'),
-        th('패', '패'),
-        th('득', '득점'),
-        th('실', '실점'),
-        th('득실', '득실차'),
-        th('승점', '승점'),
-        th('최근', '최근 5경기 (오른쪽이 최신)', ''),
+        th('#', t('table.tip.pos')),
+        h('th', {}, t('table.th.team')),
+        th(t('table.th.played'), t('table.tip.played')),
+        th(t('table.th.won'), t('table.tip.won')),
+        th(t('table.th.drawn'), t('table.tip.drawn')),
+        th(t('table.th.lost'), t('table.tip.lost')),
+        th(t('table.th.gf'), t('table.tip.gf')),
+        th(t('table.th.ga'), t('table.tip.ga')),
+        th(t('table.th.gd'), t('table.tip.gd')),
+        th(t('table.th.pts'), t('table.tip.pts')),
+        th(t('table.th.form'), t('table.tip.form'), ''),
       ),
     ),
     h(
@@ -74,7 +77,7 @@ function standings(ctx, league) {
           h('td', { class: 'num' }, r.goalsAgainst),
           h('td', { class: 'num' }, r.goalDifference > 0 ? `+${r.goalDifference}` : r.goalDifference),
           h('td', { class: 'num pts' }, r.points),
-          h('td', {}, h('span', { class: 'form' }, r.form.map((o) => h('span', { class: `form-${o}` }, { W: '승', D: '무', L: '패' }[o])))),
+          h('td', {}, h('span', { class: 'form' }, r.form.map((o) => h('span', { class: `form-${o}` }, t(`table.form.${o}`))))),
         );
       }),
     ),
@@ -90,11 +93,11 @@ function leaders(ctx, key, league) {
     .filter((x) => x.player && x[key] > 0 && inLeague.has(currentTeamId(dataset, game, x.player.id)))
     .sort((a, b) => b[key] - a[key] || b[key === 'goals' ? 'assists' : 'goals'] - a[key === 'goals' ? 'assists' : 'goals'])
     .slice(0, 15);
-  if (list.length === 0) return h('p', { class: 'empty muted' }, '아직 기록이 없습니다.');
+  if (list.length === 0) return h('p', { class: 'empty muted' }, t('table.leaders.empty'));
   return h(
     'table',
     { class: 'data compact' },
-    h('thead', {}, h('tr', {}, h('th', { class: 'num' }, '#'), h('th', {}, '선수'), h('th', {}, '팀'), h('th', { class: 'num' }, key === 'goals' ? '골' : '도움'))),
+    h('thead', {}, h('tr', {}, h('th', { class: 'num' }, '#'), h('th', {}, t('table.th.player')), h('th', {}, t('table.th.team')), h('th', { class: 'num' }, key === 'goals' ? t('table.th.goals') : t('table.th.assists')))),
     h(
       'tbody',
       {},
@@ -107,7 +110,7 @@ function leaders(ctx, key, league) {
           { class: teamId === game.teamId ? 'is-mine' : '' },
           h('td', { class: 'num muted' }, i + 1),
           h('td', {}, x.player.name),
-          h('td', { class: 'team-cell' }, team ? [teamBadge(team, 16), h('span', {}, team.code)] : h('span', { class: 'muted' }, '무소속')),
+          h('td', { class: 'team-cell' }, team ? [teamBadge(team, 16), h('span', {}, team.code)] : h('span', { class: 'muted' }, t('table.freeAgent'))),
           h('td', { class: 'num pts' }, x[key]),
         );
       }),
@@ -119,11 +122,11 @@ function lastRound(ctx, league) {
   const { dataset, game } = ctx;
   const round = game.leagueRounds[league.id];
   const fixtures = fixturesOf(game, league.id).filter((f) => f.round === round && f.result);
-  if (fixtures.length === 0) return h('p', { class: 'empty muted' }, '아직 치른 라운드가 없습니다.');
+  if (fixtures.length === 0) return h('p', { class: 'empty muted' }, t('table.results.empty'));
   return h(
     'div',
     {},
-    h('p', { class: 'sub-head muted' }, `라운드 ${round}`),
+    h('p', { class: 'sub-head muted' }, t('table.results.round', { round })),
     h(
       'table',
       { class: 'data compact fixtures' },
@@ -167,8 +170,8 @@ export function render(ctx) {
     // 리그 선택: 모든 리그가 함께 진행되므로 다른 리그 순위도 볼 수 있다
     const select = h(
       'select',
-      { class: 'select', 'aria-label': '리그' },
-      dataset.leagues.map((l) => h('option', { value: l.id, selected: l.id === viewLeagueId || null }, `${l.name}${l.id === game.leagueId ? ' (내 리그)' : ''}`)),
+      { class: 'select', 'aria-label': t('table.leagueSelect') },
+      dataset.leagues.map((l) => h('option', { value: l.id, selected: l.id === viewLeagueId || null }, l.id === game.leagueId ? t('table.myLeague', { name: l.name }) : l.name)),
     );
     select.addEventListener('change', () => {
       viewLeagueId = select.value;
@@ -178,14 +181,14 @@ export function render(ctx) {
     const legend = h(
       'div',
       { class: 'legend muted' },
-      league.promotion ? h('span', { class: 'lg zone-ucl' }, '승격') : league.level === 1 ? h('span', { class: 'lg zone-ucl' }, '상위권') : null,
-      league.level === 1 && !league.relegation ? h('span', { class: 'lg zone-uel' }, '5위') : null,
-      league.relegation || league.level === 1 ? h('span', { class: 'lg zone-rel' }, '강등') : null,
+      league.promotion ? h('span', { class: 'lg zone-ucl' }, t('table.legend.promotion')) : league.level === 1 ? h('span', { class: 'lg zone-ucl' }, t('table.legend.top')) : null,
+      league.level === 1 && !league.relegation ? h('span', { class: 'lg zone-uel' }, t('table.legend.fifth')) : null,
+      league.relegation || league.level === 1 ? h('span', { class: 'lg zone-rel' }, t('table.legend.relegation')) : null,
     );
     const done = game.leagueRounds[league.id];
     host.replaceChildren(
       panel(`${league.name} ${league.season}`, h('div', {}, standings(ctx, league), legend), {
-        actions: h('div', { class: 'head-actions' }, select, h('span', { class: 'muted' }, `${done}/${leagueTotalRounds(game, league.id)} 라운드 완료`)),
+        actions: h('div', { class: 'head-actions' }, select, h('span', { class: 'muted' }, t('table.roundsDone', { done, total: leagueTotalRounds(game, league.id) }))),
       }),
       panel(null, h('div', {}, h('div', { class: 'side-tabs' }, tabs.el), sideBody), { className: 'side-panel' }),
     );

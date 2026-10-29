@@ -7,6 +7,7 @@ import { worldDataset } from '../state/world.js';
 import { teamBadge } from './badge.js';
 import { openConfirm, segmented } from './components.js';
 import { h } from './dom.js';
+import { t } from '../i18n.js';
 import { showToast, swapPanel } from './motion.js';
 import * as careerScreen from './screens/career.js';
 import * as cupsScreen from './screens/cups.js';
@@ -23,17 +24,13 @@ import * as transfersScreen from './screens/transfers.js';
 
 // career: 감독 커리어 엔딩 (상단 탭 없이 시즌 종료·기록 화면에서 연다)
 const SCREENS = { inbox: inboxScreen, career: careerScreen, select: teamSelectScreen, squad: squadScreen, match: matchScreen, schedule: scheduleScreen, training: trainingScreen, table: tableScreen, cups: cupsScreen, transfers: transfersScreen, finance: financeScreen, history: historyScreen };
-const NAV = [
-  { id: 'squad', label: '스쿼드' },
-  { id: 'match', label: '경기' },
-  { id: 'schedule', label: '일정' },
-  { id: 'training', label: '훈련' },
-  { id: 'table', label: '순위표' },
-  { id: 'cups', label: '대륙 대회' },
-  { id: 'transfers', label: '이적' },
-  { id: 'finance', label: '재정' },
-  { id: 'history', label: '기록' },
-];
+// 탭 라벨은 사전이 로드된 뒤 읽히도록 getter
+const NAV = ['squad', 'match', 'schedule', 'training', 'table', 'cups', 'transfers', 'finance', 'history'].map((id) => ({
+  id,
+  get label() {
+    return t(`app.nav.${id}`);
+  },
+}));
 const SAVE_DELAY = 400;
 
 // 저장된 게임이 지금 데이터·버전과 맞는지
@@ -87,7 +84,7 @@ export function createApp(root, dataset, savedSlots = []) {
       } catch (err) {
         // 진행 실패: 화면이 조용히 멈추지 않게 알리고, 호출한 쪽은 결과를 반영하지 않는다 (같은 버튼으로 다시 시도)
         console.error(label, err);
-        showToast(`${label} 중 오류가 났습니다. 다시 시도해 주세요.`, { tone: 'bad', duration: 5000 });
+        showToast(t('app.busy.failed', { label }), { tone: 'bad', duration: 5000 });
         throw err;
       } finally {
         overlay.classList.remove('is-open');
@@ -105,7 +102,7 @@ export function createApp(root, dataset, savedSlots = []) {
       saveTimer = null;
       saveGame(game).catch((err) => {
         console.warn('저장 실패', err);
-        showToast('저장하지 못했습니다 (브라우저 저장소를 확인하세요)', { tone: 'warn' });
+        showToast(t('app.save.failed'), { tone: 'warn' });
       });
     }, SAVE_DELAY);
   }
@@ -133,7 +130,7 @@ export function createApp(root, dataset, savedSlots = []) {
     const brand = h('div', { class: 'brand' }, h('span', { class: 'brand-mark' }), h('span', {}, 'HALFTIME', h('b', {}, ' TALK')));
     if (!ctx.game) {
       nav = null;
-      topbar.replaceChildren(brand, h('span', { class: 'topbar-meta muted' }, `${dataset.leagues.length}개 리그 · ${dataset.allTeams.length}팀`));
+      topbar.replaceChildren(brand, h('span', { class: 'topbar-meta muted' }, t('app.topbar.worldSize', { leagues: dataset.leagues.length, teams: dataset.allTeams.length })));
       return;
     }
     const team = dataset.teamById.get(ctx.game.teamId);
@@ -141,14 +138,14 @@ export function createApp(root, dataset, savedSlots = []) {
     budgetLabel = h('span', { class: 'budget num' });
     nav = segmented(NAV, current && current !== 'select' ? current : 'squad', (id) => navigate(id));
     // 받은 편지함 (읽지 않은 수)
-    inboxBtn = h('button', { class: 'btn ghost small inbox-btn', type: 'button' }, '편지함', h('span', { class: 'inbox-count' }));
+    inboxBtn = h('button', { class: 'btn ghost small inbox-btn', type: 'button' }, t('app.topbar.inbox'), h('span', { class: 'inbox-count' }));
     inboxBtn.addEventListener('click', () => navigate('inbox'));
-    const toSelect = h('button', { class: 'btn ghost small', type: 'button' }, '팀 선택');
+    const toSelect = h('button', { class: 'btn ghost small', type: 'button' }, t('app.topbar.toSelect'));
     toSelect.addEventListener('click', () =>
       openConfirm({
-        title: '팀 선택 화면으로 갈까요?',
-        body: `지금 게임은 슬롯 ${ctx.game.slot}에 저장됩니다. 팀 선택 화면에서 이어하거나 새 게임을 시작할 수 있습니다.`,
-        confirmLabel: '이동',
+        title: t('app.leave.title'),
+        body: t('app.leave.body', { slot: ctx.game.slot }),
+        confirmLabel: t('app.leave.confirm'),
         onConfirm: leaveToSelect,
       }),
     );
@@ -175,13 +172,14 @@ export function createApp(root, dataset, savedSlots = []) {
     if (!roundLabel || !ctx.game) return;
     const g = ctx.game;
     const league = leagueOf(ctx.dataset, g);
-    const season = g.years > 1 ? ` · 시즌 ${g.seasonIndex}/${g.years}` : '';
-    roundLabel.textContent = `${league.name} ${g.season}${season} · ${isSeasonOver(g) ? '시즌 종료' : `라운드 ${g.round}/${g.totalRounds}`}`;
+    const season = g.years > 1 ? t('app.topbar.seasonOf', { i: g.seasonIndex, n: g.years }) : '';
+    const progress = isSeasonOver(g) ? t('app.topbar.seasonOver') : t('app.topbar.round', { r: g.round, n: g.totalRounds });
+    roundLabel.textContent = t('app.topbar.status', { league: league.name, year: g.season, season, progress });
     budgetLabel.textContent = formatMoney(g.budgets[g.teamId]);
     const unread = unreadCount(g);
     if (inboxBtn) {
       inboxBtn.querySelector('.inbox-count').textContent = unread ? String(unread) : '';
-      inboxBtn.setAttribute('aria-label', unread ? `편지함, 읽지 않은 소식 ${unread}개` : '편지함');
+      inboxBtn.setAttribute('aria-label', unread ? t('app.topbar.inboxUnread', { n: unread }) : t('app.topbar.inbox'));
     }
   }
 

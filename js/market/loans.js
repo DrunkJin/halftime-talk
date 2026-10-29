@@ -4,6 +4,7 @@
 // 임대 간 선수의 출전 수는 그대로 성장(newSeason.js)에 반영된다 → 어린 선수를 뛰게 하려면 임대.
 import { overall } from '../engine/ratings.js';
 import { createRng } from '../engine/rng.js';
+import { t } from '../i18n.js';
 import { availabilityOf, currentTeamId, loanOf, squadOf } from '../state/game.js';
 import { RULES } from '../state/rules.js';
 import { LOAN, MARKET } from './config.js';
@@ -25,10 +26,10 @@ function xiFloor(dataset, game, teamId) {
   const ovrs = squadOf(dataset, game, teamId).map(overall).sort((a, b) => b - a);
   return ovrs[Math.min(10, ovrs.length - 1)] ?? 0;
 }
-// 예상 역할: 주전 / 로테이션 / 백업
+// 예상 역할: 주전 / 로테이션 / 백업 (화면에 바로 보이는 라벨)
 export function expectedRole(dataset, game, teamId, p) {
   const r = squadOf(dataset, game, teamId).filter((q) => q.id !== p.id && overall(q) > overall(p)).length + 1;
-  return r <= 11 ? '주전' : r <= 16 ? '로테이션' : '백업';
+  return t(`market.role.${r <= 11 ? 'starter' : r <= 16 ? 'rotation' : 'backup'}`);
 }
 
 const isYoung = (p) => p.age <= LOAN.youngAge;
@@ -51,20 +52,20 @@ export function loanInTerms(dataset, game, p) {
   const role = expectedRole(dataset, game, game.teamId, p);
   const terms = { ok: false, fee, wageShare, wage, role };
   const fail = (reason) => ({ ...terms, reason });
-  if (!windowStatus(game).open) return fail('이적시장이 닫혀 있습니다.');
-  if (!from) return fail('무소속 선수는 바로 영입할 수 있습니다.');
-  if (from === game.teamId) return fail('이미 우리 팀 선수입니다.');
-  if (dataset.isGuest(from)) return fail('대륙 대회 전용 팀 선수는 데려올 수 없습니다.');
-  if (loanOf(game, p.id)) return fail('이미 임대 중인 선수입니다.');
-  if (!availabilityOf(game, p.id).available) return fail('부상·징계 중인 선수는 임대할 수 없습니다.');
-  if (!isLoanable(dataset, game, p, from)) return fail(`${dataset.teamById.get(from).shortName}의 주축 선수라 임대를 내주지 않습니다.`);
-  if (overall(p) < xiFloor(dataset, game, game.teamId) - LOAN.playGap) return fail('우리 팀에서는 뛸 자리가 없어 보인다며 선수가 거절했습니다.');
-  if (loansIn(game).length >= LOAN.maxIn) return fail(`임대 선수는 동시에 ${LOAN.maxIn}명까지입니다.`);
-  if (squadOf(dataset, game, game.teamId).length >= RULES.squadMax) return fail(`스쿼드가 가득 찼습니다 (최대 ${RULES.squadMax}명).`);
-  if (squadOf(dataset, game, from).length <= RULES.squadMin) return fail(`${dataset.teamById.get(from).shortName}: 스쿼드 인원이 부족해 보낼 수 없습니다.`);
-  if (fee > game.budgets[game.teamId]) return fail('잔고가 부족합니다.');
+  if (!windowStatus(game).open) return fail(t('market.err.windowClosed'));
+  if (!from) return fail(t('market.loan.err.freeAgent'));
+  if (from === game.teamId) return fail(t('market.err.alreadyOurs'));
+  if (dataset.isGuest(from)) return fail(t('market.loan.err.guest'));
+  if (loanOf(game, p.id)) return fail(t('market.loan.err.alreadyLoaned'));
+  if (!availabilityOf(game, p.id).available) return fail(t('market.loan.err.unavailableIn'));
+  if (!isLoanable(dataset, game, p, from)) return fail(t('market.loan.err.keyPlayer', { club: dataset.teamById.get(from).shortName }));
+  if (overall(p) < xiFloor(dataset, game, game.teamId) - LOAN.playGap) return fail(t('market.loan.err.noPlace'));
+  if (loansIn(game).length >= LOAN.maxIn) return fail(t('market.loan.err.maxIn', { n: LOAN.maxIn }));
+  if (squadOf(dataset, game, game.teamId).length >= RULES.squadMax) return fail(t('market.err.squadFull', { n: RULES.squadMax }));
+  if (squadOf(dataset, game, from).length <= RULES.squadMin) return fail(t('market.loan.err.lenderShort', { club: dataset.teamById.get(from).shortName }));
+  if (fee > game.budgets[game.teamId]) return fail(t('market.err.noFunds'));
   const room = wageRoom(dataset, game, game.teamId);
-  if (wage * wageShare > room) return fail(`주급 한도 초과: 부담할 주급 ${formatWage(Math.round(wage * wageShare))}, 남은 한도 ${formatWage(Math.max(0, room))}`);
+  if (wage * wageShare > room) return fail(t('market.loan.err.wageCap', { wage: formatWage(Math.round(wage * wageShare)), room: formatWage(Math.max(0, room)) }));
   return { ...terms, ok: true };
 }
 
@@ -78,21 +79,21 @@ function startLoan(dataset, game, p, from, to, fee, wageShare) {
 // 임대 영입 → { ok, message }
 export function loanIn(dataset, game, playerId) {
   const p = dataset.playerById.get(playerId);
-  const t = loanInTerms(dataset, game, p);
-  if (!t.ok) return { ok: false, message: t.reason };
+  const terms = loanInTerms(dataset, game, p);
+  if (!terms.ok) return { ok: false, message: terms.reason };
   const from = currentTeamId(dataset, game, p.id);
-  startLoan(dataset, game, p, from, game.teamId, t.fee, t.wageShare);
-  return { ok: true, message: `${p.name} 임대 영입 (${dataset.teamById.get(from).shortName}, 시즌 끝까지 · 주급 ${Math.round(t.wageShare * 100)}% 부담)` };
+  startLoan(dataset, game, p, from, game.teamId, terms.fee, terms.wageShare);
+  return { ok: true, message: t('market.loan.ok.in', { name: p.name, club: dataset.teamById.get(from).shortName, pct: Math.round(terms.wageShare * 100) }) };
 }
 
 // 우리 선수 임대 보내기가 가능한지 → 안 되면 이유, 되면 null
 export function loanOutBlock(dataset, game, p) {
   const loan = loanOf(game, p.id);
-  if (loan) return loan.to === game.teamId ? '임대 온 선수는 다시 보낼 수 없습니다.' : '이미 임대 중입니다.';
-  if (!windowStatus(game).open) return '이적시장이 닫혀 있습니다.';
-  if (!availabilityOf(game, p.id).available) return '부상·징계 중인 선수는 보낼 수 없습니다.';
-  if (loansOut(game).length >= LOAN.maxOut) return `임대는 동시에 ${LOAN.maxOut}명까지 보낼 수 있습니다.`;
-  if (squadOf(dataset, game, game.teamId).length <= RULES.squadMin) return `스쿼드 최소 인원은 ${RULES.squadMin}명입니다.`;
+  if (loan) return t(loan.to === game.teamId ? 'market.loan.err.reloan' : 'market.loan.err.alreadyOut');
+  if (!windowStatus(game).open) return t('market.err.windowClosed');
+  if (!availabilityOf(game, p.id).available) return t('market.loan.err.unavailableOut');
+  if (loansOut(game).length >= LOAN.maxOut) return t('market.loan.err.maxOut', { n: LOAN.maxOut });
+  if (squadOf(dataset, game, game.teamId).length <= RULES.squadMin) return t('market.err.squadMin', { n: RULES.squadMin });
   return null;
 }
 
@@ -128,9 +129,9 @@ export function loanOut(dataset, game, playerId, offer) {
   const p = dataset.playerById.get(playerId);
   const block = loanOutBlock(dataset, game, p);
   if (block) return { ok: false, message: block };
-  if (squadOf(dataset, game, offer.teamId).length >= RULES.squadMax) return { ok: false, message: '상대 구단 스쿼드가 가득 찼습니다.' };
+  if (squadOf(dataset, game, offer.teamId).length >= RULES.squadMax) return { ok: false, message: t('market.loan.err.borrowerFull') };
   startLoan(dataset, game, p, game.teamId, offer.teamId, 0, offer.wageShare);
-  return { ok: true, message: `${p.name} 임대 (${dataset.teamById.get(offer.teamId).shortName}, 시즌 끝까지)` };
+  return { ok: true, message: t('market.loan.ok.out', { name: p.name, club: dataset.teamById.get(offer.teamId).shortName }) };
 }
 
 // 시즌 넘기기: 모든 임대 선수를 원소속으로 → 우리 팀으로 돌아온 선수 이름 목록

@@ -1,16 +1,18 @@
 // 이사회: 시즌 목표·신뢰도·경질·이직 제안 수치. 문구는 data/board.json
+import { t } from '../i18n.js';
+
 export const BOARD = {
   start: 60, // 처음 신뢰도 (새 구단 부임도 같다)
   // 목표 순위 = 시즌 전 전력 순위 + slack (강등권 위로는 내려가지 않게)
   slack: 1,
   defaultRelegationSpots: 3,
-  // 목표 이름 (목표 순위 / 리그 크기 기준)
+  // 목표 이름 (목표 순위 / 리그 크기 기준). label은 {target} 자리가 있는 틀 (state/board.js objectiveLabel)
   labels: [
-    { maxTarget: 1, kind: 'title', label: '리그 우승' },
-    { maxShare: 0.2, kind: 'top', label: '{target}위 이내 (상위권)' },
-    { maxShare: 0.5, kind: 'upper', label: '{target}위 이내 (중상위권)' },
-    { maxShare: 0.75, kind: 'mid', label: '{target}위 이내 (중위권)' },
-    { maxShare: 1, kind: 'survive', label: '잔류 ({target}위 이내)' },
+    { maxTarget: 1, kind: 'title', get label() { return t('state.board.goal.title'); } },
+    { maxShare: 0.2, kind: 'top', get label() { return t('state.board.goal.top'); } },
+    { maxShare: 0.5, kind: 'upper', get label() { return t('state.board.goal.upper'); } },
+    { maxShare: 0.75, kind: 'mid', get label() { return t('state.board.goal.mid'); } },
+    { maxShare: 1, kind: 'survive', get label() { return t('state.board.goal.survive'); } },
   ],
 
   // 라운드마다: 신뢰도 += (목표 - 현재 순위) / 리그 크기 × positionWeight × 진행률 + 경기 결과
@@ -52,3 +54,10 @@ export const BOARD = {
     sameCountryWeight: 3, // 같은 나라 구단이 먼저 연락한다
   },
 };
+
+// 목표 이름: 저장된 label 대신 kind·target으로 지금 언어에 맞게 (kind가 없는 예전 값은 저장된 label)
+export function objectiveLabel(objective) {
+  if (!objective) return '';
+  if (objective.kind && BOARD.labels.some((l) => l.kind === objective.kind)) return t(`state.board.goal.${objective.kind}`, { target: objective.target });
+  return objective.label ?? '';
+}

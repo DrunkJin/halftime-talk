@@ -1,5 +1,6 @@
 // 팀 사기: 최근 경기 흐름 + 사용자 팀은 인터뷰·팀 토크 보정. 수치는 engine/config.js(MORALE)
 import { MORALE } from '../engine/config.js';
+import { t } from '../i18n.js';
 import { fixturesOf } from './game.js';
 import { teamMoodPenalty } from './squadMood.js';
 
@@ -43,11 +44,11 @@ export function moraleOf(dataset, game, teamId) {
 export const moraleBoost = (morale) => ((morale - MORALE.neutral) / MORALE.neutral) * MORALE.maxBoost;
 
 export function moraleLabel(morale) {
-  if (morale >= 80) return '최고';
-  if (morale >= 62) return '좋음';
-  if (morale >= 40) return '보통';
-  if (morale >= 22) return '나쁨';
-  return '최악';
+  if (morale >= 80) return t('state.morale.superb');
+  if (morale >= 62) return t('state.morale.good');
+  if (morale >= 40) return t('state.morale.okay');
+  if (morale >= 22) return t('state.morale.poor');
+  return t('state.morale.abysmal');
 }
 
 export function addMorale(game, delta) {

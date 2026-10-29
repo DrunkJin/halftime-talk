@@ -1,0 +1,16 @@
+{
+  "tactics.kind.mentality": "Mentality",
+  "tactics.kind.pressing": "Pressing",
+  "tactics.kind.style": "Attack style",
+  "tactics.hint.mentality.veryDefensive": "Sit very deep and hold on. You'll concede far less, but there's almost no attacking threat.",
+  "tactics.hint.mentality.defensive": "Weighted towards defence. Useful when the underdog faces a stronger side.",
+  "tactics.hint.mentality.balanced": "Strikes a balance between attack and defence.",
+  "tactics.hint.mentality.attacking": "More players join the attack. Expect more goals at both ends.",
+  "tactics.hint.mentality.veryAttacking": "Throw everything forward for a goal. Leaves big gaps in behind.",
+  "tactics.hint.pressing.low": "Drop off and close the space. Saves energy and cards, but you'll see less of the ball.",
+  "tactics.hint.pressing.normal": "Press as usual.",
+  "tactics.hint.pressing.high": "Win the ball high up the pitch. More clear-cut chances, but players tire faster and pick up more cards.",
+  "tactics.hint.style.short": "Keep the ball with short passing and work quality chances. Fewer shots overall.",
+  "tactics.hint.style.mixed": "Mix it up depending on the situation.",
+  "tactics.hint.style.direct": "Get it forward quickly. More shots, but you'll give up possession."
+}

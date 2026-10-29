@@ -2,6 +2,7 @@
 // 압박·멘탈리티는 상대마다 바꿔도 숙련도에 영향이 없다. 수치는 engine/config.js FAMILIARITY
 import { FAMILIARITY, TACTICS } from '../engine/config.js';
 import { formationLabel } from '../engine/formations.js';
+import { t } from '../i18n.js';
 
 // 숙련도 기준: 포메이션 + 공격 방식
 export const systemKey = (game, tactics = game.tactics) => `${formationLabel(game.formation.cells)}|${tactics?.style ?? TACTICS.defaults.style}`;
@@ -22,7 +23,7 @@ export function familiarityBoost(value) {
 }
 
 // 숙련도 단계 (화면에는 숫자 대신 이 말). 경기로 닿는 수준(AI 팀과 같음)이 '손에 익음'
-export const familiarityWord = (v) => (v < 0.45 ? '낯섦' : v < FAMILIARITY.aiLevel - 0.001 ? '익히는 중' : v < 0.95 ? '손에 익음' : '몸에 뱀');
+export const familiarityWord = (v) => t(`state.familiarity.${v < 0.45 ? 'new' : v < FAMILIARITY.aiLevel - 0.001 ? 'learning' : v < 0.95 ? 'familiar' : 'fluid'}`);
 
 // 사용자 팀이 경기를 치른 뒤: 쓴 체계는 오르고, 나머지는 조금씩 잊는다
 export function trainFamiliarity(game) {

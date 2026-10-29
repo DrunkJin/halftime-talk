@@ -3,6 +3,7 @@
 // game.scouting = { known: { [선수 id]: 시즌 }, assignments: [{ id, readyRound, season }] }
 import { overall } from '../engine/ratings.js';
 import { createRng } from '../engine/rng.js';
+import { t } from '../i18n.js';
 import { currentTeamId, squadOf } from './game.js';
 import { scoutedPotential } from './newSeason.js';
 
@@ -60,7 +61,12 @@ export function scoutVerdict(dataset, game, p) {
   if (pot && pot.high >= avg) return 'future';
   return 'below';
 }
-export const VERDICT_LABELS = { starter: '즉시 주전감', rotation: '로테이션 보강', future: '미래 자원 (잠재력)', below: '우리 수준에 못 미침' };
+export const VERDICT_LABELS = {
+  get starter() { return t('state.verdict.starter'); },
+  get rotation() { return t('state.verdict.rotation'); },
+  get future() { return t('state.verdict.future'); },
+  get below() { return t('state.verdict.below'); },
+};
 
 // 라운드 진행 뒤: 다 된 스카우트 보고서 → [{ id, name, verdict }]
 export function processScouting(dataset, game) {

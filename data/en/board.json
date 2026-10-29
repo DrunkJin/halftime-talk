@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "note": "Board messages (js/state/board.js, shown on the match tab and season end screen). Placeholders: {team} our team, {target} target position, {position} league position, {club} club making the offer, {league} league",
+  "objective": {
+    "title": ["The board's objective this season is to win the league. No other outcome will be considered.", "We are title contenders. The supporters and the board are both waiting for silverware.", "This squad is capable of finishing on top. The board expects the title."],
+    "top": ["This season's objective is a top-{target} finish. We expect you to compete at the top end of the table.", "Finish in the top {target} and give us a shot at European football.", "The board expects the club to finish inside the top {target}."],
+    "upper": ["The objective is a top-{target} finish. We hope this will be the season the club takes a step up.", "The board expects the season to end inside the top {target}.", "Aim for the upper half of the table — a top-{target} finish."],
+    "mid": ["This season's objective is a top-{target} finish. We are looking for a stable campaign.", "A finish inside the top {target} will be enough.", "There is no need to overreach, but please make sure we finish in the top {target}."],
+    "survive": ["The realistic objective is survival. Keep us in the league with a finish inside the top {target}.", "This season is all about survival. Relegation must be avoided at all costs.", "Top {target}, and safety — that is the board's only demand."]
+  },
+  "praise": [
+    "The board is extremely pleased with your achievements.",
+    "Please carry on as you are. The board has complete faith in you.",
+    "Several board members have remarked how much they are enjoying watching {team} play.",
+    "This season has surpassed expectations. There is already talk of a new contract."
+  ],
+  "warn": [
+    "The board is concerned by recent results. A response is required.",
+    "There are voices on the board suggesting the objective ({goal}) is looking out of reach.",
+    "Results are not coming. The board is watching the situation closely.",
+    "Discontent among the supporters is growing. The next few matches will be important."
+  ],
+  "ultimatum": [
+    "The board's patience has reached its limit. You do not have many chances left.",
+    "Further poor form will not be tolerated. Results are needed immediately.",
+    "The board will have no choice but to make a decision based on the coming results.",
+    "The board is seriously considering a change of manager."
+  ],
+  "sacked": [
+    "The board has decided to terminate your contract with immediate effect. Thank you for your efforts during your time here.",
+    "This was a difficult decision. The club has decided to go in a new direction.",
+    "Results have fallen short of the objective. We thank you for your hard work, but this is where we part ways.",
+    "The board has concluded that change is needed. We wish you the very best for the future."
+  ],
+  "season": {
+    "exceeded": ["This season went far beyond expectations. The board is deeply grateful to you.", "We went beyond the objective ({goal}) with a finish in position {position}. The board is delighted.", "Nobody foresaw results like these. We look forward to continuing together next season."],
+    "met": ["The objective has been met. The board has full confidence in you.", "A finish in position {position} fulfils the objective we agreed ({goal}). Well done.", "The season went to plan. We hope to take another step forward next season."],
+    "missedSlightly": ["We fell just short of the objective ({goal}). The board expects improvement next season.", "Finishing in position {position} is a disappointing outcome. The board is watching.", "The objective was missed by a whisker. Next season will be important."],
+    "missedBadly": ["A finish in position {position} is a long way from the objective ({goal}). The board is disappointed.", "This has been a hard season to accept. Change is needed.", "The board is taking this season's results very seriously."]
+  },
+  "offer": [
+    "{club} would like to speak with you.",
+    "{club} have been in touch — they want you as their new manager.",
+    "{club} of {league} would like you to take charge.",
+    "The {club} board has been following your progress closely. A formal offer has arrived."
+  ],
+  "sackedOffer": [
+    "{club} have reached out to you. Will you take on a new challenge?",
+    "{club} got in touch after hearing of your dismissal.",
+    "{club} are offering you the chance to rebuild your reputation."
+  ],
+  "welcome": [
+    "Welcome to {club}. The board has every faith in you.",
+    "A fresh start. The {club} players are waiting for you.",
+    "The {club} supporters are looking forward to their new manager's first match."
+  ]
+}

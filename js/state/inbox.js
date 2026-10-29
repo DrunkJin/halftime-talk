@@ -1,18 +1,27 @@
 // 받은 편지함: 이사회·선수·이적·리그 소식. 상태에는 종류(kind)와 변수만 남기고 문장은 data/news.json에서 고른다
 // game.inbox = [{ id, kind, vars, season, round, read, important }] (최신 먼저, 최대 MAX개)
+// vars에는 이름·숫자 같은 데이터만 (언어에 따라 바뀌는 라벨은 media/newsText.js renderNews가 채운다):
+//   goalKind·goalTarget → {goal}, verdictKey → {verdict}, injuryKey → {injury}, 무소속은 null
+//   lines(결산 등의 줄 목록)는 { key, vars } 배열 — 화면이 t(key, vars)로 그린다 (예전 세이브는 문자열)
 import { createRng } from '../engine/rng.js';
+import { t } from '../i18n.js';
 import { overall } from '../engine/ratings.js';
 import { computeTable } from '../league/table.js';
 import { topElevenOvr } from '../market/value.js';
 import { currentTeamId, fixturesOf, squadOf } from './game.js';
-import { VERDICT_LABELS } from './scouting.js';
 
 const RUMOR_CHANCE = 0.22; // 라운드마다 이적설이 하나 나올 확률
 const BIG_LEAGUES = ['epl', 'laliga', 'serie-a', 'bundesliga', 'ligue-1'];
 
 const MAX = 150;
 // 종류 → 분류 (화면 필터)
-export const NEWS_GROUPS = { board: '이사회', player: '선수', transfer: '이적', league: '리그', match: '경기' };
+export const NEWS_GROUPS = {
+  get board() { return t('state.newsGroup.board'); },
+  get player() { return t('state.newsGroup.player'); },
+  get transfer() { return t('state.newsGroup.transfer'); },
+  get league() { return t('state.newsGroup.league'); },
+  get match() { return t('state.newsGroup.match'); },
+};
 export const groupOf = (kind) => kind.split('.')[0];
 
 let seq = 0;
@@ -36,17 +45,18 @@ export function weeklyNews(dataset, game, week, userFixture, userResult) {
   const me = team(game.teamId);
 
   // 이사회
-  for (const e of week.board ?? []) pushNews(game, `board.${e.kind}`, { team: me, goal: game.board?.objective?.label ?? '' }, { important: e.kind !== 'praise' });
+  const objective = game.board?.objective;
+  for (const e of week.board ?? []) pushNews(game, `board.${e.kind}`, { team: me, goalKind: objective?.kind ?? null, goalTarget: objective?.target ?? null }, { important: e.kind !== 'praise' });
   // 선수 기분
   for (const e of week.moods ?? []) pushNews(game, `player.${e.kind}`, { name: e.name, id: e.id }, { important: e.kind === 'request' || e.kind === 'promiseBroken' });
   // 스카우트 보고서
-  for (const r of week.scouting ?? []) pushNews(game, 'player.scoutReport', { name: r.name, id: r.id, verdict: VERDICT_LABELS[r.verdict] ?? '' }, { important: r.verdict === 'starter' });
+  for (const r of week.scouting ?? []) pushNews(game, 'player.scoutReport', { name: r.name, id: r.id, verdictKey: r.verdict }, { important: r.verdict === 'starter' });
   // 임대 보낸 선수 근황: 꾸준히 뛰는지(임대 뒤 라운드의 절반 이상 출전)에 따라
   for (const r of week.loans ?? []) pushNews(game, r.apps >= r.rounds * 0.5 ? 'player.loanReport' : 'player.loanBench', { name: r.name, id: r.id, club: r.club, apps: r.apps, goals: r.goals });
   // 우리 팀 부상 (이번 경기)
   if (userResult) {
     const mySide = userFixture.homeId === game.teamId ? 'home' : 'away';
-    for (const inj of userResult.injuries ?? []) if (inj.team === mySide) pushNews(game, 'player.injury', { name: inj.playerName, id: inj.playerId, injury: inj.type, weeks: inj.matchesOut }, { important: inj.matchesOut >= 4 });
+    for (const inj of userResult.injuries ?? []) if (inj.team === mySide) pushNews(game, 'player.injury', { name: inj.playerName, id: inj.playerId, injury: inj.type, injuryKey: inj.typeKey ?? null, weeks: inj.matchesOut }, { important: inj.matchesOut >= 4 });
   }
   // 훈련 부상·성과
   for (const i of week.training?.injuries ?? []) pushNews(game, 'player.trainingInjury', { name: i.name, id: i.id, weeks: i.weeks });
@@ -59,7 +69,7 @@ export function weeklyNews(dataset, game, week, userFixture, userResult) {
   for (const o of week.newOffers ?? []) pushNews(game, 'transfer.offer', { name: player(o.playerId), club: team(o.teamId), amount: o.amount }, { important: true });
   const myLeague = new Set(dataset.leagueById.get(game.leagueId).teamIds);
   for (const t of (week.aiTransfers ?? []).filter((x) => myLeague.has(x.to) || myLeague.has(x.from)).slice(0, 3)) {
-    pushNews(game, 'transfer.done', { name: player(t.playerId), from: t.from ? team(t.from) : '무소속', to: team(t.to), fee: t.fee });
+    pushNews(game, 'transfer.done', { name: player(t.playerId), from: t.from ? team(t.from) : null, to: team(t.to), fee: t.fee });
   }
   // 이적설: 가끔 우리 리그 스타가 더 강한 유럽 빅리그 구단의 관심을 받는다 (분위기용)
   const rng = createRng(`${game.seed}:rumor:${game.seasonIndex}:${game.round}`);
@@ -117,25 +127,32 @@ export function digestFinish(dataset, game, start) {
   const table = computeTable(league.teamIds, fixturesOf(game), league.rules);
   const pos = table.find((r) => r.teamId === game.teamId)?.position;
   const over = game.round > game.totalRounds;
-  const lines = [`리그 ${mine.length}경기 ${rec.w}승 ${rec.d}무 ${rec.l}패 · ${rec.gf}득점 ${rec.ga}실점`];
-  if (pos) lines.push(start.pos && start.pos !== pos ? `순위 ${start.pos}위 → ${over ? '최종 ' : ''}${pos}위` : `${over ? '최종 ' : '지금 '}${pos}위`);
-  if (best) lines.push(`가장 기쁜 경기: ${best.round}라운드 ${best.opp}전 ${best.score}`);
-  if (worst) lines.push(`가장 아픈 경기: ${worst.round}라운드 ${worst.opp}전 ${worst.score}`);
+  const L = (key, vars) => ({ key: `state.digest.${key}`, vars });
+  const lines = [L('record', { n: mine.length, w: rec.w, d: rec.d, l: rec.l, gf: rec.gf, ga: rec.ga })];
+  if (pos) lines.push(start.pos && start.pos !== pos ? L(over ? 'posMoveFinal' : 'posMove', { from: start.pos, pos }) : L(over ? 'posFinal' : 'posNow', { pos }));
+  if (best) lines.push(L('best', { round: best.round, opp: best.opp, score: best.score }));
+  if (worst) lines.push(L('worst', { round: worst.round, opp: worst.opp, score: worst.score }));
   const scorer = squadOf(dataset, game, game.teamId)
     .map((p) => ({ p, g: (game.playerStats[p.id]?.goals ?? 0) - (start.goals[p.id] ?? 0) }))
     .sort((a, b) => b.g - a.g)[0];
-  if (scorer?.g > 0) lines.push(`이 기간 팀 득점 1위: ${scorer.p.name} ${scorer.g}골`);
+  if (scorer?.g > 0) lines.push(L('scorer', { name: scorer.p.name, n: scorer.g }));
   // 새로 온 소식에서: 큰 부상, 이사회 반응
   const fresh = (game.inbox ?? []).filter((m) => !start.ids.has(m.id));
-  const injuries = fresh.filter((m) => (m.kind === 'player.injury' || m.kind === 'player.trainingInjury') && (m.vars.weeks ?? 0) >= 3).map((m) => `${m.vars.name}(${m.vars.weeks}경기)`);
-  if (injuries.length) lines.push(`큰 부상: ${injuries.slice(0, 4).join(', ')}${injuries.length > 4 ? ` 외 ${injuries.length - 4}명` : ''}`);
+  const injuries = fresh.filter((m) => (m.kind === 'player.injury' || m.kind === 'player.trainingInjury') && (m.vars.weeks ?? 0) >= 3);
+  if (injuries.length) {
+    // 이름·경기 수를 하나씩 자리로 (어순이 언어마다 달라 목록 틀을 사람 수별 문장으로 둔다)
+    const vars = {};
+    injuries.slice(0, 4).forEach((m, i) => Object.assign(vars, { [`name${i + 1}`]: m.vars.name, [`weeks${i + 1}`]: m.vars.weeks }));
+    if (injuries.length > 4) vars.more = injuries.length - 4;
+    lines.push(L(injuries.length > 4 ? 'injuries4More' : `injuries${injuries.length}`, vars));
+  }
   const moves = game.transfers.slice(start.transfers).filter((t) => t.from === game.teamId || t.to === game.teamId);
   const cameIn = moves.filter((t) => t.to === game.teamId && t.by !== 'loanEnd').map((t) => dataset.playerById.get(t.playerId)?.name).filter(Boolean);
   const left = moves.filter((t) => t.from === game.teamId).map((t) => dataset.playerById.get(t.playerId)?.name).filter(Boolean);
-  if (cameIn.length || left.length) lines.push(`이적: ${[cameIn.length ? `영입 ${cameIn.join(', ')}` : null, left.length ? `떠남 ${left.join(', ')}` : null].filter(Boolean).join(' · ')}`);
-  const boardWord = { 'board.praise': '이사회가 만족을 전했습니다', 'board.warn': '이사회가 경고를 보냈습니다', 'board.ultimatum': '이사회가 최후통첩을 보냈습니다' };
-  const boardLines = [...new Set(fresh.map((m) => boardWord[m.kind]).filter(Boolean))];
-  if (boardLines.length) lines.push(boardLines.join(' · '));
+  if (cameIn.length || left.length) lines.push(L(cameIn.length && left.length ? 'movesBoth' : cameIn.length ? 'movesIn' : 'movesOut', { in: cameIn.join(', '), out: left.join(', ') }));
+  // 이사회 반응: 나온 순서대로 (조합마다 문장 하나 — 키는 종류를 _로 이은 것)
+  const boardKinds = [...new Set(fresh.map((m) => m.kind).filter((k) => k === 'board.praise' || k === 'board.warn' || k === 'board.ultimatum'))].map((k) => k.slice(6));
+  if (boardKinds.length) lines.push(L(`board.${boardKinds.join('_')}`, {}));
   // 정리: 결정이 필요한 것만 남기고 읽음으로
   let folded = 0;
   for (const m of fresh) {
@@ -143,7 +160,7 @@ export function digestFinish(dataset, game, start) {
     m.read = true;
     folded++;
   }
-  if (folded) lines.push(`그 밖의 소식 ${folded}통은 읽음으로 정리했습니다. 필요하면 아래에서 찾아볼 수 있습니다.`);
+  if (folded) lines.push(L('folded', { n: folded }));
   return pushNews(game, 'match.digest', { from: start.round, to: Math.min(game.round, game.totalRounds + 1) - 1, lines }, { important: true });
 }
 

@@ -2,6 +2,7 @@
 // 여름 이적시장 마지막 라운드 경기 뒤 선수가 가장 좋은 제안(계약금 + 구단 명성)을 고른다. 수치는 config.js FREE_AGENCY
 import { overall } from '../engine/ratings.js';
 import { createRng } from '../engine/rng.js';
+import { t } from '../i18n.js';
 import { currentTeamId, squadOf } from '../state/game.js';
 import { RULES } from '../state/rules.js';
 import { FREE_AGENCY as F } from './config.js';
@@ -86,14 +87,14 @@ export function bidFreeAgent(dataset, game, playerId, bonus) {
   const e = pendingFreeAgent(game, playerId);
   const p = dataset.playerById.get(playerId);
   const min = round1(playerValue(p) * F.minBonus);
-  if (!e) return { ok: false, accepted: false, message: '입찰 기간이 끝났습니다.' };
-  if (bonus < min) return { ok: false, accepted: false, message: `계약금이 너무 적습니다. 최소 ${formatMoney(min)}부터 이야기를 들어 줍니다.` };
+  if (!e) return { ok: false, accepted: false, message: t('market.fa.err.closed') };
+  if (bonus < min) return { ok: false, accepted: false, message: t('market.fa.err.tooLow', { min: formatMoney(min) }) };
   e.user = { bonus: round1(bonus) };
   return {
     ok: true,
     accepted: false,
     bid: true,
-    message: `${p.name}에게 계약금 ${formatMoney(bonus)}을 제시했습니다. ${game.freeAgency.decideRound}라운드 경기 뒤 선수가 결정합니다.`,
+    message: t('market.fa.ok.bid', { name: p.name, bonus: formatMoney(bonus), round: game.freeAgency.decideRound }),
   };
 }
 

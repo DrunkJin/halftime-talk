@@ -138,6 +138,7 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 
 .page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 14px; flex-wrap: wrap; }
 .page-head p { margin-top: 4px; }
+.lang-switch { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-bottom: 10px; font-size: 12px; }
 
 .panel {
   background: var(--panel);
@@ -857,6 +858,8 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .iv-answers { display: grid; gap: 6px; }
 .answer-btn { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 10px; align-items: center; text-align: left; padding: 9px 12px; border: 1px solid var(--line-2); border-radius: 8px; background: transparent; color: var(--text); font-size: 13px; line-height: 1.45; cursor: pointer; transition: border-color var(--duration-quick) var(--ease-out), background-color var(--duration-quick) var(--ease-out); }
 .answer-btn:hover, .answer-btn:focus-visible { border-color: var(--info); background: rgba(90, 169, 255, 0.08); }
+/* 영어 성향 라벨은 길다 ("Praise the squad") */
+@media (min-width: 641px) { :lang(en) .answer-btn, :lang(en) .iv-answer { grid-template-columns: 124px minmax(0, 1fr); } }
 .answer-btn[aria-pressed="true"] { border-color: var(--accent); background: rgba(61, 220, 132, 0.1); box-shadow: inset 3px 0 0 var(--accent); }
 .answer-btn[aria-pressed="true"] .stance-chip { background: var(--accent); color: #06120b; }
 .stance-chip { justify-self: start; padding: 2px 8px; border-radius: 999px; background: var(--line-2); color: var(--text-2); font-size: 11px; white-space: nowrap; }

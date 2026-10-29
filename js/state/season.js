@@ -37,7 +37,7 @@ export function createGame(dataset, teamId, options) {
   noteSeasonExpectation(dataset, game);
   setObjective(dataset, game);
   game.jobs = [{ seasonIndex: 1, round: 1, teamId, reason: 'start' }];
-  pushNews(game, 'board.objective', { team: dataset.teamById.get(teamId).shortName, goal: game.board.objective.label, kind: game.board.objective.kind }, { important: true });
+  pushNews(game, 'board.objective', { team: dataset.teamById.get(teamId).shortName, kind: game.board.objective.kind, goalKind: game.board.objective.kind, goalTarget: game.board.objective.target }, { important: true });
   return game;
 }
 
@@ -110,7 +110,7 @@ function freeAgencyDecisions(dataset, game, playedRound) {
   };
   const results = resolveFreeAgency(dataset, game, playedRound, sign);
   if (!results.length) return;
-  const team = (id) => dataset.teamById.get(id)?.shortName ?? '무소속';
+  const team = (id) => dataset.teamById.get(id)?.shortName ?? null; // null = 무소속 (소식 화면이 언어에 맞게)
   const name = (id) => dataset.playerById.get(id)?.name ?? id;
   for (const r of results.filter((x) => x.userBid != null)) {
     if (r.teamId === game.teamId) pushNews(game, 'transfer.faWon', { name: name(r.playerId), id: r.playerId, bonus: formatMoney(r.bonus) }, { important: true });
@@ -118,14 +118,14 @@ function freeAgencyDecisions(dataset, game, playedRound) {
   }
   const ovr = (id) => (dataset.playerById.get(id) ? overall(dataset.playerById.get(id)) : 0);
   const moved = results.filter((r) => r.teamId && r.teamId !== game.teamId).sort((a, b) => ovr(b.playerId) - ovr(a.playerId)).slice(0, 8);
-  if (moved.length) pushNews(game, 'transfer.faSettled', { count: results.length, lines: moved.map((r) => `${name(r.playerId)} → ${team(r.teamId)} (계약금 ${formatMoney(r.bonus)})`) });
+  if (moved.length) pushNews(game, 'transfer.faSettled', { count: results.length, lines: moved.map((r) => ({ key: 'state.news.faSettledLine', vars: { name: name(r.playerId), club: team(r.teamId), bonus: formatMoney(r.bonus) } })) });
 }
 
 // 시즌 끝 이사회 소식: 평가, 경질 또는 제안
 function seasonEndNews(dataset, game, ev) {
   if (!ev) return;
   const team = (id) => dataset.teamById.get(id)?.shortName ?? id;
-  pushNews(game, `board.eval.${ev.verdict}`, { goal: ev.label, position: ev.position, target: ev.target, delta: ev.delta, confidence: Math.round(game.board.confidence) }, { important: true });
+  pushNews(game, `board.eval.${ev.verdict}`, { goalKind: ev.kind, goalTarget: ev.target, position: ev.position, target: ev.target, delta: ev.delta, confidence: Math.round(game.board.confidence) }, { important: true });
   if (game.board.sacked) pushNews(game, 'board.sacked', { team: team(game.teamId) }, { important: true });
   for (const id of game.board.offers ?? []) pushNews(game, 'board.offer', { club: team(id), league: dataset.leagueById.get(dataset.teamById.get(id).leagueId).name, id }, { important: true });
 }

@@ -4,6 +4,7 @@
 //   대회: { id, name, shortName, teamIds, pots, fixtures: [경기], ties: [대진], stats, winnerId }
 //   경기: { id, comp, stage, md?, leg?, tieId?, homeId, awayId, neutral?, result? }
 //   대진: { id, comp, stage, seedId, otherId, fixtureIds, winnerId }  seedId = 리그 페이즈 순위가 높은 팀
+import { t } from '../i18n.js';
 import { addRatings } from '../state/form.js';
 import { HOME_ADVANTAGE } from '../engine/config.js';
 import { simulateMatch } from '../engine/match.js';
@@ -103,6 +104,12 @@ export function userCupFixture(game) {
 }
 
 export const compOf = (game, fixture) => cupsOf(game).comps[fixture.comp];
+// 대회 이름: 세이브에는 만들 때 언어의 이름이 저장된다 → id로 지금 언어 이름을 찾는다
+export function compName(comp) {
+  const key = `state.comp.${comp?.id}`;
+  const v = t(key);
+  return v === key ? comp?.name ?? '' : v;
+}
 export const tieOf = (game, fixture) => (fixture.tieId ? compOf(game, fixture).ties.find((t) => t.id === fixture.tieId) : null);
 export const stageName = (stage) => CUP.stageNames[stage];
 

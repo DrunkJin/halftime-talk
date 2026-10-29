@@ -1,17 +1,15 @@
 // 전술 계산: 선수 구성 프로필 → 전술 적합도, 두 팀 전술의 상성, AI 팀 전술 성향.
 // 수치는 config.js (PROFILE · TACTIC_FIT · MATCHUPS · AI_IDENTITY). DOM 없음 — 엔진·화면이 같이 쓴다
 import * as C from './config.js';
+import { t as tr } from '../i18n.js';
 import { weightedSkill } from './ratings.js';
 
 export const PROFILE_KEYS = ['energy', 'technique', 'speed', 'backPace', 'aerial', 'shape'];
-export const PROFILE_LABELS = {
-  energy: '활동량',
-  technique: '후방 빌드업',
-  speed: '공격진 속도',
-  backPace: '수비진 속도',
-  aerial: '크로스·제공권',
-  shape: '수비 조직',
-};
+// 성향 이름 (읽을 때 사전에서: engine.profile.*)
+export const PROFILE_LABELS = Object.defineProperties(
+  {},
+  Object.fromEntries(PROFILE_KEYS.map((k) => [k, { get: () => tr(`engine.profile.${k}`), enumerable: true }])),
+);
 
 // 성향마다: 어느 자리 선수의 어떤 능력치로 보는지
 const PROFILE_SPEC = {
@@ -146,9 +144,10 @@ export function matchupNotes(me, opp) {
 
   if (counters(t) && exposureOf(o)) {
     const faster = edge(me.profile.speed, opp.profile.backPace);
-    notes.push({ good: true, text: `역습: 상대가 ${o.pressing === 'high' ? '높이 압박해' : '공격적으로 나와'} 뒷공간이 생깁니다${faster > 0.3 ? ' — 우리 공격진이 상대 수비보다 빠릅니다' : faster < -0.3 ? ' (다만 상대 수비진이 더 빠릅니다)' : ''}` });
+    const extra = faster > 0.3 ? tr('engine.note.counter.faster') : faster < -0.3 ? tr('engine.note.counter.slower') : '';
+    notes.push({ good: true, text: tr(o.pressing === 'high' ? 'engine.note.counter.vsPress' : 'engine.note.counter.vsAttacking', { extra }) });
   }
-  if (counters(o) && exposureOf(t)) notes.push({ good: false, text: `상대 역습: ${t.pressing === 'high' ? '높은 압박' : '공격적인 운영'}으로 뒷공간이 열립니다` });
+  if (counters(o) && exposureOf(t)) notes.push({ good: false, text: tr(t.pressing === 'high' ? 'engine.note.oppCounter.press' : 'engine.note.oppCounter.attacking') });
 
   const pressNote = (x, y, mine) => {
     const w = M.press.styleWeight[y.tactics.style] ?? 0;
@@ -158,27 +157,27 @@ export function matchupNotes(me, opp) {
     const pressWins = e > 0;
     notes.push(
       mine
-        ? { good: pressWins, text: pressWins ? '압박: 상대 후방 빌드업이 우리 활동량을 버티기 어렵습니다' : '압박이 뚫립니다: 상대 후방 기술이 우리 활동량보다 낫습니다' }
-        : { good: !pressWins, text: pressWins ? '상대 압박: 우리 후방 빌드업이 흔들립니다' : '상대 압박을 풀어낼 수 있습니다: 우리 후방 기술이 낫습니다' },
+        ? { good: pressWins, text: tr(pressWins ? 'engine.note.press.wins' : 'engine.note.press.beaten') }
+        : { good: !pressWins, text: tr(pressWins ? 'engine.note.oppPress.wins' : 'engine.note.oppPress.beaten') },
     );
   };
   pressNote(me, opp, true);
   pressNote(opp, me, false);
 
-  if (t.pressing === 'low' && o.style === 'short') notes.push({ good: true, text: '수비 블록: 짧은 패스로 들어오는 상대의 슈팅 기회를 줄입니다' });
-  if (o.pressing === 'low' && t.style === 'short') notes.push({ good: false, text: '내려앉은 상대에게 짧은 패스가 막힙니다' });
-  if (t.style === 'direct' && o.pressing === 'low') notes.push({ good: true, text: `크로스: 내려앉은 상대를 측면과 제공권으로 넘습니다${edge(me.profile.aerial, opp.profile.shape) < -0.3 ? ' (상대 수비 조직이 좋아 효과는 작습니다)' : ''}` });
-  if (o.style === 'direct' && t.pressing === 'low') notes.push({ good: false, text: '내려앉으면 상대 크로스·제공권에 노출됩니다' });
+  if (t.pressing === 'low' && o.style === 'short') notes.push({ good: true, text: tr('engine.note.lowBlock') });
+  if (o.pressing === 'low' && t.style === 'short') notes.push({ good: false, text: tr('engine.note.shortVsLowBlock') });
+  if (t.style === 'direct' && o.pressing === 'low') notes.push({ good: true, text: tr('engine.note.crossing', { extra: edge(me.profile.aerial, opp.profile.shape) < -0.3 ? tr('engine.note.crossing.weak') : '' }) });
+  if (o.style === 'direct' && t.pressing === 'low') notes.push({ good: false, text: tr('engine.note.oppCrossing') });
 
   // 우리 선수 구성과의 궁합
   for (const kind of ['pressing', 'style']) {
     const keys = C.TACTIC_FIT[kind][t[kind]];
     if (!keys) continue;
     const units = keys.reduce((s, k) => s + strengthOf(me.profile, k), 0) / keys.length;
-    const what = keys.map((k) => PROFILE_LABELS[k]).join('·');
+    const what = keys.map((k) => PROFILE_LABELS[k]).join(tr('engine.note.fit.join'));
     const label = C.TACTICS[kind][t[kind]].label;
-    if (units >= 0.4) notes.push({ good: true, text: `${label}: 우리 ${what}이 강점이라 잘 맞습니다` });
-    else if (units <= -0.4) notes.push({ good: false, text: `${label}: 우리 ${what}이 약해 효과가 작습니다` });
+    if (units >= 0.4) notes.push({ good: true, text: tr('engine.note.fit.good', { label, what }) });
+    else if (units <= -0.4) notes.push({ good: false, text: tr('engine.note.fit.bad', { label, what }) });
   }
   return notes;
 }

@@ -1,0 +1,16 @@
+{
+  "tactics.kind.mentality": "멘탈리티",
+  "tactics.kind.pressing": "압박",
+  "tactics.kind.style": "공격 방식",
+  "tactics.hint.mentality.veryDefensive": "라인을 깊게 내리고 버팁니다. 실점은 크게 줄지만 공격이 거의 없습니다.",
+  "tactics.hint.mentality.defensive": "수비에 무게를 둡니다. 약팀이 강팀을 상대할 때 좋습니다.",
+  "tactics.hint.mentality.balanced": "공격과 수비의 균형을 맞춥니다.",
+  "tactics.hint.mentality.attacking": "더 많은 선수가 공격에 가담합니다. 골도, 실점도 늘어납니다.",
+  "tactics.hint.mentality.veryAttacking": "모든 것을 걸고 골을 노립니다. 뒷공간이 크게 열립니다.",
+  "tactics.hint.pressing.low": "내려앉아 공간을 지웁니다. 체력과 카드가 줄지만 공을 덜 가집니다.",
+  "tactics.hint.pressing.normal": "평소대로 압박합니다.",
+  "tactics.hint.pressing.high": "높은 위치에서 공을 뺏습니다. 결정적 찬스가 늘지만 빨리 지치고 카드가 늘어납니다.",
+  "tactics.hint.style.short": "짧은 패스로 점유하며 질 좋은 찬스를 만듭니다. 슈팅 수는 줄어듭니다.",
+  "tactics.hint.style.mixed": "상황에 맞게 섞어 씁니다.",
+  "tactics.hint.style.direct": "빠르게 전방으로 보냅니다. 슈팅은 많아지지만 점유를 내줍니다."
+}

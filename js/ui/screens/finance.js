@@ -10,19 +10,11 @@ import { openConfirm, panel, ratingBar } from '../components.js';
 import { h } from '../dom.js';
 import { attrClass } from '../format.js';
 import { setDigits, showToast } from '../motion.js';
+import { t } from '../../i18n.js';
 
-const INCOME = [
-  ['tv', '중계권'],
-  ['gate', '입장 수입'],
-  ['commercial', '상업 수입'],
-  ['prize', '시즌 상금'],
-  ['transfersOut', '선수 판매'],
-];
-const EXPENSE = [
-  ['wages', '주급'],
-  ['transfersIn', '선수 영입'],
-  ['compensation', '계약 해지 위약금'],
-];
+// 장부 항목 (이름은 finance.ledger.{키})
+const INCOME = ['tv', 'gate', 'commercial', 'prize', 'transfersOut'];
+const EXPENSE = ['wages', 'transfersIn', 'compensation'];
 
 export function render(ctx) {
   const host = h('div', { class: 'finance-screen' });
@@ -36,8 +28,8 @@ function build(ctx, refresh) {
   const f = game.finances[game.teamId];
   const ledger = game.ledger;
   const bill = wageBill(dataset, game, game.teamId);
-  const income = INCOME.reduce((s, [k]) => s + (ledger[k] ?? 0), 0);
-  const expense = EXPENSE.reduce((s, [k]) => s + (ledger[k] ?? 0), 0);
+  const income = INCOME.reduce((s, k) => s + (ledger[k] ?? 0), 0);
+  const expense = EXPENSE.reduce((s, k) => s + (ledger[k] ?? 0), 0);
   const balance = h('span', { class: 't-digit-group' });
   setDigits(balance, formatMoney(game.budgets[game.teamId]));
 
@@ -45,32 +37,32 @@ function build(ctx, refresh) {
   const summary = h(
     'div',
     { class: 'tr-summary' },
-    h('div', { class: 'tr-stat' }, h('span', { class: 'muted' }, '잔고'), h('b', { class: 'num big' }, balance)),
-    h('div', { class: 'tr-stat' }, h('span', { class: 'muted' }, '시즌 예상 수입'), h('b', { class: 'num' }, formatMoney(f.revenue))),
+    h('div', { class: 'tr-stat' }, h('span', { class: 'muted' }, t('finance.balance')), h('b', { class: 'num big' }, balance)),
+    h('div', { class: 'tr-stat' }, h('span', { class: 'muted' }, t('finance.revenue')), h('b', { class: 'num' }, formatMoney(f.revenue))),
     h(
       'div',
       { class: 'tr-stat wage-stat' },
-      h('span', { class: 'muted' }, '주급 총액 / 한도'),
+      h('span', { class: 'muted' }, t('finance.wageBill')),
       h('b', { class: 'num' }, `${formatWage(bill)} / ${formatWage(f.wageBudget)}`),
       h('span', { class: `bar wage-bar${usage > 95 ? ' full' : ''}` }, h('span', { class: 'bar-fill', style: { width: `${usage}%` } })),
     ),
-    h('div', { class: 'tr-stat' }, h('span', { class: 'muted' }, '이번 시즌 손익'), h('b', { class: `num ${income - expense >= 0 ? 'pos' : 'neg'}` }, `${income - expense >= 0 ? '+' : '−'}${formatMoney(Math.abs(income - expense))}`)),
+    h('div', { class: 'tr-stat' }, h('span', { class: 'muted' }, t('finance.profit')), h('b', { class: `num ${income - expense >= 0 ? 'pos' : 'neg'}` }, `${income - expense >= 0 ? '+' : '−'}${formatMoney(Math.abs(income - expense))}`)),
   );
 
   const ledgerRows = (items, sign) =>
-    items.map(([k, label]) => h('tr', {}, h('td', {}, label), h('td', { class: `num ${sign}` }, formatMoney(ledger[k] ?? 0))));
+    items.map((k) => h('tr', {}, h('td', {}, t(`finance.ledger.${k}`)), h('td', { class: `num ${sign}` }, formatMoney(ledger[k] ?? 0))));
   const ledgerTable = h(
     'table',
     { class: 'data compact ledger' },
     h(
       'tbody',
       {},
-      h('tr', { class: 'divider' }, h('td', { colspan: 2 }, '수입')),
+      h('tr', { class: 'divider' }, h('td', { colspan: 2 }, t('finance.income'))),
       ledgerRows(INCOME, 'pos'),
-      h('tr', { class: 'sum' }, h('td', {}, '수입 합계'), h('td', { class: 'num pos' }, formatMoney(income))),
-      h('tr', { class: 'divider' }, h('td', { colspan: 2 }, '지출')),
+      h('tr', { class: 'sum' }, h('td', {}, t('finance.incomeTotal')), h('td', { class: 'num pos' }, formatMoney(income))),
+      h('tr', { class: 'divider' }, h('td', { colspan: 2 }, t('finance.expense'))),
       ledgerRows(EXPENSE, 'neg'),
-      h('tr', { class: 'sum' }, h('td', {}, '지출 합계'), h('td', { class: 'num neg' }, formatMoney(expense))),
+      h('tr', { class: 'sum' }, h('td', {}, t('finance.expenseTotal')), h('td', { class: 'num neg' }, formatMoney(expense))),
     ),
   );
 
@@ -83,7 +75,7 @@ function build(ctx, refresh) {
     h(
       'table',
       { class: 'data' },
-      h('thead', {}, h('tr', {}, h('th', {}, '선수'), h('th', {}, '포지션'), h('th', { class: 'num' }, '나이'), h('th', { class: 'num' }, 'OVR'), h('th', { class: 'num' }, '가치'), h('th', { class: 'num' }, '주급'), h('th', { class: 'num' }, '남은 계약'), h('th', {}))),
+      h('thead', {}, h('tr', {}, h('th', {}, t('finance.th.player')), h('th', {}, t('finance.th.pos')), h('th', { class: 'num' }, t('finance.th.age')), h('th', { class: 'num' }, 'OVR'), h('th', { class: 'num' }, t('finance.th.value')), h('th', { class: 'num' }, t('finance.th.wage')), h('th', { class: 'num' }, t('finance.th.left')), h('th', {}))),
       h(
         'tbody',
         {},
@@ -92,13 +84,13 @@ function build(ctx, refresh) {
           const left = seasonsLeft(game, c);
           const loan = loanOf(game, p.id);
           const borrowed = loan?.to === game.teamId;
-          const renew = h('button', { class: 'btn small ghost', type: 'button' }, '재계약');
+          const renew = h('button', { class: 'btn small ghost', type: 'button' }, t('finance.renew'));
           renew.addEventListener('click', () => {
             const terms = renewalTerms(dataset, game, p.id);
             openConfirm({
-              title: `${p.name} 재계약`,
-              body: `선수 요구: ${formatWage(terms.wage)} · ${terms.years}년 (지금 ${formatWage(c.wage)}, ${left}년 남음)`,
-              confirmLabel: '재계약',
+              title: t('finance.renewTitle', { name: p.name }),
+              body: t('finance.renewBody', { wage: formatWage(terms.wage), years: terms.years, current: formatWage(c.wage), left: t('finance.yearsLeft', { n: left }) }),
+              confirmLabel: t('finance.renew'),
               onConfirm: () => {
                 const res = renewContract(dataset, game, p.id);
                 showToast(res.message, { tone: res.ok ? 'goal' : 'warn' });
@@ -112,14 +104,14 @@ function build(ctx, refresh) {
           return h(
             'tr',
             { class: left <= 1 ? 'is-expiring' : '' },
-            h('td', {}, p.name, loan ? h('span', { class: 'loan-tag' }, borrowed ? `임대 · ${dataset.teamById.get(loan.from)?.code ?? ''}` : `임대 중 · ${dataset.teamById.get(loan.to)?.code ?? ''}`) : null),
+            h('td', {}, p.name, loan ? h('span', { class: 'loan-tag' }, borrowed ? t('finance.loanIn', { code: dataset.teamById.get(loan.from)?.code ?? '' }) : t('finance.loanOut', { code: dataset.teamById.get(loan.to)?.code ?? '' })) : null),
             h('td', {}, h('span', { class: 'pos-tag' }, p.position)),
             h('td', { class: 'num' }, p.age),
             h('td', { class: `num ${attrClass(overall(p))}` }, overall(p)),
             h('td', { class: 'num' }, formatMoney(playerValue(p))),
             // 임대 선수는 우리가 내는 몫 (빌렸으면 wageShare, 보냈으면 나머지)
-            h('td', { class: 'num', title: loan ? `전체 ${formatWage(c.wage)}` : '' }, formatWage(loan ? Math.round(c.wage * (borrowed ? loan.wageShare : 1 - loan.wageShare)) : c.wage)),
-            h('td', { class: 'num' }, borrowed ? h('span', { class: 'muted' }, '시즌 끝 복귀') : left <= 1 ? h('span', { class: 'status-chip suspension' }, `${left}년`) : `${left}년`),
+            h('td', { class: 'num', title: loan ? t('finance.fullWage', { wage: formatWage(c.wage) }) : '' }, formatWage(loan ? Math.round(c.wage * (borrowed ? loan.wageShare : 1 - loan.wageShare)) : c.wage)),
+            h('td', { class: 'num' }, borrowed ? h('span', { class: 'muted' }, t('finance.returns')) : left <= 1 ? h('span', { class: 'status-chip suspension' }, t('finance.years', { n: left })) : t('finance.years', { n: left })),
             h('td', { class: 'num' }, borrowed ? null : renew),
           );
         }),
@@ -133,7 +125,7 @@ function build(ctx, refresh) {
   const peers = h(
     'table',
     { class: 'data compact' },
-    h('thead', {}, h('tr', {}, h('th', {}, '구단'), h('th', { class: 'num' }, '잔고'), h('th', {}, '시즌 수입'))),
+    h('thead', {}, h('tr', {}, h('th', {}, t('finance.th.club')), h('th', { class: 'num' }, t('finance.balance')), h('th', {}, t('finance.th.seasonRevenue')))),
     h(
       'tbody',
       {},
@@ -154,12 +146,12 @@ function build(ctx, refresh) {
   );
 
   return [
-    panel('재정', summary),
+    panel(t('finance.title'), summary),
     h(
       'div',
       { class: 'finance-grid' },
-      h('div', { class: 'finance-left' }, panel('이번 시즌 장부', ledgerTable), panel(`${league.name} 구단 재정`, peers)),
-      panel('계약', contracts, { actions: h('span', { class: 'muted' }, `${squad.length}명`) }),
+      h('div', { class: 'finance-left' }, panel(t('finance.ledgerTitle'), ledgerTable), panel(t('finance.peersTitle', { league: league.name }), peers)),
+      panel(t('finance.contracts'), contracts, { actions: h('span', { class: 'muted' }, t('finance.count', { n: squad.length })) }),
     ),
   ];
 }

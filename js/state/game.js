@@ -7,11 +7,12 @@
 import { AI_FORMATION_CANDIDATES, FORMATIONS, FORMATION_CELLS, slotsFromCells } from '../engine/formations.js';
 import { autoSelectBench, autoSelectLineup, bestFormation } from '../engine/lineup.js';
 import { CUP } from '../competitions/config.js';
-import { DEFAULT_PARITY, LEAGUE_PARITY, TACTICS } from '../engine/config.js';
+import { DEFAULT_PARITY, LEAGUE_PARITY, TACTICS, injuryLabel as engineInjuryLabel } from '../engine/config.js';
 import { topElevenOvr } from '../market/value.js';
 import { simulateMatch } from '../engine/match.js';
 import { conditionFactor, overall, positionFit, positionRating } from '../engine/ratings.js';
 import { createRng, randomSeed } from '../engine/rng.js';
+import { t } from '../i18n.js';
 import { generateFixtures, roundCount } from '../league/fixtures.js';
 import { familiarityBoost, familiarityOf } from './familiarity.js';
 import { addRatings } from './form.js';
@@ -117,13 +118,17 @@ export const loanOf = (game, id) => game.loans?.find((l) => l.playerId === id) ?
 
 export const conditionOf = (game, id) => stateOf(game, id).condition ?? 100;
 
+// 부상 이름: typeKey(사전 키)가 있으면 지금 언어로, 없으면 저장된 이름 (예전 세이브)
+// 부상 이름: 키가 있으면 번역, 없으면 엔진 부상 표에서 찾아 번역 (세이브에는 한국어 이름이 저장됨), 그래도 없으면 저장된 이름
+export const injuryLabel = (injury) => (injury?.typeKey ? t(injury.typeKey) : engineInjuryLabel(injury?.type ?? ''));
+
 // { available, reason: 'injury' | 'suspension' | null, rounds, label }
 // scope: 'league' | 'cup' — 부상은 공유, 출장정지는 대회별 (대륙 대회 징계는 cupSuspension)
 export function availabilityOf(game, id, scope = 'league') {
   const s = stateOf(game, id);
-  if (s.injury) return { available: false, reason: 'injury', rounds: s.injury.matchesOut, label: s.injury.type };
+  if (s.injury) return { available: false, reason: 'injury', rounds: s.injury.matchesOut, label: injuryLabel(s.injury) };
   const ban = scope === 'cup' ? s.cupSuspension : s.suspension;
-  if (ban) return { available: false, reason: 'suspension', rounds: ban, label: scope === 'cup' ? '대륙 대회 출장정지' : '출장정지' };
+  if (ban) return { available: false, reason: 'suspension', rounds: ban, label: t(scope === 'cup' ? 'state.ban.cup' : 'state.ban.league') };
   return { available: true, reason: null, rounds: 0, label: '' };
 }
 
@@ -356,7 +361,7 @@ function recordResult(game, fixture, result, full) {
 // 경기 결과 → 컨디션·부상·징계. scope 'cup'이면 카드 징계를 대륙 대회 쪽에 쌓는다
 export function applyConsequences(game, result, scope = 'league') {
   for (const [id, c] of Object.entries(result.conditionAfter)) mutableStateOf(game, id).condition = c;
-  for (const inj of result.injuries) mutableStateOf(game, inj.playerId).injury = { type: inj.type, matchesOut: inj.matchesOut };
+  for (const inj of result.injuries) mutableStateOf(game, inj.playerId).injury = { type: inj.type, ...(inj.typeKey ? { typeKey: inj.typeKey } : {}), matchesOut: inj.matchesOut };
   for (const card of result.cards) {
     const s = mutableStateOf(game, card.playerId);
     if (scope === 'cup') {

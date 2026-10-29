@@ -4,23 +4,35 @@ import { computeTeamRatings, overall } from '../../engine/ratings.js';
 import { GAME_LENGTHS } from '../../state/game.js';
 import { createGame } from '../../state/season.js';
 import { track } from '../analytics.js';
+import { langSwitch } from '../langSwitch.js';
 import { teamBadge } from '../badge.js';
 import { openConfirm, panel, ratingBar, segmented, basisText } from '../components.js';
 import { h } from '../dom.js';
 import { fmt1 } from '../format.js';
 import { attachTilt, openModal } from '../motion.js';
+import { localeTag, t } from '../../i18n.js';
 
 const PREVIEW_FORMATION = '4-3-3';
-const SORTS = [
-  { id: 'strength', label: '전력순' },
-  { id: 'name', label: '이름순' },
-];
+// 라벨은 렌더 때 사전에서 (getter)
+const SORTS = ['strength', 'name'].map((id) => ({
+  id,
+  get label() {
+    return t(`select.sort.${id}`);
+  },
+}));
 // 리그 탭 묶음 (나라 코드 기준). 여기에 없는 나라는 '기타'
+const region = (id, countries) => ({
+  id,
+  countries,
+  get label() {
+    return t(`select.region.${id}`);
+  },
+});
 const REGIONS = [
-  { label: '잉글랜드', countries: ['ENG'] },
-  { label: '유럽', countries: ['ESP', 'ITA', 'GER', 'FRA', 'NED', 'POR', 'BEL', 'TUR'] },
-  { label: '아시아', countries: ['KOR', 'JPN', 'KSA'] },
-  { label: '아메리카', countries: ['BRA', 'ARG', 'MEX', 'USA'] },
+  region('england', ['ENG']),
+  region('europe', ['ESP', 'ITA', 'GER', 'FRA', 'NED', 'POR', 'BEL', 'TUR']),
+  region('asia', ['KOR', 'JPN', 'KSA']),
+  region('americas', ['BRA', 'ARG', 'MEX', 'USA']),
 ];
 let sortBy = 'strength';
 let leagueId = null;
@@ -72,17 +84,17 @@ function startModal(ctx, team) {
   const updateNote = () => {
     const s = ctx.slots.find((x) => x.slot === slot);
     if (s.game) {
-      const t = ctx.dataset.teamById.get(s.game.teamId);
-      slotNote.textContent = `슬롯 ${slot}의 ${t?.name ?? ''} 게임을 덮어씁니다.`;
+      const other = ctx.dataset.teamById.get(s.game.teamId);
+      slotNote.textContent = t('select.start.overwrite', { slot, team: other?.name ?? '' });
       slotNote.className = 'slot-note warn';
     } else {
-      slotNote.textContent = `빈 슬롯 ${slot}에 저장합니다.`;
+      slotNote.textContent = t('select.start.emptySlot', { slot });
       slotNote.className = 'slot-note muted';
     }
   };
-  const lengthTabs = segmented(GAME_LENGTHS.map((n) => ({ id: String(n), label: `${n}시즌` })), String(years), (id) => (years = Number(id)), { size: 'small' });
+  const lengthTabs = segmented(GAME_LENGTHS.map((n) => ({ id: String(n), label: t('select.start.years', { n }) })), String(years), (id) => (years = Number(id)), { size: 'small' });
   const slotTabs = segmented(
-    ctx.slots.map((s) => ({ id: String(s.slot), label: `슬롯 ${s.slot}${s.game ? ' ●' : ''}` })),
+    ctx.slots.map((s) => ({ id: String(s.slot), label: t(s.game ? 'select.start.slotUsed' : 'select.slot', { slot: s.slot }) })),
     String(slot),
     (id) => {
       slot = Number(id);
@@ -91,17 +103,17 @@ function startModal(ctx, team) {
     { size: 'small' },
   );
   updateNote();
-  const start = h('button', { class: 'btn primary', type: 'button' }, '이 팀으로 시작');
-  const cancel = h('button', { class: 'btn ghost', type: 'button' }, '취소');
+  const start = h('button', { class: 'btn primary', type: 'button' }, t('select.start.confirm'));
+  const cancel = h('button', { class: 'btn ghost', type: 'button' }, t('select.start.cancel'));
   const close = openModal(
     h(
       'div',
       { class: 'confirm-modal' },
-      h('div', { class: 'start-head' }, teamBadge(team, 44), h('div', {}, h('h2', {}, `${team.name} 감독으로 시작`), h('p', { class: 'muted' }, `${league.name} ${league.season} · ${team.stadium ?? ''}`))),
-      h('div', { class: 'start-row' }, h('span', { class: 'muted' }, '게임 기간'), lengthTabs.el),
-      h('div', { class: 'start-row' }, h('span', { class: 'muted' }, '저장 위치'), slotTabs.el),
+      h('div', { class: 'start-head' }, teamBadge(team, 44), h('div', {}, h('h2', {}, t('select.start.title', { team: team.name })), h('p', { class: 'muted' }, `${league.name} ${league.season} · ${team.stadium ?? ''}`))),
+      h('div', { class: 'start-row' }, h('span', { class: 'muted' }, t('select.start.length')), lengthTabs.el),
+      h('div', { class: 'start-row' }, h('span', { class: 'muted' }, t('select.start.slot')), slotTabs.el),
       slotNote,
-      h('p', { class: 'muted small-note' }, '모든 리그가 함께 진행됩니다. 시즌이 끝나면 승강·성장·노화·은퇴·유스가 반영되고, 대륙 대회 진출 팀은 지난 시즌 순위로 정해집니다.'),
+      h('p', { class: 'muted small-note' }, t('select.start.note')),
       h('div', { class: 'confirm-actions' }, cancel, start),
     ),
   );
@@ -117,13 +129,13 @@ function startModal(ctx, team) {
 
 function slotsPanel(ctx, refresh) {
   const cards = ctx.slots.map((s) => {
-    if (!s.game && !s.invalid) return h('div', { class: 'slot-card empty' }, h('b', {}, `슬롯 ${s.slot}`), h('span', { class: 'muted' }, '비어 있음'));
-    const discard = h('button', { class: 'btn ghost small', type: 'button' }, '삭제');
+    if (!s.game && !s.invalid) return h('div', { class: 'slot-card empty' }, h('b', {}, t('select.slot', { slot: s.slot })), h('span', { class: 'muted' }, t('select.slots.empty')));
+    const discard = h('button', { class: 'btn ghost small', type: 'button' }, t('select.slots.delete'));
     discard.addEventListener('click', () =>
       openConfirm({
-        title: `슬롯 ${s.slot}을 삭제할까요?`,
-        body: '삭제하면 되돌릴 수 없습니다.',
-        confirmLabel: '삭제',
+        title: t('select.slots.deleteTitle', { slot: s.slot }),
+        body: t('select.slots.deleteBody'),
+        confirmLabel: t('select.slots.delete'),
         onConfirm: async () => {
           await ctx.discardSave(s.slot);
           refresh();
@@ -131,22 +143,22 @@ function slotsPanel(ctx, refresh) {
       }),
     );
     if (s.invalid) {
-      return h('div', { class: 'slot-card invalid' }, h('b', {}, `슬롯 ${s.slot}`), h('span', { class: 'muted' }, '데이터·버전이 달라 불러올 수 없음'), discard);
+      return h('div', { class: 'slot-card invalid' }, h('b', {}, t('select.slot', { slot: s.slot })), h('span', { class: 'muted' }, t('select.slots.invalid')), discard);
     }
     const g = s.game;
     const team = ctx.dataset.teamById.get(g.teamId);
     const league = ctx.dataset.leagueById.get(g.leagueId);
-    const resume = h('button', { class: 'btn primary small', type: 'button' }, '이어하기');
+    const resume = h('button', { class: 'btn primary small', type: 'button' }, t('select.slots.resume'));
     resume.addEventListener('click', () => {
       track('game-continue', { team: team.shortName, season: g.seasonIndex });
       ctx.startGame(g);
     });
-    const when = g.savedAt ? new Date(g.savedAt).toLocaleString('ko-KR', { dateStyle: 'short', timeStyle: 'short' }) : '';
+    const when = g.savedAt ? new Date(g.savedAt).toLocaleString(localeTag(), { dateStyle: 'short', timeStyle: 'short' }) : '';
     return h(
       'div',
       { class: 'slot-card', style: { '--team': team.colors.primary } },
-      h('div', { class: 'slot-card-head' }, teamBadge(team, 32), h('div', {}, h('b', {}, team.name), h('span', { class: 'muted' }, `슬롯 ${s.slot} · ${when}`))),
-      h('span', { class: 'muted' }, `${league.name} ${g.season} · 시즌 ${g.seasonIndex}/${g.years} · ${g.round > g.totalRounds ? '시즌 종료' : `라운드 ${g.round}/${g.totalRounds}`}`),
+      h('div', { class: 'slot-card-head' }, teamBadge(team, 32), h('div', {}, h('b', {}, team.name), h('span', { class: 'muted' }, t('select.slots.when', { slot: s.slot, when })))),
+      h('span', { class: 'muted' }, t('select.slots.progress', { league: league.name, year: g.season, i: g.seasonIndex, n: g.years, progress: g.round > g.totalRounds ? t('select.slots.seasonOver') : t('select.slots.round', { r: g.round, total: g.totalRounds }) })),
       h('div', { class: 'btn-row' }, discard, resume),
     );
   });
@@ -163,20 +175,20 @@ function teamCard(ctx, s) {
     { class: 't-tilt team-card-wrap' },
     h(
       'button',
-      { class: 't-tilt-card team-card', type: 'button', style: { '--team': team.colors.primary }, 'aria-label': `${team.name} 선택` },
+      { class: 't-tilt-card team-card', type: 'button', style: { '--team': team.colors.primary }, 'aria-label': t('select.card.aria', { team: team.name }) },
       h(
         'div',
         { class: 'tc-head' },
         teamBadge(team, 40),
         h('div', { class: 'tc-title' }, h('b', {}, team.name), h('span', { class: 'muted' }, team.stadium ?? '')),
-        h('div', { class: 'tc-ovr' }, h('span', {}, Math.round(s.avgOvr)), h('small', {}, '평균')),
+        h('div', { class: 'tc-ovr' }, h('span', {}, Math.round(s.avgOvr)), h('small', {}, t('select.card.avg'))),
       ),
-      h('div', { class: 'tc-ratings' }, row('공격', ratings.attack), row('중원', ratings.midfield), row('수비', ratings.defense), row('GK', ratings.goalkeeping)),
+      h('div', { class: 'tc-ratings' }, row(t('select.card.attack'), ratings.attack), row(t('select.card.midfield'), ratings.midfield), row(t('select.card.defense'), ratings.defense), row(t('select.card.gk'), ratings.goalkeeping)),
       h(
         'div',
         { class: 'tc-foot' },
-        h('span', {}, h('span', { class: 'muted' }, '에이스 '), `${s.star.name} `, h('span', { class: 'pos-tag' }, s.star.position), ` ${overall(s.star)}`),
-        h('span', { class: 'muted' }, `${s.squadSize}명 · 평균 ${fmt1(s.avgAge)}세`),
+        h('span', {}, h('span', { class: 'muted' }, t('select.card.star')), `${s.star.name} `, h('span', { class: 'pos-tag' }, s.star.position), ` ${overall(s.star)}`),
+        h('span', { class: 'muted' }, t('select.card.squad', { n: s.squadSize, age: fmt1(s.avgAge) })),
       ),
       h('div', { class: 't-tilt-glare' }),
     ),
@@ -199,7 +211,7 @@ export function render(ctx) {
   const leagueMeta = h('p', { class: 'muted' });
   const fill = () => {
     const league = dataset.leagueById.get(leagueId);
-    leagueMeta.textContent = `${league.name} ${league.season} · ${league.teamIds.length}팀 · 감독을 맡을 팀을 고르세요`;
+    leagueMeta.textContent = t('select.leagueMeta', { league: league.name, year: league.season, n: league.teamIds.length });
     const sorted = [...teamSummaries(dataset, leagueId)].sort((a, b) => (sortBy === 'name' ? a.team.name.localeCompare(b.team.name) : b.avgOvr - a.avgOvr));
     grid.replaceChildren(...sorted.map((s) => teamCard(ctx, s)));
   };
@@ -224,17 +236,18 @@ export function render(ctx) {
   const intro = h(
     'div',
     { class: 'welcome' },
-    h('h1', {}, '어느 팀의 감독이 되시겠습니까?'),
-    h('p', { class: 'welcome-lede' }, `${dataset.leagues.length}개 리그 ${dataset.allTeams.length}팀 중 한 곳을 맡습니다. 선발과 전술을 정하고, 하프타임 라커룸에서 선수들에게 말을 걸고, 이사회의 기대에 답하세요.`),
-    h('p', { class: 'muted' }, '리그를 고르고 팀 카드를 누르면 시작합니다. 강팀으로 우승을 노려도, 약팀으로 생존을 걸어도 됩니다.'),
+    h('h1', {}, t('select.intro.title')),
+    h('p', { class: 'welcome-lede' }, t('select.intro.lede', { leagues: dataset.leagues.length, teams: dataset.allTeams.length })),
+    h('p', { class: 'muted' }, t('select.intro.hint')),
   );
   return h(
     'div',
     { class: 'team-select' },
-    firstVisit ? intro : panel('저장된 게임', slotsHost, { className: 'slots-panel' }),
-    h('div', { class: 'page-head' }, h('div', {}, h(firstVisit ? 'h2' : 'h1', { class: firstVisit ? 'page-title' : '' }, '팀 선택'), leagueMeta), sort.el),
+    langSwitch(),
+    firstVisit ? intro : panel(t('select.slots.title'), slotsHost, { className: 'slots-panel' }),
+    h('div', { class: 'page-head' }, h('div', {}, h(firstVisit ? 'h2' : 'h1', { class: firstVisit ? 'page-title' : '' }, t('select.title')), leagueMeta), sort.el),
     h('div', { class: 'league-tabs' }, leagueTabs.el),
     grid,
-    h('p', { class: 'muted small-note basis-note' }, basisText(ctx.dataset.basis), ' · 실제 선수 이름만 쓰며, 능력치는 기록과 시장가치로 자체 계산한 값입니다.'),
+    h('p', { class: 'muted small-note basis-note' }, basisText(ctx.dataset.basis), t('select.basisNote')),
   );
 }

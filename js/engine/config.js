@@ -1,6 +1,8 @@
 // 경기 엔진 수치. 엔진 결과를 바꾸는 숫자는 전부 여기에 둔다.
 // 보정: node tools/simulate-matches.mjs --league 로 리그 전체 평균을 보며 조정
 //   목표(EPL 평균): 경기당 2.7~2.9골, 팀당 슈팅 12~13개·유효슈팅 4~5개, 홈 승 약 45%·무 약 25%
+// 화면 문구(전술·역할·지시 이름 등)는 사전(data/i18n/*/engine.json)에서 getter로 읽는다. 엔진 결과는 문구와 무관
+import { t } from '../i18n.js';
 
 export const MATCH_MINUTES = 90;
 export const HALF_TIME_MINUTE = 45;
@@ -90,21 +92,21 @@ export const SHOT_AFTER_ATTACK = 0.78;
 export const TACTICS = {
   defaults: { mentality: 'balanced', pressing: 'normal', style: 'mixed' },
   mentality: {
-    veryDefensive: { label: '매우 수비적', attack: 0.84, defense: 1.12 },
-    defensive: { label: '수비적', attack: 0.92, defense: 1.06 },
-    balanced: { label: '균형' },
-    attacking: { label: '공격적', attack: 1.07, defense: 0.93 },
-    veryAttacking: { label: '매우 공격적', attack: 1.13, defense: 0.86 },
+    veryDefensive: { get label() { return t('engine.tactic.mentality.veryDefensive'); }, attack: 0.84, defense: 1.12 },
+    defensive: { get label() { return t('engine.tactic.mentality.defensive'); }, attack: 0.92, defense: 1.06 },
+    balanced: { get label() { return t('engine.tactic.mentality.balanced'); } },
+    attacking: { get label() { return t('engine.tactic.mentality.attacking'); }, attack: 1.07, defense: 0.93 },
+    veryAttacking: { get label() { return t('engine.tactic.mentality.veryAttacking'); }, attack: 1.13, defense: 0.86 },
   },
   pressing: {
-    low: { label: '내려앉기', midfield: 0.96, defense: 1.06, attack: 0.97, drain: 0.85, cards: 0.85 }, // 뒤 공간을 지우지만 역습이 멀다
-    normal: { label: '보통' },
-    high: { label: '강한 압박', midfield: 1.05, bigChance: 1.12, defense: 0.98, drain: 1.35, cards: 1.25 }, // 높은 위치에서 뺏지만 뒷공간이 열리고 빨리 지친다
+    low: { get label() { return t('engine.tactic.pressing.low'); }, midfield: 0.96, defense: 1.06, attack: 0.97, drain: 0.85, cards: 0.85 }, // 뒤 공간을 지우지만 역습이 멀다
+    normal: { get label() { return t('engine.tactic.pressing.normal'); } },
+    high: { get label() { return t('engine.tactic.pressing.high'); }, midfield: 1.05, bigChance: 1.12, defense: 0.98, drain: 1.35, cards: 1.25 }, // 높은 위치에서 뺏지만 뒷공간이 열리고 빨리 지친다
   },
   style: {
-    short: { label: '짧은 패스', midfield: 1.04, attempts: 0.92, bigChance: 1.08, defense: 0.98 }, // 점유·질 높은 찬스, 대신 슈팅이 적고 후방 실수 위험
-    mixed: { label: '혼합' },
-    direct: { label: '직선적', midfield: 0.95, attempts: 1.1, bigChance: 0.9, defense: 1.03 }, // 빨리 전방으로: 슈팅은 많지만 점유를 내준다. 후방 실수는 적다
+    short: { get label() { return t('engine.tactic.style.short'); }, midfield: 1.04, attempts: 0.92, bigChance: 1.08, defense: 0.98 }, // 점유·질 높은 찬스, 대신 슈팅이 적고 후방 실수 위험
+    mixed: { get label() { return t('engine.tactic.style.mixed'); } },
+    direct: { get label() { return t('engine.tactic.style.direct'); }, midfield: 0.95, attempts: 1.1, bigChance: 0.9, defense: 1.03 }, // 빨리 전방으로: 슈팅은 많지만 점유를 내준다. 후방 실수는 적다
   },
 };
 
@@ -279,15 +281,21 @@ export const INJURY = {
   agePerYear: 0.05, // ageFrom 이후 1살마다 +5%
   fatigueMultiplier: 1.5, // 컨디션 0이면 ×2.5
   // 결장 경기 수는 [min, max] 사이 균등
+  // name은 세이브(경기 기록·선수 부상 상태·소식)에 그대로 저장되는 값이라 한국어 그대로 둔다. 화면 표시는 injuryLabel(name)
   types: [
-    { name: '타박상', weight: 0.3, min: 1, max: 1 },
-    { name: '발목 염좌', weight: 0.25, min: 1, max: 3 },
-    { name: '햄스트링 부상', weight: 0.2, min: 2, max: 5 },
-    { name: '종아리 부상', weight: 0.12, min: 2, max: 4 },
-    { name: '무릎 인대 부상', weight: 0.08, min: 6, max: 14 },
-    { name: '골절', weight: 0.05, min: 10, max: 20 },
+    { id: 'bruise', name: '타박상', weight: 0.3, min: 1, max: 1 },
+    { id: 'ankleSprain', name: '발목 염좌', weight: 0.25, min: 1, max: 3 },
+    { id: 'hamstring', name: '햄스트링 부상', weight: 0.2, min: 2, max: 5 },
+    { id: 'calf', name: '종아리 부상', weight: 0.12, min: 2, max: 4 },
+    { id: 'kneeLigament', name: '무릎 인대 부상', weight: 0.08, min: 6, max: 14 },
+    { id: 'fracture', name: '골절', weight: 0.05, min: 10, max: 20 },
   ],
 };
+// 저장된 부상 이름(또는 id) → 지금 언어의 표시 이름. 표에 없는 이름(예: 훈련 중 부상)은 그대로
+export function injuryLabel(nameOrId) {
+  const type = INJURY.types.find((x) => x.name === nameOrId || x.id === nameOrId);
+  return type ? t(`engine.injury.${type.id}`) : nameOrId;
+}
 
 // ── 카드 ───────────────────────────────────────────────
 // 수비하는 팀(그 분에 점유하지 못한 팀)에서만 발생. 목표: 팀당 경고 1.9장, 경기당 퇴장 약 0.1장
@@ -387,57 +395,74 @@ export const PENALTIES = {
 //   drain: 그 선수 체력 소모 배율 / cards: 그 선수 카드 배율
 //   short: 피치 위 짧은 표기 (기본 역할은 표시 안 함)
 //   skill: 역할에 필요한 능력치. 선수 능력이 자리 능력보다 높으면 그 선수 기여 ×(1 + 차이 × fitSlope), fitRange로 자른다
+// 역할 문구(이름·짧은 표기·설명)는 사전에서: engine.role.{자리}.{id}.label / .short / .desc (short: true인 역할만 짧은 표기가 있다)
+function roleTexts(pos, list) {
+  return list.map((r) => {
+    const key = `engine.role.${pos}.${r.id}`;
+    const props = {
+      label: { get: () => t(`${key}.label`), enumerable: true, configurable: true },
+      desc: { get: () => t(`${key}.desc`), enumerable: true, configurable: true },
+    };
+    if (r.short) props.short = { get: () => t(`${key}.short`), enumerable: true, configurable: true };
+    return Object.defineProperties(r, props);
+  });
+}
+
 export const ROLES = {
   fitSlope: 0.005,
   fitRange: [0.95, 1.05],
-  fitLabels: [{ min: 2.5, label: '잘 맞음', cls: 'fit-good' }, { min: -2.5, label: '보통', cls: 'fit-ok' }, { min: -Infinity, label: '안 맞음', cls: 'fit-bad' }],
+  fitLabels: [
+    { min: 2.5, get label() { return t('engine.roleFit.good'); }, cls: 'fit-good' },
+    { min: -2.5, get label() { return t('engine.roleFit.ok'); }, cls: 'fit-ok' },
+    { min: -Infinity, get label() { return t('engine.roleFit.bad'); }, cls: 'fit-bad' },
+  ],
   aiMinGain: 3, // AI 팀은 역할 능력이 자리 능력보다 이만큼 높을 때만 그 역할을 쓴다
   byPosition: {
-    GK: [
-      { id: 'goalkeeper', label: '골키퍼', desc: '골문을 지키는 데 집중합니다.' },
-      { id: 'sweeperKeeper', label: '스위퍼 키퍼', short: '스위퍼', desc: '라인을 높여 뒷공간을 지우고 빌드업에 가담합니다. 발밑과 판단이 좋아야 합니다.', skill: { gkDistribution: 0.3, composure: 0.2, passing: 0.2, gkPositioning: 0.2, pace: 0.1 }, unit: { midfield: 0.08, defense: -0.04 } },
-    ],
-    CB: [
-      { id: 'centreBack', label: '중앙 수비수', desc: '자리를 지키며 상대 공격수를 막습니다.' },
-      { id: 'ballPlayingDefender', label: '볼 플레잉 수비수', short: '볼플레잉', desc: '후방에서 전진 패스로 공격을 엽니다. 대신 수비 집중도는 조금 떨어집니다.', skill: { passing: 0.3, vision: 0.2, composure: 0.2, firstTouch: 0.15, positioning: 0.15 }, unit: { midfield: 0.12, defense: -0.08 } },
-      { id: 'stopper', label: '스토퍼', short: '스토퍼', desc: '앞으로 튀어나가 공격수를 먼저 끊습니다. 거칠어서 카드가 늘어납니다.', skill: { tackling: 0.3, strength: 0.25, heading: 0.2, pace: 0.15, workRate: 0.1 }, unit: { defense: 0.08 }, cards: 1.35, shoot: { header: 1.2 } },
-    ],
-    LB: [
-      { id: 'fullBack', label: '풀백', desc: '공수 균형을 맞춥니다.' },
-      { id: 'wingBack', label: '윙백', short: '윙백', desc: '측면을 끝까지 오르내리며 크로스를 올립니다. 뒷공간이 비고 빨리 지칩니다.', skill: { crossing: 0.25, pace: 0.2, stamina: 0.2, dribbling: 0.15, workRate: 0.2 }, unit: { attack: 0.2, defense: -0.15 }, assist: { header: 1.4, open: 1.15 }, mix: { header: 0.05 }, drain: 1.15 },
-      { id: 'invertedFullBack', label: '인버티드 풀백', short: '인버티드', desc: '안쪽으로 좁혀 중원 숫자를 늘립니다. 측면 크로스는 줄어듭니다.', skill: { passing: 0.25, firstTouch: 0.2, composure: 0.2, positioning: 0.2, vision: 0.15 }, unit: { midfield: 0.25, attack: -0.12, defense: -0.05 }, assist: { header: 0.6, open: 1.1 }, mix: { header: -0.04 } },
-      { id: 'defensiveFullBack', label: '수비형 풀백', short: '수비형', desc: '오버래핑 없이 수비 라인을 지킵니다.', skill: { tackling: 0.3, marking: 0.25, positioning: 0.25, strength: 0.2 }, unit: { defense: 0.12, attack: -0.2 }, assist: { all: 0.7 }, drain: 0.92 },
-    ],
-    DM: [
-      { id: 'anchor', label: '앵커', desc: '수비 라인 앞을 지킵니다.' },
-      { id: 'deepLyingPlaymaker', label: '딥라잉 플레이메이커', short: '딥라잉', desc: '깊은 곳에서 경기를 조율하고 긴 패스로 찬스를 만듭니다. 수비 커버는 약해집니다.', skill: { passing: 0.3, vision: 0.25, composure: 0.2, firstTouch: 0.15, longShots: 0.1 }, unit: { midfield: 0.15, defense: -0.15 }, assist: { all: 1.4 } },
-      { id: 'ballWinner', label: '볼 위닝 미드필더', short: '볼위닝', desc: '적극적으로 공을 뺏으러 다닙니다. 많이 뛰고 카드도 늘어납니다.', skill: { tackling: 0.3, workRate: 0.25, stamina: 0.2, strength: 0.15, pace: 0.1 }, unit: { defense: 0.08, midfield: 0.05 }, drain: 1.15, cards: 1.4 },
-      { id: 'halfBack', label: '하프백', short: '하프백', desc: '센터백 사이로 내려가 3백을 만듭니다. 공격 가담은 거의 없습니다.', skill: { positioning: 0.3, marking: 0.25, tackling: 0.2, passing: 0.15, heading: 0.1 }, unit: { defense: 0.2, attack: -0.15 }, shoot: { all: 0.6 } },
-    ],
-    CM: [
-      { id: 'centralMidfielder', label: '중앙 미드필더', desc: '공수 연결을 맡습니다.' },
-      { id: 'boxToBox', label: '박스 투 박스', short: '박투박', desc: '양쪽 박스를 오가며 공수에 모두 가담합니다. 체력 소모가 큽니다.', skill: { stamina: 0.25, workRate: 0.25, tackling: 0.15, longShots: 0.15, passing: 0.2 }, unit: { attack: 0.1, defense: 0.08 }, shoot: { long: 1.3 }, drain: 1.3 },
-      { id: 'mezzala', label: '메찰라', short: '메찰라', desc: '하프스페이스로 침투해 공격수처럼 움직입니다. 뒤가 허술해집니다.', skill: { dribbling: 0.25, offTheBall: 0.25, passing: 0.2, firstTouch: 0.15, finishing: 0.15 }, unit: { attack: 0.25, defense: -0.2 }, shoot: { open: 1.4, big: 1.3 } },
-      { id: 'deepLyingPlaymaker', label: '딥라잉 플레이메이커', short: '딥라잉', desc: '조금 내려와 템포를 조율합니다.', skill: { passing: 0.3, vision: 0.25, composure: 0.2, firstTouch: 0.15, longShots: 0.1 }, unit: { midfield: 0.15, attack: -0.12 }, assist: { all: 1.3 }, shoot: { all: 0.8 } },
-    ],
-    AM: [
-      { id: 'attackingMidfielder', label: '공격형 미드필더', desc: '공격진 뒤에서 찬스를 만들고 직접 마무리도 합니다.' },
-      { id: 'advancedPlaymaker', label: '공격형 플레이메이커', short: '플메', desc: '결정적인 패스에 집중합니다. 직접 슈팅은 줄어듭니다.', skill: { vision: 0.3, passing: 0.3, firstTouch: 0.2, composure: 0.2 }, unit: { midfield: 0.12, attack: -0.08 }, assist: { all: 1.35 }, shoot: { all: 0.8 } },
-      { id: 'shadowStriker', label: '섀도 스트라이커', short: '섀도', desc: '공격수 뒤에서 박스로 침투해 득점을 노립니다. 중원 연결은 약해집니다.', skill: { finishing: 0.3, offTheBall: 0.3, composure: 0.2, pace: 0.2 }, unit: { attack: 0.12, midfield: -0.2 }, shoot: { open: 1.4, big: 1.4 }, assist: { all: 0.8 } },
-    ],
-    LW: [
-      { id: 'winger', label: '윙어', desc: '측면을 돌파해 크로스를 올립니다.' },
-      { id: 'insideForward', label: '인사이드 포워드', short: '인사이드', desc: '안으로 파고들어 직접 슈팅합니다. 크로스는 줄어듭니다.', skill: { finishing: 0.3, dribbling: 0.25, offTheBall: 0.2, longShots: 0.15, pace: 0.1 }, shoot: { open: 1.35, big: 1.3, long: 1.3 }, assist: { header: 0.5 }, mix: { header: -0.05 } },
-      { id: 'invertedWinger', label: '인버티드 윙어', short: '인버티드', desc: '안쪽으로 좁혀 동료에게 찬스를 만들어 줍니다.', skill: { passing: 0.3, vision: 0.25, dribbling: 0.25, firstTouch: 0.2 }, unit: { midfield: 0.15, attack: -0.12 }, assist: { open: 1.3, big: 1.3, header: 0.6 }, mix: { header: -0.04 } },
-      { id: 'defensiveWinger', label: '수비형 윙어', short: '수비형', desc: '측면 수비까지 성실히 돕습니다. 공격 위협은 줄어듭니다.', skill: { workRate: 0.3, stamina: 0.25, tackling: 0.2, crossing: 0.15, positioning: 0.1 }, unit: { defense: 0.15, attack: -0.1 }, drain: 1.12 },
-    ],
-    ST: [
-      { id: 'striker', label: '스트라이커', desc: '최전방에서 득점에 집중합니다.' },
-      { id: 'targetMan', label: '타깃맨', short: '타깃맨', desc: '공중볼과 몸싸움으로 공을 지켜 냅니다. 크로스·헤더가 늘어납니다.', skill: { heading: 0.35, strength: 0.3, firstTouch: 0.15, composure: 0.1, offTheBall: 0.1 }, shoot: { header: 1.6, open: 0.85 }, assist: { open: 1.2 }, mix: { header: 0.12 } },
-      { id: 'poacher', label: '포처', short: '포처', desc: '박스 안에서만 기다리다 마무리합니다. 연계는 거의 없습니다.', skill: { finishing: 0.35, offTheBall: 0.35, composure: 0.2, agility: 0.1 }, unit: { midfield: -0.15 }, shoot: { big: 1.35, open: 1.1 }, assist: { all: 0.6 } },
-      { id: 'falseNine', label: '펄스 나인', short: '펄스9', desc: '중원으로 내려와 수비를 끌어내고 동료에게 공간을 만들어 줍니다. 직접 득점은 줄어듭니다.', skill: { passing: 0.25, vision: 0.25, firstTouch: 0.2, dribbling: 0.2, composure: 0.1 }, unit: { midfield: 0.3, attack: -0.2 }, shoot: { all: 0.75 }, assist: { all: 1.4 } },
-      { id: 'pressingForward', label: '압박형 공격수', short: '압박형', desc: '상대 수비를 쉴 새 없이 압박합니다. 빨리 지칩니다.', skill: { workRate: 0.35, stamina: 0.25, pace: 0.2, strength: 0.2 }, unit: { defense: 0.1, midfield: 0.05, attack: -0.08 }, mix: { big: 0.04 }, drain: 1.25 },
-    ],
+    GK: roleTexts('GK', [
+      { id: 'goalkeeper' },
+      { id: 'sweeperKeeper', short: true, skill: { gkDistribution: 0.3, composure: 0.2, passing: 0.2, gkPositioning: 0.2, pace: 0.1 }, unit: { midfield: 0.08, defense: -0.04 } },
+    ]),
+    CB: roleTexts('CB', [
+      { id: 'centreBack' },
+      { id: 'ballPlayingDefender', short: true, skill: { passing: 0.3, vision: 0.2, composure: 0.2, firstTouch: 0.15, positioning: 0.15 }, unit: { midfield: 0.12, defense: -0.08 } },
+      { id: 'stopper', short: true, skill: { tackling: 0.3, strength: 0.25, heading: 0.2, pace: 0.15, workRate: 0.1 }, unit: { defense: 0.08 }, cards: 1.35, shoot: { header: 1.2 } },
+    ]),
+    LB: roleTexts('LB', [
+      { id: 'fullBack' },
+      { id: 'wingBack', short: true, skill: { crossing: 0.25, pace: 0.2, stamina: 0.2, dribbling: 0.15, workRate: 0.2 }, unit: { attack: 0.2, defense: -0.15 }, assist: { header: 1.4, open: 1.15 }, mix: { header: 0.05 }, drain: 1.15 },
+      { id: 'invertedFullBack', short: true, skill: { passing: 0.25, firstTouch: 0.2, composure: 0.2, positioning: 0.2, vision: 0.15 }, unit: { midfield: 0.25, attack: -0.12, defense: -0.05 }, assist: { header: 0.6, open: 1.1 }, mix: { header: -0.04 } },
+      { id: 'defensiveFullBack', short: true, skill: { tackling: 0.3, marking: 0.25, positioning: 0.25, strength: 0.2 }, unit: { defense: 0.12, attack: -0.2 }, assist: { all: 0.7 }, drain: 0.92 },
+    ]),
+    DM: roleTexts('DM', [
+      { id: 'anchor' },
+      { id: 'deepLyingPlaymaker', short: true, skill: { passing: 0.3, vision: 0.25, composure: 0.2, firstTouch: 0.15, longShots: 0.1 }, unit: { midfield: 0.15, defense: -0.15 }, assist: { all: 1.4 } },
+      { id: 'ballWinner', short: true, skill: { tackling: 0.3, workRate: 0.25, stamina: 0.2, strength: 0.15, pace: 0.1 }, unit: { defense: 0.08, midfield: 0.05 }, drain: 1.15, cards: 1.4 },
+      { id: 'halfBack', short: true, skill: { positioning: 0.3, marking: 0.25, tackling: 0.2, passing: 0.15, heading: 0.1 }, unit: { defense: 0.2, attack: -0.15 }, shoot: { all: 0.6 } },
+    ]),
+    CM: roleTexts('CM', [
+      { id: 'centralMidfielder' },
+      { id: 'boxToBox', short: true, skill: { stamina: 0.25, workRate: 0.25, tackling: 0.15, longShots: 0.15, passing: 0.2 }, unit: { attack: 0.1, defense: 0.08 }, shoot: { long: 1.3 }, drain: 1.3 },
+      { id: 'mezzala', short: true, skill: { dribbling: 0.25, offTheBall: 0.25, passing: 0.2, firstTouch: 0.15, finishing: 0.15 }, unit: { attack: 0.25, defense: -0.2 }, shoot: { open: 1.4, big: 1.3 } },
+      { id: 'deepLyingPlaymaker', short: true, skill: { passing: 0.3, vision: 0.25, composure: 0.2, firstTouch: 0.15, longShots: 0.1 }, unit: { midfield: 0.15, attack: -0.12 }, assist: { all: 1.3 }, shoot: { all: 0.8 } },
+    ]),
+    AM: roleTexts('AM', [
+      { id: 'attackingMidfielder' },
+      { id: 'advancedPlaymaker', short: true, skill: { vision: 0.3, passing: 0.3, firstTouch: 0.2, composure: 0.2 }, unit: { midfield: 0.12, attack: -0.08 }, assist: { all: 1.35 }, shoot: { all: 0.8 } },
+      { id: 'shadowStriker', short: true, skill: { finishing: 0.3, offTheBall: 0.3, composure: 0.2, pace: 0.2 }, unit: { attack: 0.12, midfield: -0.2 }, shoot: { open: 1.4, big: 1.4 }, assist: { all: 0.8 } },
+    ]),
+    LW: roleTexts('LW', [
+      { id: 'winger' },
+      { id: 'insideForward', short: true, skill: { finishing: 0.3, dribbling: 0.25, offTheBall: 0.2, longShots: 0.15, pace: 0.1 }, shoot: { open: 1.35, big: 1.3, long: 1.3 }, assist: { header: 0.5 }, mix: { header: -0.05 } },
+      { id: 'invertedWinger', short: true, skill: { passing: 0.3, vision: 0.25, dribbling: 0.25, firstTouch: 0.2 }, unit: { midfield: 0.15, attack: -0.12 }, assist: { open: 1.3, big: 1.3, header: 0.6 }, mix: { header: -0.04 } },
+      { id: 'defensiveWinger', short: true, skill: { workRate: 0.3, stamina: 0.25, tackling: 0.2, crossing: 0.15, positioning: 0.1 }, unit: { defense: 0.15, attack: -0.1 }, drain: 1.12 },
+    ]),
+    ST: roleTexts('ST', [
+      { id: 'striker' },
+      { id: 'targetMan', short: true, skill: { heading: 0.35, strength: 0.3, firstTouch: 0.15, composure: 0.1, offTheBall: 0.1 }, shoot: { header: 1.6, open: 0.85 }, assist: { open: 1.2 }, mix: { header: 0.12 } },
+      { id: 'poacher', short: true, skill: { finishing: 0.35, offTheBall: 0.35, composure: 0.2, agility: 0.1 }, unit: { midfield: -0.15 }, shoot: { big: 1.35, open: 1.1 }, assist: { all: 0.6 } },
+      { id: 'falseNine', short: true, skill: { passing: 0.25, vision: 0.25, firstTouch: 0.2, dribbling: 0.2, composure: 0.1 }, unit: { midfield: 0.3, attack: -0.2 }, shoot: { all: 0.75 }, assist: { all: 1.4 } },
+      { id: 'pressingForward', short: true, skill: { workRate: 0.35, stamina: 0.25, pace: 0.2, strength: 0.2 }, unit: { defense: 0.1, midfield: 0.05, attack: -0.08 }, mix: { big: 0.04 }, drain: 1.25 },
+    ]),
   },
 };
 ROLES.byPosition.RB = ROLES.byPosition.LB;
@@ -448,12 +473,12 @@ ROLES.byPosition.RW = ROLES.byPosition.LW;
 //   효과 항목은 ROLES와 같다. mark: 대상 선수의 슈팅·도움 관여 배율, 마크하는 선수 카드·체력 배율
 export const INSTRUCTIONS = {
   shooting: {
-    more: { label: '슈팅 적극', shoot: { open: 1.3, long: 1.7, big: 1.1 }, assist: { all: 0.9 } },
-    less: { label: '슈팅 자제', shoot: { all: 0.6 }, assist: { all: 1.15 } },
+    more: { get label() { return t('engine.instruction.shooting.more'); }, shoot: { open: 1.3, long: 1.7, big: 1.1 }, assist: { all: 0.9 } },
+    less: { get label() { return t('engine.instruction.shooting.less'); }, shoot: { all: 0.6 }, assist: { all: 1.15 } },
   },
   runs: {
-    forward: { label: '공격 가담', unit: { attack: 0.12, defense: -0.1 }, drain: 1.1 },
-    back: { label: '자리 지키기', unit: { attack: -0.12, defense: 0.1 }, drain: 0.95 },
+    forward: { get label() { return t('engine.instruction.runs.forward'); }, unit: { attack: 0.12, defense: -0.1 }, drain: 1.1 },
+    back: { get label() { return t('engine.instruction.runs.back'); }, unit: { attack: -0.12, defense: 0.1 }, drain: 0.95 },
   },
-  mark: { label: '전담 마크', targetShoot: 0.7, targetAssist: 0.8, cards: 1.3, drain: 1.08 },
+  mark: { get label() { return t('engine.instruction.mark'); }, targetShoot: 0.7, targetAssist: 0.8, cards: 1.3, drain: 1.08 },
 };

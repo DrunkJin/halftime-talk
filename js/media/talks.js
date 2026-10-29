@@ -1,8 +1,10 @@
 // 선수 면담 대사 (data/talks.json). 실패하면 null → 대사 없이 결과만 보여준다
+import { contentBase } from '../i18n.js';
+
 let talksPromise = null;
 
 export function loadTalks(baseUrl = 'data/') {
-  talksPromise ??= fetch(`${baseUrl}talks.json`)
+  talksPromise ??= fetch(`${contentBase(baseUrl)}talks.json`)
     .then((r) => (r.ok ? r.json() : null))
     .catch(() => null);
   return talksPromise;
@@ -15,3 +17,4 @@ export function pickTalk(list, seed, vars = {}) {
   for (const ch of String(seed)) hsh = (hsh * 31 + ch.charCodeAt(0)) >>> 0;
   return list[hsh % list.length].replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
 }
+

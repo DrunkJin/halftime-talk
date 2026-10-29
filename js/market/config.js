@@ -1,11 +1,12 @@
 // 이적시장 수치. 선수 가치·예산은 데이터가 아니라 게임 공식으로 계산한다 (금액 단위: 백만 파운드)
+import { t } from '../i18n.js';
 
 export const MARKET = {
   // 이적시장이 열리는 구간: 시즌 진행률(0~1) 기준이라 라운드 수가 다른 리그에도 맞는다
   // (38라운드 리그면 여름 1~3라운드, 겨울 19~22라운드)
   windows: [
-    { name: '여름 이적시장', from: 0, to: 0.08 },
-    { name: '겨울 이적시장', from: 0.48, to: 0.58 },
+    { id: 'summer', get name() { return t('market.window.summer'); }, from: 0, to: 0.08 },
+    { id: 'winter', get name() { return t('market.window.winter'); }, from: 0.48, to: 0.58 },
   ],
 
   // 가치 = exp((OVR - ovrBase) / ovrScale) × 나이 배율 × (GK면 gkFactor)

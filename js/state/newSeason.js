@@ -5,6 +5,7 @@ import { countryOf, createCups } from '../competitions/cups.js';
 import { ATTRIBUTE_KEYS } from '../data/schema.js';
 import { overall } from '../engine/ratings.js';
 import { createRng } from '../engine/rng.js';
+import { t } from '../i18n.js';
 import { generateFixtures, roundCount } from '../league/fixtures.js';
 import { contractOf, demandedContract, initSeasonFinances, renewalTerms, signContract, wageRoom } from '../market/finance.js';
 import { canAiBuy, transferPlayer, transferWindows } from '../market/market.js';
@@ -356,7 +357,7 @@ export function startNextSeason(base, game, { renew = null } = {}) {
       w.youth.push(y);
       w.players[y.id] = packAttributes(y.age, y.attributes);
       if (!team.guest) game.contracts[y.id] = { wage: minWage, until: game.seasonIndex + P.youth.contractYears };
-      if (team.id === game.teamId) summary.youth.push(`${y.name} (${y.position}, ${y.age}세)`);
+      if (team.id === game.teamId) summary.youth.push(t('state.summary.youth', { name: y.name, position: y.position, age: y.age }));
     }
   }
 
@@ -449,14 +450,15 @@ export function startNextSeason(base, game, { renew = null } = {}) {
   startBoardSeason(ds1, game);
   const myTeam = ds1.teamById.get(game.teamId).shortName;
   if (moving) pushNews(game, 'board.welcome', { club: myTeam }, { important: true });
-  pushNews(game, 'board.objective', { team: myTeam, goal: game.board.objective.label, kind: game.board.objective.kind }, { important: true });
+  pushNews(game, 'board.objective', { team: myTeam, kind: game.board.objective.kind, goalKind: game.board.objective.kind, goalTarget: game.board.objective.target }, { important: true });
   if (contested.length) {
     const top = contested.map((c) => ({ ...c, p: ds1.playerById.get(c.playerId) })).sort((a, b) => overall(b.p) - overall(a.p)).slice(0, 8);
-    const club = (id) => ds1.teamById.get(id)?.shortName ?? '무소속';
+    const club = (id) => ds1.teamById.get(id)?.shortName ?? null;
     pushNews(game, 'transfer.freeAgency', {
       count: contested.length,
       round: game.freeAgency.decideRound,
-      lines: top.map((c) => `${c.p.name} (${c.p.position}, ${c.p.age}세, 전 소속 ${club(c.from)}) — 관심 구단 ${c.bids.length}곳`),
+      // 줄은 { key, vars } (화면이 t로 그린다 — 세이브에 문장을 남기지 않게)
+      lines: top.map((c) => ({ key: club(c.from) ? 'state.news.faLine' : 'state.news.faLineFree', vars: { name: c.p.name, position: c.p.position, age: c.p.age, club: club(c.from), n: c.bids.length } })),
     });
   }
   if (moving) {

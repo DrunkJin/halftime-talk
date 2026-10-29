@@ -1,6 +1,7 @@
 // 이적: 영입 제안, AI 구단의 구매 제안, 받은 제안, 계약 해지·재계약. 소속 변경은 game.players[id].teamId로만 기록한다.
 import { overall } from '../engine/ratings.js';
 import { createRng } from '../engine/rng.js';
+import { localeTag, t } from '../i18n.js';
 import { currentTeamId, fixLineup, isSeasonOver, loanOf, squadOf } from '../state/game.js';
 import { RULES } from '../state/rules.js';
 import { onSigning } from '../state/training.js';
@@ -10,15 +11,18 @@ import { bookLedger, contractOf, demandedContract, releaseCost, renewalTerms, se
 import { formatMoney, playerValue, topElevenOvr } from './value.js';
 
 const round1 = (v) => Math.round(v * 10) / 10;
-const LOANED = '임대 온 선수입니다. 계약은 원소속 구단이 정합니다.';
-const JUST_SIGNED = '이번 이적시장에 영입한 선수입니다. 다음 이적시장부터 팔 수 있습니다.';
-export const formatWage = (k) => `£${k.toLocaleString()}k/주`;
+// 결과 문장은 부를 때 지금 언어로 (message는 화면이 바로 보여 주고 저장하지 않는다)
+const LOANED = () => t('market.err.loanedIn');
+const JUST_SIGNED = () => t('market.err.justSigned');
+const CLOSED = () => t('market.err.windowClosed');
+const SQUAD_MIN = () => t('market.err.squadMin', { n: RULES.squadMin });
+export const formatWage = (k) => t('market.wage', { k: k.toLocaleString(localeTag()) });
 
 // 이적시장 기간: 진행률 구간 → 사용자 리그의 라운드 구간 [{ name, from, to }]
 export const transferWindows = (game) =>
   MARKET.windows.map((w) => {
     const from = Math.floor(w.from * game.totalRounds) + 1;
-    return { name: w.name, from, to: Math.max(from, Math.round(w.to * game.totalRounds)) };
+    return { id: w.id, name: w.name, from, to: Math.max(from, Math.round(w.to * game.totalRounds)) };
   });
 
 // { open, name, closesAfter, next } — next는 다음에 열릴 창
@@ -99,25 +103,25 @@ export function makeOffer(dataset, game, playerId, amount) {
   const fail = (message) => ({ ok: false, accepted: false, message });
   const contract = demandedContract(dataset, game, player, game.teamId);
 
-  if (!windowStatus(game).open) return fail('이적시장이 닫혀 있습니다.');
-  if (from === game.teamId) return fail('이미 우리 팀 선수입니다.');
-  if (loanOf(game, playerId)) return fail('임대 중인 선수는 영입할 수 없습니다.');
-  if (dataset.isGuest(from)) return fail('대륙 대회 전용 팀 선수는 영입할 수 없습니다.');
-  if (!(amount >= 0)) return fail('금액을 확인하세요.');
-  if (amount > game.budgets[game.teamId]) return fail('잔고가 부족합니다.');
-  if (contract.wage > wageRoom(dataset, game, game.teamId)) return fail(`주급 한도 초과: 요구 주급 ${formatWage(contract.wage)}, 남은 한도 ${formatWage(Math.max(0, wageRoom(dataset, game, game.teamId)))}`);
-  if (squadOf(dataset, game, game.teamId).length >= RULES.squadMax) return fail(`스쿼드가 가득 찼습니다 (최대 ${RULES.squadMax}명).`);
+  if (!windowStatus(game).open) return fail(CLOSED());
+  if (from === game.teamId) return fail(t('market.err.alreadyOurs'));
+  if (loanOf(game, playerId)) return fail(t('market.err.onLoanNoBuy'));
+  if (dataset.isGuest(from)) return fail(t('market.err.guestNoBuy'));
+  if (!(amount >= 0)) return fail(t('market.err.checkAmount'));
+  if (amount > game.budgets[game.teamId]) return fail(t('market.err.noFunds'));
+  if (contract.wage > wageRoom(dataset, game, game.teamId)) return fail(t('market.err.wageCap', { wage: formatWage(contract.wage), room: formatWage(Math.max(0, wageRoom(dataset, game, game.teamId))) }));
+  if (squadOf(dataset, game, game.teamId).length >= RULES.squadMax) return fail(t('market.err.squadFull', { n: RULES.squadMax }));
 
   if (from === null) {
     // 계약 만료 스타: 다른 구단과 경쟁 입찰 (결정은 freeAgency.js resolveFreeAgency)
     if (pendingFreeAgent(game, playerId)) return bidFreeAgent(dataset, game, playerId, amount);
     const bonus = minSigningBonus(player);
-    if (amount < bonus) return fail(`계약금이 모자랍니다. 최소 ${formatMoney(bonus)}은 줘야 사인합니다.`);
+    if (amount < bonus) return fail(t('market.err.bonusTooLow', { bonus: formatMoney(bonus) }));
     transferPlayer(dataset, game, playerId, game.teamId, amount, { contract });
-    return { ok: true, accepted: true, message: `${player.name} 자유계약 영입 (계약금 ${formatMoney(amount)}, ${formatWage(contract.wage)}, ${contract.years}년)` };
+    return { ok: true, accepted: true, message: t('market.ok.freeSigned', { name: player.name, bonus: formatMoney(amount), wage: formatWage(contract.wage), n: contract.years }) };
   }
   if (squadOf(dataset, game, from).length <= RULES.squadMin) {
-    return { ok: true, accepted: false, message: `${dataset.teamById.get(from).shortName}: 스쿼드 인원이 부족해 팔 수 없습니다.` };
+    return { ok: true, accepted: false, message: t('market.err.sellerShort', { club: dataset.teamById.get(from).shortName }) };
   }
 
   const asking = askingPrice(dataset, game, player);
@@ -127,10 +131,10 @@ export function makeOffer(dataset, game, playerId, amount) {
   // 같은 라운드에 같은 금액이면 같은 답 (다시 눌러서 운을 바꿀 수 없게)
   const accepted = createRng(`${game.seed}:offer:${game.seasonIndex}:${game.round}:${playerId}:${Math.round(amount * 10)}`).chance(p);
   if (!accepted) {
-    return { ok: true, accepted: false, message: ratio < rejectBelow ? '제안이 너무 낮다며 거절했습니다.' : '고민 끝에 거절했습니다. 조금 더 올려보세요.' };
+    return { ok: true, accepted: false, message: t(ratio < rejectBelow ? 'market.reject.tooLow' : 'market.reject.close') };
   }
   transferPlayer(dataset, game, playerId, game.teamId, amount, { contract });
-  return { ok: true, accepted: true, message: `${player.name} 영입 완료 (${dataset.teamById.get(from).shortName}에 ${formatMoney(amount)}, ${formatWage(contract.wage)})` };
+  return { ok: true, accepted: true, message: t('market.ok.signed', { name: player.name, club: dataset.teamById.get(from).shortName, fee: formatMoney(amount), wage: formatWage(contract.wage) }) };
 }
 
 // AI 구단이 이 선수를 살 수 있는지 (잔고·주급 한도·인원)
@@ -163,45 +167,45 @@ export function sellOffers(dataset, game, playerId) {
 }
 
 export function acceptSellOffer(dataset, game, playerId, offer) {
-  if (!windowStatus(game).open) return { ok: false, message: '이적시장이 닫혀 있습니다.' };
-  if (loanOf(game, playerId)) return { ok: false, message: LOANED };
-  if (signedThisWindow(game, playerId)) return { ok: false, message: JUST_SIGNED };
-  if (squadOf(dataset, game, game.teamId).length <= RULES.squadMin) return { ok: false, message: `스쿼드 최소 인원은 ${RULES.squadMin}명입니다.` };
+  if (!windowStatus(game).open) return { ok: false, message: CLOSED() };
+  if (loanOf(game, playerId)) return { ok: false, message: LOANED() };
+  if (signedThisWindow(game, playerId)) return { ok: false, message: JUST_SIGNED() };
+  if (squadOf(dataset, game, game.teamId).length <= RULES.squadMin) return { ok: false, message: SQUAD_MIN() };
   const player = dataset.playerById.get(playerId);
-  if (!canAiBuy(dataset, game, offer.teamId, player, offer.amount)) return { ok: false, message: '상대 구단이 더는 조건을 맞출 수 없습니다.' };
+  if (!canAiBuy(dataset, game, offer.teamId, player, offer.amount)) return { ok: false, message: t('market.err.buyerCantPay') };
   transferPlayer(dataset, game, playerId, offer.teamId, offer.amount, { contract: demandedContract(dataset, game, player, offer.teamId), by: 'ai' });
-  return { ok: true, message: `${player.name} 판매 완료 (+${formatMoney(offer.amount)})` };
+  return { ok: true, message: t('market.ok.sold', { name: player.name, fee: formatMoney(offer.amount) }) };
 }
 
 // 받은 제안 (AI 구단이 먼저 걸어온 것)
 export function respondIncomingOffer(dataset, game, offerId, accept) {
   const offer = (game.incomingOffers ?? []).find((o) => o.id === offerId);
-  if (!offer) return { ok: false, message: '이미 사라진 제안입니다.' };
+  if (!offer) return { ok: false, message: t('market.err.offerGone') };
   game.incomingOffers = game.incomingOffers.filter((o) => o.id !== offerId);
-  if (!accept) return { ok: true, message: '제안을 거절했습니다.' };
+  if (!accept) return { ok: true, message: t('market.ok.offerRejected') };
   return acceptSellOffer(dataset, game, offer.playerId, offer);
 }
 
 // 계약 해지: 이적시장과 무관하게 언제든. 남은 계약 주급의 일부를 위약금으로 낸다
 export function releasePlayer(dataset, game, playerId) {
-  if (loanOf(game, playerId)) return { ok: false, message: LOANED };
-  if (squadOf(dataset, game, game.teamId).length <= RULES.squadMin) return { ok: false, message: `스쿼드 최소 인원은 ${RULES.squadMin}명입니다.` };
+  if (loanOf(game, playerId)) return { ok: false, message: LOANED() };
+  if (squadOf(dataset, game, game.teamId).length <= RULES.squadMin) return { ok: false, message: SQUAD_MIN() };
   const cost = releaseCost(dataset, game, playerId);
-  if (cost > game.budgets[game.teamId]) return { ok: false, message: `위약금 ${formatMoney(cost)}을 낼 잔고가 없습니다.` };
+  if (cost > game.budgets[game.teamId]) return { ok: false, message: t('market.err.cantPayRelease', { cost: formatMoney(cost) }) };
   game.budgets[game.teamId] = round1(game.budgets[game.teamId] - cost);
   bookLedger(game, game.teamId, 'compensation', cost);
   transferPlayer(dataset, game, playerId, null, 0);
-  return { ok: true, message: `${dataset.playerById.get(playerId).name} 계약 해지 (위약금 ${formatMoney(cost)})` };
+  return { ok: true, message: t('market.ok.released', { name: dataset.playerById.get(playerId).name, cost: formatMoney(cost) }) };
 }
 
 // 재계약: 요구 조건을 받아들이면 계약 연장
 export function renewContract(dataset, game, playerId) {
-  if (loanOf(game, playerId)?.to === game.teamId) return { ok: false, message: LOANED }; // 임대 보낸 선수는 재계약할 수 있다
+  if (loanOf(game, playerId)?.to === game.teamId) return { ok: false, message: LOANED() }; // 임대 보낸 선수는 재계약할 수 있다
   const terms = renewalTerms(dataset, game, playerId);
   const extra = terms.wage - contractOf(dataset, game, playerId).wage;
-  if (extra > wageRoom(dataset, game, game.teamId)) return { ok: false, message: `주급 한도 초과: 인상분 ${formatWage(extra)}` };
+  if (extra > wageRoom(dataset, game, game.teamId)) return { ok: false, message: t('market.err.wageCapRaise', { wage: formatWage(extra) }) };
   signContract(game, playerId, terms);
-  return { ok: true, message: `${dataset.playerById.get(playerId).name} 재계약 (${formatWage(terms.wage)}, ${terms.years}년)` };
+  return { ok: true, message: t('market.ok.renewed', { name: dataset.playerById.get(playerId).name, wage: formatWage(terms.wage), n: terms.years }) };
 }
 
 export { wageBill, wageRoom };

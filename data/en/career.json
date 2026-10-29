@@ -1,0 +1,331 @@
+{
+  "schemaVersion": 1,
+  "note": "Manager career ending copy. Titles are decided in the order of pickTitle in js/state/career.js. Placeholders: {team} team name, {seasons} number of seasons, {trophies} number of trophies, {captain} most appearances, {scorer} all-time top scorer, {best} best season",
+  "titles": {
+    "double": {
+      "label": "Master of the Double",
+      "summary": "Lifted the league title and a continental trophy in the same season.",
+      "board": [
+        "A new chapter has been written in {team}'s history. Precious few managers have conquered both the league and Europe in the same year.",
+        "The board has decided to record the {best} season as the greatest year in the club's history. You were at the heart of it.",
+        "We handed you a team. What you gave us back was a legend.",
+        "A motion to build a new trophy cabinet was passed unanimously.",
+        "Every penny invested across your {seasons}-season tenure was repaid by that single campaign. Thank you."
+      ],
+      "fans": [
+        "I'll never forget the parade that summer. The whole city was painted in {team} colours.",
+        "The first season I took my kid to was the Double season. I'll be bragging about it for the rest of my life.",
+        "Cried the day we won the league, then cried again on cup final day. All I remember from that season is tears.",
+        "There's a petition going round to paint the gaffer's face on a mural outside the ground.",
+        "The {team} of our generation — that's the gaffer's team."
+      ],
+      "captain": [
+        "I wore the armband and lifted two trophies. Thanks to the boss, a dream became reality.",
+        "That season the dressing room forgot how to lose. The boss made it that way.",
+        "I reckon it was the boss's notebook — studying every opponent, every week — that won us that season.",
+        "As a player, there'll never be a season better than that one. Thanks, boss.",
+        "First into the training ground, last to leave. We had no choice but to follow."
+      ]
+    },
+    "europe": {
+      "label": "Conqueror of Europe",
+      "summary": "Reached the summit of the Champions League.",
+      "board": [
+        "A manager who brought home the European Cup will forever be part of this club.",
+        "You raised the name of {team} higher than ever on Europe's greatest stage.",
+        "The footage from that final will hang in the first room of the club museum.",
+        "The board is considering naming the training ground in your honour.",
+        "You were the only one who believed this club could stand on top of Europe."
+      ],
+      "fans": [
+        "That night we were the happiest fans in Europe.",
+        "My mate who went to the final still keeps the ticket in his wallet.",
+        "The Champions League anthem feels like our song now.",
+        "The gaffer gave us the moment my grandad waited his whole life to see.",
+        "We'll be singing the gaffer's name on every European night."
+      ],
+      "captain": [
+        "As a kid I only ever saw that trophy on TV. Now I've lifted it. I still can't believe it.",
+        "I'll remember what the boss said the night before the final for the rest of my life: 'We've already proved we deserve to be here.'",
+        "Even against Europe's giants, the boss was never once intimidated. It rubbed off on all of us.",
+        "My proudest moment as captain was hugging the boss that night.",
+        "I take back every moan about the long tactics meetings. There was a reason for all of it."
+      ]
+    },
+    "dynasty": {
+      "label": "The Dynasty Builder",
+      "summary": "Won the league several times and defined an era.",
+      "board": [
+        "One title can be luck, but several titles are a system. You built that system.",
+        "Throughout your {seasons}-season reign, {team} set the standard for the whole league.",
+        "Our rivals have started copying us. That is the proof of a dynasty.",
+        "The board hopes the methods you leave behind will become part of the club's identity.",
+        "Making winning the league feel normal — that is your greatest achievement."
+      ],
+      "fans": [
+        "Kids these days think winning the league is just what {team} do.",
+        "An era where there was something to celebrate on the last day of every season. I'll miss it.",
+        "When the other teams' fans started hating us, that's when we knew we were on top.",
+        "I've kept every shirt from the gaffer's era.",
+        "I ran out of fingers counting the trophies."
+      ],
+      "captain": [
+        "The more winners' medals we piled up, the hungrier the boss looked. That was the secret.",
+        "Every season he gave us a new target. Last year's title was last year's news.",
+        "My time at this club is my whole career.",
+        "I wore the armband, but the real captain was the boss.",
+        "I worried we'd get bored of winning. That day never came."
+      ]
+    },
+    "miracle": {
+      "label": "The Miracle Worker",
+      "summary": "Lifted a trophy with a team nobody expected anything from.",
+      "board": [
+        "We dug out the pre-season predictions again. Our name was a long way down the list.",
+        "A manager who achieved far more than the resources allowed. That is how the board will remember you.",
+        "That season cannot be explained by the budget sheet. Perhaps only you can explain it.",
+        "They say there are no miracles in football. We saw one with our own eyes.",
+        "Every time the press wrote 'shock', we read it as 'the result of preparation'."
+      ],
+      "fans": [
+        "Do you know what odds the bookies gave us for the title? Still makes me laugh.",
+        "When nobody believed, the gaffer did. And then he made us believe too.",
+        "Someone needs to make a film about the {best} season. I'm serious.",
+        "The day we lifted the trophy, I was hugging total strangers outside the ground and crying.",
+        "Thanks for proving that a club like ours can win it too."
+      ],
+      "captain": [
+        "Everyone had us down for relegation. The boss pinned those articles up in the dressing room.",
+        "Every time we faced players who cost more than us, the boss pointed out exactly where they were weak.",
+        "I know we achieved more than our ability should have allowed. That's why I'm even prouder.",
+        "When he said in the tactics meeting 'this is how we win today', that's exactly how we won.",
+        "Not one player in this squad will ever forget this season."
+      ]
+    },
+    "champion": {
+      "label": "The Serial Winner",
+      "summary": "Leaves with silverware in the cabinet.",
+      "board": [
+        "Thank you for delivering exactly what we asked of you.",
+        "Trophies are remembered as numbers, but the way they were won will live on in the club's culture.",
+        "Trophies won: {trophies}. No small figure in this club's history.",
+        "We learned what it means to have a manager who knows how to win.",
+        "The bar for the next manager has been set far too high. That is your fault."
+      ],
+      "fans": [
+        "My season ticket from the title-winning year is in a frame.",
+        "The moment the trophy went up is my phone wallpaper.",
+        "That season, every week, we went to the ground believing we'd win.",
+        "They still sing the song with the gaffer's name in it.",
+        "The manager who showed us a title. That's enough for me."
+      ],
+      "captain": [
+        "I remember what the boss said the day we got our winners' medals: 'This is only the beginning.'",
+        "Playing under someone who knows how to win was a special experience.",
+        "Every time things got tough, the boss came up with the answer. All we did was carry it out.",
+        "The moment I lifted the trophy, the first person I looked for was the boss.",
+        "Leading this team to a title as captain is something I'll be proud of for life."
+      ]
+    },
+    "climber": {
+      "label": "The Promotion Man",
+      "summary": "Took the team up to a bigger stage.",
+      "board": [
+        "Promotion changes a club's future. You changed ours.",
+        "We will see the name of {team} on a bigger stage once again.",
+        "The extra revenue from promotion will be invested in the next generation.",
+        "You gave direction to a club that had been bouncing between divisions.",
+        "Going up is remarkable, but building a team capable of going up is even more so."
+      ],
+      "fans": [
+        "I was one of the lot who ran onto the pitch the day promotion was sealed. Sorry about that.",
+        "I've been looking at next season's away fixtures and I'm too excited to sleep.",
+        "I remember the hard years in the lower league, so this means even more.",
+        "I've watched the promotion season highlights a hundred times already.",
+        "Thanks, gaffer, for taking us back to the big stage."
+      ],
+      "captain": [
+        "Even under all the pressure of a promotion race, the boss stayed calm.",
+        "When the final whistle went in the last game, it was the first time I'd seen the boss properly laugh.",
+        "We used to play in tiny grounds. Now we're stepping onto the big stage.",
+        "He says the players won promotion, but it was the boss who drew up the plan.",
+        "The boss was the first person to say this team could go up again."
+      ]
+    },
+    "rebuilder": {
+      "label": "Architect of the Rebuild",
+      "summary": "Rebuilt a team that had fallen apart.",
+      "board": [
+        "We put the league table from your first season next to the one from your last. It looked like a different club.",
+        "A team rebuilt from the foundations up does not collapse easily. Thank you.",
+        "The squad you leave behind will be an asset for years to come.",
+        "Thank you for staying with us through a period that demanded patience.",
+        "We have never had a manager who suited the word 'rebuild' so well."
+      ],
+      "fans": [
+        "Everyone had their doubts at first. Now everyone's gutted to see him go.",
+        "You could see the team getting better every year. That was the best part.",
+        "Watching the players the gaffer brought through was a real joy.",
+        "I'm proud to support a team that climbed back up from rock bottom.",
+        "These days I actually look forward to watching us play. That wasn't always the case."
+      ],
+      "captain": [
+        "When he arrived, the mood in the dressing room was the worst it could be. The boss changed it bit by bit.",
+        "A team that was used to losing got used to winning.",
+        "The boss looked at the process before the results. The results followed.",
+        "I'm proud to have been at the centre of that change as captain.",
+        "The next manager is inheriting a good team. That's down to the boss."
+      ]
+    },
+    "overachiever": {
+      "label": "The Overachiever",
+      "summary": "Finished higher than predicted, season after season.",
+      "board": [
+        "On average, the team finished {over} places above its pre-season prediction. The numbers speak for themselves.",
+        "Consistently getting more out of the squad than its resources suggest — that is the definition of a good manager.",
+        "Whenever your name came up in board meetings, the words 'beyond expectations' were never far behind.",
+        "Measured against budget, you were the best manager in the league.",
+        "Thanks to you, this club now sets its sights higher."
+      ],
+      "fans": [
+        "I was always nervous before the season, and always smiling at the end of it.",
+        "Every year he proved the pundits wrong.",
+        "You've no idea how good it felt finishing above clubs with far more money than us.",
+        "The gaffer was someone who pushed players beyond their limits.",
+        "The {best} season — you remember how happy we were back then, don't you?"
+      ],
+      "captain": [
+        "The boss rated us higher than we rated ourselves.",
+        "He made us believe there was a way to beat anyone.",
+        "The opposition analysis before every match was spot on. That was the difference.",
+        "A team that always finished above its reputation. That was the boss's team.",
+        "I'm certain I became a better player under the boss."
+      ]
+    },
+    "firefighter": {
+      "label": "The Firefighter",
+      "summary": "Kept a team tipped for relegation in the division.",
+      "board": [
+        "When everyone feared relegation, you kept the team up. That is worth more than any sum of money.",
+        "Survival is not glamorous, but it is the club's very existence.",
+        "Thank you for having the courage to take on a difficult job.",
+        "Not once in your {seasons}-season spell did the team fall apart. That is your achievement.",
+        "The next manager will start in the league that you preserved."
+      ],
+      "fans": [
+        "I was biting my nails right up to the final day, but we survived in the end, didn't we?",
+        "The roar the day survival was confirmed was louder than most title celebrations.",
+        "He's the manager who stood by us through the hardest times.",
+        "I saved all the articles predicting we'd go down and binned the lot at the end of the season.",
+        "Thanks to the gaffer, I'm cheering us on in the same league again this season."
+      ],
+      "captain": [
+        "A relegation scrap is a battle of mentality. The boss kept our heads right.",
+        "Even when we lost, the boss started talking about the plan for the next game. That's how we kept going.",
+        "It wasn't pretty, but we played for each other.",
+        "As captain, I'm grateful to the boss for not letting this team crumble.",
+        "We learned how to survive. That's one of the hardest things in football."
+      ]
+    },
+    "fallen": {
+      "label": "The Hard Road",
+      "summary": "Suffered the pain of relegation.",
+      "board": [
+        "The outcome was disappointing, but we know you fought to the very end.",
+        "Relegation is the responsibility of everyone at the club. You need not carry it alone.",
+        "Thank you for not walking away from the team in difficult times.",
+        "We believe this experience will make the club stronger.",
+        "When we one day return, your time here will be remembered too."
+      ],
+      "fans": [
+        "The day we went down was really hard. But I don't blame the gaffer.",
+        "There were good days too, weren't there? Like the {best} season.",
+        "Whatever league we're in, we're {team} fans.",
+        "We'll go back up. What the gaffer left behind will help with that.",
+        "I saw that he never gave up. That's enough for me."
+      ],
+      "captain": [
+        "We should have done more to help the boss.",
+        "Results aren't everything — that's something I learned at this club.",
+        "Even in the hard seasons, the boss never blamed us.",
+        "As captain, I'll never forget the boss who went through that pain with us.",
+        "If we ever meet again, I hope we'll be smiling together next time."
+      ]
+    },
+    "underachiever": {
+      "label": "Unfinished Business",
+      "summary": "Did not get the results the squad was capable of.",
+      "board": [
+        "It is true that we expected more. Nevertheless, thank you for your efforts.",
+        "The numbers are unforgiving, but the effort you put in lies in the parts the records do not show.",
+        "We hope this experience serves you well in the next stage of your career.",
+        "We will reflect together on the gap between expectations and results.",
+        "Thank you for the time you devoted to this club."
+      ],
+      "fans": [
+        "Honestly, I think that squad could have done better.",
+        "Still, a few of the games in the {best} season were brilliant.",
+        "Being this disappointed just shows how high our hopes were.",
+        "I hope the next manager takes this squad further.",
+        "Either way, he was our manager. Thanks for everything."
+      ],
+      "captain": [
+        "We didn't live up to what the boss expected of us. A lot of that is on the players.",
+        "There were plenty of games where luck just wasn't with us.",
+        "The boss believed in us to the end. I'm sorry we couldn't repay that with results.",
+        "As captain, I feel I should have led better.",
+        "Here's hoping for better results next time, boss."
+      ]
+    },
+    "steady": {
+      "label": "Mr Consistent",
+      "summary": "Held the expected position without wavering.",
+      "board": [
+        "A team that does not wobble. That is the greatest asset you leave behind.",
+        "Predictability is a great blessing when running a football club.",
+        "Thank you for meeting the agreed objective every single season.",
+        "Getting through your {seasons}-season tenure without major highs and lows is harder than it looks.",
+        "We will prepare for the next leap forward on the stable foundations you built."
+      ],
+      "fans": [
+        "In the gaffer's time I could watch matches with peace of mind.",
+        "No famous titles, but no embarrassing seasons either.",
+        "He's the manager who consistently served up proper {team} football.",
+        "A team that always holds its ground — that's not easy, is it?",
+        "I think he laid the foundations for the next step."
+      ],
+      "captain": [
+        "The boss always treated us by the same standards. That's why we could trust him.",
+        "We were a team that never got carried away and never fell apart.",
+        "Every week we knew exactly what we had to do. That was the secret to our consistency.",
+        "As captain, I'm proud of how steady this team was.",
+        "Quietly strong. That's the team the boss built."
+      ]
+    },
+    "journeyman": {
+      "label": "The Quiet Commander",
+      "summary": "Saw the seasons through alongside the team.",
+      "board": [
+        "Thank you for leading the team throughout your {seasons}-season spell.",
+        "We believe you leave behind more than the records show.",
+        "Your time with us is a valued page in the club's history.",
+        "Even in difficult circumstances, you saw your job through to the end.",
+        "We wish you the very best of luck on your next journey."
+      ],
+      "fans": [
+        "There were good days and hard days. It was good having him with us.",
+        "{scorer}'s goals will live long in the memory.",
+        "I'll never forget some of the games from the gaffer's time.",
+        "Thanks for everything you did for our club.",
+        "If I see you at the ground next time, you'll get a round of applause from me."
+      ],
+      "captain": [
+        "I'm grateful for the time I spent playing under the boss.",
+        "He always stood up for the players.",
+        "Whatever the results, the boss brought the team together as one.",
+        "As captain, I learned a great deal from the boss.",
+        "Come back any time, boss. The door's always open."
+      ]
+    }
+  }
+}

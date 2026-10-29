@@ -1,0 +1,35 @@
+{
+  "media.news.freeAgent": "무소속",
+  "media.stance.pre.confident": "자신감",
+  "media.stance.pre.cautious": "신중",
+  "media.stance.pre.respect": "상대 존중",
+  "media.stance.pre.demand": "선수단에 요구",
+  "media.stance.pre.deflect": "말 아끼기",
+  "media.stance.post.praise": "선수단 칭찬",
+  "media.stance.post.critical": "쓴소리",
+  "media.stance.post.blame": "외부 탓",
+  "media.stance.post.humble": "차분하게",
+  "media.stance.post.forward": "다음 경기로",
+  "media.stance.talk.praise": "칭찬",
+  "media.stance.talk.encourage": "격려",
+  "media.stance.talk.demand": "질책",
+  "media.stance.talk.calm": "침착하게",
+  "media.stance.talk.passion": "열정 호소",
+  "media.venue.home": "홈",
+  "media.venue.away": "원정",
+  "media.reaction.good": [
+    "선수들의 눈빛이 달라졌습니다.",
+    "라커룸에 기합 소리가 울립니다.",
+    "선수들이 서로 어깨를 두드리며 나갑니다."
+  ],
+  "media.reaction.neutral": [
+    "선수들이 고개를 끄덕입니다.",
+    "선수들이 조용히 축구화 끈을 다시 묶습니다.",
+    "별다른 반응 없이 후반을 준비합니다."
+  ],
+  "media.reaction.bad": [
+    "몇몇 선수가 불만스러운 표정입니다.",
+    "분위기가 오히려 가라앉았습니다.",
+    "선수들이 서로 눈을 피합니다."
+  ]
+}

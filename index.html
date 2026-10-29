@@ -19,6 +19,21 @@
       <span class="t-shimmer" data-text="데이터 불러오는 중">데이터 불러오는 중</span>
     </div>
   </div>
-  <noscript>JavaScript를 켜야 플레이할 수 있습니다.</noscript>
+  <script>
+    // 부팅 문구: 사전을 불러오기 전이라 js/i18n.js의 detectLang()과 같은 순서로 언어만 먼저 고른다
+    (function () {
+      var ok = function (l) { return l === 'ko' || l === 'en' ? l : null; };
+      var lang = null;
+      try {
+        lang = ok(new URLSearchParams(location.search).get('lang')) || ok(localStorage.getItem('ht-lang'));
+      } catch (e) {}
+      if (!lang) lang = (navigator.language || '').toLowerCase().indexOf('ko') === 0 ? 'ko' : 'en';
+      if (lang === 'ko') return;
+      document.documentElement.lang = lang;
+      var el = document.querySelector('.boot .t-shimmer');
+      if (el) { el.textContent = 'Loading data'; el.setAttribute('data-text', 'Loading data'); }
+    })();
+  </script>
+  <noscript>JavaScript를 켜야 플레이할 수 있습니다. · Enable JavaScript to play.</noscript>
 </body>
 </html>

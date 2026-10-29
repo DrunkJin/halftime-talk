@@ -1,4 +1,5 @@
 // 감독 커리어 엔딩: 칭호·등급, 통산 기록, 트로피 진열장, 순위 그래프, 하이라이트, 마지막 한마디, 커리어 카드
+import { contentBase, getLang, t } from '../../i18n.js';
 import { createRng } from '../../engine/rng.js';
 import { loadMedia, rivalryBetween } from '../../media/interviews.js';
 import { formatMoney } from '../../market/value.js';
@@ -12,7 +13,7 @@ import { showToast } from '../motion.js';
 let quotesPromise = null;
 // data/career.json (칭호 이름·문구). 실패하면 null
 export function loadCareerText() {
-  quotesPromise ??= fetch('data/career.json')
+  quotesPromise ??= fetch(`${contentBase()}career.json`)
     .then((r) => (r.ok ? r.json() : null))
     .catch(() => null);
   return quotesPromise;
@@ -29,6 +30,8 @@ const svg = (tag, attrs = {}, ...children) => {
 const pct = (v) => `${Math.round(v * 100)}%`;
 const signed = (v) => `${v > 0 ? '+' : ''}${v.toFixed(1)}`;
 const fill = (text, vars) => text.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
+// 라이벌 이름: 한국어면 name, 그 밖에는 nameEn (없으면 name)
+const rivalryName = (rv) => (getLang() === 'ko' ? rv.name : rv.nameEn ?? rv.name);
 
 // 트로피 아이콘 (SVG)
 function trophyIcon(kind) {
@@ -50,9 +53,9 @@ function drawChart(seasons, tiers, W, show, hide) {
   const multi = tiers.length > 1;
   const pad = { l: multi ? 92 : 52, r: 24, t: 22, b: 48 };
   const inset = seasons.length > 1 ? 24 : 0; // 첫·끝 점을 축 글자에서 띄운다
-  const offsetOf = (id) => tiers.find((t) => t.leagueId === id)?.offset ?? 0;
+  const offsetOf = (id) => tiers.find((tier) => tier.leagueId === id)?.offset ?? 0;
   const rank = (s, key) => (s[key] ? s[key] + offsetOf(s.leagueId) : null);
-  const maxSize = Math.max(...tiers.map((t) => t.offset + t.size), ...seasons.map((s) => s.size));
+  const maxSize = Math.max(...tiers.map((tier) => tier.offset + tier.size), ...seasons.map((s) => s.size));
   const n = seasons.length;
   const x = (i) => (n === 1 ? (pad.l + W - pad.r) / 2 : pad.l + inset + (i * (W - pad.l - pad.r - inset * 2)) / (n - 1));
   const y = (pos) => pad.t + ((pos - 1) * (H - pad.t - pad.b)) / Math.max(1, maxSize - 1);
@@ -60,17 +63,17 @@ function drawChart(seasons, tiers, W, show, hide) {
   // 좁은 화면에서는 시즌 라벨을 듬성듬성
   const every = Math.max(1, Math.ceil((n * 64) / Math.max(1, W - pad.l - pad.r)));
 
-  const grid = ticks.map((t) => svg('g', {}, svg('line', { x1: pad.l, x2: W - pad.r, y1: y(t), y2: y(t), class: 'cc-grid' }), svg('text', { x: pad.l - 10, y: y(t) + 4, class: 'cc-axis', 'text-anchor': 'end' }, `${t}위`)));
+  const grid = ticks.map((tick) => svg('g', {}, svg('line', { x1: pad.l, x2: W - pad.r, y1: y(tick), y2: y(tick), class: 'cc-grid' }), svg('text', { x: pad.l - 10, y: y(tick) + 4, class: 'cc-axis', 'text-anchor': 'end' }, t('career.pos', { n: tick }))));
   // 여러 리그: 리그 구간마다 경계선과 이름 (1위·꼴찌 자리)
   const bands = multi
-    ? tiers.map((t, k) =>
+    ? tiers.map((tier, k) =>
         svg(
           'g',
           {},
-          k % 2 ? svg('rect', { x: pad.l, y: y(t.offset + 0.5), width: W - pad.l - pad.r, height: y(t.offset + t.size + 0.5) - y(t.offset + 0.5), class: 'cc-band' }) : null,
-          svg('line', { x1: pad.l, x2: W - pad.r, y1: y(t.offset + 1), y2: y(t.offset + 1), class: 'cc-grid' }),
-          svg('text', { x: pad.l - 10, y: y(t.offset + 1) + 4, class: 'cc-axis cc-league', 'text-anchor': 'end' }, t.name),
-          k === tiers.length - 1 ? svg('text', { x: pad.l - 10, y: y(t.offset + t.size) + 4, class: 'cc-axis', 'text-anchor': 'end' }, `${t.size}위`) : null,
+          k % 2 ? svg('rect', { x: pad.l, y: y(tier.offset + 0.5), width: W - pad.l - pad.r, height: y(tier.offset + tier.size + 0.5) - y(tier.offset + 0.5), class: 'cc-band' }) : null,
+          svg('line', { x1: pad.l, x2: W - pad.r, y1: y(tier.offset + 1), y2: y(tier.offset + 1), class: 'cc-grid' }),
+          svg('text', { x: pad.l - 10, y: y(tier.offset + 1) + 4, class: 'cc-axis cc-league', 'text-anchor': 'end' }, tier.name),
+          k === tiers.length - 1 ? svg('text', { x: pad.l - 10, y: y(tier.offset + tier.size) + 4, class: 'cc-axis', 'text-anchor': 'end' }, t('career.pos', { n: tier.size })) : null,
         ),
       )
     : [];
@@ -92,7 +95,7 @@ function drawChart(seasons, tiers, W, show, hide) {
     const py = y(rank(s, 'position'));
     const g = svg(
       'g',
-      { class: 'cc-point', tabindex: '0', role: 'img', 'aria-label': `${s.season} ${s.leagueName} ${s.position}위${s.expected ? `, 예상 ${s.expected}위` : ''}${s.trophies.length ? `, ${s.trophies.map((t) => t.name).join(', ')}` : ''}` },
+      { class: 'cc-point', tabindex: '0', role: 'img', 'aria-label': [t('career.chart.pointLabel', { season: s.season, league: s.leagueName, pos: s.position }), s.expected ? t('career.chart.pointExpected', { n: s.expected }) : '', s.trophies.length ? `, ${s.trophies.map((x) => x.name).join(', ')}` : ''].join('') },
       svg('circle', { cx: x(i), cy: py, r: 16, class: 'cc-hit' }),
       s.expected ? svg('circle', { cx: x(i), cy: y(rank(s, 'expected')), r: 4.5, class: 'cc-dot-expected' }) : null,
       s.trophies.length ? svg('circle', { cx: x(i), cy: py, r: 9, class: 'cc-dot-trophy' }) : null,
@@ -108,7 +111,7 @@ function drawChart(seasons, tiers, W, show, hide) {
   });
   return svg(
     'svg',
-    { viewBox: `0 0 ${W} ${H}`, width: W, height: H, class: 'cc-svg', role: 'group', 'aria-label': '시즌별 리그 순위' },
+    { viewBox: `0 0 ${W} ${H}`, width: W, height: H, class: 'cc-svg', role: 'group', 'aria-label': t('career.chart.aria') },
     bands,
     grid,
     svg('path', { d: path('expected'), class: 'cc-line-expected' }),
@@ -125,9 +128,9 @@ function positionChart(seasons, tiers) {
     tip.replaceChildren(
       ...[
         h('b', {}, `${s.season} · ${s.leagueName}`),
-        h('span', {}, `${s.position}위${s.expected ? ` (예상 ${s.expected}위)` : ''} · 승점 ${s.points}`),
-        s.trophies.length ? h('span', { class: 'gold' }, s.trophies.map((t) => t.name).join(', ')) : null,
-        s.promoted ? h('span', {}, '승격') : s.relegated ? h('span', { class: 'down' }, '강등') : null,
+        h('span', {}, s.expected ? t('career.tip.posExpected', { pos: s.position, exp: s.expected, pts: s.points }) : t('career.tip.pos', { pos: s.position, pts: s.points })),
+        s.trophies.length ? h('span', { class: 'gold' }, s.trophies.map((x) => x.name).join(', ')) : null,
+        s.promoted ? h('span', {}, t('career.promoted')) : s.relegated ? h('span', { class: 'down' }, t('career.relegated')) : null,
       ].filter(Boolean),
     );
     tip.style.left = `${fx * 100}%`;
@@ -146,9 +149,9 @@ function positionChart(seasons, tiers) {
   const legend = h(
     'div',
     { class: 'cc-legend' },
-    h('span', {}, h('i', { class: 'lg-actual' }), '실제 순위'),
-    h('span', {}, h('i', { class: 'lg-expected' }), '시즌 전 예상 (전력 순위)'),
-    seasons.some((s) => s.trophies.length) ? h('span', {}, h('i', { class: 'lg-trophy' }), '트로피 시즌') : null,
+    h('span', {}, h('i', { class: 'lg-actual' }), t('career.legend.actual')),
+    h('span', {}, h('i', { class: 'lg-expected' }), t('career.legend.expected')),
+    seasons.some((s) => s.trophies.length) ? h('span', {}, h('i', { class: 'lg-trophy' }), t('career.legend.trophy')) : null,
   );
   return h('div', {}, legend, wrap);
 }
@@ -170,10 +173,10 @@ function chartTiers(dataset, seasons) {
     return offset;
   };
   const tiers = ids.map((id) => ({ leagueId: id, name: seasons.find((s) => s.leagueId === id).leagueName, offset: offsetOf(id), size: sizeOf(id) })).sort((a, b) => a.offset - b.offset);
-  const connected = tiers.every((t, i) => i === 0 || t.offset > tiers[i - 1].offset);
+  const connected = tiers.every((tier, i) => i === 0 || tier.offset > tiers[i - 1].offset);
   if (!connected || tiers.length === 1) return [{ ...tiers[0], offset: 0 }];
   const top = tiers[0].offset; // 가장 위 리그를 1위부터
-  return tiers.map((t) => ({ ...t, offset: t.offset - top }));
+  return tiers.map((tier) => ({ ...tier, offset: tier.offset - top }));
 }
 
 // 표로도 볼 수 있게 (그래프와 같은 내용)
@@ -181,14 +184,14 @@ function seasonTable(seasons) {
   return h(
     'details',
     { class: 'cc-table' },
-    h('summary', {}, '시즌별 표로 보기'),
+    h('summary', {}, t('career.table.summary')),
     h(
       'div',
       { class: 'table-scroll' },
       h(
         'table',
         { class: 'data compact' },
-        h('thead', {}, h('tr', {}, h('th', {}, '시즌'), h('th', {}, '리그'), h('th', { class: 'num' }, '순위'), h('th', { class: 'num' }, '예상'), h('th', { class: 'num' }, '승점'), h('th', {}, '비고'))),
+        h('thead', {}, h('tr', {}, h('th', {}, t('career.th.season')), h('th', {}, t('career.th.league')), h('th', { class: 'num' }, t('career.th.pos')), h('th', { class: 'num' }, t('career.th.expected')), h('th', { class: 'num' }, t('career.th.pts')), h('th', {}, t('career.th.notes')))),
         h(
           'tbody',
           {},
@@ -198,10 +201,10 @@ function seasonTable(seasons) {
               {},
               h('td', {}, s.season),
               h('td', {}, s.leagueName),
-              h('td', { class: 'num' }, `${s.position}위`),
-              h('td', { class: 'num muted' }, s.expected ? `${s.expected}위` : '—'),
+              h('td', { class: 'num' }, t('career.pos', { n: s.position })),
+              h('td', { class: 'num muted' }, s.expected ? t('career.pos', { n: s.expected }) : '—'),
               h('td', { class: 'num' }, s.points),
-              h('td', {}, [...s.trophies.map((t) => t.name), s.promoted ? '승격' : null, s.relegated ? '강등' : null].filter(Boolean).join(', ') || '—'),
+              h('td', {}, [...s.trophies.map((x) => x.name), s.promoted ? t('career.promoted') : null, s.relegated ? t('career.relegated') : null].filter(Boolean).join(', ') || '—'),
             ),
           ),
         ),
@@ -216,31 +219,32 @@ function highlights(r) {
   const items = [];
   const s = r.bestSeason;
   if (s) {
-    const extra = s.trophies.filter((t) => t.kind !== 'league').map((t) => t.name);
-    const won = s.trophies.some((t) => t.kind === 'league');
-    items.push(fact('최고의 시즌', `${s.season} ${won ? '우승' : `${s.position}위`}`, `${s.leagueName}${s.expected ? ` · 예상 ${s.expected}위` : ''}${extra.length ? ` · ${extra.join(', ')}` : ''}${s.promoted ? ' · 승격' : ''}`));
+    const extra = s.trophies.filter((x) => x.kind !== 'league').map((x) => x.name);
+    const won = s.trophies.some((x) => x.kind === 'league');
+    const sub = [s.leagueName, s.expected ? t('career.hl.expected', { n: s.expected }) : null, extra.join(', '), s.promoted ? t('career.promoted') : null].filter(Boolean).join(' · ');
+    items.push(fact(t('career.hl.bestSeason'), `${s.season} ${won ? t('career.hl.champions') : t('career.pos', { n: s.position })}`, sub));
   }
-  if (r.topScorer) items.push(fact('통산 득점왕', r.topScorer.name, `${r.topScorer.goals}골${r.topScorer.apps ? ` · ${r.topScorer.apps}경기` : ''}`));
-  if (r.mostApps) items.push(fact('최다 출전', r.mostApps.name, `${r.mostApps.apps}경기 ${r.mostApps.goals}골 ${r.mostApps.assists}도움`));
-  if (r.assistKing && r.assistKing.name !== r.topScorer?.name && r.assistKing.name !== r.mostApps?.name) items.push(fact('도움왕', r.assistKing.name, `${r.assistKing.assists}도움`));
-  if (r.bestSigning) items.push(fact('최고의 영입', r.bestSigning.name, `${r.bestSigning.fee ? formatMoney(r.bestSigning.fee) : '자유 계약'} · ${r.bestSigning.apps}경기 ${r.bestSigning.goals}골 ${r.bestSigning.assists}도움`));
-  if (r.bestWin) items.push(fact('최대 점수 차 승리', `${r.bestWin.gf}-${r.bestWin.ga} ${r.bestWin.opponent}`, `${r.bestWin.season} · ${r.bestWin.comp ?? ''}${r.bestWin.home ? ' · 홈' : ' · 원정'}`));
-  if (r.worstLoss) items.push(fact('가장 아팠던 패배', `${r.worstLoss.gf}-${r.worstLoss.ga} ${r.worstLoss.opponent}`, `${r.worstLoss.season} · ${r.worstLoss.comp ?? ''}`));
-  if (r.bestStreak) items.push(fact('최장 연승', `${r.bestStreak.count}연승`, r.bestStreak.season));
-  for (const rv of r.rivals.slice(0, 2)) items.push(fact(rv.rivalry.name, `${rv.w}승 ${rv.d}무 ${rv.l}패`, `상대 ${rv.name} · ${rv.gf}득 ${rv.ga}실`));
-  return items.length ? h('dl', { class: 'cc-facts' }, items) : h('p', { class: 'muted' }, '아직 쌓인 기록이 많지 않습니다.');
+  if (r.topScorer) items.push(fact(t('career.hl.topScorer'), r.topScorer.name, r.topScorer.apps ? t('career.hl.goalsApps', { g: r.topScorer.goals, apps: r.topScorer.apps }) : t('career.hl.goals', { n: r.topScorer.goals })));
+  if (r.mostApps) items.push(fact(t('career.hl.mostApps'), r.mostApps.name, t('career.hl.line', { apps: r.mostApps.apps, g: r.mostApps.goals, a: r.mostApps.assists })));
+  if (r.assistKing && r.assistKing.name !== r.topScorer?.name && r.assistKing.name !== r.mostApps?.name) items.push(fact(t('career.hl.assists'), r.assistKing.name, t('career.hl.assistCount', { n: r.assistKing.assists })));
+  if (r.bestSigning) items.push(fact(t('career.hl.bestSigning'), r.bestSigning.name, `${r.bestSigning.fee ? formatMoney(r.bestSigning.fee) : t('career.hl.free')} · ${t('career.hl.line', { apps: r.bestSigning.apps, g: r.bestSigning.goals, a: r.bestSigning.assists })}`));
+  if (r.bestWin) items.push(fact(t('career.hl.bestWin'), `${r.bestWin.gf}-${r.bestWin.ga} ${r.bestWin.opponent}`, `${r.bestWin.season} · ${r.bestWin.comp ?? ''} · ${r.bestWin.home ? t('career.hl.home') : t('career.hl.away')}`));
+  if (r.worstLoss) items.push(fact(t('career.hl.worstLoss'), `${r.worstLoss.gf}-${r.worstLoss.ga} ${r.worstLoss.opponent}`, `${r.worstLoss.season} · ${r.worstLoss.comp ?? ''}`));
+  if (r.bestStreak) items.push(fact(t('career.hl.streak'), t('career.hl.streakCount', { n: r.bestStreak.count }), r.bestStreak.season));
+  for (const rv of r.rivals.slice(0, 2)) items.push(fact(rivalryName(rv.rivalry), t('career.wdl', { w: rv.w, d: rv.d, l: rv.l }), t('career.hl.rival', { team: rv.name, gf: rv.gf, ga: rv.ga })));
+  return items.length ? h('dl', { class: 'cc-facts' }, items) : h('p', { class: 'muted' }, t('career.hl.empty'));
 }
 
 export function render(ctx) {
-  const host = h('div', { class: 'career-end' }, h('p', { class: 'muted' }, '커리어를 정리하는 중…'));
+  const host = h('div', { class: 'career-end' }, h('p', { class: 'muted' }, t('career.loading')));
   Promise.all([loadCareerText(), loadMedia().catch(() => null)]).then(([text, media]) => {
     const { game, dataset } = ctx;
     if (!game?.history?.length) {
-      host.replaceChildren(h('div', { class: 'panel empty' }, h('p', {}, '시즌을 마치면 커리어가 여기에 정리됩니다.')));
+      host.replaceChildren(h('div', { class: 'panel empty' }, h('p', {}, t('career.empty'))));
       return;
     }
     const r = careerReview(game, { rivalryOf: (a, b) => rivalryBetween(media, a, b) });
-    const title = text?.titles?.[r.titleId] ?? { label: '감독', summary: '', board: [], fans: [], captain: [] };
+    const title = text?.titles?.[r.titleId] ?? { label: t('career.titleFallback'), summary: '', board: [], fans: [], captain: [] };
     const team = dataset.teamById.get(game.teamId);
     // 부임 기록 (경질·이직): 연속으로 같은 구단은 한 번만
     const clubs = (game.jobs ?? []).map((j) => dataset.teamById.get(j.teamId)?.shortName ?? j.teamId).filter((n, i, a) => i === 0 || a[i - 1] !== n);
@@ -267,73 +271,73 @@ export function render(ctx) {
         'div',
         { class: 'cc-hero-text' },
         h('h1', {}, title.label),
-        h('p', { class: 'cc-sub' }, `${team.name} 감독 · ${first.season}${last !== first ? ` ~ ${last.season}` : ''} · ${r.seasons.length}시즌`),
+        h('p', { class: 'cc-sub' }, t('career.hero.sub', { team: team.name, span: last !== first ? `${first.season} ~ ${last.season}` : first.season, n: r.seasons.length })),
         title.summary ? h('p', { class: 'muted' }, title.summary) : null,
-        clubs.length > 1 ? h('p', { class: 'cc-clubs muted' }, `거친 구단: ${clubs.join(' → ')}`) : null,
+        clubs.length > 1 ? h('p', { class: 'cc-clubs muted' }, t('career.hero.clubs', { clubs: clubs.join(' → ') })) : null,
       ),
-      h('div', { class: `cc-grade grade-${r.grade}`, 'aria-label': `감독 평가 ${r.grade}등급, ${r.score}점` }, h('span', { class: 'cc-grade-letter' }, r.grade), h('span', { class: 'cc-grade-score' }, `${r.score}점`)),
+      h('div', { class: `cc-grade grade-${r.grade}`, 'aria-label': t('career.grade.aria', { grade: r.grade, score: r.score }) }, h('span', { class: 'cc-grade-letter' }, r.grade), h('span', { class: 'cc-grade-score' }, t('career.grade.score', { score: r.score }))),
     );
 
     const stats = h(
       'section',
       { class: 'cc-stats reveal', style: { '--i': 1 } },
       [
-        ['경기', `${r.totals.played}`, `${r.totals.won}승 ${r.totals.drawn}무 ${r.totals.lost}패`],
-        ['승률', pct(r.totals.winRate), `득 ${r.totals.goalsFor} · 실 ${r.totals.goalsAgainst}`],
-        ['트로피', `${r.totals.trophies.length}개`, r.counts.promotions ? `승격 ${r.counts.promotions}회` : null],
-        ['최고 순위', r.totals.bestFinish ? `${r.totals.bestFinish.position}위` : '—', r.totals.bestFinish ? `${r.totals.bestFinish.season} ${r.totals.bestFinish.leagueName}` : null],
-        ['기대 대비', `${signed(r.avgOver)}위`, '시즌 평균 (+면 예상보다 위)'],
+        [t('career.stat.played'), `${r.totals.played}`, t('career.wdl', { w: r.totals.won, d: r.totals.drawn, l: r.totals.lost })],
+        [t('career.stat.winRate'), pct(r.totals.winRate), t('career.stat.goals', { gf: r.totals.goalsFor, ga: r.totals.goalsAgainst })],
+        [t('career.stat.trophies'), t('career.stat.trophyCount', { n: r.totals.trophies.length }), r.counts.promotions ? t('career.stat.promotions', { n: r.counts.promotions }) : null],
+        [t('career.stat.best'), r.totals.bestFinish ? t('career.pos', { n: r.totals.bestFinish.position }) : '—', r.totals.bestFinish ? `${r.totals.bestFinish.season} ${r.totals.bestFinish.leagueName}` : null],
+        [t('career.stat.overPerf'), t('career.stat.overValue', { v: signed(r.avgOver) }), t('career.stat.overNote')],
       ].map(([label, value, sub]) => h('div', { class: 'cc-stat' }, h('span', { class: 'muted' }, label), h('b', {}, value), sub ? h('span', { class: 'muted small-note' }, sub) : null)),
     );
 
     const cabinet = h(
       'section',
       { class: 'cc-section reveal', style: { '--i': 2 } },
-      h('h2', {}, '트로피 진열장'),
+      h('h2', {}, t('career.cabinet.title')),
       r.totals.trophies.length
-        ? h('ul', { class: 'cc-trophies' }, r.totals.trophies.map((t) => h('li', { class: `cc-trophy ${t.kind}` }, trophyIcon(t.kind), h('b', {}, t.name), h('span', { class: 'muted' }, t.season))))
-        : h('p', { class: 'muted' }, r.counts.promotions ? '트로피는 없었지만, 승격이라는 값진 결과를 남겼습니다.' : '진열장은 비어 있지만, 기록은 남았습니다.'),
+        ? h('ul', { class: 'cc-trophies' }, r.totals.trophies.map((x) => h('li', { class: `cc-trophy ${x.kind}` }, trophyIcon(x.kind), h('b', {}, x.name), h('span', { class: 'muted' }, x.season))))
+        : h('p', { class: 'muted' }, r.counts.promotions ? t('career.cabinet.promotionOnly') : t('career.cabinet.empty')),
     );
 
-    const chart = h('section', { class: 'cc-section reveal', style: { '--i': 3 } }, h('h2', {}, '시즌별 리그 순위'), positionChart(r.seasons, chartTiers(dataset, r.seasons)), seasonTable(r.seasons));
-    const facts = h('section', { class: 'cc-section reveal', style: { '--i': 4 } }, h('h2', {}, '하이라이트'), highlights(r));
+    const chart = h('section', { class: 'cc-section reveal', style: { '--i': 3 } }, h('h2', {}, t('career.chart.title')), positionChart(r.seasons, chartTiers(dataset, r.seasons)), seasonTable(r.seasons));
+    const facts = h('section', { class: 'cc-section reveal', style: { '--i': 4 } }, h('h2', {}, t('career.hl.title')), highlights(r));
 
     const quote = (who, line) => (line ? h('figure', { class: 'cc-quote' }, h('blockquote', {}, line), h('figcaption', {}, who)) : null);
     const quotes = h(
       'section',
       { class: 'cc-section reveal', style: { '--i': 5 } },
-      h('h2', {}, '마지막 한마디'),
-      h('div', { class: 'cc-quotes' }, quote('이사회', pickLine(title.board)), quote('팬', pickLine(title.fans)), quote(r.mostApps ? `${r.mostApps.name} (최다 출전)` : '주장', pickLine(title.captain))),
+      h('h2', {}, t('career.quotes.title')),
+      h('div', { class: 'cc-quotes' }, quote(t('career.quotes.board'), pickLine(title.board)), quote(t('career.quotes.fans'), pickLine(title.fans)), quote(r.mostApps ? t('career.quotes.mostApps', { name: r.mostApps.name }) : t('career.quotes.captain'), pickLine(title.captain))),
     );
 
-    const card = h('button', { class: 'btn', type: 'button' }, '커리어 카드 저장');
+    const card = h('button', { class: 'btn', type: 'button' }, t('career.card.save'));
     card.addEventListener('click', async () => {
       card.disabled = true;
       try {
         await saveCareerCard({ review: r, title, team, quote: pickLine(title.fans) });
-        showToast('커리어 카드를 저장했습니다');
+        showToast(t('career.card.saved'));
       } catch (err) {
         console.error(err);
-        showToast('카드를 만들지 못했습니다', { tone: 'warn' });
+        showToast(t('career.card.failed'), { tone: 'warn' });
       } finally {
         card.disabled = false;
       }
     });
-    const more = h('button', { class: 'btn primary', type: 'button' }, '한 시즌 더 하기');
+    const more = h('button', { class: 'btn primary', type: 'button' }, t('career.action.oneMore'));
     more.addEventListener('click', () => {
       ctx.game.years = Math.max(ctx.game.years, ctx.game.seasonIndex) + 1;
       ctx.persist();
       ctx.refreshTopbar();
       ctx.navigate('match');
     });
-    const fresh = h('button', { class: 'btn ghost', type: 'button' }, '새 게임');
+    const fresh = h('button', { class: 'btn ghost', type: 'button' }, t('career.action.newGame'));
     fresh.addEventListener('click', () => ctx.leaveToSelect());
-    const back = h('button', { class: 'btn ghost', type: 'button' }, '기록으로');
+    const back = h('button', { class: 'btn ghost', type: 'button' }, t('career.action.history'));
     back.addEventListener('click', () => ctx.navigate('history'));
     const actions = h(
       'section',
       { class: 'cc-actions reveal', style: { '--i': 6 } },
-      finished ? null : h('p', { class: 'muted' }, `아직 커리어가 진행 중입니다 (${game.seasonIndex}/${game.years}시즌). 지금까지의 기록으로 정리했습니다.`),
+      finished ? null : h('p', { class: 'muted' }, t('career.ongoing', { i: game.seasonIndex, n: game.years })),
       h('div', { class: 'btn-row' }, back, card, finished ? fresh : null, finished ? more : null),
     );
 

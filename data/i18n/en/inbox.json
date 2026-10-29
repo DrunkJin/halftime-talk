@@ -1,0 +1,14 @@
+{
+  "inbox.action.player": "View player",
+  "inbox.action.offers": "View offers",
+  "inbox.action.transfers": "Go to transfers",
+  "inbox.action.match": "Go to match",
+  "inbox.action.training": "Go to training",
+  "inbox.loading": "Loading…",
+  "inbox.filter.all": "All",
+  "inbox.markAllRead": "Mark all read",
+  "inbox.when": "S{season} R{round}",
+  "inbox.title": "Inbox",
+  "inbox.titleUnread": "Inbox · {n} unread",
+  "inbox.empty": "No news."
+}

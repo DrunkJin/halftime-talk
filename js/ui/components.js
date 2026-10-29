@@ -12,6 +12,7 @@ import { SCOUT, assignmentOf, ovrView, scoutSlotsLeft, sendScout } from '../stat
 import { loadTalks, pickTalk } from '../media/talks.js';
 import { teamBadge } from './badge.js';
 import { h } from './dom.js';
+import { getLang, t } from '../i18n.js';
 import { ATTRIBUTE_GROUP_LABELS, ATTRIBUTE_LABELS, POSITION_NAMES, attrClass } from './format.js';
 import { initTabs, initTooltipGroup, openModal, showToast } from './motion.js';
 
@@ -62,13 +63,13 @@ export function panel(title, body, { actions = null, className = '' } = {}) {
 export function statusChip(game, id) {
   const a = availabilityOf(game, id);
   if (a.available) return null;
-  return h('span', { class: `status-chip ${a.reason}`, title: `${a.label} · ${a.rounds}경기 결장` }, a.reason === 'injury' ? `부상 ${a.rounds}` : `정지 ${a.rounds}`);
+  return h('span', { class: `status-chip ${a.reason}`, title: t('components.status.title', { label: a.label, n: a.rounds }) }, t(a.reason === 'injury' ? 'components.status.injury' : 'components.status.ban', { n: a.rounds }));
 }
 
 export const condClass = (c) => (c >= 85 ? 'cond-good' : c >= 70 ? 'cond-ok' : 'cond-bad');
 
 export function conditionMeter(c) {
-  return h('span', { class: `cond ${condClass(c)}`, title: `컨디션 ${c}%` }, h('span', { style: { width: `${c}%` } }));
+  return h('span', { class: `cond ${condClass(c)}`, title: t('components.condition', { c }) }, h('span', { style: { width: `${c}%` } }));
 }
 
 export function ratingBar(value, { max = 100, min = 40 } = {}) {
@@ -80,7 +81,7 @@ export function ratingBar(value, { max = 100, min = 40 } = {}) {
 function suitedRoles(player) {
   const roles = rolesFor(player.position).filter((r) => fitLabel(player, player.position, r)?.cls === 'fit-good');
   if (!roles.length) return null;
-  return h('p', { class: 'pm-roles' }, h('span', { class: 'muted' }, '어울리는 역할 '), roles.map((r) => r.label).join(', '));
+  return h('p', { class: 'pm-roles' }, h('span', { class: 'muted' }, t('components.player.suitedRoles')), roles.map((r) => r.label).join(', '));
 }
 
 // 임대 중이면 원소속·임대 구단 한 줄
@@ -88,17 +89,17 @@ function loanLine(dataset, game, player) {
   const loan = game && loanOf(game, player.id);
   if (!loan) return null;
   const name = (id) => dataset.teamById.get(id)?.name ?? '';
-  return h('p', { class: 'pm-loan' }, h('span', { class: 'loan-tag' }, '임대'), ` ${name(loan.from)} → ${name(loan.to)} · 시즌 끝 복귀`);
+  return h('p', { class: 'pm-loan' }, h('span', { class: 'loan-tag' }, t('components.loan.tag')), t('components.loan.line', { from: name(loan.from), to: name(loan.to) }));
 }
 
 // 선수 상세 모달. ctx가 있으면 이적 후 소속·부상·컨디션·가치까지 보여준다
 // 면담: 역할·출전 기대·기분, 선수의 첫마디와 선택지 4개 (같은 선수는 몇 라운드에 한 번)
 function moodSection(dataset, game, player, ctx) {
-  const box = h('section', { class: 'pm-mood' }, h('p', { class: 'muted' }, '불러오는 중…'));
+  const box = h('section', { class: 'pm-mood' }, h('p', { class: 'muted' }, t('components.loading')));
   const draw = (talks, reply = null) => {
     const role = rolesOf(dataset, game).get(player.id);
     const mood = moodOf(game, player.id);
-    const level = isRequesting(game, player.id) ? { id: 'request', label: '이적 요청' } : levelOf(mood);
+    const level = isRequesting(game, player.id) ? { id: 'request', label: t('components.mood.request') } : levelOf(mood);
     const share = shareOf(game, player.id);
     const promise = promiseOf(game, player.id);
     const vars = { name: player.name, role: role?.label ?? '' };
@@ -107,33 +108,33 @@ function moodSection(dataset, game, player, ctx) {
       'p',
       { class: 'pm-mood-facts' },
       h('span', { class: `mood-chip mood-${level.id}` }, level.label),
-      ` ${role?.label ?? ''} · 기대 출전 ${Math.round((role?.expect ?? 0) * 100)}%`,
-      share != null ? ` · 최근 ${MOOD.window}경기 ${Math.round(share * 100)}%` : ' · 출전 기록 쌓는 중',
-      promise ? ` · 출전 약속: 남은 ${promise.left}경기 중 ${Math.max(0, promise.starts - promise.got)}경기 선발` : '',
+      t('components.mood.expect', { role: role?.label ?? '', pct: Math.round((role?.expect ?? 0) * 100) }),
+      share != null ? t('components.mood.recent', { n: MOOD.window, pct: Math.round(share * 100) }) : t('components.mood.noRecord'),
+      promise ? t('components.mood.promise', { left: promise.left, starts: Math.max(0, promise.starts - promise.got) }) : '',
     );
-    const options = Object.entries(MOOD.talks).map(([id, t]) => {
-      const b = h('button', { class: 'btn small', type: 'button', disabled: !canTalk(game, player.id) || (id === 'promise' && promise) || (id === 'allowTransfer' && isRequesting(game, player.id) && game.squadMood.requests[player.id]?.allowed) || null }, t.label);
+    const options = Object.entries(MOOD.talks).map(([id, opt]) => {
+      const b = h('button', { class: 'btn small', type: 'button', disabled: !canTalk(game, player.id) || (id === 'promise' && promise) || (id === 'allowTransfer' && isRequesting(game, player.id) && game.squadMood.requests[player.id]?.allowed) || null }, opt.label);
       b.addEventListener('click', () => {
         const res = talk(dataset, game, player.id, id);
         ctx.persist();
         const key = !res.ok ? res.reason : id === 'compete' ? (res.delta >= 0 ? 'competeAccept' : 'competeHurt') : id;
-        draw(talks, pickTalk(talks?.reply?.[key], `${game.seed}:${player.id}:${id}:${game.round}`, vars) || (res.ok ? '…' : '지금은 대화하기 어렵습니다.'));
+        draw(talks, pickTalk(talks?.reply?.[key], `${game.seed}:${player.id}:${id}:${game.round}`, vars) || (res.ok ? '…' : t('components.mood.busy')));
         ctx.refreshTopbar?.();
       });
       return b;
     });
     box.replaceChildren(
       ...[
-      h('h3', {}, '면담'),
+      h('h3', {}, t('components.mood.title')),
       facts,
       h('blockquote', { class: 'pm-quote' }, reply ?? opening),
-      level.id === 'happy' && !reply ? h('p', { class: 'muted small-note' }, '지금은 만족하고 있습니다. 면담은 몇 라운드에 한 번만 할 수 있습니다.') : null,
+      level.id === 'happy' && !reply ? h('p', { class: 'muted small-note' }, t('components.mood.happy')) : null,
       h('div', { class: 'btn-row' }, options),
-      !canTalk(game, player.id) ? h('p', { class: 'muted small-note' }, `최근에 면담했습니다. ${MOOD.cooldown}라운드가 지나야 다시 할 수 있습니다.`) : null,
+      !canTalk(game, player.id) ? h('p', { class: 'muted small-note' }, t('components.mood.cooldown', { n: MOOD.cooldown })) : null,
       ].filter(Boolean),
     );
   };
-  loadTalks().then((t) => draw(t));
+  loadTalks().then((talks) => draw(talks));
   return box;
 }
 
@@ -142,18 +143,18 @@ function scoutSection(dataset, game, player, ctx) {
   const box = h('section', { class: 'pm-scout' });
   const draw = () => {
     const a = assignmentOf(game, player.id);
-    const b = h('button', { class: 'btn small primary', type: 'button', disabled: a || scoutSlotsLeft(game) <= 0 || null }, a ? `관찰 중 — ${Math.max(0, a.readyRound - game.round)}라운드 뒤 보고` : '스카우트 보내기');
+    const b = h('button', { class: 'btn small primary', type: 'button', disabled: a || scoutSlotsLeft(game) <= 0 || null }, a ? t('components.scout.watching', { n: Math.max(0, a.readyRound - game.round) }) : t('components.scout.send'));
     b.addEventListener('click', () => {
       const r = sendScout(dataset, game, player);
       if (r.ok) {
         ctx.persist();
-        showToast(`${player.name}에게 스카우트를 보냈습니다 — ${r.rounds}라운드 뒤 보고서 (편지함)`);
+        showToast(t('components.scout.sent', { name: player.name, n: r.rounds }));
       }
       draw();
     });
     box.replaceChildren(
-      h('p', {}, '아직 직접 본 적 없는 선수입니다. 능력치는 대략적인 범위로만 알 수 있습니다.'),
-      h('div', { class: 'btn-row' }, b, h('span', { class: 'muted small-note' }, `스카우트 ${SCOUT.slots - scoutSlotsLeft(game)}/${SCOUT.slots}명 파견 중`)),
+      h('p', {}, t('components.scout.unknown')),
+      h('div', { class: 'btn-row' }, b, h('span', { class: 'muted small-note' }, t('components.scout.slots', { used: SCOUT.slots - scoutSlotsLeft(game), slots: SCOUT.slots }))),
     );
   };
   draw();
@@ -169,9 +170,9 @@ function formLine(game, id) {
     'span',
     { class: 'pm-form' },
     h('br'),
-    '최근 평점 ',
+    t('components.form.recent'),
     recent.length ? recent.map((r) => h('span', { class: `rt ${ratingClass(r)}` }, r.toFixed(1))) : '—',
-    season != null ? ` · 시즌 평균 ${season.toFixed(2)}` : '',
+    season != null ? t('components.form.season', { avg: season.toFixed(2) }) : '',
   );
 }
 
@@ -179,7 +180,8 @@ function formLine(game, id) {
 export function basisText(basis) {
   if (!basis) return '';
   const [y, m] = (basis.marketValues ?? '').split('-');
-  return `능력치 기준: ${basis.marketValues ? `${y}년 ${Number(m)}월 시장가치(트랜스퍼마르크트) · ` : ''}${basis.stats} 시즌 기록 · 데이터 ${basis.generated}`;
+  const vars = { y, m: Number(m), stats: basis.statsPartial ? t('components.basis.partial', { range: basis.stats }) : basis.stats, date: basis.generated };
+  return basis.marketValues ? t('components.basis.full', vars) : t('components.basis.short', vars);
 }
 
 export function openPlayerModal(dataset, player, ctx = null) {
@@ -197,14 +199,14 @@ export function openPlayerModal(dataset, player, ctx = null) {
     ? h(
         'p',
         { class: 'muted pm-extra' },
-        `가치 ${formatMoney(playerValue(player))} · 컨디션 ${conditionOf(game, player.id)}%`,
-        potential ? h('span', { class: 'pm-potential' }, ` · 잠재력 ${potential.low}~${potential.high}`) : '',
+        t('components.player.valueCond', { value: formatMoney(playerValue(player)), cond: conditionOf(game, player.id) }),
+        potential ? h('span', { class: 'pm-potential' }, t('components.player.potential', { low: potential.low, high: potential.high })) : '',
         formLine(game, player.id),
-        stats ? ` · ${stats.apps ?? 0}경기 ${stats.goals}골 ${stats.assists}도움` : '',
-        avail && !avail.available ? h('span', { class: `status-chip ${avail.reason}` }, `${avail.label} ${avail.rounds}경기`) : null,
+        stats ? t('components.player.stats', { apps: stats.apps ?? 0, goals: stats.goals, assists: stats.assists }) : '',
+        avail && !avail.available ? h('span', { class: `status-chip ${avail.reason}` }, t('components.player.out', { label: avail.label, n: avail.rounds })) : null,
       )
     : null;
-  const close = h('button', { class: 'btn ghost icon', type: 'button', 'aria-label': '닫기' }, '✕');
+  const close = h('button', { class: 'btn ghost icon', type: 'button', 'aria-label': t('components.close') }, '✕');
 
   const groups = Object.entries(ATTRIBUTE_GROUPS).map(([group, keys]) =>
     h(
@@ -234,8 +236,8 @@ export function openPlayerModal(dataset, player, ctx = null) {
         'div',
         { class: 'pm-title' },
         h('h2', {}, player.name),
-        h('p', {}, h('span', { class: 'pos-tag' }, player.position), ` ${POSITION_NAMES[player.position]}`, player.altPositions.length ? ` · 보조 ${player.altPositions.join(', ')}` : ''),
-        h('p', { class: 'muted' }, team ? [teamBadge(team, 16), ` ${team.name} · `] : '무소속 · ', `${player.age}세 · ${nation?.nameKo ?? player.nationality}`),
+        h('p', {}, h('span', { class: 'pos-tag' }, player.position), ` ${POSITION_NAMES[player.position]}`, player.altPositions.length ? t('components.player.alt', { alts: player.altPositions.join(', ') }) : ''),
+        h('p', { class: 'muted' }, team ? [teamBadge(team, 16), ` ${team.name} · `] : t('components.player.free'), t('components.player.ageNation', { age: player.age, nation: (getLang() === 'ko' ? nation?.nameKo : nation?.name) ?? player.nationality })),
         loanLine(dataset, game, player),
         extra,
       ),
@@ -247,14 +249,14 @@ export function openPlayerModal(dataset, player, ctx = null) {
     h(
       'footer',
       { class: 'pm-foot' },
-      h('span', { class: 'muted' }, '포지션별 능력'),
-      hidden ? h('span', { class: 'muted' }, '스카우트하면 볼 수 있습니다') : byPosition.map(({ pos, value }) => h('span', { class: 'pos-score' }, h('b', {}, pos), ` ${Math.round(value)}`)),
+      h('span', { class: 'muted' }, t('components.player.byPosition')),
+      hidden ? h('span', { class: 'muted' }, t('components.player.scoutToSee')) : byPosition.map(({ pos, value }) => h('span', { class: 'pos-score' }, h('b', {}, pos), ` ${Math.round(value)}`)),
     ),
     hidden ? null : suitedRoles(player),
     h(
       'p',
       { class: 'muted small-note pm-basis' },
-      '잠재력은 23세 이하이면서 더 클 여지가 3 이상인 선수만 범위로 보입니다. ',
+      t('components.player.potentialNote'),
       basisText(dataset.basis),
     ),
   );
@@ -265,7 +267,7 @@ export function openPlayerModal(dataset, player, ctx = null) {
 // 확인 모달. onConfirm 후 닫힌다
 export function openConfirm({ title, body, confirmLabel, onConfirm }) {
   const ok = h('button', { class: 'btn primary', type: 'button' }, confirmLabel);
-  const cancel = h('button', { class: 'btn ghost', type: 'button' }, '취소');
+  const cancel = h('button', { class: 'btn ghost', type: 'button' }, t('components.cancel'));
   const closeModal = openModal(
     h('div', { class: 'confirm-modal' }, h('h2', {}, title), h('div', { class: 'confirm-body' }, body), h('div', { class: 'confirm-actions' }, cancel, ok)),
   );

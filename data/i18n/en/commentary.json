@@ -1,0 +1,136 @@
+{
+  "commentary.kickoff": [
+    "{home} v {away} — and we're under way."
+  ],
+  "commentary.quiet": [
+    "{team} knock it about patiently at the back.",
+    "{team} keep hold of the ball, probing for an opening.",
+    "{team} look to go out wide.",
+    "It's a real battle in the middle of the park.",
+    "{team} play their way out of the press with short passes."
+  ],
+  "commentary.attackStopped": [
+    "{team} build forward, but {defender} snuffs it out with a tackle.",
+    "{defender} cuts out the through ball.",
+    "{team} whip in a cross, but {defender} heads it away.",
+    "{team} try to break, but {defender} covers well to end the danger."
+  ],
+  "commentary.miss": [
+    "{shot} goes wide of the post.",
+    "{shot} flies over the crossbar.",
+    "{shot} — agonisingly into the side netting."
+  ],
+  "commentary.blocked": [
+    "{shot} takes a deflection off a defender.",
+    "{shot} is charged down by a brave block."
+  ],
+  "commentary.woodwork": [
+    "{shot} comes back off the post!",
+    "{shot} crashes against the crossbar!"
+  ],
+  "commentary.saved": [
+    "{shot} — saved by {gk}!",
+    "{shot} goes straight at {gk}.",
+    "{shot} — fingertip save from {gk}!"
+  ],
+  "commentary.goal": [
+    "GOAL! {shot} hits the back of the net!",
+    "GOAL! {shot} flies into the corner!",
+    "GOAL! {shot} finds its way in!"
+  ],
+  "commentary.yellow": [
+    "Yellow card for {player}.",
+    "{player} is booked for a rash challenge.",
+    "{player} goes into the book for a tactical foul."
+  ],
+  "commentary.secondYellow": [
+    "{player} — a second yellow! He's off."
+  ],
+  "commentary.red": [
+    "{player} sees straight red for a dangerous tackle! He's off."
+  ],
+  "commentary.injury": [
+    "{player} goes down. {injury}, by the look of it.",
+    "{player} is in real pain. {injury} suspected."
+  ],
+  "commentary.subInjury": [
+    "{team} injury substitution: {in} on, {out} off.",
+    "{team} bring on {in} for the injured {out}."
+  ],
+  "commentary.sub": [
+    "Substitution: {in} on, {out} off.",
+    "A change for {team}: {in} replaces {out}."
+  ],
+  "commentary.outfieldGk": [
+    "{team} have no substitutions left. {player} will have to go in goal."
+  ],
+  "commentary.shortHanded": [
+    "{team} have no substitutions left and carry on with {count} men."
+  ],
+  "commentary.halftime": [
+    "Half-time. {score}"
+  ],
+  "commentary.extraTimeStart": [
+    "90 minutes up and it's all square! We're going to extra time. {score}",
+    "It's going to extra time! {score}"
+  ],
+  "commentary.etHalftime": [
+    "Half-time in extra time. {score}"
+  ],
+  "commentary.extraTimeEnd": [
+    "Extra time is over. It's going to penalties! {score}"
+  ],
+  "commentary.penaltiesStart": [
+    "The shoot-out is about to begin. A hush falls over the stadium."
+  ],
+  "commentary.penScored": [
+    "{player} scores! ({tally})",
+    "{player} sends the keeper the wrong way and calmly converts. ({tally})",
+    "{player} smashes it into the corner! Scored. ({tally})"
+  ],
+  "commentary.penSaved": [
+    "{player}'s kick — saved by {gk}! ({tally})",
+    "{player} misses — {gk} guessed the right way! ({tally})"
+  ],
+  "commentary.penMissed": [
+    "{player} blazes it over the bar! Missed. ({tally})",
+    "{player}'s kick goes wide! ({tally})"
+  ],
+  "commentary.penaltyAwarded": [
+    "Penalty! A big chance for {team}. {player} steps up.",
+    "Foul in the box! The referee points to the spot. {player} places the ball.",
+    "{team} win a penalty. {player} will take it."
+  ],
+  "commentary.penaltyGoal": [
+    "GOAL! {player} coolly converts the penalty!",
+    "GOAL! {player} sends it the opposite way to the keeper!",
+    "GOAL! {player} drills it into the corner!"
+  ],
+  "commentary.penaltySaved": [
+    "Penalty saved by {gk}! {player} is denied!",
+    "What a save from {gk}! {player}'s spot-kick is kept out!"
+  ],
+  "commentary.penaltyMissed": [
+    "{player} misses the penalty! It's wide of the post!",
+    "{player}'s spot-kick sails over the bar!"
+  ],
+  "commentary.tactic": [
+    "{team} make a tactical change: {change}.",
+    "Instructions from the {team} bench: {change}."
+  ],
+  "commentary.formation": [
+    "{team} change shape: {formation}.",
+    "{team} switch formation: {formation}."
+  ],
+  "commentary.fulltime": [
+    "Full-time! Final score {score}"
+  ],
+  "commentary.shot.open": "{shooter}'s shot",
+  "commentary.shot.long": "{shooter}'s long-range effort",
+  "commentary.shot.header": "{shooter}'s header",
+  "commentary.shot.big": "{shooter}'s one-on-one effort",
+  "commentary.assist": "(Assist: {name})",
+  "commentary.aet": "(a.e.t.)",
+  "commentary.pens": "({home}-{away} on pens)",
+  "commentary.gk": "the keeper"
+}

@@ -2,11 +2,12 @@
 // squad에는 출전 가능한 선수만 넘길 것 (부상·출장정지 제외는 호출하는 쪽 책임)
 import { resolveSlots } from './formations.js';
 import { computeTeamRatings, overall, positionFit, positionRating } from './ratings.js';
+import { tx } from './text.js';
 
 // formation: 포메이션 ID 또는 슬롯 배열. factorOf(player): 컨디션 배율
 export function autoSelectLineup(squad, formation, factorOf = () => 1) {
   const slots = resolveSlots(formation);
-  if (squad.length < slots.length) throw new Error(`선수 ${squad.length}명 — ${slots.length}명 필요`);
+  if (squad.length < slots.length) throw new Error(tx('engine.error.squadTooSmall', { have: squad.length, need: slots.length }));
   const slotScore = (player, pos) => positionRating(player, pos) * positionFit(player, pos) * factorOf(player);
 
   // 1) 탐욕 배정: 후보가 적은 슬롯(GK 등)부터 가장 잘 맞는 선수를 넣는다

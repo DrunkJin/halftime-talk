@@ -1,6 +1,7 @@
 // 라운드 진행을 Web Worker로 보낸다. Worker를 못 쓰는 환경이면 메인 스레드에서 같은 함수를 돌린다.
 // 결과는 진행이 반영된 새 game 객체 — 호출한 쪽이 ctx.game을 바꿔 끼워야 한다.
 import { playCupWeek, playWeek, simulateRestOfSeason, startNextSeason } from './season.js';
+import { getLang } from '../i18n.js';
 
 let worker = null;
 let workerBroken = false;
@@ -40,7 +41,7 @@ function postToWorker(type, game, userResult) {
   const id = ++seq;
   return new Promise((resolve, reject) => {
     pending.set(id, { resolve, reject });
-    w.postMessage({ id, type, dataUrl: new URL('data/', document.baseURI).href, game, userResult });
+    w.postMessage({ id, type, dataUrl: new URL('data/', document.baseURI).href, lang: getLang(), game, userResult });
   });
 }
 

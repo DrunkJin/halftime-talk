@@ -1,0 +1,14 @@
+{
+  "inbox.action.player": "선수 보기",
+  "inbox.action.offers": "받은 제안 보기",
+  "inbox.action.transfers": "이적 화면으로",
+  "inbox.action.match": "경기 탭으로",
+  "inbox.action.training": "훈련 탭으로",
+  "inbox.loading": "불러오는 중…",
+  "inbox.filter.all": "전체",
+  "inbox.markAllRead": "모두 읽음",
+  "inbox.when": "{season}시즌 {round}R",
+  "inbox.title": "받은 편지함",
+  "inbox.titleUnread": "받은 편지함 · 읽지 않음 {n}",
+  "inbox.empty": "소식이 없습니다."
+}
