@@ -45,8 +45,12 @@
   "training.ind.option": "{pos} {name} ({age}, {ovr})",
   "training.ind.suggest": "Fill with suggestions",
   "training.ind.empty": "No players on individual training yet.",
-  "training.ind.note": "Young players with potential to spare improve fastest. Growth stops at potential, and for players aged 30+ it slows the end-of-season decline.",
+  "training.ind.note": "Young players with potential to spare improve fastest. Growth stops at potential, and for players aged 30+ it slows the end-of-season decline. You can also retrain a player in a new position; it goes faster if you play them there too.",
   "training.ind.synergy": "Faster when it matches team training",
+  "training.ind.groupsLabel": "Attribute training",
+  "training.ind.positionsLabel": "Learn a new position",
+  "training.ind.posOption": "Learn {pos} ({name})",
+  "training.ind.posOutlook": "{pos}: {word}",
   "training.th.pos": "Pos",
   "training.th.player": "Player",
   "training.th.potential": "Pot",
@@ -54,7 +58,10 @@
   "training.th.outlook": "Outlook",
   "training.th.gain": "Season gain",
   "training.log.title": "Recent Training",
-  "training.log.injury": { "one": " {name} injured in training (1 match)", "other": " {name} injured in training ({n} matches)" },
+  "training.log.injury": {
+    "one": " {name} injured in training (1 match)",
+    "other": " {name} injured in training ({n} matches)"
+  },
   "training.log.empty": "Attributes gained in training will show up here as rounds are played. A single attribute usually takes a few weeks to go up.",
   "training.locked": "Training can't be changed during a match."
 }

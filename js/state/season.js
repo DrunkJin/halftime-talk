@@ -16,7 +16,8 @@ import { recordSeason } from './history.js';
 export { startNextSeason } from './newSeason.js';
 import { settleMoraleAfterMatch } from './morale.js';
 import { trainFamiliarity } from './familiarity.js';
-import { applyTrainingWeek } from './training.js';
+import { applyTrainingWeek, trainingOf } from './training.js';
+import { learnFromMatch, trainPositionsWeek } from './positions.js';
 import { updateMoods } from './squadMood.js';
 import { evaluateSeason, setObjective, updateBoardAfterMatch } from './board.js';
 import { digestFinish, digestStart, pushNews, weeklyNews } from './inbox.js';
@@ -57,6 +58,7 @@ export function playCupWeek(dataset, game, userResult) {
   const cups = [playCupEvent(dataset, game, userResult)].filter(Boolean);
   settleMoraleAfterMatch(game, mine?.id, userResult, mine?.homeId === game.teamId ? 'home' : 'away', { decay: false });
   if (mine) trainFamiliarity(game);
+  if (mine) learnFromMatch(dataset, game, userResult, mine.homeId === game.teamId ? 'home' : 'away'); // 포지션 전환
   const moods = mine ? updateMoods(dataset, game, userResult) : [];
   cups.push(...playDueCupEvents(dataset, game));
   return { cups, moods };
@@ -72,9 +74,11 @@ export function playWeek(dataset, game, userResult) {
   const board = mine ? updateBoardAfterMatch(dataset, game, mine, userResult) : []; // 이사회 신뢰도
   settleMoraleAfterMatch(game, mine?.id, userResult, mine?.homeId === game.teamId ? 'home' : 'away');
   if (mine) trainFamiliarity(game);
+  if (mine) learnFromMatch(dataset, game, userResult, mine.homeId === game.teamId ? 'home' : 'away'); // 포지션 전환
   const moods = mine ? updateMoods(dataset, game, userResult) : []; // 출전 기대치·기분 (사용자 팀)
   applyWeekFinances(dataset, game);
   const training = applyTrainingWeek(dataset, game); // 경기 사이 한 주 훈련
+  trainPositionsWeek(dataset, game, trainingOf(game).individual); // 개인 훈련으로 지정한 새 포지션
   let aiTransfers = [];
   let newOffers = [];
   if (windowOpen) {

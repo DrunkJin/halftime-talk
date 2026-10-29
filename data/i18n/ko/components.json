@@ -74,6 +74,7 @@
   "components.player.stats": " · {apps}경기 {goals}골 {assists}도움",
   "components.player.out": "{label} {n}경기",
   "components.player.alt": " · 보조 {alts}",
+  "components.player.learning": "새 포지션",
   "components.player.free": "무소속 · ",
   "components.player.ageNation": "{age}세 · {nation}",
   "components.player.byPosition": "포지션별 능력",

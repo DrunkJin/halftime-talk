@@ -1,6 +1,6 @@
 // 스쿼드: 피치 자유 배치 포메이션 + 선발 배치(드래그 또는 클릭 두 번) + 스쿼드 표 + 팀 레이팅 + 교체 명단
 import { bestLeader, bestPenaltyTaker, bestSetPieceTaker, captainBoostOf, leadership } from '../../state/captain.js';
-import { PENALTIES } from '../../engine/config.js';
+import { PENALTIES, POSITION_FIT } from '../../engine/config.js';
 import { isRequesting, levelOf, moodOf, promiseOf, rolesOf, shareOf } from '../../state/squadMood.js';
 import { formAverage, formOf, ratingClass, seasonRating } from '../../state/form.js';
 import { POSITIONS } from '../../data/schema.js';
@@ -14,6 +14,9 @@ import { h } from '../dom.js';
 import { ATTRIBUTE_LABELS, POSITION_NAMES, attrClass, fmt1, shortName } from '../format.js';
 import { openModal, setDigits, showToast } from '../motion.js';
 import { getLang, t } from '../../i18n.js';
+
+// 보조 포지션 + 포지션 전환으로 손에 익은 자리
+const altsOf = (p) => [...p.altPositions, ...Object.entries(p.posLearn ?? {}).filter(([pos, v]) => v >= POSITION_FIT.learn.familiar && !p.altPositions.includes(pos)).map(([pos]) => pos)];
 
 // 격자 칸 중심 좌표 (%). 위쪽이 상대 골문
 const COL_X = [10, 30, 50, 70, 90];
@@ -434,7 +437,7 @@ export function render(ctx) {
         { class: `${isStarter ? 'is-starter' : 'is-bench'}${selected ? ' is-selected' : ''}${avail.available ? '' : ' is-unavailable'}` },
         h('td', {}, isStarter ? h('span', { class: 'slot-tag' }, slots[slotIndex]) : h('span', { class: 'muted' }, '—')),
         h('td', {}, isStarter ? null : benchToggle(p.id)),
-        h('td', {}, h('span', { class: 'pos-tag' }, p.position), p.altPositions.length ? h('span', { class: 'alt muted' }, ` ${p.altPositions.join(' ')}`) : ''),
+        h('td', {}, h('span', { class: 'pos-tag' }, p.position), altsOf(p).length ? h('span', { class: 'alt muted' }, ` ${altsOf(p).join(' ')}`) : ''),
         h('td', { class: 'name-cell' }, nameButton),
         h('td', {}, statusChip(game, p.id)),
         h('td', {}, moodChip(game, p.id, roles.get(p.id))),

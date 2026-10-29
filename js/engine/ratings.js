@@ -34,12 +34,19 @@ function computeWeightedSkill(attributes, weights) {
   return sum / total;
 }
 
-// 선수가 slotPosition에서 내는 능력 비율 (0~1)
-export function positionFit(player, slotPosition) {
+// 익히기 전 적합도 (데이터의 주·보조 포지션 기준)
+export function baseFit(player, slotPosition) {
   if (player.position === slotPosition) return 1;
   if ((player.position === 'GK') !== (slotPosition === 'GK')) return POSITION_FIT.gkMismatch;
   const neighbor = POSITION_FIT.neighbors[player.position]?.[slotPosition] ?? POSITION_FIT.other;
   return player.altPositions.includes(slotPosition) ? Math.max(neighbor, POSITION_FIT.alt) : neighbor;
+}
+
+// 선수가 slotPosition에서 내는 능력 비율 (0~1). posLearn: 포지션 전환으로 익힌 정도 (state/world.js가 붙인다)
+export function positionFit(player, slotPosition) {
+  const base = baseFit(player, slotPosition);
+  const learned = player.posLearn?.[slotPosition] ?? 0;
+  return learned > 0 && base > POSITION_FIT.gkMismatch ? base + (1 - base) * Math.min(1, learned) : base;
 }
 
 // 특정 포지션 기준 능력 (적합도 미반영)

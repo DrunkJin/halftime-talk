@@ -9,6 +9,7 @@
 //   players: { [선수 id]: [나이, ...능력치] }  능력치는 ATTRIBUTE_KEYS 순서
 //   youth: [선수 객체]                  유스로 새로 생긴 선수
 //   retired: [선수 id]
+//   positions: { [선수 id]: { [자리]: 0~1 } }  포지션 전환으로 익힌 정도 (state/positions.js) → 선수 객체의 posLearn
 // }
 import { ATTRIBUTE_KEYS } from '../data/schema.js';
 import { buildIndex } from '../data/loader.js';
@@ -44,7 +45,8 @@ export function worldDataset(base, game) {
   for (const p of [...base.players, ...w.youth]) {
     if (retired.has(p.id)) continue;
     const o = w.players[p.id];
-    players.push(o ? { ...p, age: o[0], attributes: unpackAttributes(o) } : p);
+    const learned = w.positions?.[p.id];
+    players.push(o || learned ? { ...p, ...(o ? { age: o[0], attributes: unpackAttributes(o) } : {}), ...(learned ? { posLearn: learned } : {}) } : p);
   }
   const membership = new Map();
   for (const [leagueId, ids] of Object.entries(w.leagueTeams)) for (const id of ids) membership.set(id, leagueId);

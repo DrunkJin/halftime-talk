@@ -6,6 +6,7 @@ import { overall } from '../engine/ratings.js';
 import { createRng } from '../engine/rng.js';
 import { t } from '../i18n.js';
 import { systemKey } from './familiarity.js';
+import { trainedPosition } from './positions.js';
 import { squadOf } from './game.js';
 import { potentialFor } from './newSeason.js';
 import { TRAINING as T } from './trainingConfig.js';
@@ -13,7 +14,7 @@ import { ensureWorld, packAttributes, unpackAttributes } from './world.js';
 
 const DEFAULTS = { focus: 'balanced', intensity: 'normal', individual: {} };
 
-// game.training = { focus, intensity, individual: { [선수 id]: 묶음 }, progress: { [선수 id]: { [능력치]: 0~1 } }, retention: { [선수 id]: 0~ }, log: [] }
+// game.training = { focus, intensity, individual: { [선수 id]: 묶음 | 'pos:자리'(포지션 익히기, state/positions.js) }, progress: { [선수 id]: { [능력치]: 0~1 } }, retention: { [선수 id]: 0~ }, log: [] }
 export function trainingOf(game) {
   game.training ??= { ...DEFAULTS, individual: {}, progress: {}, retention: {}, log: [] };
   return game.training;
@@ -119,7 +120,7 @@ export function applyTrainingWeek(dataset, game) {
       }
     }
     // 4) 30세 이상 개인 훈련: 노화 늦추기
-    if (tr.individual[p.id] && p.age >= T.veteranFrom) tr.retention[p.id] = Math.min(T.retentionMax, (tr.retention[p.id] ?? 0) + T.retentionPerWeek);
+    if (tr.individual[p.id] && !trainedPosition(tr.individual[p.id]) && p.age >= T.veteranFrom) tr.retention[p.id] = Math.min(T.retentionMax, (tr.retention[p.id] ?? 0) + T.retentionPerWeek);
   }
   if (changed) game.world.version++;
 

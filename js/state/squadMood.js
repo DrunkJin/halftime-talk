@@ -23,6 +23,12 @@ export function rolesOf(dataset, game) {
 
 export const moodOf = (game, id) => state(game).mood[id] ?? M.start;
 export const levelOf = (mood) => M.levels.find((l) => mood >= l.min);
+
+// 다른 일(포지션 전환 등)로 기분을 바꾼다
+export function nudgeMood(game, id, delta) {
+  const s = state(game);
+  s.mood[id] = clamp(moodOf(game, id) + delta);
+}
 export const isRequesting = (game, id) => Boolean(game.squadMood?.requests?.[id]);
 export const promiseOf = (game, id) => game.squadMood?.promises?.[id] ?? null;
 

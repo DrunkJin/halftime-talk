@@ -14,6 +14,7 @@ import { teamBadge } from './badge.js';
 import { h } from './dom.js';
 import { getLang, t } from '../i18n.js';
 import { ATTRIBUTE_GROUP_LABELS, ATTRIBUTE_LABELS, POSITION_NAMES, attrClass } from './format.js';
+import { learnLevel, learnWord } from '../state/positions.js';
 import { initTabs, initTooltipGroup, openModal, showToast } from './motion.js';
 
 // 슬라이딩 탭. items: [{ id, label }]
@@ -184,6 +185,13 @@ export function basisText(basis) {
   return basis.marketValues ? t('components.basis.full', vars) : t('components.basis.short', vars);
 }
 
+// 포지션 전환으로 익히고 있는 자리 (숫자 대신 단계 말로)
+function learnedLine(player) {
+  const entries = Object.entries(player.posLearn ?? {}).filter(([, v]) => learnLevel(v) !== 'new').sort((a, b) => b[1] - a[1]);
+  if (!entries.length) return null;
+  return h('p', { class: 'pm-learned' }, h('span', { class: 'muted' }, t('components.player.learning')), entries.map(([pos, v], i) => [i ? ' · ' : ' ', h('b', {}, pos), ` ${learnWord(v)}`]));
+}
+
 export function openPlayerModal(dataset, player, ctx = null) {
   const game = ctx?.game;
   const teamId = game ? currentTeamId(dataset, game, player.id) : player.teamId;
@@ -239,6 +247,7 @@ export function openPlayerModal(dataset, player, ctx = null) {
         h('p', {}, h('span', { class: 'pos-tag' }, player.position), ` ${POSITION_NAMES[player.position]}`, player.altPositions.length ? t('components.player.alt', { alts: player.altPositions.join(', ') }) : ''),
         h('p', { class: 'muted' }, team ? [teamBadge(team, 16), ` ${team.name} · `] : t('components.player.free'), t('components.player.ageNation', { age: player.age, nation: (getLang() === 'ko' ? nation?.nameKo : nation?.name) ?? player.nationality })),
         loanLine(dataset, game, player),
+        learnedLine(player),
         extra,
       ),
       close,

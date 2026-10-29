@@ -92,6 +92,7 @@
     "other": "{label} ({n} matches)"
   },
   "components.player.alt": " · Also {alts}",
+  "components.player.learning": "Retraining",
   "components.player.free": "Free agent · ",
   "components.player.ageNation": "Age {age} · {nation}",
   "components.player.byPosition": "By position",

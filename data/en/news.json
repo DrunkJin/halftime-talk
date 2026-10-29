@@ -158,6 +158,58 @@
         "{name} is frustrated, saying he gives everything in training but never gets a chance."
       ]
     },
+    "player.posFamiliar": {
+      "from": "Assistant Manager",
+      "title": [
+        "{name} is settling in at {pos}",
+        "{name}'s progress at {pos}",
+        "{name} looks more natural at {pos}"
+      ],
+      "body": [
+        "{name} is moving much more naturally at {pos}. Not fully there yet, but it no longer looks awkward.",
+        "In training, {name}'s positioning at {pos} has clearly improved. A bit more time there and it'll feel like home.",
+        "{name} has got a feel for what {pos} demands. Most of what felt strange compared with {from} has gone."
+      ]
+    },
+    "player.posSuccess": {
+      "from": "Assistant Manager",
+      "title": [
+        "{name}'s switch to {pos} has worked",
+        "{name} is thriving at {pos}",
+        "The position change has paid off"
+      ],
+      "body": [
+        "{name} has made {pos} their own. Honestly, they're better there than at {from}. You called it right, boss.",
+        "Moved from {from} to {pos}, {name} now looks like a natural {pos}. Their attributes simply suit the role better.",
+        "Playing {name} at {pos} has been a huge success. The press are calling it a textbook conversion, and the player is delighted."
+      ]
+    },
+    "player.posAdapted": {
+      "from": "Assistant Manager",
+      "title": [
+        "{name} has fully adapted to {pos}",
+        "{name} can now cover {pos}",
+        "{pos} is now an option"
+      ],
+      "body": [
+        "{name} has fully adapted to {pos}. Not quite at the level of {from}, but they no longer look out of place at {pos}.",
+        "You can now use {name} at either {from} or {pos}. That gives us more options in the squad.",
+        "{name}'s retraining at {pos} is complete. They move like it's their own position, though {from} is still where they shine most."
+      ]
+    },
+    "player.posComplaint": {
+      "from": "{name}",
+      "title": [
+        "{pos} isn't my position",
+        "{name} unhappy with position",
+        "{name} wants a word about position"
+      ],
+      "body": [
+        "Boss, I'm a {from}. I can't use my strengths at {pos}. I'd like to talk about it.",
+        "{name} is unhappy at being played at {pos} again and again, and wants to play at {from}.",
+        "{name}: I'll play anywhere for the team, but at {pos} I can't show what I'm good at."
+      ]
+    },
     "player.request": {
       "from": "{name}",
       "title": [

@@ -4,11 +4,13 @@ import { familiarityOf, familiarityWord } from '../../state/familiarity.js';
 import { conditionOf, squadOf, userFixture } from '../../state/game.js';
 import { scoutedPotential } from '../../state/newSeason.js';
 import { seasonGainsOf, suggestIndividual, trainingOf, weekPreview, weeklyRates } from '../../state/training.js';
+import { learnablePositions, learnedOf, learnWord, positionTrainingValue, trainedPosition } from '../../state/positions.js';
+import { POSITIONS } from '../../data/schema.js';
 import { TRAINING as T } from '../../state/trainingConfig.js';
 import { teamBadge } from '../badge.js';
 import { panel, segmented } from '../components.js';
 import { h } from '../dom.js';
-import { ATTRIBUTE_LABELS, attrClass } from '../format.js';
+import { ATTRIBUTE_LABELS, POSITION_NAMES, attrClass } from '../format.js';
 import { showToast } from '../motion.js';
 import { isMatchInProgress } from './match.js';
 import { FAMILIARITY } from '../../engine/config.js';
@@ -111,14 +113,22 @@ export function render(ctx) {
       const ovr = overall(p);
       const pot = scoutedPotential(game, p, ovr);
       const rates = weeklyRates(game, p, tr);
-      // 묶음 능력치 하나당 남은 시즌 예상 상승 (지금 속도가 이어진다면)
-      const groupAttrs = T.groups[group].attrs;
-      const perAttr = groupAttrs.reduce((s, a) => s + (rates[a] ?? 0), 0) / groupAttrs.length;
+      // 묶음 능력치 하나당 남은 시즌 예상 상승 (지금 속도가 이어진다면). 포지션 익히기는 익힘 단계를 말로
+      const posTarget = trainedPosition(group);
+      const groupAttrs = posTarget ? [] : T.groups[group].attrs;
+      const perAttr = groupAttrs.length ? groupAttrs.reduce((s, a) => s + (rates[a] ?? 0), 0) / groupAttrs.length : 0;
       const weeksLeft = Math.max(0, game.totalRounds - game.round + 1);
-      const sel = h('select', { class: 'select small', 'aria-label': t('training.ind.groupAria', { name: p.name }) }, groupOptions(p).map(([gid, g]) => h('option', { value: gid, selected: gid === group || null }, g.label)));
+      const posOptions = learnablePositions(p, POSITIONS);
+      const sel = h(
+        'select',
+        { class: 'select small', 'aria-label': t('training.ind.groupAria', { name: p.name }) },
+        h('optgroup', { label: t('training.ind.groupsLabel') }, groupOptions(p).map(([gid, g]) => h('option', { value: gid, selected: gid === group || null }, g.label))),
+        posOptions.length ? h('optgroup', { label: t('training.ind.positionsLabel') }, posOptions.map((pos) => h('option', { value: positionTrainingValue(pos), selected: pos === posTarget || null }, t('training.ind.posOption', { pos, name: POSITION_NAMES[pos] })))) : null,
+      );
+      const labelOf = (value) => (trainedPosition(value) ? t('training.ind.posOption', { pos: trainedPosition(value), name: POSITION_NAMES[trainedPosition(value)] }) : T.groups[value].label);
       sel.addEventListener('change', () => {
         tr.individual[id] = sel.value;
-        save(t('training.toast.group', { name: p.name, label: T.groups[sel.value].label }));
+        save(t('training.toast.group', { name: p.name, label: labelOf(sel.value) }));
       });
       const remove = h('button', { class: 'btn small ghost', type: 'button', 'aria-label': t('training.ind.removeAria', { name: p.name }) }, t('training.ind.remove'));
       remove.addEventListener('click', () => {
@@ -134,7 +144,7 @@ export function render(ctx) {
         h('td', { class: `num ${attrClass(ovr)}` }, ovr),
         h('td', { class: 'num muted' }, pot ? `${pot.low}~${pot.high}` : '—'),
         h('td', {}, sel),
-        h('td', { class: 'muted small-note' }, veteran ? t('training.ind.retention', { pct: pct(tr.retention?.[id] ?? 0) }) : perAttr > 0 ? t('training.ind.outlook', { n: Math.round(perAttr * weeksLeft) }) : t('training.ind.capped')),
+        h('td', { class: 'muted small-note' }, posTarget ? t('training.ind.posOutlook', { pos: posTarget, word: learnWord(learnedOf(game, id)[posTarget] ?? 0) }) : veteran ? t('training.ind.retention', { pct: pct(tr.retention?.[id] ?? 0) }) : perAttr > 0 ? t('training.ind.outlook', { n: Math.round(perAttr * weeksLeft) }) : t('training.ind.capped')),
         h('td', { class: 'num' }, seasonGainsOf(game, id) ? h('b', { class: 'up' }, `+${seasonGainsOf(game, id)}`) : '—'),
         h('td', {}, remove),
       );
@@ -149,8 +159,10 @@ export function render(ctx) {
     });
     const suggest = h('button', { class: 'btn small', type: 'button' }, t('training.ind.suggest'));
     suggest.addEventListener('click', () => {
-      tr.individual = {};
-      for (const s of suggestIndividual(dataset, game)) tr.individual[s.id] = s.group;
+      // 포지션 익히기는 그대로 두고 남은 자리만 추천으로 채운다
+      const kept = Object.fromEntries(Object.entries(tr.individual).filter(([, v]) => trainedPosition(v)));
+      tr.individual = kept;
+      for (const s of suggestIndividual(dataset, game).filter((x) => !kept[x.id]).slice(0, Math.max(0, T.individual.max - Object.keys(kept).length))) tr.individual[s.id] = s.group;
       save(t('training.toast.suggested'));
     });
     const individual = panel(

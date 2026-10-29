@@ -58,6 +58,7 @@ function initTeam(team, boost) {
     boost,
     condition,
     minutes: new Map(team.lineup.map((p) => [p.id, 0])),
+    offPosition: {}, // { [선수 id]: { [자리]: 분 } } 원래 포지션이 아닌 자리에서 뛴 시간 (포지션 전환)
     roster: new Map([...team.lineup, ...(team.bench ?? [])].map((p) => [p.id, p])), // 평점용: 교체로 나간 선수까지
     slotOf: new Map(), // 선수가 마지막으로 선 자리 (평점 가중치)
     penaltyTakerId: team.penaltyTakerId ?? null, // 지정 키커 (없거나 경기장에 없으면 가장 잘 차는 선수)
@@ -440,6 +441,10 @@ function drainCondition(t, extraTime) {
     if (t.slots[i] === 'GK') drain *= C.CONDITION.gkDrainFactor;
     t.condition.set(p.id, Math.max(C.CONDITION.min, t.condition.get(p.id) - drain));
     t.minutes.set(p.id, (t.minutes.get(p.id) ?? 0) + 1);
+    if (t.slots[i] !== p.position) {
+      const off = (t.offPosition[p.id] ??= {});
+      off[t.slots[i]] = (off[t.slots[i]] ?? 0) + 1;
+    }
   });
 }
 
@@ -864,6 +869,7 @@ export function getMatchResult(state) {
       ratings: t.ratings,
       onPitch: t.lineup.map((p) => p?.id ?? null),
       subsUsed: t.subsUsed,
+      ...(Object.keys(t.offPosition).length ? { offPosition: structuredClone(t.offPosition) } : {}),
     };
   };
   // 뛴 선수의 출전 시간과 경기 후 컨디션
