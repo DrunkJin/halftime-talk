@@ -1141,3 +1141,27 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .offer-head { display: flex; align-items: center; gap: 10px; }
 .offer-head > div { display: grid; gap: 2px; min-width: 0; }
 .offer-letter { margin: 0; font-size: 13px; line-height: 1.5; color: var(--text-2); }
+
+/* ── 받은 편지함 ── */
+.inbox-btn { position: relative; gap: 6px; }
+.inbox-count:not(:empty) { min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--danger); color: #fff; font-size: var(--fs-min); font-weight: 800; line-height: 18px; text-align: center; }
+.inbox { display: grid; gap: 10px; padding: 12px; }
+.inbox-tools { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.news-list { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.news { border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+.news.important { border-color: var(--line-2); }
+.news-head { display: grid; grid-template-columns: 10px 90px minmax(0, 1fr) auto; align-items: center; gap: 10px; width: 100%; padding: 10px 12px; border: 0; background: transparent; color: var(--text); text-align: left; cursor: pointer; font: inherit; }
+.news-dot { width: 8px; height: 8px; border-radius: 50%; background: transparent; }
+.news.unread .news-dot { background: var(--accent); }
+.news.unread .news-title { color: var(--text); }
+.news:not(.unread) .news-title { color: var(--text-2); font-weight: 600; }
+.news.important.unread .news-dot { background: var(--warn); }
+.news-from { font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.news-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+.news-when { font-size: 12px; white-space: nowrap; }
+.news-body { display: grid; gap: 8px; justify-items: start; padding: 0 12px 12px 32px; font-size: 13px; line-height: 1.6; color: var(--text-2); }
+@media (max-width: 560px) {
+  .news-head { grid-template-columns: 10px minmax(0, 1fr) auto; }
+  .news-from { display: none; }
+  .news-body { padding-left: 12px; }
+}

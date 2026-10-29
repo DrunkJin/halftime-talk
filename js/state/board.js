@@ -13,6 +13,7 @@ import { computeTable } from '../league/table.js';
 import { topElevenOvr } from '../market/value.js';
 import { BOARD as B } from './boardConfig.js';
 import { noteSeasonExpectation } from './career.js';
+import { pushNews } from './inbox.js';
 import { fixturesOf, leagueTotalRounds, squadOf, userSlots } from './game.js';
 
 const clamp = (v) => Math.max(0, Math.min(100, v));
@@ -154,7 +155,12 @@ export function moveToTeam(dataset, game, teamId, { reason = 'offer' } = {}) {
 // 제안 수락: 시즌 중 경질이면 바로 부임, 그 밖에는 다음 시즌 시작 때 (startNextSeason → applyPendingMove)
 export function acceptOffer(dataset, game, teamId) {
   const board = boardOf(game);
-  if (board.sacked?.midSeason) return moveToTeam(dataset, game, teamId, { reason: 'sacked' });
+  if (board.sacked?.midSeason) {
+    moveToTeam(dataset, game, teamId, { reason: 'sacked' });
+    pushNews(game, 'board.welcome', { club: dataset.teamById.get(teamId).shortName }, { important: true });
+    pushNews(game, 'board.objective', { team: dataset.teamById.get(teamId).shortName, goal: board.objective.label, kind: board.objective.kind }, { important: true });
+    return;
+  }
   board.pendingMove = { teamId, reason: board.sacked ? 'sacked' : 'offer' };
   board.sacked = null;
   board.offers = null;

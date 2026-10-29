@@ -1,6 +1,7 @@
 // 경기: 경기 전(선발·전력 비교) → 실시간 텍스트 중계 → 경기 후(다른 경기 결과)
 import { loadTalks, pickTalk } from '../../media/talks.js';
 import { loadBoardText } from '../../media/boardText.js';
+import { pushNews } from '../../state/inbox.js';
 import { boardLine, mustChooseClub, sackedPanel, seasonBoardPanel } from '../board.js';
 import { FORMATION_CELLS, formationLabel, positionOfCell } from '../../engine/formations.js';
 import { HALF_TIME_MINUTE, MATCH_MINUTES } from '../../engine/config.js';
@@ -22,7 +23,7 @@ import { formatMoney } from '../../market/value.js';
 import { formationPicker, presetFormationOptions, tacticLabel, tacticSummary, tacticsPicker } from '../tactics.js';
 import { analysisPanel } from '../analysis.js';
 import { familiarityBoost, familiarityOf } from '../../state/familiarity.js';
-import { answerPost, answerPre, answerTalk, cupTeamTalk, loadMedia, postCupInterview, postInterview, preCupInterview, preInterview, teamTalk } from '../../media/interviews.js';
+import { answerPost, answerPre, answerTalk, cupTeamTalk, loadMedia, rivalryBetween, postCupInterview, postInterview, preCupInterview, preInterview, teamTalk } from '../../media/interviews.js';
 import { compOf, cupMatchInput, cupsOf, eventFixtures, firstLegOf, leaguePhaseTable, stageName, userCupFixture } from '../../competitions/cups.js';
 import { STANCES } from '../../media/situations.js';
 import { moraleLabel, moraleOf } from '../../state/morale.js';
@@ -297,7 +298,17 @@ function renderPre(ctx, show) {
       ),
     );
   };
-  loadMedia().then(renderPress);
+  loadMedia().then((media) => {
+    renderPress(media);
+    // 라이벌전: 상대 감독 도발 소식 (경기마다 한 번)
+    const rivalry = rivalryBetween(media, fixture.homeId, fixture.awayId);
+    if (rivalry && ctx.game.derbyNews !== fixture.id) {
+      ctx.game.derbyNews = fixture.id;
+      pushNews(ctx.game, 'match.derby', { rival: teamOf(ctx, mySide === 'home' ? fixture.awayId : fixture.homeId).shortName, rivalry: rivalry.name });
+      ctx.persist();
+      ctx.refreshTopbar();
+    }
+  });
 
   return h(
     'div',

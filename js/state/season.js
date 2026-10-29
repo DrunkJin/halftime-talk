@@ -15,6 +15,7 @@ import { trainFamiliarity } from './familiarity.js';
 import { applyTrainingWeek } from './training.js';
 import { updateMoods } from './squadMood.js';
 import { evaluateSeason, setObjective, updateBoardAfterMatch } from './board.js';
+import { pushNews, weeklyNews } from './inbox.js';
 import { aiIdentity, squadProfile } from '../engine/tactics.js';
 
 export function createGame(dataset, teamId, options) {
@@ -30,6 +31,7 @@ export function createGame(dataset, teamId, options) {
   noteSeasonExpectation(dataset, game);
   setObjective(dataset, game);
   game.jobs = [{ seasonIndex: 1, round: 1, teamId, reason: 'start' }];
+  pushNews(game, 'board.objective', { team: dataset.teamById.get(teamId).shortName, goal: game.board.objective.label, kind: game.board.objective.kind }, { important: true });
   return game;
 }
 
@@ -80,10 +82,21 @@ export function playWeek(dataset, game, userResult) {
   if (isSeasonOver(game)) {
     awardSeasonPrizes(dataset, game);
     recordSeason(dataset, game);
-    evaluateSeason(dataset, game); // 이사회 평가 → 경질 또는 다른 구단 제안
+    seasonEndNews(dataset, game, evaluateSeason(dataset, game)); // 이사회 평가 → 경질 또는 다른 구단 제안
     game.incomingOffers = [];
   }
-  return { others, aiTransfers, newOffers, cups, training, moods, board };
+  const week = { others, aiTransfers, newOffers, cups, training, moods, board };
+  weeklyNews(dataset, game, week, mine, userResult);
+  return week;
+}
+
+// 시즌 끝 이사회 소식: 평가, 경질 또는 제안
+function seasonEndNews(dataset, game, ev) {
+  if (!ev) return;
+  const team = (id) => dataset.teamById.get(id)?.shortName ?? id;
+  pushNews(game, `board.eval.${ev.verdict}`, { goal: ev.label, position: ev.position, target: ev.target, delta: ev.delta, confidence: Math.round(game.board.confidence) }, { important: true });
+  if (game.board.sacked) pushNews(game, 'board.sacked', { team: team(game.teamId) }, { important: true });
+  for (const id of game.board.offers ?? []) pushNews(game, 'board.offer', { club: team(id), league: dataset.leagueById.get(dataset.teamById.get(id).leagueId).name, id }, { important: true });
 }
 
 // 남은 시즌 자동 진행: 사용자 팀은 지금 선발에서 결장자·지친 선수를 바꾸고(로테이션),

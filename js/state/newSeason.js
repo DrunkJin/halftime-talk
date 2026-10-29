@@ -17,6 +17,7 @@ import { noteSeasonExpectation } from './career.js';
 import { takeRetention } from './training.js';
 import { resetMoodsForNewSeason } from './squadMood.js';
 import { startBoardSeason } from './board.js';
+import { pushNews } from './inbox.js';
 
 const P = PROGRESSION;
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
@@ -412,6 +413,9 @@ export function startNextSeason(base, game, { renew = null } = {}) {
   // 이사회: 옮기기로 한 구단이 있으면 부임, 아니면 신뢰도를 이어 받고 새 목표
   const moving = game.board?.pendingMove?.teamId ?? null;
   startBoardSeason(ds1, game);
+  const myTeam = ds1.teamById.get(game.teamId).shortName;
+  if (moving) pushNews(game, 'board.welcome', { club: myTeam }, { important: true });
+  pushNews(game, 'board.objective', { team: myTeam, goal: game.board.objective.label, kind: game.board.objective.kind }, { important: true });
   if (moving) {
     summary.newTeam = ds1.teamById.get(moving)?.name ?? moving;
     summary.newLeague = null; // 승강 안내 대신 새 구단 안내

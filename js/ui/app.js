@@ -1,6 +1,7 @@
 // 앱 셸: 상단 바 + 화면 전환(panel reveal) + 자동 저장 + 세이브 슬롯 + 진행 중 잠금
 import { formatMoney } from '../market/value.js';
 import { SAVE_VERSION, dataFingerprint, isSeasonOver, leagueOf } from '../state/game.js';
+import { unreadCount } from '../state/inbox.js';
 import { deleteSave, saveGame } from '../state/save.js';
 import { worldDataset } from '../state/world.js';
 import { teamBadge } from './badge.js';
@@ -11,6 +12,7 @@ import * as careerScreen from './screens/career.js';
 import * as cupsScreen from './screens/cups.js';
 import * as financeScreen from './screens/finance.js';
 import * as historyScreen from './screens/history.js';
+import * as inboxScreen from './screens/inbox.js';
 import * as matchScreen from './screens/match.js';
 import * as scheduleScreen from './screens/schedule.js';
 import * as squadScreen from './screens/squad.js';
@@ -20,7 +22,7 @@ import * as trainingScreen from './screens/training.js';
 import * as transfersScreen from './screens/transfers.js';
 
 // career: 감독 커리어 엔딩 (상단 탭 없이 시즌 종료·기록 화면에서 연다)
-const SCREENS = { career: careerScreen, select: teamSelectScreen, squad: squadScreen, match: matchScreen, schedule: scheduleScreen, training: trainingScreen, table: tableScreen, cups: cupsScreen, transfers: transfersScreen, finance: financeScreen, history: historyScreen };
+const SCREENS = { inbox: inboxScreen, career: careerScreen, select: teamSelectScreen, squad: squadScreen, match: matchScreen, schedule: scheduleScreen, training: trainingScreen, table: tableScreen, cups: cupsScreen, transfers: transfersScreen, finance: financeScreen, history: historyScreen };
 const NAV = [
   { id: 'squad', label: '스쿼드' },
   { id: 'match', label: '경기' },
@@ -125,6 +127,7 @@ export function createApp(root, dataset, savedSlots = []) {
   let nav = null;
   let roundLabel = null;
   let budgetLabel = null;
+  let inboxBtn = null;
 
   function buildTopbar() {
     const brand = h('div', { class: 'brand' }, h('span', { class: 'brand-mark' }), h('span', {}, 'HALFTIME', h('b', {}, ' TALK')));
@@ -137,6 +140,9 @@ export function createApp(root, dataset, savedSlots = []) {
     roundLabel = h('span', { class: 'muted' });
     budgetLabel = h('span', { class: 'budget num' });
     nav = segmented(NAV, current && current !== 'select' ? current : 'squad', (id) => navigate(id));
+    // 받은 편지함 (읽지 않은 수)
+    inboxBtn = h('button', { class: 'btn ghost small inbox-btn', type: 'button' }, '편지함', h('span', { class: 'inbox-count' }));
+    inboxBtn.addEventListener('click', () => navigate('inbox'));
     const toSelect = h('button', { class: 'btn ghost small', type: 'button' }, '팀 선택');
     toSelect.addEventListener('click', () =>
       openConfirm({
@@ -150,7 +156,7 @@ export function createApp(root, dataset, savedSlots = []) {
       brand,
       h('div', { class: 'topbar-team' }, teamBadge(team, 22), h('b', {}, team.shortName), roundLabel, budgetLabel),
       h('nav', { class: 'topbar-nav' }, nav.el),
-      h('div', { class: 'topbar-actions' }, toSelect),
+      h('div', { class: 'topbar-actions' }, inboxBtn, toSelect),
     );
     refreshTopbar();
   }
@@ -172,6 +178,11 @@ export function createApp(root, dataset, savedSlots = []) {
     const season = g.years > 1 ? ` · 시즌 ${g.seasonIndex}/${g.years}` : '';
     roundLabel.textContent = `${league.name} ${g.season}${season} · ${isSeasonOver(g) ? '시즌 종료' : `라운드 ${g.round}/${g.totalRounds}`}`;
     budgetLabel.textContent = formatMoney(g.budgets[g.teamId]);
+    const unread = unreadCount(g);
+    if (inboxBtn) {
+      inboxBtn.querySelector('.inbox-count').textContent = unread ? String(unread) : '';
+      inboxBtn.setAttribute('aria-label', unread ? `편지함, 읽지 않은 소식 ${unread}개` : '편지함');
+    }
   }
 
   function navigate(name) {
