@@ -235,7 +235,8 @@
         },
         {
           "stance": "praise",
-          "text": "공 점유하면서 상대 지치게 만드는 거, 딱 원하던 그림이었다."
+          "text": "공 점유하면서 상대 지치게 만드는 거, 딱 원하던 그림이었다.",
+          "when": "possessionLead"
         },
         {
           "stance": "praise",
@@ -457,7 +458,8 @@
         },
         {
           "stance": "praise",
-          "text": "라이벌 상대로 이만큼 점유한 거, 쉽지 않은 일이야. 대단했다."
+          "text": "라이벌 상대로 이만큼 점유한 거, 쉽지 않은 일이야. 대단했다.",
+          "when": "possessionLead"
         },
         {
           "stance": "praise",
@@ -643,7 +645,8 @@
       "answers": [
         {
           "stance": "praise",
-          "text": "이게 더비지! 전반 내내 상대를 압도했어. 훌륭했다."
+          "text": "이게 더비지! 전반 내내 상대를 압도했어. 훌륭했다.",
+          "when": "outshot"
         },
         {
           "stance": "praise",
@@ -739,8 +742,7 @@
         },
         {
           "stance": "demand",
-          "text": "세트피스 수비가 불안해. 마크 확실히 붙어!",
-          "when": "weather"
+          "text": "세트피스 수비가 불안해. 마크 확실히 붙어!"
         },
         {
           "stance": "demand",
@@ -854,7 +856,8 @@
       "answers": [
         {
           "stance": "praise",
-          "text": "내용은 우리가 압도했어. 슈팅 수 봐. 골은 반드시 온다."
+          "text": "내용은 우리가 압도했어. 슈팅 수 봐. 골은 반드시 온다.",
+          "when": "outshot"
         },
         {
           "stance": "praise",
@@ -862,7 +865,11 @@
         },
         {
           "stance": "praise",
-          "text": "점유율, 찬스 다 우리가 앞섰다. 너희 잘하고 있어."
+          "text": "점유율, 찬스 다 우리가 앞섰다. 너희 잘하고 있어.",
+          "when": [
+            "outshot",
+            "possessionLead"
+          ]
         },
         {
           "stance": "praise",
@@ -878,7 +885,8 @@
         },
         {
           "stance": "praise",
-          "text": "{opponent} 녀석들, 슈팅 한두 번으로 넣었지? 경기는 우리가 더 잘했어."
+          "text": "{opponent} 녀석들, 슈팅 한두 번으로 넣었지? 경기는 우리가 더 잘했어.",
+          "when": "outshot"
         },
         {
           "stance": "praise",
@@ -970,8 +978,7 @@
         },
         {
           "stance": "demand",
-          "text": "측면 수비가 다 열려 있어. 풀백 둘, 올라가면 반드시 돌아와!",
-          "when": "weather"
+          "text": "측면 수비가 다 열려 있어. 풀백 둘, 올라가면 반드시 돌아와!"
         },
         {
           "stance": "calm",
@@ -1297,7 +1304,8 @@
         },
         {
           "stance": "praise",
-          "text": "찬스는 우리도 만들었어. 마무리만 안 됐을 뿐이야."
+          "text": "찬스는 우리도 만들었어. 마무리만 안 됐을 뿐이야.",
+          "when": "someShots"
         },
         {
           "stance": "praise",
@@ -1499,7 +1507,8 @@
         },
         {
           "stance": "praise",
-          "text": "찬스 만드는 과정은 완벽했어. 마지막 터치만 남았다."
+          "text": "찬스 만드는 과정은 완벽했어. 마지막 터치만 남았다.",
+          "when": "someShots"
         },
         {
           "stance": "praise",
@@ -2009,7 +2018,8 @@
         },
         {
           "stance": "demand",
-          "text": "추가골 찬스 날린 거, 후반엔 반드시 넣어야 해."
+          "text": "추가골 찬스 날린 거, 후반엔 반드시 넣어야 해.",
+          "when": "someShots"
         },
         {
           "stance": "demand",
@@ -2123,11 +2133,16 @@
         },
         {
           "stance": "praise",
-          "text": "{player}, 네가 만든 찬스만 몇 개야? 훌륭했다."
+          "text": "{player}, 네가 만든 찬스만 몇 개야? 훌륭했다.",
+          "when": "someShots"
         },
         {
           "stance": "praise",
-          "text": "점유율, 슈팅, 다 우리가 앞섰어. 이 흐름 좋다."
+          "text": "점유율, 슈팅, 다 우리가 앞섰어. 이 흐름 좋다.",
+          "when": [
+            "outshot",
+            "possessionLead"
+          ]
         },
         {
           "stance": "praise",
@@ -2148,7 +2163,8 @@
         },
         {
           "stance": "praise",
-          "text": "공수 전환이 빨랐다. 그게 계속 찬스를 만든 거야."
+          "text": "공수 전환이 빨랐다. 그게 계속 찬스를 만든 거야.",
+          "when": "someShots"
         },
         {
           "stance": "praise",
@@ -2172,7 +2188,8 @@
         },
         {
           "stance": "encourage",
-          "text": "찬스 놓쳤다고 위축되지 마. 또 온다."
+          "text": "찬스 놓쳤다고 위축되지 마. 또 온다.",
+          "when": "someShots"
         },
         {
           "stance": "encourage",
@@ -2204,7 +2221,8 @@
         },
         {
           "stance": "demand",
-          "text": "{player}, 그 찬스는 넣었어야지. 후반엔 반드시 넣어."
+          "text": "{player}, 그 찬스는 넣었어야지. 후반엔 반드시 넣어.",
+          "when": "someShots"
         },
         {
           "stance": "demand",
@@ -2212,7 +2230,8 @@
         },
         {
           "stance": "demand",
-          "text": "슈팅이 다 골키퍼 정면이야. 구석 노려!"
+          "text": "슈팅이 다 골키퍼 정면이야. 구석 노려!",
+          "when": "onTarget"
         },
         {
           "stance": "demand",
@@ -2220,7 +2239,8 @@
         },
         {
           "stance": "demand",
-          "text": "점유만 하고 만족하지 마. 결정적인 패스가 부족해."
+          "text": "점유만 하고 만족하지 마. 결정적인 패스가 부족해.",
+          "when": "possessionLead"
         },
         {
           "stance": "demand",
@@ -2252,7 +2272,8 @@
         },
         {
           "stance": "calm",
-          "text": "찬스 놓친 건 잊어. 다음 장면에만 집중해."
+          "text": "찬스 놓친 건 잊어. 다음 장면에만 집중해.",
+          "when": "someShots"
         },
         {
           "stance": "calm",
@@ -2624,7 +2645,8 @@
         },
         {
           "stance": "demand",
-          "text": "슈팅이 하나도 없잖아. 박스 근처 가면 때려!"
+          "text": "슈팅이 하나도 없잖아. 박스 근처 가면 때려!",
+          "when": "noShots"
         },
         {
           "stance": "demand",
@@ -2640,7 +2662,8 @@
         },
         {
           "stance": "demand",
-          "text": "점유만 하고 끝나는 축구는 필요 없어. 앞으로 가!"
+          "text": "점유만 하고 끝나는 축구는 필요 없어. 앞으로 가!",
+          "when": "possessionLead"
         },
         {
           "stance": "demand",
@@ -2977,7 +3000,8 @@
         },
         {
           "stance": "praise",
-          "text": "{opponent} 녀석들이 더 지쳐 보여. 너희가 그만큼 몰아붙인 거야."
+          "text": "{opponent} 녀석들이 더 지쳐 보여. 너희가 그만큼 몰아붙인 거야.",
+          "when": "outshot"
         },
         {
           "stance": "praise",
@@ -3399,7 +3423,8 @@
         },
         {
           "stance": "praise",
-          "text": "찬스 만드는 과정은 훌륭했어. 마무리만 따라오면 된다."
+          "text": "찬스 만드는 과정은 훌륭했어. 마무리만 따라오면 된다.",
+          "when": "someShots"
         },
         {
           "stance": "praise",

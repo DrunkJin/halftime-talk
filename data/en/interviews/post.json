@@ -1359,8 +1359,7 @@
             },
             {
               "stance": "humble",
-              "text": "They're a strong side. We need preparation more than confidence.",
-              "when": "weather"
+              "text": "They're a strong side. We need preparation more than confidence."
             },
             {
               "stance": "forward",
@@ -2567,8 +2566,7 @@
             },
             {
               "stance": "critical",
-              "text": "We just kept hoofing it clear and eventually gave away the second ball. That's not defending.",
-              "when": "weather"
+              "text": "We just kept hoofing it clear and eventually gave away the second ball. That's not defending."
             },
             {
               "stance": "blame",
@@ -3511,10 +3509,10 @@
             },
             {
               "stance": "forward",
-              "text": "Preparing for the next game is more urgent than playing 'what if'.",
-              "when": "weather"
+              "text": "Preparing for the next game is more urgent than playing 'what if'."
             }
-          ]
+          ],
+          "when": "notWin"
         }
       ],
       "answers": [
@@ -3568,7 +3566,8 @@
         },
         {
           "stance": "blame",
-          "text": "The surface was slippery, so his timing was just slightly off. There was no intent."
+          "text": "The surface was slippery, so his timing was just slightly off. There was no intent.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -3813,8 +3812,7 @@
         },
         {
           "stance": "praise",
-          "text": "The substitute who came on was well prepared. That's the strength of our squad.",
-          "when": "weather"
+          "text": "The substitute who came on was well prepared. That's the strength of our squad."
         },
         {
           "stance": "praise",
@@ -4989,8 +4987,7 @@
             },
             {
               "stance": "forward",
-              "text": "That incident is over. Preparing for the next game is more important.",
-              "when": "weather"
+              "text": "That incident is over. Preparing for the next game is more important."
             }
           ]
         },
@@ -5285,7 +5282,7 @@
             },
             {
               "stance": "humble",
-              "text": "That was a team win, not a {scorer} win. He'd tell you the same himself."
+              "text": "That was a team win, not just {scorer}'s win. He'd tell you the same himself."
             },
             {
               "stance": "forward",
@@ -5666,8 +5663,7 @@
             },
             {
               "stance": "humble",
-              "text": "That my own preparation fell short. I'll look at myself before I look at the players.",
-              "when": "weather"
+              "text": "That my own preparation fell short. I'll look at myself before I look at the players."
             },
             {
               "stance": "forward",
@@ -5938,8 +5934,7 @@
             },
             {
               "stance": "praise",
-              "text": "The forwards press first, and that makes defending easier. We defend together from the front.",
-              "when": "weather"
+              "text": "The forwards press first, and that makes defending easier. We defend together from the front."
             },
             {
               "stance": "critical",
@@ -5973,8 +5968,7 @@
               "stance": "forward",
               "text": "We have to prove the defence is solid again in the next game. That's where our focus is."
             }
-          ],
-          "when": "weather"
+          ]
         },
         {
           "text": "What did you make of the goalkeeper's performance?",
@@ -5993,8 +5987,7 @@
             },
             {
               "stance": "critical",
-              "text": "If the goalkeeper was busy, it means we let them have far too many shots.",
-              "when": "weather"
+              "text": "If the goalkeeper was busy, it means we let them have far too many shots."
             },
             {
               "stance": "blame",
@@ -6121,8 +6114,7 @@
         },
         {
           "stance": "forward",
-          "text": "I've told the players they can smile tonight and that's it. Preparation for the next game starts straight away.",
-          "when": "weather"
+          "text": "I've told the players they can smile tonight and that's it. Preparation for the next game starts straight away."
         },
         {
           "stance": "forward",
@@ -6523,8 +6515,7 @@
             },
             {
               "stance": "forward",
-              "text": "With this {venue} game done and dusted, preparing for the next one is a lot easier.",
-              "when": "weather"
+              "text": "With this {venue} game done and dusted, preparing for the next one is a lot easier."
             }
           ]
         },
@@ -6690,8 +6681,7 @@
           "answers": [
             {
               "stance": "praise",
-              "text": "The players kept moving to make something happen right to the end. Their defence was just that well organised today.",
-              "when": "weather"
+              "text": "The players kept moving to make something happen right to the end. Their defence was just that well organised today."
             },
             {
               "stance": "praise",
@@ -6716,8 +6706,7 @@
             },
             {
               "stance": "humble",
-              "text": "Both defences were good. It happens.",
-              "when": "weather"
+              "text": "Both defences were good. It happens."
             },
             {
               "stance": "humble",
@@ -7093,8 +7082,7 @@
             },
             {
               "stance": "critical",
-              "text": "Our set-piece defending has let us down again. I don't know how many times I have to say it.",
-              "when": "weather"
+              "text": "Our set-piece defending has let us down again. I don't know how many times I have to say it."
             },
             {
               "stance": "blame",
@@ -7988,8 +7976,7 @@
               "stance": "forward",
               "text": "We'll savour the memories until tonight, and from tomorrow we'll go and make new ones."
             }
-          ],
-          "when": "weather"
+          ]
         }
       ],
       "answers": [
@@ -8187,8 +8174,7 @@
             },
             {
               "stance": "forward",
-              "text": "We'll remember the difficulties we had tonight. We'll be ready for them in the next final.",
-              "when": "weather"
+              "text": "We'll remember the difficulties we had tonight. We'll be ready for them in the next final."
             }
           ]
         },
@@ -8694,8 +8680,7 @@
             },
             {
               "stance": "critical",
-              "text": "The tentative kicks in the shoot-out. That tells you our preparation wasn't good enough.",
-              "when": "weather"
+              "text": "The tentative kicks in the shoot-out. That tells you our preparation wasn't good enough."
             },
             {
               "stance": "blame",
@@ -8798,8 +8783,7 @@
             },
             {
               "stance": "humble",
-              "text": "{opponent}'s defence wouldn't allow it. You have to give them credit.",
-              "when": "weather"
+              "text": "{opponent}'s defence wouldn't allow it. You have to give them credit."
             },
             {
               "stance": "humble",
@@ -8888,8 +8872,7 @@
         },
         {
           "stance": "critical",
-          "text": "Penalties are something you train too. Tonight's result means our preparation wasn't good enough.",
-          "when": "weather"
+          "text": "Penalties are something you train too. Tonight's result means our preparation wasn't good enough."
         },
         {
           "stance": "critical",
@@ -10116,8 +10099,7 @@
             },
             {
               "stance": "forward",
-              "text": "We learned a lot from the first leg. Preparing for the return has become much easier.",
-              "when": "weather"
+              "text": "We learned a lot from the first leg. Preparing for the return has become much easier."
             }
           ]
         },

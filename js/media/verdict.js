@@ -9,10 +9,14 @@ export function verdictKey({ goals, mySide, mine, theirs, xgDiff, gap }) {
   const expect = gap > 3 ? 'fav' : gap < -3 ? 'dog' : 'even';
   const margin = Math.abs(mine - theirs);
   let key;
+  // 이야기와 내용이 엇갈리면 둘을 합친 문장: 결정력으로 이긴 대승, 앞섰지만 내용은 밀린 무승부, 따라붙었지만 내용은 앞선 무승부
   if (outcome === 'win') {
-    key = story.trailed ? 'comeback' : xgDiff <= -0.6 ? 'lucky' : margin >= 3 ? 'big' : margin === 1 ? 'narrow' : expect;
+    key = story.trailed ? 'comeback' : margin >= 3 ? (xgDiff <= 0 ? 'bigClinical' : 'big') : xgDiff <= -0.6 ? 'lucky' : margin === 1 ? 'narrow' : expect;
   } else if (outcome === 'draw') {
-    key = story.drawType ?? (xgDiff >= 0.8 ? 'dominant' : xgDiff <= -0.8 ? 'survived' : expect);
+    key =
+      story.drawType === 'caughtUp' ? (xgDiff <= -0.6 ? 'caughtUpOutplayed' : 'caughtUp')
+      : story.drawType === 'cameBack' ? (xgDiff >= 0.6 ? 'cameBackDominant' : 'cameBack')
+      : xgDiff >= 0.8 ? 'dominant' : xgDiff <= -0.8 ? 'survived' : expect;
   } else {
     key = story.led ? 'collapse' : xgDiff >= 0.6 ? 'unlucky' : xgDiff <= -0.6 || margin >= 3 ? 'outplayed' : expect;
   }

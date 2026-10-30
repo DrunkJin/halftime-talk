@@ -352,6 +352,11 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 @media (min-width: 861px) { .squad-table .pick-name, .squad-table td .link { display: inline-block; max-width: 150px; overflow: hidden; text-overflow: ellipsis; vertical-align: bottom; } } /* 긴 이름이 표 폭을 밀지 않게 */
 /* 노트북 폭: 피치 열을 줄여 표에 자리를 준다 (표 안쪽 가로 스크롤 없이) */
 @media (max-width: 1180px) { .squad-screen { grid-template-columns: minmax(0, 1fr); } } /* 더 좁으면 피치 위·표 아래로 */
+/* 한 열일 때 넓은 화면(861~1180)에서는 피치를 왼쪽 340px에, 능력·벤치·역할은 오른쪽에 (피치가 폭 전체로 커져 표가 한참 아래로 밀리지 않게) */
+@media (min-width: 861px) and (max-width: 1180px) {
+  .squad-left { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 12px; align-items: start; }
+  .squad-left > :first-child { grid-row: span 3; }
+}
 @media (min-width: 1181px) and (max-width: 1320px) {
   .squad-screen { grid-template-columns: minmax(280px, 300px) minmax(0, 1fr); }
   .squad-table .pick-name, .squad-table td .link { max-width: 120px; }
@@ -977,6 +982,9 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 /* 감독 지시 창 아래 묶음(교체 확정 줄 + 닫기·닫고 재개)은 창 아래에 붙는다 (모바일에서 20줄 목록 밑에 묻히지 않게) */
 .cmd-foot { position: sticky; bottom: 0; z-index: 1; display: grid; gap: 10px; margin: 0 -20px -20px; padding: 12px 20px 20px; background: var(--panel); border-top: 1px solid var(--line); }
 .cmd-foot-slot:empty { display: none; }
+.cmd-foot { grid-template-columns: minmax(0, 1fr); }
+.cmd-foot > * { min-width: 0; } /* 긴 안내문(영어)이 묶음 폭을 밀어 버튼이 화면 밖으로 나가지 않게 */
+@media (max-width: 560px) { .cmd-foot { gap: 8px; padding-top: 10px; padding-bottom: 14px; } }
 .cmd-status { margin: 0; font-size: 13px; color: var(--text-2); }
 .cmd-status:empty { display: none; }
 .cmd-status.is-ok::before { content: "✓ "; color: var(--accent); font-weight: 700; }
@@ -984,7 +992,7 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .cmd-foot .sub-actions { margin: 0; gap: 10px; }
 /* 창이 열려 있을 때 알림은 위쪽에 (창 아래 고정 버튼을 가리지 않게) */
 body:has(.modal-backdrop.is-open) .toast-host { top: 12px; bottom: auto; }
-.sub-pick { margin-right: auto; min-width: 0; color: var(--text-2); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sub-pick { flex: 1 1 12em; margin-right: auto; min-width: 0; color: var(--text-2); font-size: 13px; overflow-wrap: anywhere; }
 .formation-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; }
 .formation-card { display: grid; gap: 6px; justify-items: center; padding: 8px; border: 1px solid var(--line-2); border-radius: 8px; background: transparent; color: var(--text); font-size: 12px; cursor: pointer; transition: border-color var(--duration-quick) var(--ease-out), background-color var(--duration-quick) var(--ease-out); }
 .formation-card:hover { border-color: var(--info); }

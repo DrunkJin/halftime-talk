@@ -259,6 +259,7 @@
   "match.coach.sterile": "We've had plenty of the ball but not enough threat.",
   "match.coach.noShots": "We haven't had a single shot on target yet.",
   "match.coach.onPlan": "It's going to plan. We just need to stay focused.",
+  "match.coach.leadSitDeep": "We're ahead, but they've had more of the ball. We need to watch for the counter.",
   "match.coach.timeLeftExtra": "There's thirty minutes left. What we change now matters.",
   "match.coach.timeLeft": "There's still 45 minutes left. What we change now matters.",
   "match.coach.tight": "It's tight. Small margins will decide this.",
@@ -401,6 +402,21 @@
     "We were ahead and lost it. That's what hurts most today.",
     "We took the lead and fell apart. The players will know what went wrong.",
     "We lost a game we were winning. We'll move on quickly, but we'll find out why."
+  ],
+  "match.after.verdict.win.bigClinical": [
+    "We didn't control the game as much as the score says. Today our finishing made the difference.",
+    "They made chances too. We just turned ours into goals.",
+    "A big scoreline, but we didn't dominate the play. We'll look at it with a cool head."
+  ],
+  "match.after.verdict.draw.caughtUpOutplayed": [
+    "We went ahead, but they had the better of the game. Honestly, we should be grateful for the point.",
+    "Losing the lead hurts, but on the balance of play it's a result we have to accept.",
+    "We scored first, but the momentum was theirs. We need to close that gap."
+  ],
+  "match.after.verdict.draw.cameBackDominant": [
+    "We went behind, but we were in control. That's a game we should have won.",
+    "Getting back level was the least we deserved. On the performance, it should have been three points.",
+    "Even after conceding we played our game. With sharper finishing we'd have turned it round."
   ],
   "match.after.verdict.win.lucky": [
     "Honestly, we were second best. But we found a way to win.",

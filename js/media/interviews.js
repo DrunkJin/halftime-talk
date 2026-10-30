@@ -307,8 +307,12 @@ export function goalStory(goals, mySide, outcome) {
   const decisive = decidingGoal(sorted, mySide, outcome);
   const drawType = outcome !== 'draw' || !leadGoal ? null : leadGoal.team === mySide ? 'caughtUp' : 'cameBack';
   // 전반·후반 골 득실 (우리 - 상대). 연장은 후반 쪽으로 친다
-  const half = { first: 0, second: 0 };
-  for (const g of sorted) half[g.minute <= HALF_TIME_MINUTE ? 'first' : 'second'] += g.team === mySide ? 1 : -1;
+  const half = { first: 0, second: 0, conceded2nd: 0 };
+  for (const g of sorted) {
+    const second = g.minute > HALF_TIME_MINUTE;
+    half[second ? 'second' : 'first'] += g.team === mySide ? 1 : -1;
+    if (second && g.team !== mySide) half.conceded2nd++;
+  }
   return { led, trailed, decisive, leadGoal, drawType, half, topScorer, topGoals, late: Boolean(decisive && decisive.minute >= C.lateGoalMinute) };
 }
 
@@ -334,7 +338,10 @@ function matchFacts(story, outcome, mine, theirs, game) {
   if (!story.trailed) f.add('neverTrailed');
   // 하프타임 이야기·'후반이 나빴다'·'전반이 나빴다'는 전반·후반 골 득실이 그 말과 맞을 때만
   if (story.half.first < 0) f.add('htTrail');
-  if (story.half.second < story.half.first) f.add('secondHalfWorse');
+  // '후반에 물러섰다'는 후반에 실점했거나 후반 득실이 전반보다 2 이상 나쁠 때만 (1-0 뒤 후반 0-0은 아님)
+  if (story.half.second < story.half.first && (story.half.conceded2nd > 0 || story.half.first - story.half.second >= 2)) f.add('secondHalfWorse');
+  // 퇴장이 없었다면 달라졌을까 같은 패배 전제 질문은 이기지 못한 경기에만
+  if (outcome !== 'win') f.add('notWin');
   if (story.half.first < story.half.second) f.add('firstHalfWorse');
   return f;
 }
@@ -411,8 +418,24 @@ export function teamTalk(media, dataset, game, state, mySide, gap) {
   else matched.add(mine === 0 ? 'goallessEven' : 'drawingEven');
 
   const group = diff > 0 ? 'leading' : diff < 0 ? 'trailing' : 'drawing';
-  // '실수 하나 없이 깔끔했어' 같은 말은 실점이 없을 때만
-  return { ...build(media, 'talk', chooseSituation('talk', matched), vars, new Set(theirs === 0 ? ['cleanSheet'] : [])), group, mult: derbyMult(rivalry) };
+  return { ...build(media, 'talk', chooseSituation('talk', matched), vars, talkFacts(state, mySide)), group, mult: derbyMult(rivalry) };
+}
+
+// 라커룸 대사의 when 조건: 바로 위에 보이는 전반 기록(실점·슈팅·점유)과 같은 사실
+// ('실수 하나 없이 깔끔했어'는 무실점일 때만, '슈팅이 하나도 없잖아'는 정말 0개일 때만)
+function talkFacts(state, mySide) {
+  const oppSide = mySide === 'home' ? 'away' : 'home';
+  const me = state.stats[mySide];
+  const them = state.stats[oppSide];
+  const poss = (100 * me.possessionMinutes) / (me.possessionMinutes + them.possessionMinutes || 1);
+  const f = new Set();
+  if (state.score[oppSide] === 0) f.add('cleanSheet');
+  if (me.shots === 0) f.add('noShots');
+  if (me.shots >= 3) f.add('someShots');
+  if (me.shots >= them.shots + 2) f.add('outshot');
+  if (poss >= 55) f.add('possessionLead');
+  if (me.shotsOnTarget >= 2) f.add('onTarget');
+  return f;
 }
 
 // 팀 토크 뒤 선수단 반응 (사전 media.reaction.{good|neutral|bad} 문장 목록)
@@ -540,5 +563,5 @@ export function cupTeamTalk(media, dataset, game, state, mySide, gap, fixture, m
   else if (fixture.leg === 2 && aggMine > aggTheirs) situation = 'cupSecondLegProtecting';
   if (!situation) return base; // 리그 페이즈·1차전은 일반 하프타임 상황
   const diff = aggMine - aggTheirs;
-  return { ...build(media, 'talk', situation, vars, new Set(state.score[oppSide] === 0 ? ['cleanSheet'] : [])), group: diff > 0 ? 'leading' : diff < 0 ? 'trailing' : 'drawing', mult: base.mult };
+  return { ...build(media, 'talk', situation, vars, talkFacts(state, mySide)), group: diff > 0 ? 'leading' : diff < 0 ? 'trailing' : 'drawing', mult: base.mult };
 }

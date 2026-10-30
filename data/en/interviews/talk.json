@@ -235,7 +235,8 @@
         },
         {
           "stance": "praise",
-          "text": "Keeping the ball and wearing them down. That's exactly the picture I wanted."
+          "text": "Keeping the ball and wearing them down. That's exactly the picture I wanted.",
+          "when": "possessionLead"
         },
         {
           "stance": "praise",
@@ -457,7 +458,8 @@
         },
         {
           "stance": "praise",
-          "text": "Having that much of the ball against your rivals isn't easy. That was impressive."
+          "text": "Having that much of the ball against your rivals isn't easy. That was impressive.",
+          "when": "possessionLead"
         },
         {
           "stance": "praise",
@@ -643,7 +645,8 @@
       "answers": [
         {
           "stance": "praise",
-          "text": "That's a derby! You battered them for the whole half. Brilliant."
+          "text": "That's a derby! You battered them for the whole half. Brilliant.",
+          "when": "outshot"
         },
         {
           "stance": "praise",
@@ -739,8 +742,7 @@
         },
         {
           "stance": "demand",
-          "text": "We look shaky at set pieces. Get tight to your man!",
-          "when": "weather"
+          "text": "We look shaky at set pieces. Get tight to your man!"
         },
         {
           "stance": "demand",
@@ -854,7 +856,8 @@
       "answers": [
         {
           "stance": "praise",
-          "text": "We dominated that half. Look at the shot count. The goal will come."
+          "text": "We dominated that half. Look at the shot count. The goal will come.",
+          "when": "outshot"
         },
         {
           "stance": "praise",
@@ -862,7 +865,11 @@
         },
         {
           "stance": "praise",
-          "text": "Possession, chances, we were ahead on all of it. You're doing well."
+          "text": "Possession, chances, we were ahead on all of it. You're doing well.",
+          "when": [
+            "outshot",
+            "possessionLead"
+          ]
         },
         {
           "stance": "praise",
@@ -878,7 +885,8 @@
         },
         {
           "stance": "praise",
-          "text": "{opponent} scored with what, one or two shots? We've been the better side."
+          "text": "{opponent} scored with what, one or two shots? We've been the better side.",
+          "when": "outshot"
         },
         {
           "stance": "praise",
@@ -970,8 +978,7 @@
         },
         {
           "stance": "demand",
-          "text": "The flanks are wide open. Full-backs, every time you go forward, you get back!",
-          "when": "weather"
+          "text": "The flanks are wide open. Full-backs, every time you go forward, you get back!"
         },
         {
           "stance": "calm",
@@ -1297,7 +1304,8 @@
         },
         {
           "stance": "praise",
-          "text": "We created chances too. We just didn't finish them."
+          "text": "We created chances too. We just didn't finish them.",
+          "when": "someShots"
         },
         {
           "stance": "praise",
@@ -1499,7 +1507,8 @@
         },
         {
           "stance": "praise",
-          "text": "The build-up to the chances was perfect. It's just the final touch missing."
+          "text": "The build-up to the chances was perfect. It's just the final touch missing.",
+          "when": "someShots"
         },
         {
           "stance": "praise",
@@ -2009,7 +2018,8 @@
         },
         {
           "stance": "demand",
-          "text": "We wasted chances to get a second. In the second half, those have to go in."
+          "text": "We wasted chances to get a second. In the second half, those have to go in.",
+          "when": "someShots"
         },
         {
           "stance": "demand",
@@ -2123,11 +2133,16 @@
         },
         {
           "stance": "praise",
-          "text": "{player}, how many chances did you create? Excellent."
+          "text": "{player}, how many chances did you create? Excellent.",
+          "when": "someShots"
         },
         {
           "stance": "praise",
-          "text": "Possession, shots, we were ahead on everything. I like this flow."
+          "text": "Possession, shots, we were ahead on everything. I like this flow.",
+          "when": [
+            "outshot",
+            "possessionLead"
+          ]
         },
         {
           "stance": "praise",
@@ -2148,7 +2163,8 @@
         },
         {
           "stance": "praise",
-          "text": "The transitions were quick. That's what kept creating chances."
+          "text": "The transitions were quick. That's what kept creating chances.",
+          "when": "someShots"
         },
         {
           "stance": "praise",
@@ -2172,7 +2188,8 @@
         },
         {
           "stance": "encourage",
-          "text": "Don't let missed chances get to you. More will come."
+          "text": "Don't let missed chances get to you. More will come.",
+          "when": "someShots"
         },
         {
           "stance": "encourage",
@@ -2204,7 +2221,8 @@
         },
         {
           "stance": "demand",
-          "text": "{player}, you had to bury that chance. In the second half, it has to go in."
+          "text": "{player}, you had to bury that chance. In the second half, it has to go in.",
+          "when": "someShots"
         },
         {
           "stance": "demand",
@@ -2212,7 +2230,8 @@
         },
         {
           "stance": "demand",
-          "text": "Every shot is straight at the keeper. Aim for the corners!"
+          "text": "Every shot is straight at the keeper. Aim for the corners!",
+          "when": "onTarget"
         },
         {
           "stance": "demand",
@@ -2220,7 +2239,8 @@
         },
         {
           "stance": "demand",
-          "text": "Don't be satisfied with just having the ball. We're missing the killer pass."
+          "text": "Don't be satisfied with just having the ball. We're missing the killer pass.",
+          "when": "possessionLead"
         },
         {
           "stance": "demand",
@@ -2252,7 +2272,8 @@
         },
         {
           "stance": "calm",
-          "text": "Forget the missed chances. Just focus on the next moment."
+          "text": "Forget the missed chances. Just focus on the next moment.",
+          "when": "someShots"
         },
         {
           "stance": "calm",
@@ -2624,7 +2645,8 @@
         },
         {
           "stance": "demand",
-          "text": "We haven't had a single shot. Get near the box and hit it!"
+          "text": "We haven't had a single shot. Get near the box and hit it!",
+          "when": "noShots"
         },
         {
           "stance": "demand",
@@ -2640,7 +2662,8 @@
         },
         {
           "stance": "demand",
-          "text": "I've no use for football that's all possession and no end product. Go forward!"
+          "text": "I've no use for football that's all possession and no end product. Go forward!",
+          "when": "possessionLead"
         },
         {
           "stance": "demand",
@@ -2708,7 +2731,7 @@
         },
         {
           "stance": "passion",
-          "text": "Pour everything out for a {team} win!"
+          "text": "Pour everything out for the win, for {team}!"
         },
         {
           "stance": "passion",
@@ -2977,7 +3000,8 @@
         },
         {
           "stance": "praise",
-          "text": "{opponent} look more tired than us. That's how hard you've pushed them."
+          "text": "{opponent} look more tired than us. That's how hard you've pushed them.",
+          "when": "outshot"
         },
         {
           "stance": "praise",
@@ -3037,7 +3061,7 @@
         },
         {
           "stance": "encourage",
-          "text": "Everyone in a {team} shirt is right behind you. We go all the way together."
+          "text": "Everyone wearing the {team} shirt is right behind you. We go all the way together."
         },
         {
           "stance": "demand",
@@ -3196,7 +3220,7 @@
         },
         {
           "stance": "praise",
-          "text": "Playing like that in a {competition} final, you deserve to be on this stage."
+          "text": "Playing like that in the {competition} final, you deserve to be on this stage."
         },
         {
           "stance": "praise",
@@ -3399,7 +3423,8 @@
         },
         {
           "stance": "praise",
-          "text": "The way we created chances was excellent. We just need the finishing to follow."
+          "text": "The way we created chances was excellent. We just need the finishing to follow.",
+          "when": "someShots"
         },
         {
           "stance": "praise",

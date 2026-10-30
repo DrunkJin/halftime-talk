@@ -915,6 +915,8 @@ function renderLive(ctx, show) {
   // 감독 지시 창: 경기를 멈추고 교체 · 포메이션 · 전술을 바꾼다
   function openCommandModal(tab = 'subs', { onClose } = {}) {
     if (!live.paused) pause();
+    // 이 창 안에서 한 일의 결과는 떠 있는 알림 대신 아래 묶음의 상태 줄에 (목록·본문을 가리지 않게)
+    const status = h('p', { class: 'cmd-status', role: 'status' });
     const body = h('div', { class: 'cmd-body' });
     const title = h('h2', {});
     const tabs = segmented(
@@ -927,14 +929,13 @@ function renderLive(ctx, show) {
       tab,
       (id) => {
         tab = id;
+        status.textContent = ''; // 앞 탭에서 한 일의 결과는 탭을 옮기면 지운다
         renderBody();
       },
       { size: 'small' },
     );
     // 탭별 확정 줄 (교체 탭: 나감 → 들어옴 · 교체하기)
     const footSlot = h('div', { class: 'cmd-foot-slot' });
-    // 이 창 안에서 한 일의 결과는 떠 있는 알림 대신 아래 묶음의 상태 줄에 (목록·본문을 가리지 않게)
-    const status = h('p', { class: 'cmd-status', role: 'status' });
     let pendingSub = false; // 교체할 선수를 골라 두고 아직 확정하지 않았는지
     const closeBtn = h('button', { class: 'btn ghost', type: 'button' }, t('match.cmd.close'));
     const resumeBtn = h('button', { class: 'btn primary', type: 'button' }, t('match.cmd.resume'));
@@ -1030,7 +1031,8 @@ function renderLive(ctx, show) {
       const now = teamSnapshot(state, mySide).tactics;
       const give = (tac) => {
         const res = setTactics(state, mySide, tac);
-        showToast(res.message, { tone: res.ok ? '' : 'warn' });
+        status.textContent = res.message; // 다른 탭처럼 아래 상태 줄에 (본문 안내를 가리지 않게)
+        status.className = `cmd-status${res.ok ? ' is-ok' : ' is-warn'}`;
         if (!res.ok) return;
         syncFeed(false);
         updateStats();
@@ -1161,14 +1163,17 @@ function renderLive(ctx, show) {
     const xgGap = s[mySide].xg - s[opp].xg;
     const mood = extra ? 'level' : my > their ? 'lead' : my < their ? 'trail' : 'level';
     const moodLine = extra ? t('match.locker.moodExtra') : t(`match.locker.mood.${mood}`);
-    // 수석코치: 기록에서 가장 눈에 띄는 한 가지
+    // 수석코치: 기록에서 가장 눈에 띄는 한 가지. 바로 위 기록(점유·슈팅)과 어긋나는 말은 하지 않는다
+    // ('공을 거의 못 만졌다'는 점유도 슈팅도 크게 밀릴 때만, 앞서고 있으면 앞선 이야기를 먼저)
+    const dominated = poss <= 40 && s[opp].shots >= s[mySide].shots + 3;
     const coach =
       my < their && xgGap > 0.3 ? t('match.coach.unlucky')
       : my > their && xgGap < -0.3 ? t('match.coach.lucky')
-      : poss <= 40 ? t('match.coach.overrun')
+      : my > their && poss <= 40 ? t('match.coach.leadSitDeep')
+      : my > their ? t('match.coach.onPlan')
+      : dominated ? t('match.coach.overrun')
       : poss >= 60 && s[mySide].shotsOnTarget <= s[opp].shotsOnTarget ? t('match.coach.sterile')
       : s[mySide].shotsOnTarget === 0 ? t('match.coach.noShots')
-      : my > their ? t('match.coach.onPlan')
       // 비기고 있어도 흐름이 한쪽으로 기울었으면 팽팽하다고 하지 않는다
       : my === their && (xgGap >= 0.4 || s[mySide].shots >= s[opp].shots + 4) ? t('match.coach.onTop')
       : my === their && (xgGap <= -0.4 || s[opp].shots >= s[mySide].shots + 4) ? t('match.coach.underPressure')
@@ -1391,10 +1396,9 @@ function renderLive(ctx, show) {
 
   function renderAfter() {
     clearToasts(); // 경기 전·중 알림(로테이션 등)이 결과 장면·인터뷰 질문을 가리지 않게
-    if (!live.cup) {
-      ctx.viewRound = fixture.round; // 상단 막대도 방금 치른 라운드로 (결과 장면 제목과 같게)
-      ctx.refreshTopbar();
-    }
+    // 상단 막대도 방금 치른 경기로 (결과 장면 제목과 같게): 리그는 그 라운드, 대륙 대회는 대회 이름
+    ctx.viewRound = live.cup ? compName(compOf(ctx.game, fixture)) : fixture.round;
+    ctx.refreshTopbar();
     const game = ctx.game;
     const mineFixture = live.cup ? cupFixtureById(game, fixture.id) : fixtureById(game, fixture.id);
     const mineResult = mineFixture.result;
@@ -1493,7 +1497,15 @@ function renderLive(ctx, show) {
     const lines = tList(`match.after.verdict.${key}`);
     let seed = 0;
     for (const ch of `${game.seed}:${fixture.id}`) seed = (seed * 31 + ch.charCodeAt(0)) >>> 0;
-    const verdict = lines.length ? lines[seed % lines.length] : '';
+    // 바로 직전 경기와 같은 문장이면 다음 문장으로 (대승이 이어질 때 같은 말이 반복되지 않게). 다시 그려도 같은 문장
+    const last = game.lastVerdict;
+    let index = seed % (lines.length || 1);
+    if (last?.fixtureId === fixture.id) index = last.index;
+    else {
+      if (last?.key === key && last.index === index && lines.length > 1) index = (index + 1) % lines.length;
+      game.lastVerdict = { fixtureId: fixture.id, key, index };
+    }
+    const verdict = lines.length ? lines[index] : '';
     const notes = live.notes ?? { news: [], board: [] };
     const inboxBtn = h('button', { class: 'btn small ghost', type: 'button' }, t('match.after.openInbox'));
     inboxBtn.addEventListener('click', () => ctx.navigate('inbox'));
