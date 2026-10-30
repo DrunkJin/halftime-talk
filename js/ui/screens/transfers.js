@@ -25,7 +25,7 @@ const RESULT_LIMIT = 80;
 const pct = (v) => `${Math.round(v * 100)}%`;
 
 // 화면을 떠났다 와도 필터 유지
-const filters = { tab: 'search', group: 'all', league: 'all', query: '', affordable: false, freeOnly: false, loanOnly: false, logScope: 'mine' };
+const filters = { tab: 'search', group: 'all', league: 'all', query: '', affordable: true, freeOnly: false, loanOnly: false, logScope: 'mine' };
 
 export function render(ctx) {
   const { dataset, game } = ctx;

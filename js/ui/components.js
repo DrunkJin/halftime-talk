@@ -115,7 +115,7 @@ function moodSection(dataset, game, player, ctx) {
       promise ? t('components.mood.promise', { left: promise.left, starts: Math.max(0, promise.starts - promise.got) }) : '',
     );
     const options = Object.entries(MOOD.talks).map(([id, opt]) => {
-      const b = h('button', { class: 'btn small', type: 'button', disabled: !canTalk(game, player.id) || (id === 'promise' && promise) || (id === 'allowTransfer' && isRequesting(game, player.id) && game.squadMood.requests[player.id]?.allowed) || null }, opt.label);
+      const b = h('button', { class: 'btn small', type: 'button', disabled: !canTalk(game, player.id) || (id === 'promise' && promise) || (id === 'allowTransfer' && (isRequesting(game, player.id) ? game.squadMood.requests[player.id]?.allowed : moodOf(game, player.id) >= 40)) /* 만족하는 선수에게 이적을 권할 이유는 없다 */ || null }, opt.label);
       b.addEventListener('click', () => {
         const res = talk(dataset, game, player.id, id);
         ctx.persist();

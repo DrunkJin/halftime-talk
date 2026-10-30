@@ -249,9 +249,11 @@ function renderPre(ctx, show) {
   const famLine = h('p', { class: 'fam-line' }, ...familiarityLine(game));
 
   // 선발에 없는 주전급 (부상 복귀 등): 오래 못 뛰면 불만이 쌓인다
-  const benched = benchedRegulars(dataset, game, scope);
-  const benchedNote = benched.length
-    ? h('p', { class: 'muted small-note tired-note' }, t('match.pre.benchedNote', { n: benched.length, names: benched.map((p) => p.name).join(', ') }))
+  const firstMatch = game.seasonIndex === 1 && game.round === 1;
+  const benchedAll = benchedRegulars(dataset, game, scope);
+  const benched = firstMatch ? [] : benchedAll; // 첫 경기는 경고하지 않는다 (아직 감독이 손대지 않은 선발)
+  const benchedNote = benchedAll.length
+    ? h('p', { class: 'muted small-note tired-note' }, t(firstMatch ? 'match.pre.firstXi' : 'match.pre.benchedNote', { n: benchedAll.length, names: benchedAll.map((p) => p.name).join(', ') }))
     : null;
 
   const kickoff = h('button', { class: 'btn primary big', type: 'button', disabled: blocked || null }, t('match.pre.kickoff'));
@@ -285,8 +287,20 @@ function renderPre(ctx, show) {
       },
     }),
   );
-  const editLineup = h('button', { class: 'btn ghost', type: 'button' }, t('match.pre.editLineup'));
   const settingsBtn = h('button', { class: 'btn ghost', type: 'button', 'aria-haspopup': 'dialog' }, t('match.pre.settings'));
+  // 자주 안 쓰는 것(시즌 끝까지·중계 설정)은 한 단계 뒤로: 킥오프 바에는 결과만 보기·킥오프만
+  const moreBtn = h('button', { class: 'btn ghost', type: 'button', 'aria-haspopup': 'dialog' }, t('match.pre.more'));
+  moreBtn.addEventListener('click', () => {
+    const pick = (btn) => {
+      const b = h('button', { class: 'more-item', type: 'button', disabled: btn.disabled || null }, btn.textContent);
+      b.addEventListener('click', () => {
+        close();
+        btn.click();
+      });
+      return b;
+    };
+    const close = openModal(h('div', { class: 'more-sheet' }, h('h2', {}, t('match.pre.more')), h('div', { class: 'more-list' }, pick(settingsBtn), pick(rest))), { variant: 'sheet' });
+  });
   settingsBtn.addEventListener('click', () => {
     const done = h('button', { class: 'btn primary', type: 'button' }, t('match.pre.settingsDone'));
     const close = openModal(
@@ -303,7 +317,6 @@ function renderPre(ctx, show) {
     );
     done.addEventListener('click', close);
   });
-  editLineup.addEventListener('click', () => ctx.navigate('squad'));
 
   // 시즌 막판: 계약 만료 예정 안내 (재계약은 시즌 결산에서 고른다)
   const expiringCount = !cupFx && game.round > game.totalRounds - 5 && game.seasonIndex < game.years ? expiringContracts(dataset, game).length : 0;
@@ -362,26 +375,24 @@ function renderPre(ctx, show) {
     'div',
     { class: 'match-pre' },
     firstDayCard(ctx),
-    panel(t('match.brief.title'), briefing.el, { className: 'briefing-panel' }),
     panel(
       cupFx ? (cupFx.neutral ? t('match.pre.cupTitleNeutral', { label: cupFixtureLabel(game, cupFx) }) : t('match.pre.cupTitle', { label: cupFixtureLabel(game, cupFx), stadium: home.stadium ?? '' })) : t('match.pre.leagueTitle', { round: game.round, stadium: home.stadium ?? '' }),
       h(
         'div',
-        { class: 'pre-body' },
+        { class: 'pre-body matchday-hero' },
         h(
           'div',
           { class: 'matchup' },
-          h('div', { class: 'mu-team' }, teamBadge(home, 64), h('b', {}, home.name), h('span', { class: 'muted' }, cupFx?.neutral ? '' : t('match.pre.home'))),
+          h('div', { class: 'mu-team' }, teamBadge(home, 56), h('b', {}, home.name), h('span', { class: 'muted' }, cupFx?.neutral ? '' : t('match.pre.home'))),
           h('div', { class: 'mu-vs' }, 'VS', cupFx ? cupPreNote(game, cupFx, mySide) : null),
-          h('div', { class: 'mu-team' }, teamBadge(away, 64), h('b', {}, away.name), h('span', { class: 'muted' }, cupFx?.neutral ? '' : t('match.pre.away'))),
+          h('div', { class: 'mu-team' }, teamBadge(away, 56), h('b', {}, away.name), h('span', { class: 'muted' }, cupFx?.neutral ? '' : t('match.pre.away'))),
         ),
-        moraleMeter(ctx),
-        boardLine(ctx),
-        expiryNote,
-        mySide === 'home' ? matchupLines(rh, ra) : matchupLines(ra, rh),
+        h('div', { class: 'mu-read' }, mySide === 'home' ? matchupLines(rh, ra) : matchupLines(ra, rh), moraleMeter(ctx), boardLine(ctx), expiryNote),
         warning,
       ),
+      { className: 'hero-panel' },
     ),
+    panel(t('match.brief.title'), briefing.el, { className: 'briefing-panel' }),
     // 상대를 읽고 바로 옆에서 전술을 고른다 (모바일은 분석 → 전술 순서)
     panel(
       t('match.pre.oppTactics'),
@@ -404,7 +415,7 @@ function renderPre(ctx, show) {
       { className: 'opp-tactics-panel' },
     ),
     // 준비(브리핑 → 상대·전술)를 보고 킥오프 → 기자회견 → 경기장. 바는 화면 아래에 붙어 있어 언제든 누를 수 있다
-    h('div', { class: 'kickoff-bar' }, h('div', { class: 'btn-row' }, rest, editLineup, settingsBtn), h('div', { class: 'btn-row' }, instant, kickoff)),
+    h('div', { class: 'kickoff-bar' }, h('div', { class: 'btn-row' }, moreBtn), h('div', { class: 'btn-row' }, instant, kickoff)),
     h(
       'details',
       { class: 'pre-lineups' },
@@ -464,11 +475,12 @@ export function prepEffects(ctx, mySide, neutral = false) {
 // 보정 항목(id) → 말 (좋을 때 up / 나쁠 때 down). 크기 숫자는 보여 주지 않는다. 빈 문장이면 칩을 안 그린다
 const effectWord = (id, up) => t(`match.effect.${id}.${up ? 'up' : 'down'}`);
 
-function effectsLine(effects, title) {
+function effectsLine(effects, title, { past = false } = {}) {
   const shown = effects.filter((e) => Math.abs(e.value) >= 0.05 && effectWord(e.id, e.value > 0));
   // 한 줄 요약은 우리가 만든 준비(사기·전술·훈련·주장)로만. 홈 이점은 늘 있어서 빼고 본다
   const total = effects.filter((e) => e.id !== 'home').reduce((s, e) => s + e.value, 0);
-  const mood = total >= 1.5 ? [t('match.effect.moodGood'), 'up'] : total <= -0.5 ? [t('match.effect.moodBad'), 'down'] : [t('match.effect.moodNormal'), ''];
+  const tense = past ? 'Past' : ''; // 경기 후에는 '나섰습니다'
+  const mood = total >= 1.5 ? [t(`match.effect.moodGood${tense}`), 'up'] : total <= -0.5 ? [t(`match.effect.moodBad${tense}`), 'down'] : [t(`match.effect.moodNormal${tense}`), ''];
   return h(
     'div',
     { class: 'prep-effects' },
@@ -533,7 +545,7 @@ function briefingPanel(ctx, { fixture, scope, mySide, neutral, problems, tired, 
       },
       {
         label: t('match.brief.press'),
-        status: press ? (press.skipped ? 'idle' : 'ok') : 'todo',
+        status: press ? (press.skipped ? 'idle' : 'ok') : 'open',
         text: press ? (press.skipped ? t('match.brief.pressSkipped') : t('match.brief.pressAnswered', { stance: STANCES.pre[press.stance] ?? '' })) : t('match.brief.pressTodo'),
         action: press ? null : go(t('match.brief.toPress'), refs.press),
       },
@@ -550,10 +562,10 @@ function briefingPanel(ctx, { fixture, scope, mySide, neutral, problems, tired, 
         action: go(t('match.brief.inbox'), () => ctx.navigate('inbox')),
       },
     ];
-    const STATUS = { ok: t('match.brief.st.ok'), warn: t('match.brief.st.warn'), todo: t('match.brief.st.todo'), idle: t('match.brief.st.idle') };
+    const STATUS = { ok: t('match.brief.st.ok'), warn: t('match.brief.st.warn'), todo: t('match.brief.st.todo'), open: t('match.brief.st.todo'), idle: t('match.brief.st.idle') };
     const row = (r) => h('li', { class: `brief-row st-${r.status}` }, h('span', { class: `brief-status st-${r.status}` }, STATUS[r.status]), h('b', { class: 'brief-label' }, r.label), h('span', { class: 'brief-text' }, r.text, r.sub?.length ? r.sub.map((n) => h('span', { class: 'brief-sub' }, n)) : null), r.action);
     // 손볼 것(아직·확인)만 펼치고, 끝났거나 기본값인 항목은 한 줄로 접는다
-    const open = rows.filter((r) => r.status === 'todo' || r.status === 'warn');
+    const open = rows.filter((r) => r.status === 'todo' || r.status === 'warn' || r.status === 'open');
     const settled = rows.filter((r) => !open.includes(r));
     const wasOpen = box.querySelector('.brief-settled')?.open ?? false;
     box.replaceChildren(
@@ -760,9 +772,9 @@ function renderLive(ctx, show) {
   const scoreboard = h(
     'section',
     { class: 'scoreboard panel', style: { '--home': accents[0], '--away': accents[1] } },
-    h('div', { class: 'sb-team' }, teamBadge(home, 52), h('div', { class: 'sb-name' }, h('b', {}, h('span', { class: 'sb-full' }, home.name), h('span', { class: 'sb-short' }, home.shortName)), goalLists.home)),
+    h('div', { class: 'sb-team' }, teamBadge(home, 52), h('div', { class: 'sb-name' }, h('b', {}, h('span', { class: 'sb-full' }, home.name), h('span', { class: 'sb-short' }, home.shortName.length > 8 ? home.code : home.shortName)), goalLists.home)),
     h('div', { class: 'sb-center' }, h('div', { class: 'sb-score num' }, scoreDigits.home, h('span', { class: 'sb-dash' }, '-'), scoreDigits.away), h('div', { class: 'sb-meta' }, minuteEl, statusEl), aggEl),
-    h('div', { class: 'sb-team right' }, h('div', { class: 'sb-name' }, h('b', {}, h('span', { class: 'sb-full' }, away.name), h('span', { class: 'sb-short' }, away.shortName)), goalLists.away), teamBadge(away, 52)),
+    h('div', { class: 'sb-team right' }, h('div', { class: 'sb-name' }, h('b', {}, h('span', { class: 'sb-full' }, away.name), h('span', { class: 'sb-short' }, away.shortName.length > 8 ? away.code : away.shortName)), goalLists.away), teamBadge(away, 52)),
   );
 
   // 컨트롤
@@ -1095,7 +1107,7 @@ function renderLive(ctx, show) {
       ),
       line(2, h('blockquote', { class: 'lk-coach' }, h('span', { class: 'muted' }, t('match.locker.assistant')), h('p', {}, coach))),
       line(3, h('div', { class: 'lk-stats' }, stat(t('match.locker.possession'), `${poss}%`, `${100 - poss}%`), stat(t('match.locker.shots'), s[mySide].shots, s[opp].shots), stat(t('match.locker.onTarget'), s[mySide].shotsOnTarget, s[opp].shotsOnTarget))),
-      notes.length ? line(4, h('ul', { class: 'lk-players' }, notes.map((x) => h('li', { class: `tone-${x.tone}` }, h('span', { class: 'slot-tag' }, x.pos), h('b', {}, x.p.name), h('span', {}, x.text), conditionMeter(Math.round(x.c)))))) : null,
+      notes.length ? line(4, h('ul', { class: 'lk-players' }, notes.map((x) => h('li', { class: `tone-${x.tone}` }, h('span', { class: 'slot-tag' }, x.pos), h('b', {}, x.p.name), h('span', {}, x.text), conditionMeter(Math.round(x.c))))), h('p', { class: 'lk-legend' }, h('span', { class: 'tone-good' }, t('match.locker.legendGood')), h('span', { class: 'tone-warn' }, t('match.locker.legendWarn')), h('span', { class: 'tone-bad' }, t('match.locker.legendBad')))) : null,
       line(5, talkHost),
     );
     const reveal = () => {
@@ -1152,7 +1164,7 @@ function renderLive(ctx, show) {
   }
 
   function feedLine(c, animate) {
-    const kind = FEED_KIND[c.type] ?? '';
+    const kind = c.type === 'goal' && c.team && c.team !== mySide ? 'c-conceded' : FEED_KIND[c.type] ?? ''; // 실점 줄은 축하 색이 아니다
     const text = h('span', { class: 'feed-text' });
     const icon = FEED_ICON[c.type];
     const li = h(
@@ -1383,7 +1395,7 @@ function renderLive(ctx, show) {
       reveal(h('h2', { class: 'rs-word' }, outcome[0]), 1),
       reveal(h('p', { class: 'rs-standing' }, standing), 2),
       verdict ? reveal(h('blockquote', { class: 'rs-quote' }, h('span', { class: 'rs-from' }, t('match.after.fromAssistant')), verdict), 3) : null,
-      live.prep ? effectsLine(live.prep, t('match.after.prepApplied')) : null,
+      live.prep ? effectsLine(live.prep, t('match.after.prepApplied'), { past: true }) : null,
       absenceReport(),
       boardHost,
       notes.news.length ? h('p', { class: 'rs-note' }, h('span', { class: 'rs-from' }, t('match.after.fromInbox')), notes.news.join(' · '), inboxBtn) : null,
@@ -1411,9 +1423,10 @@ function renderLive(ctx, show) {
       goalMoment(state.goals.at(-1));
       for (const g of state.goals.slice(goalsBefore)) {
         const team = sideTeam[g.team];
+        const ours = g.team === mySide; // 우리 골은 축하, 실점은 차갑게
         showToast(
-          h('span', { class: 'toast-goal' }, teamBadge(team, 18), h('b', {}, t('match.toast.goal')), `${g.minute}' ${g.scorerName} `, h('span', { class: 'muted' }, `${home.shortName} ${state.score.home}-${state.score.away} ${away.shortName}`)),
-          { tone: 'goal' },
+          h('span', { class: 'toast-goal' }, teamBadge(team, 18), h('b', {}, t(ours ? 'match.toast.goal' : 'match.toast.conceded')), `${g.minute}' ${g.scorerName} `, h('span', { class: 'toast-sub' }, `${home.shortName} ${state.score.home}-${state.score.away} ${away.shortName}`)),
+          { tone: ours ? 'goal' : 'conceded' },
         );
       }
     }
@@ -1449,7 +1462,16 @@ function renderLive(ctx, show) {
   }
 
   // 골 순간: 점수판이 득점 팀 색으로 번쩍이고, 중계는 잠깐 멈춘 듯 숨을 고른다 (움직임 줄이기 설정이면 번쩍임 없음)
+  // 실점은 번쩍임 없이 점수만 바뀌고, 감독 지시 버튼이 '반응할까요?' 하듯 잠깐 빛난다
   function goalMoment(goal) {
+    if (goal.team !== mySide) {
+      subBtn.classList.remove('is-nudge');
+      void subBtn.offsetWidth;
+      subBtn.classList.add('is-nudge');
+      setTimeout(() => subBtn.classList.remove('is-nudge'), 4000);
+      live.goalHold = 500;
+      return;
+    }
     scoreboard.style.setProperty('--goal', teamAccent(sideTeam[goal.team]));
     scoreboard.classList.remove('is-goal');
     void scoreboard.offsetWidth;

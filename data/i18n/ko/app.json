@@ -17,7 +17,7 @@
   "app.topbar.worldSize": "{leagues}개 리그 · {teams}팀",
   "app.topbar.inbox": "편지함",
   "app.topbar.inboxUnread": "편지함, 읽지 않은 소식 {n}개",
-  "app.topbar.toSelect": "팀 선택",
+  "app.topbar.toSelect": "메인 메뉴",
   "app.topbar.seasonOf": " · 시즌 {i}/{n}",
   "app.topbar.seasonOver": "시즌 종료",
   "app.topbar.round": "라운드 {r}/{n}",

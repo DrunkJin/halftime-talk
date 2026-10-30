@@ -414,6 +414,7 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .sb-team.right { justify-content: flex-end; text-align: right; }
 .sb-team b { font-size: 16px; }
 .goal-list { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 2px 10px; color: var(--text-2); font-size: 11px; }
+.goal-list li { white-space: nowrap; }
 .goal-list.right { justify-content: flex-end; }
 .sb-center { display: grid; justify-items: center; gap: 4px; }
 .sb-score { display: flex; align-items: center; gap: 10px; font-size: 48px; font-weight: 800; line-height: 1; }
@@ -440,6 +441,9 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .feed-dot.none { background: transparent; box-shadow: none; }
 .feed-line.c-goal { background: var(--accent-dim); font-weight: 700; }
 .feed-line.c-goal .feed-min { color: var(--accent); }
+.feed-line.c-conceded { background: rgba(141, 151, 165, 0.08); }
+.feed-line.c-conceded .feed-min { color: var(--danger-text); }
+.feed-line.c-conceded .feed-text { color: var(--text); font-weight: 600; }
 .feed-line.c-chance .feed-text { color: var(--text); }
 .feed-line .feed-text { color: var(--text-2); }
 .feed-line.c-period { background: var(--bg-2); }
@@ -578,6 +582,9 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .toast.goal { border-color: color-mix(in srgb, var(--accent) 55%, var(--line-2)); background: color-mix(in srgb, var(--accent) 12%, var(--panel-3)); }
 .toast-goal { display: inline-flex; align-items: center; gap: 4px; flex-wrap: wrap; }
 .toast-goal b { color: var(--accent); }
+.toast-goal .toast-sub { color: var(--text-2); } /* 초록 기 도는 알림 배경 위에서도 4.5:1 이상 */
+.toast.conceded { border-color: var(--line-2); background: var(--panel-3); }
+.toast.conceded .toast-goal b { color: var(--danger-text); }
 
 /* ── 반응형 ────────────────────────────────────────── */
 @media (max-width: 1100px) {
@@ -949,8 +956,8 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .morale-bar .mid { background: var(--info); }
 .morale-bar .bad { background: var(--danger); }
 .interview { display: grid; gap: 10px; }
-.iv-question { font-size: 14px; line-height: 1.5; padding: 10px 12px; border: 1px solid rgba(90, 169, 255, 0.3); background: rgba(90, 169, 255, 0.06); border-radius: 6px; }
-.interview.talk .iv-question { border-left-color: var(--warn); background: rgba(245, 184, 75, 0.06); font-style: italic; }
+.iv-question { font-size: 15px; font-weight: 600; line-height: 1.5; padding: 2px 0; }
+.interview.talk .iv-question { font-style: italic; }
 .iv-answers { display: grid; gap: 6px; }
 .answer-btn { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 10px; align-items: center; text-align: left; padding: 9px 12px; border: 1px solid var(--line-2); border-radius: 8px; background: transparent; color: var(--text); font-size: 13px; line-height: 1.45; cursor: pointer; transition: border-color var(--duration-quick) var(--ease-out), background-color var(--duration-quick) var(--ease-out); }
 .answer-btn:hover, .answer-btn:focus-visible { border-color: var(--info); background: rgba(90, 169, 255, 0.08); }
@@ -1175,7 +1182,7 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .tr-week { display: grid; gap: 12px; padding: 12px; }
 .tr-next { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .tr-effects { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 0; }
-.tr-effects > div { display: grid; gap: 2px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg-2); }
+.tr-effects > div { display: grid; gap: 2px; padding: 2px 0 2px 12px; border-left: 1px solid var(--line); }
 .tr-effects dt { color: var(--muted); font-size: 12px; }
 .tr-effects dd { margin: 0; font-size: 16px; font-weight: 700; }
 .tr-effects dd.up, .tr-individual .up { color: var(--accent); }
@@ -1280,6 +1287,7 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .brief-status.st-warn { background: rgba(245, 184, 75, 0.16); color: var(--warn); }
 .brief-status.st-todo { background: rgba(242, 85, 90, 0.16); color: var(--danger-text); }
 .brief-status.st-idle { background: var(--panel-3); color: var(--muted); }
+.brief-status.st-open { background: var(--panel-3); color: var(--text-2); } /* 선택 사항(기자회견)은 위험색이 아니다 */
 .brief-label { color: var(--text-2); }
 .brief-text { min-width: 0; color: var(--text); }
 .brief-sub { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; }
@@ -1381,10 +1389,11 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .pre-lineups[open] > summary { margin-bottom: 4px; }
 @media (max-width: 640px) {
   .kickoff-bar { padding: 10px; }
-  .kickoff-bar > .btn-row:last-child { flex: 1 1 100%; }
-  .kickoff-bar > .btn-row:last-child .btn { flex: 1 1 0; }
-  .kickoff-bar > .btn-row:first-child { flex-wrap: nowrap; gap: 6px; }
-  .kickoff-bar > .btn-row:first-child .btn { height: 30px; padding: 0 10px; font-size: 12px; white-space: nowrap; }
+  .kickoff-bar { flex-wrap: nowrap; }
+  .kickoff-bar > .btn-row:last-child { flex: 1 1 auto; flex-wrap: nowrap; }
+  .kickoff-bar > .btn-row:last-child .btn { flex: 1 1 0; white-space: nowrap; }
+  .kickoff-bar > .btn-row:first-child { flex: none; }
+  .kickoff-bar .btn { height: 40px; padding: 0 12px; }
 }
 
 /* ── 스코어보드 팀 이름: 좁으면 약칭 ── */
@@ -1474,6 +1483,11 @@ input::placeholder { color: var(--muted); opacity: 1; }
 .lk-players li.tone-good b { color: var(--accent); }
 .lk-players li.tone-bad b { color: var(--danger-text); }
 .lk-players li.tone-warn b { color: var(--warn); }
+.lk-players .slot-tag { flex: none; white-space: nowrap; }
+.lk-legend { display: flex; gap: 12px; margin: 6px 0 0; font-size: 12px; }
+.lk-legend .tone-good { color: var(--accent); }
+.lk-legend .tone-warn { color: var(--warn); }
+.lk-legend .tone-bad { color: var(--danger-text); }
 .locker-talk { display: grid; gap: 12px; padding-top: 6px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
 .locker-talk .iv-question { font-size: 16px; }
 .locker-talk .answer-btn { padding: 12px 14px; font-size: 14px; background: rgba(255, 255, 255, 0.02); }
@@ -1536,3 +1550,20 @@ input::placeholder { color: var(--muted); opacity: 1; }
 
 /* 훈련 초점 카드 7개: 4 + 3으로 고르게 */
 @media (min-width: 1100px) { .tr-focus-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* 실점 직후: 감독 지시 버튼이 잠깐 숨 쉬듯 빛난다 (반응할지 묻는 신호) */
+.btn.is-nudge { animation: nudge 1400ms var(--ease-in-out) 2; }
+@keyframes nudge { 0%, 100% { box-shadow: 0 0 0 0 transparent; } 50% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 35%, transparent); } }
+@media (prefers-reduced-motion: reduce) { .btn.is-nudge { animation: none; outline: 2px solid var(--accent); outline-offset: 2px; } }
+
+/* 매치데이 히어로: 왼쪽 매치업, 오른쪽 전력 읽기(문장)·사기·이사회 — 빈 VS 공간 없이 한 덩어리 */
+.matchday-hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); align-items: center; column-gap: 24px; }
+.matchday-hero > .warn-banner { grid-column: 1 / -1; }
+.mu-read { display: grid; gap: 12px; align-content: center; }
+.mu-read .cmp-say { grid-template-columns: minmax(0, 1fr); max-width: none; margin: 0; font-size: 14px; }
+.matchday-hero .mu-vs { font-size: 12px; }
+@media (max-width: 860px) { .matchday-hero { grid-template-columns: minmax(0, 1fr); } }
+
+/* 경기 후 인터뷰·기자회견: 패널 가장자리에 붙지 않게 */
+.press-panel .press-host { padding: 12px; }
+.mu-read .morale-meter, .mu-read .board-line { justify-content: flex-start; justify-self: start; text-align: left; margin: 0; }
