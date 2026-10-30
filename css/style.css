@@ -106,6 +106,12 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .seg .t-tab { font-size: 12px; font-weight: 600; white-space: nowrap; }
 .seg.small .t-tab { height: 26px; padding: 2px 10px; }
 .seg.small .t-tabs-pill { height: 26px; }
+/* 손가락으로 누르는 기기: 작은 버튼·선택 버튼도 40px 이상 */
+@media (pointer: coarse) {
+  .btn.small { height: 40px; padding: 0 14px; font-size: 13px; }
+  .seg .t-tab, .seg.small .t-tab { height: 40px; }
+  .seg .t-tabs-pill, .seg.small .t-tabs-pill { height: 40px; }
+}
 
 /* ── 상단 바 ───────────────────────────────────────── */
 .topbar {
@@ -416,6 +422,16 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .goal-list { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 2px 10px; color: var(--text-2); font-size: 11px; }
 .goal-list li { white-space: nowrap; }
 .goal-list.right { justify-content: flex-end; }
+.sb-goals { display: none; }
+@media (max-width: 560px) {
+  .sb-name .goal-list { display: none; }
+  .sb-goals { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; grid-column: 1 / -1; }
+  .sb-goals .goal-list { margin: 0; }
+  .scoreboard .sb-team { gap: 8px; }
+  .scoreboard:not(.is-stuck) .sb-team .badge { --size: 36px !important; } /* 이름 자리를 넓힌다 (Everton·Brighton이 잘리지 않게) */
+  .sb-goals:not(:has(li)) { display: none; }
+  .scoreboard.is-stuck .sb-goals { display: none; }
+}
 .sb-center { display: grid; justify-items: center; gap: 4px; }
 .sb-score { display: flex; align-items: center; gap: 10px; font-size: 48px; font-weight: 800; line-height: 1; }
 .sb-dash { color: var(--muted); font-weight: 400; }
@@ -482,6 +498,7 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .rs-note.bad { color: var(--danger-text); }
 .result-scene .prep-effects { justify-content: center; }
 .result-scene .absences { justify-items: center; padding: 0; border-bottom: 0; }
+.absences li.is-long { font-size: 15px; color: var(--text); }
 .result-scene .reveal { animation: cc-rise var(--duration-slow) var(--ease-smooth-out) both; animation-delay: calc(var(--i, 0) * 90ms); }
 @media (prefers-reduced-motion: reduce) { .result-scene .reveal { animation: none; } }
 @media (max-width: 560px) { .rs-word { font-size: 38px; } .result-scene { padding: 20px 14px 16px; } }
@@ -1393,8 +1410,10 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
   .kickoff-bar > .btn-row:last-child { flex: 1 1 auto; flex-wrap: nowrap; }
   .kickoff-bar > .btn-row:last-child .btn { flex: 1 1 0; white-space: nowrap; }
   .kickoff-bar > .btn-row:first-child { flex: none; }
-  .kickoff-bar .btn { height: 40px; padding: 0 12px; }
+  .kickoff-bar .btn { height: 44px; padding: 0 14px; }
+  .kickoff-bar .kb-instant { display: none; } /* '경기 옵션' 안에 있다 */
 }
+@media (min-width: 641px) { .more-item.only-narrow { display: none; } }
 
 /* ── 스코어보드 팀 이름: 좁으면 약칭 ── */
 .sb-name { min-width: 0; }
@@ -1412,6 +1431,7 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 @media (max-width: 640px) {
   :root { --bottom-nav: 56px; }
   .brand { display: none; }
+  .topbar:not(:has(.topbar-team)) .brand { display: flex; } /* 팀을 고르기 전(첫 화면)에는 게임 이름을 보인다 */
   /* backdrop-filter가 있으면 fixed 자식(하단 탭)의 기준이 상단 바가 되므로 모바일에서는 불투명 배경 */
   .topbar { flex-wrap: nowrap; gap: 8px; min-height: 48px; padding: 6px 12px; backdrop-filter: none; background: rgba(11, 14, 18, 0.98); }
   .topbar-team { flex: 1 1 auto; min-width: 0; gap: 6px; font-size: 12px; }
@@ -1478,16 +1498,12 @@ input::placeholder { color: var(--muted); opacity: 1; }
 .lk-players { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .lk-players li { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 8px 12px; border-radius: 8px; background: rgba(255, 255, 255, 0.03); font-size: 13px; }
 .lk-players li b { flex: none; max-width: 45%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.lk-players li > span:not(.slot-tag):not(.cond) { flex: 1 1 auto; min-width: 0; color: var(--text-2); }
+.lk-players li .lk-note { flex: 1 1 auto; min-width: 0; color: var(--text-2); }
 .lk-players li .cond { flex: none; margin-left: auto; }
-.lk-players li.tone-good b { color: var(--accent); }
-.lk-players li.tone-bad b { color: var(--danger-text); }
-.lk-players li.tone-warn b { color: var(--warn); }
+.lk-players li.tone-good .lk-note { color: var(--accent); }
+.lk-players li.tone-bad .lk-note { color: var(--danger-text); }
+.lk-players li.tone-warn .lk-note { color: var(--warn); }
 .lk-players .slot-tag { flex: none; white-space: nowrap; }
-.lk-legend { display: flex; gap: 12px; margin: 6px 0 0; font-size: 12px; }
-.lk-legend .tone-good { color: var(--accent); }
-.lk-legend .tone-warn { color: var(--warn); }
-.lk-legend .tone-bad { color: var(--danger-text); }
 .locker-talk { display: grid; gap: 12px; padding-top: 6px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
 .locker-talk .iv-question { font-size: 16px; }
 .locker-talk .answer-btn { padding: 12px 14px; font-size: 14px; background: rgba(255, 255, 255, 0.02); }
@@ -1551,17 +1567,26 @@ input::placeholder { color: var(--muted); opacity: 1; }
 /* 훈련 초점 카드 7개: 4 + 3으로 고르게 */
 @media (min-width: 1100px) { .tr-focus-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
-/* 실점 직후: 감독 지시 버튼이 잠깐 숨 쉬듯 빛난다 (반응할지 묻는 신호) */
-.btn.is-nudge { animation: nudge 1400ms var(--ease-in-out) 2; }
-@keyframes nudge { 0%, 100% { box-shadow: 0 0 0 0 transparent; } 50% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 35%, transparent); } }
-@media (prefers-reduced-motion: reduce) { .btn.is-nudge { animation: none; outline: 2px solid var(--accent); outline-offset: 2px; } }
+/* 실점 알림 안의 '감독 지시': 알림을 읽는 그 자리에서 바로 반응 */
+.toast-action { margin-left: 12px; min-height: 32px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 999px; background: transparent; color: var(--text); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.toast-action:hover { border-color: var(--accent); color: var(--accent); }
+@media (pointer: coarse) { .toast-action { min-height: 40px; } }
 
 /* 매치데이 히어로: 왼쪽 매치업, 오른쪽 전력 읽기(문장)·사기·이사회 — 빈 VS 공간 없이 한 덩어리 */
 .matchday-hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); align-items: center; column-gap: 24px; }
 .matchday-hero > .warn-banner { grid-column: 1 / -1; }
 .mu-read { display: grid; gap: 12px; align-content: center; }
 .mu-read .cmp-say { grid-template-columns: minmax(0, 1fr); max-width: none; margin: 0; font-size: 14px; }
-.matchday-hero .mu-vs { font-size: 12px; }
+/* 매치업: 두 팀 색이 양쪽에서 스며드는 바탕(점수판과 같은 말), 가운데 VS는 점수판 글꼴 */
+.matchday-hero .matchup { padding: 16px 12px; border-radius: var(--radius); background: linear-gradient(90deg, color-mix(in srgb, var(--home) 18%, transparent), transparent 40%, transparent 60%, color-mix(in srgb, var(--away) 18%, transparent)); }
+.matchday-hero .mu-vs { font-family: var(--display); font-size: 24px; letter-spacing: 0.08em; color: var(--text-2); }
+.mu-story { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 12px; margin: 4px 0 0; color: var(--text-2); font-size: 13px; }
+.mu-story:empty { display: none; }
+.mu-derby { color: var(--warn); letter-spacing: 0.02em; }
+.form-strip { display: flex; gap: 3px; margin: 2px 0 0; padding: 0; list-style: none; }
+.form-strip li { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 4px; background: var(--panel-3); color: var(--text-2); font-size: 11px; font-weight: 700; }
+.form-strip li.form-W { background: color-mix(in srgb, var(--accent) 24%, var(--panel-3)); color: var(--text); }
+.form-strip li.form-L { background: color-mix(in srgb, var(--danger) 22%, var(--panel-3)); color: var(--text); }
 @media (max-width: 860px) { .matchday-hero { grid-template-columns: minmax(0, 1fr); } }
 
 /* 경기 후 인터뷰·기자회견: 패널 가장자리에 붙지 않게 */

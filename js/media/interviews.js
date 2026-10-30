@@ -41,7 +41,7 @@ export function loadMedia(baseUrl = 'data/') {
 const pairKey = (a, b) => (a < b ? `${a}|${b}` : `${b}|${a}`);
 export const rivalryBetween = (media, a, b) => media?.rivalries.get(pairKey(a, b)) ?? null;
 // 더비 이름: 한국어는 name, 다른 언어는 nameEn (data/rivalries.json)
-const rivalryName = (rivalry) => (rivalry ? (getLang() === 'ko' ? rivalry.name : rivalry.nameEn ?? rivalry.name) : undefined);
+export const rivalryName = (rivalry) => (rivalry ? (getLang() === 'ko' ? rivalry.name : rivalry.nameEn ?? rivalry.name) : undefined);
 const derbyMult = (rivalry) => MORALE.derbyMultiplier[rivalry?.intensity ?? 0];
 
 // ── 공통 ──────────────────────────────────────────────
@@ -303,6 +303,7 @@ export function teamTalk(media, dataset, game, state, mySide, gap) {
   const diff = mine - theirs;
   const rivalry = rivalryBetween(media, game.teamId, oppId);
   const xgDiff = state.stats[mySide].xg - state.stats[oppSide].xg;
+  const shots = { mine: state.stats[mySide].shots, theirs: state.stats[oppSide].shots };
   const vars = {
     team: dataset.teamById.get(game.teamId).shortName,
     opponent: dataset.teamById.get(oppId).shortName,
@@ -325,8 +326,9 @@ export function teamTalk(media, dataset, game, state, mySide, gap) {
   else if (diff === -1) matched.add('trailingNarrow');
   else if (diff >= 2) matched.add('leadingComfortably');
   else if (diff === 1) matched.add('leadingNarrow');
-  else if (xgDiff >= C.xgGap * 0.8) matched.add('drawingGood');
-  else if (xgDiff <= -C.xgGap * 0.8) matched.add('drawingPoor');
+  // 비기는 중 '잘했다/힘들었다'는 xG와 슈팅 수가 같은 쪽을 가리킬 때만 (슈팅에서 앞섰는데 '힘든 전반'이라 하지 않게)
+  else if (xgDiff >= C.xgGap * 0.8 && shots.mine >= shots.theirs) matched.add('drawingGood');
+  else if (xgDiff <= -C.xgGap * 0.8 && shots.theirs >= shots.mine) matched.add('drawingPoor');
   else matched.add(mine === 0 ? 'goallessEven' : 'drawingEven');
 
   const group = diff > 0 ? 'leading' : diff < 0 ? 'trailing' : 'drawing';

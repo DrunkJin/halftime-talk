@@ -92,7 +92,7 @@ export function render(ctx) {
         tr.intensity = id;
         save(t('training.toast.intensity', { label: T.intensity[id].label }));
       },
-      { size: 'small' },
+      { size: 'small', kind: 'radio' },
     );
     const focus = panel(
       t('training.team.title'),

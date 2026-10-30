@@ -338,7 +338,7 @@ export function render(ctx) {
     const preset = FORMATION_IDS.find((id) => sameCells(FORMATION_CELLS[id], cells));
     const items = FORMATION_IDS.map((id) => ({ id, label: id }));
     if (!preset) items.push({ id: 'custom', label: formationName(cells) });
-    const tabs = segmented(items, preset ?? 'custom', (id) => id !== 'custom' && applyPreset(id), { size: 'small' });
+    const tabs = segmented(items, preset ?? 'custom', (id) => id !== 'custom' && applyPreset(id), { size: 'small', kind: 'radio' });
     const auto = h('button', { class: 'btn small', type: 'button' }, t('squad.autoPick'));
     auto.addEventListener('click', () => {
       const available = squad().filter((p) => availabilityOf(game, p.id).available);

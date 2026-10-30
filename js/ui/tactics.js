@@ -27,7 +27,7 @@ export function tacticsPicker(initial, onChange) {
       value[kind] = id;
       hint.textContent = hintText(kind, id);
       onChange({ ...value });
-    }, { size: 'small' });
+    }, { size: 'small', kind: 'radio', label });
     return h('div', { class: 'tac-row' }, h('span', { class: 'tac-label' }, label), h('div', { class: 'tac-control' }, seg.el, hint));
   });
   return h('div', { class: 'tactics-picker' }, rows);

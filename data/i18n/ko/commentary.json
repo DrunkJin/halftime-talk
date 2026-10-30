@@ -50,7 +50,7 @@
     "{player}, 위험한 태클에 레드카드! 곧바로 퇴장입니다."
   ],
   "commentary.injury": [
-    "{player}, 그라운드에 쓰러집니다. {injury}로 보입니다.",
+    "{player}, 그라운드에 쓰러집니다. {injury}(으)로 보입니다.",
     "{player}, 고통을 호소합니다. {injury} 의심."
   ],
   "commentary.subInjury": [

@@ -19,16 +19,44 @@ import { learnLevel, learnWord } from '../state/positions.js';
 import { initTabs, initTooltipGroup, openModal, showToast } from './motion.js';
 
 // 슬라이딩 탭. items: [{ id, label }]
-export function segmented(items, selectedId, onSelect, { size = '' } = {}) {
+// kind: 'tabs'(화면·목록을 바꾸는 탭) | 'radio'(값 하나를 고르는 선택 — 전술·배속 등). radio는 낭독기에 '하나 고르기'로 읽히고
+// 화살표 키로 옮겨 다니며, Tab은 그룹 전체를 한 번에 지나간다 (선택 버튼마다 멈추지 않게). label: 그룹 이름(radio)
+export function segmented(items, selectedId, onSelect, { size = '', kind = 'tabs', label = null } = {}) {
+  const radio = kind === 'radio';
   const bar = h(
     'div',
-    { class: `t-tabs seg ${size}`, role: 'tablist' },
+    { class: `t-tabs seg ${size}`, role: radio ? 'radiogroup' : 'tablist', 'aria-label': label },
     h('span', { class: 't-tabs-pill', 'aria-hidden': 'true' }),
     items.map((it) =>
-      h('button', { class: 't-tab', role: 'tab', type: 'button', 'aria-selected': String(it.id === selectedId), dataset: { id: it.id } }, it.label),
+      h('button', { class: 't-tab', role: radio ? 'radio' : 'tab', type: 'button', 'aria-selected': String(it.id === selectedId), dataset: { id: it.id } }, it.label),
     ),
   );
-  const ctl = initTabs(bar, (tab) => onSelect(tab.dataset.id));
+  const buttons = [...bar.querySelectorAll('.t-tab')];
+  // radio: aria-checked와 포커스 자리(선택된 하나만 Tab으로 들어옴)를 선택 상태에 맞춘다
+  const sync = () => {
+    if (!radio) return;
+    const on = buttons.find((b) => b.getAttribute('aria-selected') === 'true') ?? buttons[0];
+    for (const b of buttons) {
+      b.setAttribute('aria-checked', String(b.getAttribute('aria-selected') === 'true'));
+      b.tabIndex = b === on ? 0 : -1;
+    }
+  };
+  const ctl = initTabs(bar, (tab) => {
+    sync();
+    onSelect(tab.dataset.id);
+  });
+  if (radio) {
+    sync();
+    bar.addEventListener('keydown', (e) => {
+      const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+      if (!step) return;
+      e.preventDefault();
+      const i = buttons.indexOf(document.activeElement);
+      const next = buttons[(i + step + buttons.length) % buttons.length];
+      next.focus();
+      next.click();
+    });
+  }
   return {
     el: bar,
     select(id, animate = true) {
@@ -36,6 +64,7 @@ export function segmented(items, selectedId, onSelect, { size = '' } = {}) {
       bar.classList.toggle('is-none', !tab);
       if (tab) ctl.select(tab, animate);
       else bar.querySelectorAll('.t-tab').forEach((t) => t.setAttribute('aria-selected', 'false')); // 탭에 없는 화면 (편지함 등)
+      sync();
     },
   };
 }

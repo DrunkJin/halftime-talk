@@ -92,7 +92,7 @@ function startModal(ctx, team) {
       slotNote.className = 'slot-note muted';
     }
   };
-  const lengthTabs = segmented(GAME_LENGTHS.map((n) => ({ id: String(n), label: t('select.start.years', { n }) })), String(years), (id) => (years = Number(id)), { size: 'small' });
+  const lengthTabs = segmented(GAME_LENGTHS.map((n) => ({ id: String(n), label: t('select.start.years', { n }) })), String(years), (id) => (years = Number(id)), { size: 'small', kind: 'radio' });
   const slotTabs = segmented(
     ctx.slots.map((s) => ({ id: String(s.slot), label: t(s.game ? 'select.start.slotUsed' : 'select.slot', { slot: s.slot }) })),
     String(slot),

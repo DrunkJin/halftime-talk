@@ -6,6 +6,8 @@ import { t } from '../i18n.js';
 
 export const MATCH_MINUTES = 90;
 export const HALF_TIME_MINUTE = 45;
+// 라이브 중계 연출: 배속과 상관없이 더하는 멈춤(ms). 실점 뒤에는 감독이 반응할 틈을 준다 (알림 안 '감독 지시')
+export const LIVE_PACE = { goalHold: 900, concededHold: 2600, concededToast: 5200 };
 
 // 홈팀 공격·중원·수비 레이팅에 곱하는 배율 (1 + 값)
 export const HOME_ADVANTAGE = 0.055;

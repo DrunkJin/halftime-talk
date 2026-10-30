@@ -109,9 +109,9 @@ export function setDigits(group, str) {
     const span = document.createElement('span');
     span.className = 't-digit';
     span.textContent = ch;
+    // 바뀐 자리끼리만 차례로 (한 자리만 바뀌면 바로 뜬다 — 지연 동안 칸이 비어 보이지 않게)
     if (i < same) span.dataset.same = '';
-    if (i === chars.length - 2) span.dataset.stagger = '1';
-    else if (i === chars.length - 1) span.dataset.stagger = '2';
+    else if (i - same > 0) span.dataset.stagger = String(Math.min(2, i - same));
     group.appendChild(span);
   });
   void group.offsetHeight; // force reflow
@@ -201,6 +201,7 @@ export function openModal(content, { onClose, variant = '' } = {}) {
   }
   backdrop.append(modal);
   document.body.append(backdrop);
+  openModals.push(backdrop);
   const opener = document.activeElement;
 
   const closeMs = cssMs('--modal-close-dur', 150);
@@ -212,6 +213,7 @@ export function openModal(content, { onClose, variant = '' } = {}) {
     modal.classList.add('is-closing');
     backdrop.classList.remove('is-open');
     document.removeEventListener('keydown', onKey);
+    openModals.splice(openModals.indexOf(backdrop), 1);
     // 연 버튼으로 포커스를 돌려준다 (그 버튼이 다시 그려져 없어졌으면 그대로)
     if (modal.contains(document.activeElement) && opener?.isConnected) opener.focus();
     setTimeout(() => {
@@ -221,7 +223,7 @@ export function openModal(content, { onClose, variant = '' } = {}) {
     }, closeMs);
   }
   const onKey = (e) => {
-    if (backdrop !== document.querySelector('.modal-backdrop:last-of-type')) return; // 겹친 창은 맨 위 창만
+    if (backdrop !== openModals.at(-1)) return; // 겹친 창은 맨 위 창만 (body 끝에 다른 요소가 붙어도 열린 순서로 판단)
     if (e.key === 'Escape') return closeModal();
     if (e.key !== 'Tab') return;
     // Tab이 창 밖(뒤 화면)으로 빠져나가지 않게 창 안에서 돈다
@@ -253,6 +255,7 @@ export function openModal(content, { onClose, variant = '' } = {}) {
 }
 
 let modalSeq = 0;
+const openModals = []; // 열린 순서대로 (맨 뒤가 맨 위 창)
 const focusables = (root) =>
   [...root.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter((el) => !el.disabled && el.getClientRects().length);
 
