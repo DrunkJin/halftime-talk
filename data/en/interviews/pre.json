@@ -1684,7 +1684,7 @@
         },
         {
           "stance": "respect",
-          "text": "We've learned through this league phase that there are no easy opponents in this competition. Today is no different."
+          "text": "We've learned through this league phase that there are no easy opponents in this competition. Tomorrow is no different."
         },
         {
           "stance": "respect",
@@ -1708,7 +1708,7 @@
         },
         {
           "stance": "demand",
-          "text": "I told them that if they want to keep playing in the {competition}, they have to prove it today."
+          "text": "I told them that if they want to keep playing in the {competition}, they have to prove it tomorrow."
         },
         {
           "stance": "demand",
@@ -2102,7 +2102,7 @@
             },
             {
               "stance": "cautious",
-              "text": "I'm neither satisfied nor disappointed with where we are. Tonight's points matter more."
+              "text": "I'm neither satisfied nor disappointed with where we are. Tomorrow night's points matter more."
             },
             {
               "stance": "respect",
@@ -2118,7 +2118,7 @@
             },
             {
               "stance": "demand",
-              "text": "We dropped points in earlier games. Starting tonight, we have to win them back."
+              "text": "We dropped points in earlier games. Starting tomorrow night, we have to win them back."
             },
             {
               "stance": "deflect",
@@ -2136,7 +2136,7 @@
           "answers": [
             {
               "stance": "confident",
-              "text": "Change a few faces and our level stays exactly the same. We're going out to win tonight."
+              "text": "Change a few faces and our level stays exactly the same. We're going out to win tomorrow night."
             },
             {
               "stance": "confident",
@@ -2148,7 +2148,7 @@
             },
             {
               "stance": "cautious",
-              "text": "Both tonight and the weekend matter. I'll be careful about how I balance the load."
+              "text": "Both tomorrow night and the weekend matter. I'll be careful about how I balance the load."
             },
             {
               "stance": "respect",
@@ -2156,11 +2156,11 @@
             },
             {
               "stance": "respect",
-              "text": "They'll throw everything at tonight. With that in mind, we can't rotate too heavily."
+              "text": "They'll throw everything at tomorrow night. With that in mind, we can't rotate too heavily."
             },
             {
               "stance": "demand",
-              "text": "Whoever plays tonight has to prove they deserve a place at the weekend."
+              "text": "Whoever plays tomorrow night has to prove they deserve a place at the weekend."
             },
             {
               "stance": "demand",
@@ -2172,7 +2172,7 @@
             },
             {
               "stance": "deflect",
-              "text": "I know what's being said. You can check it against tonight's team sheet."
+              "text": "I know what's being said. You can check it against tomorrow night's team sheet."
             },
             {
               "stance": "confident",
@@ -2180,7 +2180,7 @@
             },
             {
               "stance": "demand",
-              "text": "For the lads coming in, tonight is an audition. I've told them to grab their chance."
+              "text": "For the lads coming in, tomorrow night is an audition. I've told them to grab their chance."
             },
             {
               "stance": "deflect",
@@ -2193,7 +2193,7 @@
           "answers": [
             {
               "stance": "confident",
-              "text": "We have a plan. His good run is going to take a night off this evening."
+              "text": "We have a plan. His good run is going to take a night off tomorrow evening."
             },
             {
               "stance": "confident",
@@ -2217,7 +2217,7 @@
             },
             {
               "stance": "demand",
-              "text": "I've told the defender up against him that tonight is a personal test."
+              "text": "I've told the defender up against him that tomorrow night is a personal test."
             },
             {
               "stance": "demand",
@@ -2242,7 +2242,7 @@
       "answers": [
         {
           "stance": "confident",
-          "text": "Position {cupRank} is simply where we are right now. We'll move up tonight."
+          "text": "Position {cupRank} is simply where we are right now. We'll move up tomorrow night."
         },
         {
           "stance": "confident",
@@ -2254,7 +2254,7 @@
         },
         {
           "stance": "confident",
-          "text": "{player} has had the scent of goals all through this competition. Expect more of the same tonight."
+          "text": "{player} has had the scent of goals all through this competition. Expect more of the same tomorrow night."
         },
         {
           "stance": "confident",
@@ -2262,11 +2262,11 @@
         },
         {
           "stance": "confident",
-          "text": "We've already proved our football works anywhere in Europe. Tonight will be no different."
+          "text": "We've already proved our football works anywhere in Europe. Tomorrow night will be no different."
         },
         {
           "stance": "cautious",
-          "text": "The league phase is a marathon. Tonight's result won't settle everything."
+          "text": "The league phase is a marathon. Tomorrow night's result won't settle everything."
         },
         {
           "stance": "cautious",
@@ -2314,7 +2314,7 @@
         },
         {
           "stance": "respect",
-          "text": "Every team you meet in this competition deserves respect. Tonight's opponents are no exception."
+          "text": "Every team you meet in this competition deserves respect. Tomorrow night's opponents are no exception."
         },
         {
           "stance": "respect",
@@ -2338,7 +2338,7 @@
         },
         {
           "stance": "demand",
-          "text": "Leave the weekend to me, I told the players. Their only job is tonight."
+          "text": "Leave the weekend to me, I told the players. Their only job is tomorrow night."
         },
         {
           "stance": "demand",
@@ -2772,7 +2772,7 @@
             },
             {
               "stance": "demand",
-              "text": "I've told him to forget pre-season now. The real assessment starts today."
+              "text": "I've told him to forget pre-season now. The real assessment starts tomorrow."
             },
             {
               "stance": "demand",
@@ -2828,7 +2828,7 @@
         },
         {
           "stance": "cautious",
-          "text": "Pre-season results are just pre-season results. The real picture starts emerging today."
+          "text": "Pre-season results are just pre-season results. The real picture starts emerging tomorrow."
         },
         {
           "stance": "cautious",

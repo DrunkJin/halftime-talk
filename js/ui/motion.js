@@ -97,8 +97,10 @@ export function attachTilt(tilt) {
 
 // ── Number pop-in (02) ────────────────────────────────
 // group: .t-digit-group. 바뀐 자리만 튀어 오른다. 같은 값이면 아무것도 하지 않음
+// 낭독기에는 글자 하나씩이 아니라 값 전체로 읽히게: 자리마다 aria-hidden, 숨은 글자로 값 전체
 export function setDigits(group, str) {
-  const prev = group.textContent.replace(/\s+/g, '');
+  const digits = [...group.querySelectorAll('.t-digit')];
+  const prev = (digits.length ? digits.map((d) => d.textContent).join('') : group.textContent).replace(/\s+/g, '');
   if (prev === str) return;
   let same = 0;
   while (same < prev.length && same < str.length && prev[same] === str[same]) same++;
@@ -108,12 +110,14 @@ export function setDigits(group, str) {
   chars.forEach((ch, i) => {
     const span = document.createElement('span');
     span.className = 't-digit';
+    span.setAttribute('aria-hidden', 'true');
     span.textContent = ch;
     // 바뀐 자리끼리만 차례로 (한 자리만 바뀌면 바로 뜬다 — 지연 동안 칸이 비어 보이지 않게)
     if (i < same) span.dataset.same = '';
     else if (i - same > 0) span.dataset.stagger = String(Math.min(2, i - same));
     group.appendChild(span);
   });
+  group.append(Object.assign(document.createElement('span'), { className: 'sr-only', textContent: str }));
   void group.offsetHeight; // force reflow
   group.classList.add('is-animating');
 }

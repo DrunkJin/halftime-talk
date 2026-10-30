@@ -6923,7 +6923,7 @@
           ]
         },
         {
-          "text": "How did you see the goal you conceded?",
+          "text": "How did you see the way you conceded?",
           "answers": [
             {
               "stance": "praise",
@@ -7209,7 +7209,7 @@
             }
           ]
         },
-        "Some are saying it was an even contest.",
+        "Leaving the result aside, how did you rate the performance?",
         {
           "text": "What did you say to the players with the next game coming up?",
           "answers": [

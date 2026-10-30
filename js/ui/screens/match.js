@@ -10,7 +10,7 @@ import { changeFormation, createMatch, getMatchResult, makeSubstitution, playMin
 import { ratingClass } from '../../state/form.js';
 import { computeTeamRatings, conditionFactor, overall, positionFit, positionRating } from '../../engine/ratings.js';
 import { computeTable } from '../../league/table.js';
-import { availabilityOf, benchedRegulars, conditionOf, fixLineup, fixturesOf, isSeasonOver, leagueOf, lineupProblems, matchInput, rotateTired, roundFixtures, settingsOf, tacticsOf, userFixture } from '../../state/game.js';
+import { availabilityOf, benchedRegulars, conditionOf, fixLineup, restoreStarter, returningStarters, fixturesOf, isSeasonOver, leagueOf, lineupProblems, matchInput, rotateTired, roundFixtures, settingsOf, tacticsOf, userFixture } from '../../state/game.js';
 import { RULES } from '../../state/rules.js';
 import { advanceCup, advanceRound, advanceSeason, simulateRest } from '../../state/simulation.js';
 import { track } from '../analytics.js';
@@ -217,7 +217,8 @@ function renderPre(ctx, show) {
   // 부상·출장정지·이적으로 선발에 못 서는 선수: 브리핑 한 곳에서 알리고, 킥오프를 누르면 바꿀지 묻는다 (버튼을 잠그지 않는다)
   const problems = lineupProblems(dataset, game, scope);
   const reasonOf = (id) => availabilityOf(ctx.game, id, scope).label || t('match.pre.transferred');
-  const fixBtn = h('button', { class: 'btn small primary', type: 'button' }, t('match.pre.autoFix'));
+  // 킥오프 확인 창이 같은 일을 하므로 여기서는 보조 버튼 (주 버튼은 킥오프 하나)
+  const fixBtn = h('button', { class: 'btn small', type: 'button' }, t('match.pre.autoFix'));
   fixBtn.addEventListener('click', () => {
     fixLineup(dataset, game, scope);
     ctx.persist();
@@ -227,7 +228,7 @@ function renderPre(ctx, show) {
   const guarded = (go, confirmKey) => () => {
     if (!lineupProblems(dataset, ctx.game, scope).length) return go();
     const before = [...ctx.game.lineup];
-    fixLineup(dataset, ctx.game, scope); // 미리 보기만: 바로 되돌린다
+    fixLineup(dataset, ctx.game, scope, { record: false }); // 미리 보기만: 바로 되돌린다
     const after = [...ctx.game.lineup];
     ctx.game.lineup = before;
     const name = (id) => dataset.playerById.get(id)?.name ?? '-';
@@ -277,7 +278,10 @@ function renderPre(ctx, show) {
 
   // 선발에 없는 주전급 (부상 복귀 등): 오래 못 뛰면 불만이 쌓인다
   const firstMatch = game.seasonIndex === 1 && game.round === 1;
-  const benchedAll = benchedRegulars(dataset, game, scope);
+  // 자동 대체로 빠졌다가 돌아온 선수: 브리핑에서 '되돌리기'를 따로 묻는다 (선발 밖 주전급 안내와 겹치지 않게 뺀다)
+  const returning = returningStarters(dataset, game, scope);
+  const returningIds = new Set(returning.map((r) => r.out));
+  const benchedAll = benchedRegulars(dataset, game, scope).filter((p) => !returningIds.has(p.id));
   const benched = firstMatch ? [] : benchedAll; // 첫 경기는 경고하지 않는다 (아직 감독이 손대지 않은 선발)
   const benchedNote = benchedAll.length
     ? h('p', { class: 'muted small-note tired-note' }, t(firstMatch ? 'match.pre.firstXi' : 'match.pre.benchedNote', { n: benchedAll.length, names: benchedAll.map((p) => p.name).join(', ') }))
@@ -402,7 +406,11 @@ function renderPre(ctx, show) {
   });
 
   const tacticsBox = h('div', { class: 'pre-tactics' });
-  const briefing = briefingPanel(ctx, { fixture, scope, mySide, neutral: Boolean(cupFx?.neutral), problems, tired, benched, refs: { tactics: tacticsBox, press: () => openPress(), lineupFix: fixBtn, blockedNotes: problems.map(({ id }) => `${dataset.playerById.get(id).name} (${reasonOf(id)})`), lineupNotes: [tiredNote, benchedNote].filter(Boolean).map((e) => e.textContent) } });
+  const briefing = briefingPanel(ctx, { fixture, scope, mySide, neutral: Boolean(cupFx?.neutral), problems, tired, benched, refs: { tactics: tacticsBox, press: () => openPress(), lineupFix: fixBtn, returning: returning.map((r) => t('match.brief.returningName', { name: dataset.playerById.get(r.out).name, now: dataset.playerById.get(r.in)?.name ?? '-' })), restore: () => {
+    for (const r of returning) restoreStarter(ctx.game, r.slot);
+    ctx.persist();
+    show();
+  }, blockedNotes: problems.map(({ id }) => `${dataset.playerById.get(id).name} (${reasonOf(id)})`), lineupNotes: [tiredNote, benchedNote].filter(Boolean).map((e) => e.textContent) } });
 
   return h(
     'div',
@@ -518,8 +526,9 @@ function effectsLine(effects, title, { past = false } = {}) {
     'div',
     { class: 'prep-effects' },
     h('span', { class: 'muted' }, title),
-    // 전술 숙련도 '익히는 중'은 새 전술이면 누구나 겪는 정상 상태라 위험 색을 쓰지 않는다
-    shown.map((e) => h('span', { class: `prep-chip ${e.value > 0 ? 'up' : e.id === 'familiarity' ? '' : 'down'}` }, effectWord(e.id, e.value > 0))),
+    // 전술 숙련도 '익히는 중'은 새 전술이면 누구나 겪는 정상 상태라 위험 색을 쓰지 않는다.
+    // 경기 뒤(past)에는 이미 지난 일이라 경고색 없이 기록으로만 (이긴 경기에 빨간 칩이 붙지 않게)
+    shown.map((e) => h('span', { class: `prep-chip ${e.value > 0 ? 'up' : past || e.id === 'familiarity' ? '' : 'down'}` }, effectWord(e.id, e.value > 0))),
     h('b', { class: mood[1] }, mood[0]),
   );
 }
@@ -555,6 +564,10 @@ function briefingPanel(ctx, { fixture, scope, mySide, neutral, problems, tired, 
         action: problems.length ? refs.lineupFix : go(t('match.pre.editLineup'), () => ctx.navigate('squad')),
         sub: problems.length ? refs.blockedNotes : refs.lineupNotes, // 결장자 또는 지친 선수·선발 밖 주전급 이름
       },
+      // 자동 대체로 빠졌던 선수가 다시 뛸 수 있다: 원래 선발로 되돌릴지
+      refs.returning.length
+        ? { label: t('match.brief.returning'), status: 'warn', text: t('match.brief.returningText', { n: refs.returning.length }), sub: refs.returning, action: go(t('match.brief.restore'), refs.restore) }
+        : null,
       {
         label: t('match.brief.tactics'),
         status: 'ok',
@@ -596,7 +609,7 @@ function briefingPanel(ctx, { fixture, scope, mySide, neutral, problems, tired, 
         text: important ? t('match.brief.importantUnread', { n: important }) : t('match.brief.noImportant'),
         action: go(t('match.brief.inbox'), () => ctx.navigate('inbox')),
       },
-    ];
+    ].filter(Boolean);
     const STATUS = { ok: t('match.brief.st.ok'), warn: t('match.brief.st.warn'), todo: t('match.brief.st.todo'), open: t('match.brief.st.todo'), idle: t('match.brief.st.idle') };
     const row = (r) => h('li', { class: `brief-row st-${r.status}` }, h('span', { class: `brief-status st-${r.status}` }, STATUS[r.status]), h('b', { class: 'brief-label' }, r.label), h('span', { class: 'brief-text' }, r.text, r.sub?.length ? r.sub.map((n) => h('span', { class: 'brief-sub' }, n)) : null), r.action);
     // 손볼 것(아직·확인)만 펼치고, 끝났거나 기본값인 항목은 한 줄로 접는다
@@ -822,7 +835,8 @@ function renderLive(ctx, show) {
   const statusEl = h('span', { class: 'sb-status' });
   const aggEl = h('div', { class: 'sb-agg muted' }); // 2차전 합계 · 승부차기
   const accents = matchAccents(home, away); // 비슷한 색끼리 붙으면 원정 팀 색을 바꾼다
-  const feedSide = { home: brighten(accents[0]), away: brighten(accents[1]) }; // 중계 점: 점수판과 같은 두 색, 어두우면 밝혀서
+  // 중계 점: 점수판과 같은 두 색. 골·실점 줄의 진한 배경 위에서도 3:1 이상 보이게 밝힌다
+  const feedSide = { home: brighten(accents[0], 0.2), away: brighten(accents[1], 0.2) };
   const scoreboard = h(
     'section',
     { class: 'scoreboard panel', style: { '--home': accents[0], '--away': accents[1] } },
@@ -903,6 +917,8 @@ function renderLive(ctx, show) {
       },
       { size: 'small' },
     );
+    // 탭별 확정 줄 (교체 탭: 나감 → 들어옴 · 교체하기)
+    const footSlot = h('div', { class: 'cmd-foot-slot' });
     const closeBtn = h('button', { class: 'btn ghost', type: 'button' }, t('match.cmd.close'));
     const resumeBtn = h('button', { class: 'btn primary', type: 'button' }, t('match.cmd.resume'));
 
@@ -926,6 +942,7 @@ function renderLive(ctx, show) {
       const pickLine = h('span', { class: 'sub-pick', 'aria-live': 'polite' }, t('match.cmd.subNote'));
       const refreshConfirm = () => {
         confirm.disabled = outSlot === null || inId === null;
+        confirm.classList.toggle('primary', !confirm.disabled); // 두 선수를 다 고르면 이 창의 주 동작
         const out = outSlot === null ? '—' : snap.lineup[outSlot]?.name;
         const inn = inId === null ? '—' : snap.bench.find((p) => p.id === inId)?.name;
         pickLine.textContent = outSlot === null && inId === null ? t('match.cmd.subNote') : `${out} → ${inn}`;
@@ -957,12 +974,9 @@ function renderLive(ctx, show) {
       const benchRows = snap.bench.map((p) => ({ tr: row(p, null), value: p.id }));
       const table = (heading, rows) => h('div', { class: 'sub-col' }, h('h3', {}, heading), h('table', { class: 'data compact pick' }, h('tbody', {}, rows)));
       confirm.addEventListener('click', () => applied(makeSubstitution(state, mySide, outSlot, inId)));
-      return h(
-        'div',
-        {},
-        h('div', { class: 'sub-grid' }, table(t('match.cmd.subOut'), pickRows(onPitch, (v) => (outSlot = v))), table(t('match.cmd.subIn'), pickRows(benchRows, (v) => (inId = v)))),
-        h('div', { class: 'btn-row end sub-actions' }, pickLine, confirm),
-      );
+      // 확정 줄은 창 아래 고정 영역(footSlot)에 — 닫기·닫고 재개와 한 묶음으로 엄지 가까이
+      footSlot.replaceChildren(h('div', { class: 'btn-row end sub-actions' }, pickLine, confirm));
+      return h('div', { class: 'sub-grid' }, table(t('match.cmd.subOut'), pickRows(onPitch, (v) => (outSlot = v))), table(t('match.cmd.subIn'), pickRows(benchRows, (v) => (inId = v))));
     }
 
     function formationBody() {
@@ -1079,11 +1093,12 @@ function renderLive(ctx, show) {
       const snap = teamSnapshot(state, mySide);
       title.textContent = t('match.cmd.title', { min: state.minute, home: home.shortName, h: state.score.home, a: state.score.away, away: away.shortName });
       tabs.el.querySelector('[data-id="subs"]').textContent = t('match.cmd.tabSubsCount', { n: snap.subsLeft });
+      footSlot.replaceChildren();
       body.replaceChildren(tab === 'subs' ? subsBody() : tab === 'formation' ? formationBody() : tab === 'players' ? playersBody() : tacticsBody());
     }
 
     renderBody();
-    const close = openModal(h('div', { class: 'confirm-modal sub-modal cmd-modal' }, title, tabs.el, body, h('div', { class: 'confirm-actions' }, closeBtn, resumeBtn)), { onClose });
+    const close = openModal(h('div', { class: 'confirm-modal sub-modal cmd-modal' }, title, tabs.el, body, h('div', { class: 'cmd-foot' }, footSlot, h('div', { class: 'confirm-actions' }, closeBtn, resumeBtn))), { onClose });
     closeBtn.addEventListener('click', close);
     resumeBtn.addEventListener('click', () => {
       close();

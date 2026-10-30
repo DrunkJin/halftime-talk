@@ -19,7 +19,8 @@ export function teamAccent(team) {
   return luminance(secondary) >= 0.05 ? secondary : '#c8ced8';
 }
 
-// 경기 한 화면에 나란히 놓을 두 팀 색: 너무 비슷하면(둘 다 빨강 등) 원정 팀은 보조 색, 그래도 비슷하면 회색
+// 경기 한 화면에 나란히 놓을 두 팀 색: 너무 비슷하면(둘 다 빨강, 둘 다 흰색 등) 원정 팀은 다른 후보로
+// 후보 순서: 보조 색 → 주 색을 밝힌 색(토트넘 남색 → 밝은 남색) → 앞 팀과 반대 밝기의 회색
 const rgb = (hex) => {
   const n = parseInt(hex.slice(1), 16);
   return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
@@ -29,8 +30,8 @@ export function matchAccents(home, away) {
   const a = teamAccent(home);
   let b = teamAccent(away);
   if (distance(a, b) < 90) {
-    const alt = away.colors.secondary;
-    b = luminance(alt) >= 0.05 && distance(a, alt) >= 90 ? alt : '#c8ced8';
+    const candidates = [away.colors.secondary, brighten(away.colors.primary, 0.08)].filter((c) => luminance(c) >= 0.05);
+    b = candidates.find((c) => distance(a, c) >= 90) ?? (luminance(a) > 0.4 ? '#7d8794' : '#c8ced8');
   }
   return [a, b];
 }

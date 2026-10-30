@@ -348,6 +348,7 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
   100% { box-shadow: 0 0 0 10px rgba(61, 220, 151, 0); }
 }
 .squad-table tbody tr { cursor: pointer; }
+.squad-table th, .squad-table td { padding-inline: 6px; } /* 열이 20개라 칸 여백을 줄여 1440 화면에서 가로 스크롤 없이 */
 .squad-table tr.is-starter td:first-child { box-shadow: inset 2px 0 0 var(--accent); }
 .squad-table tr.is-selected { background: rgba(90, 169, 255, 0.16); }
 .squad-table tr.is-over { background: rgba(61, 220, 151, 0.2); }
@@ -465,7 +466,7 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
   border-bottom: 1px solid rgba(35, 43, 54, 0.6);
 }
 .feed-min { color: var(--muted); font-size: 11px; font-weight: 700; }
-.feed-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--side); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25); align-self: center; }
+.feed-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--side); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25); align-self: start; margin-top: 0.55em; } /* 여러 줄이어도 첫 줄(분 표시)과 나란히 */
 .feed-dot.none { background: transparent; box-shadow: none; }
 .feed-line.c-goal { background: var(--accent-dim); font-weight: 700; }
 .feed-line.c-goal .feed-min { color: var(--accent); }
@@ -747,6 +748,7 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .transfers-screen { display: grid; gap: 12px; }
 .tr-summary { display: flex; gap: 28px; padding: 14px 16px; flex-wrap: wrap; }
 .tr-stat { display: grid; gap: 2px; }
+.tr-stat .num { text-align: left; } /* 요약 값은 라벨과 같은 왼쪽 줄 (표 숫자 열의 오른쪽 정렬을 따르지 않게) */
 .tr-stat > span.muted { font-size: 11px; } /* 라벨만 (값이 b.muted일 때 같이 작아지지 않게) */
 .tr-stat b { font-size: 14px; }
 .tr-stat b.big { font-size: 24px; font-weight: 800; color: var(--accent); }
@@ -963,8 +965,12 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .cmd-body { min-height: 260px; }
 .cmd-body .btn-row.end { margin-top: 10px; align-items: center; gap: 10px; }
 .cmd-body .btn-row.end .small-note { margin-right: auto; }
-/* 교체 확정 줄은 창 아래에 붙는다 (모바일에서 20줄 목록 밑에 묻히지 않게) */
-.sub-actions { position: sticky; bottom: -1px; z-index: 1; padding: 10px 0 2px; background: var(--panel); border-top: 1px solid var(--line); }
+/* 감독 지시 창 아래 묶음(교체 확정 줄 + 닫기·닫고 재개)은 창 아래에 붙는다 (모바일에서 20줄 목록 밑에 묻히지 않게) */
+.cmd-foot { position: sticky; bottom: 0; z-index: 1; display: grid; gap: 10px; margin: 0 -20px -20px; padding: 12px 20px 20px; background: var(--panel); border-top: 1px solid var(--line); }
+.cmd-foot-slot:empty { display: none; }
+.cmd-foot .sub-actions { margin: 0; gap: 10px; }
+/* 창이 열려 있을 때 알림은 위쪽에 (창 아래 고정 버튼을 가리지 않게) */
+body:has(.modal-backdrop.is-open) .toast-host { top: 12px; bottom: auto; }
 .sub-pick { margin-right: auto; min-width: 0; color: var(--text-2); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .formation-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; }
 .formation-card { display: grid; gap: 6px; justify-items: center; padding: 8px; border: 1px solid var(--line-2); border-radius: 8px; background: transparent; color: var(--text); font-size: 12px; cursor: pointer; transition: border-color var(--duration-quick) var(--ease-out), background-color var(--duration-quick) var(--ease-out); }
@@ -1427,6 +1433,7 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
   .kickoff-bar > .btn-row:last-child .btn { flex: 1 1 0; white-space: nowrap; }
   .kickoff-bar > .btn-row:first-child { flex: none; }
   .kickoff-bar .btn { height: 44px; padding: 0 14px; }
+  .kickoff-bar .btn.big { height: 48px; } /* 킥오프는 엄지가 가장 자주 누르는 곳 */
   .kickoff-bar .kb-instant { display: none; } /* '경기 옵션' 안에 있다 */
 }
 @media (min-width: 641px) { .more-item.only-narrow { display: none; } }
@@ -1550,6 +1557,7 @@ input::placeholder { color: var(--muted); opacity: 1; }
 .fd-steps b { color: var(--text); margin-right: 4px; }
 .fd-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .fd-foot p { margin: 0; }
+.first-day .small-note { color: var(--text-2); } /* 밝은 팀 색 그라데이션 위에서도 4.5:1 */
 @media (max-width: 640px) { .first-day { padding: 16px; } .fd-foot .btn { width: 100%; } }
 
 /* ── 큰 숫자·결과 단어: 좁은 전광판 글꼴 ── */

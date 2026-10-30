@@ -153,7 +153,8 @@ export function lineupProblems(dataset, game, scope = 'league') {
 }
 
 // 문제 있는 슬롯만 출전 가능한 선수 중 가장 잘 맞는 선수로 채운다
-export function fixLineup(dataset, game, scope = 'league') {
+// record: 바꾼 자리를 game.cover에 남겨, 빠졌던 선수가 돌아오면 되돌릴지 물을 수 있게 한다 (미리 보기는 false)
+export function fixLineup(dataset, game, scope = 'league', { record = true } = {}) {
   const problems = lineupProblems(dataset, game, scope);
   if (problems.length === 0) return 0;
   const slots = userSlots(game);
@@ -166,10 +167,32 @@ export function fixLineup(dataset, game, scope = 'league') {
   for (const { slot } of problems) {
     if (!pool.length) break;
     const [best] = autoSelectLineup(pool, [slots[slot]], factorOf(game));
+    if (record) {
+      game.cover ??= [];
+      const prev = game.cover.find((r) => r.slot === slot && r.in === game.lineup[slot]); // 대체 선수가 또 빠지면 원래 주인을 그대로 기억
+      if (prev) prev.in = best.id;
+      else game.cover.push({ slot, out: game.lineup[slot], in: best.id });
+    }
     game.lineup[slot] = best.id;
     pool.splice(pool.indexOf(best), 1);
   }
   return problems.length;
+}
+
+// 자동 대체로 빠졌다가 다시 뛸 수 있게 된 선수: [{ slot, out, in }]. 감독이 선발을 직접 바꿨거나 선수가 떠났으면 기록을 지운다
+export function returningStarters(dataset, game, scope = 'league') {
+  const lineup = game.lineup;
+  game.cover = (game.cover ?? []).filter((r) => lineup[r.slot] === r.in && !lineup.includes(r.out) && currentTeamId(dataset, game, r.out) === game.teamId);
+  return game.cover.filter((r) => availabilityOf(game, r.out, scope).available);
+}
+
+// 돌아온 선수를 원래 자리로 (대체로 뛰던 선수는 선발에서 빠진다)
+export function restoreStarter(game, slot) {
+  const r = (game.cover ?? []).find((x) => x.slot === slot);
+  if (!r) return;
+  game.lineup[slot] = r.out;
+  game.bench = (game.bench ?? []).filter((id) => id !== r.out);
+  game.cover = game.cover.filter((x) => x !== r);
 }
 
 // 자동 진행용: 출전 가능한 선수 중 지금 포메이션에 가장 강한 선발 (컨디션 반영). 부상에서 돌아온 주전도 다시 들어온다

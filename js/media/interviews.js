@@ -203,19 +203,18 @@ export function postInterview(media, dataset, game, fixture, result, gap) {
   const { size, rankOf } = tableOf(dataset, game);
   const rank = rankOf(game.teamId);
 
-  // 골 순서대로 스코어 흐름: 앞선 적·뒤진 적이 있는지, 마지막 골
+  // 골 순서대로 스코어 흐름: 앞선 적·뒤진 적이 있는지
   let m = 0;
   let o = 0; // 상대 골 (t는 다국어 함수라 쓰지 않는다)
   let led = false;
   let trailed = false;
-  let decisive = null; // 마지막으로 스코어 관계(앞섬/동점/뒤짐)를 바꾼 골
   for (const g of [...result.goals].sort((a, b) => a.minute - b.minute)) {
     if (g.team === mySide) m++;
     else o++;
     if (m > o) led = true;
     if (m < o) trailed = true;
-    decisive = g;
   }
+  const decisive = decidingGoal(result.goals, mySide, outcome); // 결승골(이긴 쪽) · 마지막 동점골(무승부)
   const scorers = new Map();
   for (const g of result.goals.filter((x) => x.team === mySide)) scorers.set(g.scorerName, (scorers.get(g.scorerName) ?? 0) + 1);
   const [topScorer, topGoals] = [...scorers].sort((a, b) => b[1] - a[1])[0] ?? [null, 0];
@@ -273,14 +272,33 @@ export function postInterview(media, dataset, game, fixture, result, gap) {
   // 기본 상황이 하나는 꼭 있도록
   matched.add(outcome === 'win' ? 'win' : outcome === 'draw' ? (mine === 0 ? 'goallessDraw' : 'draw') : 'loss');
 
-  // 질문의 '그 골'은 상황마다 다르다: 결승골·동점골 이야기면 승부를 정한 골의 주인, 해트트릭·대승·일반 승리면 가장 많이 넣은 선수
-  const situation = chooseSituation('post', matched);
-  if (DECIDER_SITUATIONS.has(situation) && decisive?.team === mySide) vars.scorer = decisive.scorerName;
+  // 해트트릭은 이 경기의 주인공이라 시즌 끝·대륙 대회 상황이 아니면 늘 그 이야기를 묻는다
+  let situation = chooseSituation('post', matched);
+  if (matched.has('hatTrick') && !/^seasonEnd|^cup/.test(situation)) situation = 'hatTrick';
+  vars.scorer = scorerFor(situation, decisive?.team === mySide ? decisive.scorerName : null, topScorer, topGoals);
   return { ...build(media, 'post', situation, vars), outcome, mult: derbyMult(rivalry), round: fixture.round };
 }
 
-// {scorer}가 '승부를 정한 골'을 뜻하는 경기 후 상황 (data/interviews/post.json 질문 문장 기준)
-const DECIDER_SITUATIONS = new Set(['derbyWin', 'comebackWin', 'lateWinner', 'lateEqualiserFor', 'upsetWin', 'luckyWin', 'cleanSheetWin', 'narrowWin', 'winStreak', 'cupWonTrophy']);
+// 승부를 정한 골: 이긴 쪽은 진 쪽 최종 득점 + 1번째 골(그 뒤로 리드를 놓치지 않은 골), 무승부는 마지막 골(동점골)
+export function decidingGoal(goals, mySide, outcome) {
+  const sorted = [...goals].sort((a, b) => a.minute - b.minute);
+  if (outcome === 'draw') return sorted.at(-1) ?? null;
+  const winSide = outcome === 'win' ? mySide : mySide === 'home' ? 'away' : 'home';
+  const loserGoals = sorted.filter((g) => g.team !== winSide).length;
+  return sorted.filter((g) => g.team === winSide)[loserGoals] ?? null;
+}
+
+// 질문의 {scorer}는 상황마다 뜻이 다르다 (data/interviews/post.json 질문 문장 기준)
+// - '결승골·동점골' 그 자체를 말하는 상황: 그 골을 넣은 선수
+// - '주역·해결사'를 말하는 상황: 두 골 이상 넣은 선수가 있으면 그 선수, 없으면 결승골 주인
+// - 그 밖(해트트릭·대승·일반 승리·무승부): 가장 많이 넣은 선수
+const GOAL_SITUATIONS = new Set(['narrowWin', 'lateWinner', 'cleanSheetWin', 'luckyWin', 'lateEqualiserFor']);
+const HERO_SITUATIONS = new Set(['comebackWin', 'derbyWin', 'upsetWin', 'winStreak', 'cupWonTrophy']);
+export function scorerFor(situation, decider, topScorer, topGoals) {
+  if (GOAL_SITUATIONS.has(situation)) return decider ?? topScorer;
+  if (HERO_SITUATIONS.has(situation)) return topGoals >= 2 ? topScorer : (decider ?? topScorer);
+  return topScorer;
+}
 
 export function answerPost(game, interview, stance) {
   const effect = MORALE.post[stance];
@@ -410,13 +428,14 @@ export function postCupInterview(media, dataset, game, fixture, result, gap) {
   const c = cupContext(game, fixture, mySide);
   const scorers = new Map();
   for (const g of result.goals.filter((x) => x.team === mySide)) scorers.set(g.scorerName, (scorers.get(g.scorerName) ?? 0) + 1);
-  const scorer = [...scorers].sort((a, b) => b[1] - a[1])[0]?.[0];
+  const [topScorer, topGoals] = [...scorers].sort((a, b) => b[1] - a[1])[0] ?? [null, 0];
+  const decisive = decidingGoal(result.goals, mySide, outcome);
   const vars = {
     team: dataset.teamById.get(game.teamId).shortName,
     opponent: dataset.teamById.get(fixture[`${oppSide}Id`]).shortName,
     venue: t(mySide === 'home' ? 'media.venue.home' : 'media.venue.away'),
     score: scoreText(mine, theirs),
-    scorer,
+    scorer: topScorer,
     ...c,
   };
   if (result.aggregate) vars.aggregate = scoreText(result.aggregate[mySide], result.aggregate[oppSide]);
@@ -436,6 +455,7 @@ export function postCupInterview(media, dataset, game, fixture, result, gap) {
     const diff = mine - theirs;
     situation = diff >= 3 ? 'bigWin' : diff === 1 ? 'narrowWin' : diff > 0 ? 'win' : diff === 0 ? (mine === 0 ? 'goallessDraw' : 'draw') : diff === -1 ? 'narrowLoss' : diff <= -3 ? 'heavyLoss' : 'loss';
   }
+  vars.scorer = scorerFor(situation, decisive?.team === mySide ? decisive.scorerName : null, topScorer, topGoals);
   const rivalry = rivalryBetween(media, game.teamId, fixture[`${oppSide}Id`]);
   return { ...build(media, 'post', situation, vars), outcome, mult: derbyMult(rivalry), round: `cup:${fixture.id}` };
 }
