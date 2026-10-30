@@ -193,7 +193,8 @@ export function createApp(root, dataset, savedSlots = []) {
     const g = ctx.game;
     const league = leagueOf(ctx.dataset, g);
     const season = g.years > 1 ? t('app.topbar.seasonOf', { i: g.seasonIndex, n: g.years }) : '';
-    const progress = isSeasonOver(g) ? t('app.topbar.seasonOver') : t('app.topbar.round', { r: g.round, n: g.totalRounds });
+    // 경기 끝 장면을 보는 동안에는 방금 치른 라운드 (게임은 이미 다음 라운드로 넘어가 있다)
+    const progress = ctx.viewRound ? t('app.topbar.round', { r: ctx.viewRound, n: g.totalRounds }) : isSeasonOver(g) ? t('app.topbar.seasonOver') : t('app.topbar.round', { r: g.round, n: g.totalRounds });
     roundLabel.textContent = t('app.topbar.status', { league: league.name, year: g.season, season, progress });
     budgetLabel.textContent = formatMoney(g.budgets[g.teamId]);
     const unread = unreadCount(g);
@@ -207,6 +208,7 @@ export function createApp(root, dataset, savedSlots = []) {
     if (!ctx.game) name = 'select';
     if (name === current && panelEl.getAttribute('data-open') === 'true') return;
     SCREENS[current]?.leave?.(ctx);
+    ctx.viewRound = null;
     current = name;
     nav?.select(name);
     inboxBtn?.classList.toggle('is-active', name === 'inbox');

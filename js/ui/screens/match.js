@@ -29,6 +29,7 @@ import { familiarityBoost, familiarityOf, familiarityWord } from '../../state/fa
 import { answerPost, answerPre, answerTalk, cupTeamTalk, loadMedia, rivalryBetween, rivalryName, postCupInterview, postInterview, preCupInterview, preInterview, teamTalk } from '../../media/interviews.js';
 import { compOf, cupMatchInput, cupsOf, eventFixtures, firstLegOf, leaguePhaseTable, stageName, userCupFixture, compName } from '../../competitions/cups.js';
 import { STANCES } from '../../media/situations.js';
+import { verdictKey } from '../../media/verdict.js';
 import { moraleBoost, moraleLabel, moraleOf, recentResults } from '../../state/morale.js';
 import { trainingMatchBoost, trainingOf } from '../../state/training.js';
 import { captainBoost, captainFor } from '../../state/captain.js';
@@ -268,8 +269,10 @@ function renderPre(ctx, show) {
     }
   };
   const tired = game.lineup.filter((id) => conditionOf(game, id) < RULES.rotateBelow).map((id) => dataset.playerById.get(id)?.name).filter(Boolean);
+  // 이름은 세 명까지, 나머지는 '외 N명' (브리핑 줄이 이름 나열로 길어지지 않게)
+  const shortList = (names) => (names.length > 3 ? `${names.slice(0, 3).join(', ')} ${t('match.pre.andMore', { n: names.length - 3 })}` : names.join(', '));
   const tiredNote = tired.length
-    ? h('p', { class: 'muted small-note tired-note' }, t(settingsOf(game).autoRotate ? 'match.pre.tiredAuto' : 'match.pre.tiredManual', { n: tired.length, names: tired.join(', ') }))
+    ? h('p', { class: 'muted small-note tired-note' }, t(settingsOf(game).autoRotate ? 'match.pre.tiredAuto' : 'match.pre.tiredManual', { n: tired.length, names: shortList(tired) }))
     : null;
 
   // 상대 분석 · 전술 숙련도
@@ -284,7 +287,7 @@ function renderPre(ctx, show) {
   const benchedAll = benchedRegulars(dataset, game, scope).filter((p) => !returningIds.has(p.id));
   const benched = firstMatch ? [] : benchedAll; // 첫 경기는 경고하지 않는다 (아직 감독이 손대지 않은 선발)
   const benchedNote = benchedAll.length
-    ? h('p', { class: 'muted small-note tired-note' }, t(firstMatch ? 'match.pre.firstXi' : 'match.pre.benchedNote', { n: benchedAll.length, names: benchedAll.map((p) => p.name).join(', ') }))
+    ? h('p', { class: 'muted small-note tired-note' }, t(firstMatch ? 'match.pre.firstXi' : 'match.pre.benchedNote', { n: benchedAll.length, names: shortList(benchedAll.map((p) => p.name)) }))
     : null;
 
   const kickoff = h('button', { class: 'btn primary big', type: 'button' }, t('match.pre.kickoff'));
@@ -411,6 +414,13 @@ function renderPre(ctx, show) {
     ctx.persist();
     show();
     showToast(t('match.brief.restoredToast', { names: returning.map((r) => dataset.playerById.get(r.out).name).join(', ') }));
+    // 누른 버튼이 다시 그려져 사라지므로 포커스를 브리핑으로 (키보드·낭독기 사용자가 자리를 잃지 않게)
+    requestAnimationFrame(() => {
+      const box = document.querySelector('.briefing');
+      if (!box) return;
+      box.tabIndex = -1;
+      box.focus({ preventScroll: true });
+    });
   }, blockedNotes: problems.map(({ id }) => `${dataset.playerById.get(id).name} (${reasonOf(id)})`), lineupNotes: [tiredNote, benchedNote].filter(Boolean).map((e) => e.textContent) } });
 
   return h(
@@ -923,6 +933,9 @@ function renderLive(ctx, show) {
     );
     // 탭별 확정 줄 (교체 탭: 나감 → 들어옴 · 교체하기)
     const footSlot = h('div', { class: 'cmd-foot-slot' });
+    // 이 창 안에서 한 일의 결과는 떠 있는 알림 대신 아래 묶음의 상태 줄에 (목록·본문을 가리지 않게)
+    const status = h('p', { class: 'cmd-status', role: 'status' });
+    let pendingSub = false; // 교체할 선수를 골라 두고 아직 확정하지 않았는지
     const closeBtn = h('button', { class: 'btn ghost', type: 'button' }, t('match.cmd.close'));
     const resumeBtn = h('button', { class: 'btn primary', type: 'button' }, t('match.cmd.resume'));
 
@@ -934,8 +947,8 @@ function renderLive(ctx, show) {
         updateStats();
         renderBody();
       }
-      // 창을 다시 그린 뒤에 띄운다 (아래 묶음 높이에 맞춰 그 위에 뜨도록)
-      showToast(res.message, { tone: res.ok ? '' : 'warn' });
+      status.textContent = res.message;
+      status.className = `cmd-status${res.ok ? ' is-ok' : ' is-warn'}`;
     };
 
     function subsBody() {
@@ -949,6 +962,7 @@ function renderLive(ctx, show) {
       const refreshConfirm = () => {
         confirm.disabled = outSlot === null || inId === null;
         confirm.classList.toggle('primary', !confirm.disabled); // 두 선수를 다 고르면 이 창의 주 동작
+        pendingSub = outSlot !== null || inId !== null;
         resumeBtn.classList.toggle('primary', confirm.disabled); // 주 버튼은 언제나 하나
         resumeBtn.classList.toggle('ghost', !confirm.disabled);
         const out = outSlot === null ? '—' : snap.lineup[outSlot]?.name;
@@ -1102,13 +1116,20 @@ function renderLive(ctx, show) {
       title.textContent = t('match.cmd.title', { min: state.minute, home: home.shortName, h: state.score.home, a: state.score.away, away: away.shortName });
       tabs.el.querySelector('[data-id="subs"]').textContent = t('match.cmd.tabSubsCount', { n: snap.subsLeft });
       footSlot.replaceChildren();
+      pendingSub = false;
       resumeBtn.classList.add('primary');
       resumeBtn.classList.remove('ghost');
       body.replaceChildren(tab === 'subs' ? subsBody() : tab === 'formation' ? formationBody() : tab === 'players' ? playersBody() : tacticsBody());
     }
 
     renderBody();
-    const close = openModal(h('div', { class: 'confirm-modal sub-modal cmd-modal' }, title, tabs.el, body, h('div', { class: 'cmd-foot' }, footSlot, h('div', { class: 'confirm-actions' }, closeBtn, resumeBtn))), { onClose });
+    // 골라 둔 교체를 확정하지 않고 닫으면 적용되지 않았다고 알린다 (말없이 사라지지 않게)
+    const close = openModal(h('div', { class: 'confirm-modal sub-modal cmd-modal' }, title, tabs.el, body, h('div', { class: 'cmd-foot' }, status, footSlot, h('div', { class: 'confirm-actions' }, closeBtn, resumeBtn))), {
+      onClose: () => {
+        if (pendingSub) showToast(t('match.cmd.subDiscarded'), { tone: 'warn' });
+        onClose?.();
+      },
+    });
     closeBtn.addEventListener('click', close);
     resumeBtn.addEventListener('click', () => {
       close();
@@ -1370,6 +1391,10 @@ function renderLive(ctx, show) {
 
   function renderAfter() {
     clearToasts(); // 경기 전·중 알림(로테이션 등)이 결과 장면·인터뷰 질문을 가리지 않게
+    if (!live.cup) {
+      ctx.viewRound = fixture.round; // 상단 막대도 방금 치른 라운드로 (결과 장면 제목과 같게)
+      ctx.refreshTopbar();
+    }
     const game = ctx.game;
     const mineFixture = live.cup ? cupFixtureById(game, fixture.id) : fixtureById(game, fixture.id);
     const mineResult = mineFixture.result;
@@ -1377,6 +1402,8 @@ function renderLive(ctx, show) {
     const next = h('button', { class: 'btn', type: 'button' }, isSeasonOver(game) ? t('match.after.seasonReview') : t('match.after.next'));
     next.addEventListener('click', () => {
       live = null;
+      ctx.viewRound = null;
+      ctx.refreshTopbar();
       show();
     });
     const toTable = h('button', { class: 'btn ghost', type: 'button' }, live.cup ? t('match.after.toCups') : t('match.after.toTable'));
@@ -1458,15 +1485,12 @@ function renderLive(ctx, show) {
   // 경기 끝 장면: 큰 결과 단어, 순위 변화(말), 수석코치 한마디, 적용된 준비·결장, 편지함·이사회 소식
   function resultScene({ outcome, standing, mineFixture }) {
     const game = ctx.game;
-    const gap = live.gap ?? 0;
-    const expect = gap > 3 ? 'fav' : gap < -3 ? 'dog' : 'even';
-    // 결과와 내용이 엇갈리면 내용을 먼저 말한다 (압도하고 진 경기에 '우리답지 않았다'고 하지 않게)
+    // 바로 아래 인터뷰와 같은 이야기: 역전·따라붙음·따라잡힘·대승·신승을 먼저, 내용(xG)이 결과와 크게 엇갈릴 때는 내용을
+    const oppSide = mySide === 'home' ? 'away' : 'home';
     const st = live.result?.stats;
-    const xgDiff = st ? st[mySide].xg - st[mySide === 'home' ? 'away' : 'home'].xg : 0;
-    // 크게 밀린 패배(xG 차 0.6 이상 또는 세 골 차)에 '작은 차이'라고 위로하지 않는다
-    const goalDiff = mineFixture.result.score[mySide] - mineFixture.result.score[mySide === 'home' ? 'away' : 'home'];
-    const story = outcome[1] === 'loss' && xgDiff >= 0.6 ? 'unlucky' : outcome[1] === 'loss' && (xgDiff <= -0.6 || goalDiff <= -3) ? 'outplayed' : outcome[1] === 'win' && xgDiff <= -0.6 ? 'lucky' : outcome[1] === 'draw' && xgDiff >= 0.8 ? 'dominant' : outcome[1] === 'draw' && xgDiff <= -0.8 ? 'survived' : expect;
-    const lines = tList(`match.after.verdict.${outcome[1]}.${story}`);
+    const score = mineFixture.result.score;
+    const key = verdictKey({ goals: live.result?.goals ?? state.goals, mySide, mine: score[mySide], theirs: score[oppSide], xgDiff: st ? st[mySide].xg - st[oppSide].xg : 0, gap: live.gap ?? 0 });
+    const lines = tList(`match.after.verdict.${key}`);
     let seed = 0;
     for (const ch of `${game.seed}:${fixture.id}`) seed = (seed * 31 + ch.charCodeAt(0)) >>> 0;
     const verdict = lines.length ? lines[seed % lines.length] : '';

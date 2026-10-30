@@ -26,16 +26,16 @@
   "match.pre.transferred": "Transferred",
   "match.pre.restedToast": "Tired players rested: {list}",
   "match.pre.tiredAuto": {
-    "one": "1 tired starter: {names} — will be rested at kick-off if a better option is available",
-    "other": "{n} tired starters: {names} — will be rested at kick-off if better options are available"
+    "one": "{names} — will be rested at kick-off if a better option is available",
+    "other": "{names} — will be rested at kick-off if better options are available"
   },
   "match.pre.tiredManual": {
-    "one": "1 tired starter: {names} — you can rest him via Edit line-up",
-    "other": "{n} tired starters: {names} — you can rest them via Edit line-up"
+    "one": "{names} — you can rest him via Edit line-up",
+    "other": "{names} — you can rest them via Edit line-up"
   },
   "match.pre.benchedNote": {
-    "one": "1 regular left out: {names} — he will grow unhappy if he misses too many games",
-    "other": "{n} regulars left out: {names} — they will grow unhappy if they miss too many games"
+    "one": "{names} — he will grow unhappy if he misses too many games",
+    "other": "{names} — they will grow unhappy if they miss too many games"
   },
   "match.pre.kickoff": "Kick off",
   "match.pre.instant": "Result only",
@@ -81,6 +81,7 @@
   "match.pre.lastMeet": "Last meeting: {home} {a}-{b} {away}",
   "match.pre.form": "Recent form: {list}",
   "match.pre.firstXi": "Assistant: I'd go with this XI for the opener. {names} start on the bench.",
+  "match.pre.andMore": "and {n} more",
   "match.press.preLead": "The day before the game, the press want your thoughts on tomorrow. What you say here stays with the players.",
   "match.pre.tactics": "Tactics",
   "match.pre.analysis": "Opposition report",
@@ -228,6 +229,7 @@
   "match.cmd.resume": "Close & resume",
   "match.cmd.noSubs": "You've used all your substitutions.",
   "match.cmd.makeSub": "Make sub",
+  "match.cmd.subDiscarded": "The substitution you picked wasn't made",
   "match.cmd.subOut": "Player off",
   "match.cmd.subIn": "Player on",
   "match.cmd.subNote": "Numbers: on-pitch players show ability in their position, subs show OVR",
@@ -318,7 +320,7 @@
   "match.after.verdict.win.fav": [
     "We did the job. Good sides don't let games like this slip.",
     "As expected, but it wasn't easy. The lads held their nerve.",
-    "Three points, nice and clean. Same focus next week and we'll be fine."
+    "Three points, job done. Same focus next week and we'll be fine."
   ],
   "match.after.verdict.win.even": [
     "We edged a tight one. Today the small margins went our way.",
@@ -369,6 +371,36 @@
     "We were second best all over the pitch. The performance hurts more than the result.",
     "They were a level above us today. We'll go through what went wrong, one thing at a time.",
     "No excuses from that one. We start again on the training ground."
+  ],
+  "match.after.verdict.win.comeback": [
+    "We went behind and turned it round. The character today deserves credit.",
+    "We were chasing it and we won it. Comebacks like this can change a season.",
+    "Nobody's head dropped after we conceded. That's the whole story of this win."
+  ],
+  "match.after.verdict.win.big": [
+    "It was our game from start to finish. Days like this are rare, so enjoy it.",
+    "The performance matched the scoreline. The lads showed everything we worked on.",
+    "A convincing win. But the next game starts at 0-0 again."
+  ],
+  "match.after.verdict.win.narrow": [
+    "One goal in it, and it was never comfortable. But we found a way to win.",
+    "Tight, but three points. The finishing still needs work.",
+    "We made the small difference today. Wins like this have to keep coming."
+  ],
+  "match.after.verdict.draw.cameBack": [
+    "We were behind and still came away with a point. Chasing it to the end was worth it.",
+    "Going behind was frustrating, but the fight to get back level was real.",
+    "That could easily have been a defeat. Today, a point will do."
+  ],
+  "match.after.verdict.draw.caughtUp": [
+    "We were ahead and couldn't hold on. That's two points dropped.",
+    "The problem came after we took the lead. We need to look hard at that spell.",
+    "It was there to be won. We didn't have the strength to see out the lead."
+  ],
+  "match.after.verdict.loss.collapse": [
+    "We were ahead and lost it. That's what hurts most today.",
+    "We took the lead and fell apart. The players will know what went wrong.",
+    "We lost a game we were winning. We'll move on quickly, but we'll find out why."
   ],
   "match.after.verdict.win.lucky": [
     "Honestly, we were second best. But we found a way to win.",

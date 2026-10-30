@@ -381,6 +381,7 @@ export const MORALE = {
     injuryCrisis: 3, // 주전 11명 중 결장자 수
     newSigningRounds: 4, // 영입 후 이 라운드 안에 처음 선발이면 '새 얼굴'
     xgGap: 0.5, // 내용(기대 득점) 차이 기준
+    weatherChance: 0.12, // 날씨·잔디 핑계 답이 나올 수 있는 경기 비율 (게임에 날씨가 없어 드물게만)
   },
 };
 

@@ -39,7 +39,8 @@
             },
             {
               "stance": "blame",
-              "text": "We had a ridiculous fixture schedule and a pitch that fell apart, and we still finished here. Give us normal conditions and you'd really be surprised."
+              "text": "We had a ridiculous fixture schedule and a pitch that fell apart, and we still finished here. Give us normal conditions and you'd really be surprised.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -141,7 +142,8 @@
             },
             {
               "stance": "blame",
-              "text": "The pitch and the weather were against us plenty of times, but the stands were always with us."
+              "text": "The pitch and the weather were against us plenty of times, but the stands were always with us.",
+              "when": "weather"
             },
             {
               "stance": "humble",
@@ -217,7 +219,8 @@
         },
         {
           "stance": "blame",
-          "text": "Our pitch was a mess all season, so a finish like this is more than good enough."
+          "text": "Our pitch was a mess all season, so a finish like this is more than good enough.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -579,7 +582,8 @@
             },
             {
               "stance": "blame",
-              "text": "Three goals on that pitch is quite something, and I'll tell him so."
+              "text": "Three goals on that pitch is quite something, and I'll tell him so.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -625,7 +629,8 @@
             },
             {
               "stance": "blame",
-              "text": "I don't know the secret, but keeping your touch in this weather and on this pitch is definitely special."
+              "text": "I don't know the secret, but keeping your touch in this weather and on this pitch is definitely special.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -670,7 +675,8 @@
             },
             {
               "stance": "blame",
-              "text": "He did. He'll probably remember for the rest of his life how much that ball bobbled on today's pitch."
+              "text": "He did. He'll probably remember for the rest of his life how much that ball bobbled on today's pitch.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -787,7 +793,8 @@
         },
         {
           "stance": "blame",
-          "text": "Scoring three on a pitch in this state is even more impressive. The ball was bouncing all over the place."
+          "text": "Scoring three on a pitch in this state is even more impressive. The ball was bouncing all over the place.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -799,7 +806,8 @@
         },
         {
           "stance": "blame",
-          "text": "Three goals in wind and rain like that? On a nice day there would have been even more."
+          "text": "Three goals in wind and rain like that? On a nice day there would have been even more.",
+          "when": "weather"
         },
         {
           "stance": "humble",
@@ -858,7 +866,8 @@
             },
             {
               "stance": "critical",
-              "text": "The fans were delighted, but I couldn't fully smile because of how sloppy we got towards half-time."
+              "text": "The fans were delighted, but I couldn't fully smile because of how sloppy we got towards half-time.",
+              "when": "firstHalfWorse"
             },
             {
               "stance": "critical",
@@ -915,7 +924,8 @@
             },
             {
               "stance": "blame",
-              "text": "Finishing that calmly on such a slippery pitch is not easy."
+              "text": "Finishing that calmly on such a slippery pitch is not easy.",
+              "when": "weather"
             },
             {
               "stance": "humble",
@@ -953,7 +963,8 @@
             },
             {
               "stance": "critical",
-              "text": "We were clearly rattled towards half-time. We were just lucky not to concede."
+              "text": "We were clearly rattled towards half-time. We were just lucky not to concede.",
+              "when": "firstHalfWorse"
             },
             {
               "stance": "blame",
@@ -998,7 +1009,8 @@
             },
             {
               "stance": "critical",
-              "text": "We kept it today. But play like we did in the first half and we'll lose it next time."
+              "text": "We kept it today. But play like we did in the first half and we'll lose it next time.",
+              "when": "firstHalfWorse"
             },
             {
               "stance": "blame",
@@ -1050,7 +1062,8 @@
         },
         {
           "stance": "critical",
-          "text": "Winning a derby doesn't excuse everything. The sloppiness before half-time will be addressed."
+          "text": "Winning a derby doesn't excuse everything. The sloppiness before half-time will be addressed.",
+          "when": "firstHalfWorse"
         },
         {
           "stance": "critical",
@@ -1074,7 +1087,8 @@
         },
         {
           "stance": "blame",
-          "text": "The pitch was so slippery that it was never going to be easy. Still, we won, so that's fine."
+          "text": "The pitch was so slippery that it was never going to be easy. Still, we won, so that's fine.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -1345,7 +1359,8 @@
             },
             {
               "stance": "humble",
-              "text": "They're a strong side. We need preparation more than confidence."
+              "text": "They're a strong side. We need preparation more than confidence.",
+              "when": "weather"
             },
             {
               "stance": "forward",
@@ -1413,7 +1428,8 @@
         },
         {
           "stance": "blame",
-          "text": "Our passing game simply couldn't function on this pitch."
+          "text": "Our passing game simply couldn't function on this pitch.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -1488,7 +1504,8 @@
             },
             {
               "stance": "blame",
-              "text": "I told them we'd have the wind behind us after the break, so let's play our football. That's exactly what happened."
+              "text": "I told them we'd have the wind behind us after the break, so let's play our football. That's exactly what happened.",
+              "when": "weather"
             },
             {
               "stance": "humble",
@@ -1506,7 +1523,8 @@
               "stance": "forward",
               "text": "I told them to think one goal at a time. The equaliser, then the winner. That was all."
             }
-          ]
+          ],
+          "when": "htTrail"
         },
         {
           "text": "{scorer} was the driving force behind the comeback. How did you see it?",
@@ -1676,7 +1694,8 @@
         },
         {
           "stance": "critical",
-          "text": "The result was good, but until we conceded we were failing. I told them as much at half-time."
+          "text": "The result was good, but until we conceded we were failing. I told them as much at half-time.",
+          "when": "htTrail"
         },
         {
           "stance": "critical",
@@ -1692,7 +1711,8 @@
         },
         {
           "stance": "blame",
-          "text": "We struggled with the wind early on, but once it was behind us our game came through."
+          "text": "We struggled with the wind early on, but once it was behind us our game came through.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -1777,7 +1797,8 @@
             },
             {
               "stance": "blame",
-              "text": "After the downpour midway through the second half. The surface changed and our passing started breaking down."
+              "text": "After the downpour midway through the second half. The surface changed and our passing started breaking down.",
+              "when": "weather"
             },
             {
               "stance": "humble",
@@ -1943,7 +1964,8 @@
         },
         {
           "stance": "blame",
-          "text": "When the rain came down in the second half, the conditions changed completely. Luck wasn't with us."
+          "text": "When the rain came down in the second half, the conditions changed completely. Luck wasn't with us.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -2108,7 +2130,8 @@
             },
             {
               "stance": "blame",
-              "text": "The pitch meant short passing wasn't working, so late on we went more direct. It worked."
+              "text": "The pitch meant short passing wasn't working, so late on we went more direct. It worked.",
+              "when": "weather"
             },
             {
               "stance": "humble",
@@ -2230,7 +2253,8 @@
         },
         {
           "stance": "blame",
-          "text": "The pitch kept swallowing our passes. In those conditions, I'm glad the decisive blow came at the end."
+          "text": "The pitch kept swallowing our passes. In those conditions, I'm glad the decisive blow came at the end.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -2302,7 +2326,8 @@
             },
             {
               "stance": "blame",
-              "text": "He finished calmly on a pitch where the ball was bouncing all over the place. Only {scorer} could have scored that."
+              "text": "He finished calmly on a pitch where the ball was bouncing all over the place. Only {scorer} could have scored that.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -2473,7 +2498,8 @@
         },
         {
           "stance": "blame",
-          "text": "We struggled all game on a pitch where the ball bounced all over the place. In the end we got one back."
+          "text": "We struggled all game on a pitch where the ball bounced all over the place. In the end we got one back.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -2541,7 +2567,8 @@
             },
             {
               "stance": "critical",
-              "text": "We just kept hoofing it clear and eventually gave away the second ball. That's not defending."
+              "text": "We just kept hoofing it clear and eventually gave away the second ball. That's not defending.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -2764,7 +2791,8 @@
         },
         {
           "stance": "blame",
-          "text": "The pitch got worse in the second half, and our clearances weren't going anywhere."
+          "text": "The pitch got worse in the second half, and our clearances weren't going anywhere.",
+          "when": "weather"
         },
         {
           "stance": "humble",
@@ -2833,7 +2861,8 @@
             },
             {
               "stance": "blame",
-              "text": "He pulled off a finish like that on a terrible pitch. {scorer}'s technique was superb."
+              "text": "He pulled off a finish like that on a terrible pitch. {scorer}'s technique was superb.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -2870,7 +2899,8 @@
             },
             {
               "stance": "critical",
-              "text": "Only half of what we prepared came off. In the second half we sat back, nothing like the plan."
+              "text": "Only half of what we prepared came off. In the second half we sat back, nothing like the plan.",
+              "when": "secondHalfWorse"
             },
             {
               "stance": "critical",
@@ -2882,7 +2912,8 @@
             },
             {
               "stance": "blame",
-              "text": "I reckoned their short passing wouldn't work on this pitch. We prepared accordingly."
+              "text": "I reckoned their short passing wouldn't work on this pitch. We prepared accordingly.",
+              "when": "weather"
             },
             {
               "stance": "humble",
@@ -2919,7 +2950,8 @@
             },
             {
               "stance": "critical",
-              "text": "Turning points are made by performances, not results. Our second-half performance today isn't enough."
+              "text": "Turning points are made by performances, not results. Our second-half performance today isn't enough.",
+              "when": "secondHalfWorse"
             },
             {
               "stance": "blame",
@@ -2972,7 +3004,8 @@
         },
         {
           "stance": "critical",
-          "text": "It's a big win, but we sat too deep in the second half. There were several moments where only luck stopped us conceding."
+          "text": "It's a big win, but we sat too deep in the second half. There were several moments where only luck stopped us conceding.",
+          "when": "secondHalfWorse"
         },
         {
           "stance": "critical",
@@ -3004,7 +3037,8 @@
         },
         {
           "stance": "blame",
-          "text": "The pitch was a mess, so their intricate football probably didn't come off. That helped us a little."
+          "text": "The pitch was a mess, so their intricate football probably didn't come off. That helped us a little.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -3248,7 +3282,8 @@
         },
         {
           "stance": "blame",
-          "text": "We couldn't play our football on this pitch. The ball just wouldn't roll properly."
+          "text": "We couldn't play our football on this pitch. The ball just wouldn't roll properly.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -3369,7 +3404,8 @@
             },
             {
               "stance": "blame",
-              "text": "The tackle was only late because of the slippery surface. I'll tell him not to beat himself up."
+              "text": "The tackle was only late because of the slippery surface. I'll tell him not to beat himself up.",
+              "when": "weather"
             },
             {
               "stance": "humble",
@@ -3475,7 +3511,8 @@
             },
             {
               "stance": "forward",
-              "text": "Preparing for the next game is more urgent than playing 'what if'."
+              "text": "Preparing for the next game is more urgent than playing 'what if'.",
+              "when": "weather"
             }
           ]
         }
@@ -3610,7 +3647,8 @@
             },
             {
               "stance": "blame",
-              "text": "He got hurt on this pitch. If it's bad, I won't just let it go."
+              "text": "He got hurt on this pitch. If it's bad, I won't just let it go.",
+              "when": "weather"
             },
             {
               "stance": "humble",
@@ -3701,7 +3739,8 @@
             },
             {
               "stance": "blame",
-              "text": "The surfaces at the training ground and the stadium are poor. I'll make a formal request to the club."
+              "text": "The surfaces at the training ground and the stadium are poor. I'll make a formal request to the club.",
+              "when": "weather"
             },
             {
               "stance": "humble",
@@ -3774,7 +3813,8 @@
         },
         {
           "stance": "praise",
-          "text": "The substitute who came on was well prepared. That's the strength of our squad."
+          "text": "The substitute who came on was well prepared. That's the strength of our squad.",
+          "when": "weather"
         },
         {
           "stance": "praise",
@@ -3810,7 +3850,8 @@
         },
         {
           "stance": "blame",
-          "text": "With a pitch in this state, an injury was only a matter of time. I'll raise it formally with the club."
+          "text": "With a pitch in this state, an injury was only a matter of time. I'll raise it formally with the club.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -4109,7 +4150,8 @@
         },
         {
           "stance": "blame",
-          "text": "The build-up play we prepared just didn't work on this pitch."
+          "text": "The build-up play we prepared just didn't work on this pitch.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -4181,11 +4223,13 @@
             },
             {
               "stance": "critical",
-              "text": "He was good. But {scorer}'s concentration dropped off in the second half as well."
+              "text": "He was good. But {scorer}'s concentration dropped off in the second half as well.",
+              "when": "secondHalfWorse"
             },
             {
               "stance": "blame",
-              "text": "Doing that on that pitch is amazing. That's down to {scorer}'s technique."
+              "text": "Doing that on that pitch is amazing. That's down to {scorer}'s technique.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -4271,7 +4315,8 @@
             },
             {
               "stance": "critical",
-              "text": "Concentration late in the second half. Once the gap opened up, everyone started walking."
+              "text": "Concentration late in the second half. Once the gap opened up, everyone started walking.",
+              "when": "secondHalfWorse"
             },
             {
               "stance": "blame",
@@ -4279,7 +4324,8 @@
             },
             {
               "stance": "blame",
-              "text": "With a better pitch, we could have been more precise. That's the disappointing bit."
+              "text": "With a better pitch, we could have been more precise. That's the disappointing bit.",
+              "when": "weather"
             },
             {
               "stance": "humble",
@@ -4372,7 +4418,8 @@
         },
         {
           "stance": "critical",
-          "text": "We mustn't get drunk on the scoreline. You could see our concentration dropping in the second half."
+          "text": "We mustn't get drunk on the scoreline. You could see our concentration dropping in the second half.",
+          "when": "secondHalfWorse"
         },
         {
           "stance": "critical",
@@ -4400,7 +4447,8 @@
         },
         {
           "stance": "blame",
-          "text": "The pitch wasn't good, yet the passing flowed well. With decent conditions, we'd have scored more."
+          "text": "The pitch wasn't good, yet the passing flowed well. With decent conditions, we'd have scored more.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -4672,11 +4720,13 @@
             },
             {
               "stance": "blame",
-              "text": "He scored that with the wind blowing like it was. {scorer}'s concentration was superb."
+              "text": "He scored that with the wind blowing like it was. {scorer}'s concentration was superb.",
+              "when": "weather"
             },
             {
               "stance": "blame",
-              "text": "Even on a terrible pitch, {scorer} didn't waste his one chance."
+              "text": "Even on a terrible pitch, {scorer} didn't waste his one chance.",
+              "when": "weather"
             },
             {
               "stance": "humble",
@@ -4721,7 +4771,8 @@
             },
             {
               "stance": "blame",
-              "text": "The wind meant our clearances weren't going anywhere. That's why we kept facing shots."
+              "text": "The wind meant our clearances weren't going anywhere. That's why we kept facing shots.",
+              "when": "weather"
             },
             {
               "stance": "humble",
@@ -4767,7 +4818,8 @@
             },
             {
               "stance": "blame",
-              "text": "Those saves, in weather where the ball was moving all over the place, were truly remarkable."
+              "text": "Those saves, in weather where the ball was moving all over the place, were truly remarkable.",
+              "when": "weather"
             },
             {
               "stance": "humble",
@@ -4839,7 +4891,8 @@
         },
         {
           "stance": "blame",
-          "text": "The pitch was a mess, so our passing wouldn't connect. That's why we were second best."
+          "text": "The pitch was a mess, so our passing wouldn't connect. That's why we were second best.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -4847,7 +4900,8 @@
         },
         {
           "stance": "blame",
-          "text": "The wind was so strong it was hard to play a normal game. On days like this, you just take the result."
+          "text": "The wind was so strong it was hard to play a normal game. On days like this, you just take the result.",
+          "when": "weather"
         },
         {
           "stance": "humble",
@@ -4935,7 +4989,8 @@
             },
             {
               "stance": "forward",
-              "text": "That incident is over. Preparing for the next game is more important."
+              "text": "That incident is over. Preparing for the next game is more important.",
+              "when": "weather"
             }
           ]
         },
@@ -4960,7 +5015,8 @@
             },
             {
               "stance": "blame",
-              "text": "I put on another forward, but the ball just wouldn't move quickly on that heavy pitch."
+              "text": "I put on another forward, but the ball just wouldn't move quickly on that heavy pitch.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -5005,7 +5061,8 @@
             },
             {
               "stance": "blame",
-              "text": "We had the extra man, but the pitch and our fitness meant we couldn't make full use of it."
+              "text": "We had the extra man, but the pitch and our fitness meant we couldn't make full use of it.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -5126,7 +5183,8 @@
         },
         {
           "stance": "blame",
-          "text": "We had the extra man, but the pitch was so heavy it was hard to move the ball quickly."
+          "text": "We had the extra man, but the pitch was so heavy it was hard to move the ball quickly.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -5210,7 +5268,8 @@
             },
             {
               "stance": "blame",
-              "text": "It's some going for {scorer} to finish like that on a bobbly pitch like this one."
+              "text": "It's some going for {scorer} to finish like that on a bobbly pitch like this one.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -5296,7 +5355,8 @@
             },
             {
               "stance": "critical",
-              "text": "After a second half like that, it's too early to talk about bigger targets. The performances have to come first."
+              "text": "After a second half like that, it's too early to talk about bigger targets. The performances have to come first.",
+              "when": "secondHalfWorse"
             },
             {
               "stance": "critical",
@@ -5409,7 +5469,8 @@
         },
         {
           "stance": "critical",
-          "text": "We can't let a winning run make us lazy. That second half was a warning sign."
+          "text": "We can't let a winning run make us lazy. That second half was a warning sign.",
+          "when": "secondHalfWorse"
         },
         {
           "stance": "critical",
@@ -5425,7 +5486,8 @@
         },
         {
           "stance": "blame",
-          "text": "The pitch was in a terrible state today. To make it {streak} wins in a row on that is a relief."
+          "text": "The pitch was in a terrible state today. To make it {streak} wins in a row on that is a relief.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -5433,7 +5495,8 @@
         },
         {
           "stance": "blame",
-          "text": "The wind and rain made normal football almost impossible. Picking up the points on a day like that is a relief."
+          "text": "The wind and rain made normal football almost impossible. Picking up the points on a day like that is a relief.",
+          "when": "weather"
         },
         {
           "stance": "humble",
@@ -5603,7 +5666,8 @@
             },
             {
               "stance": "humble",
-              "text": "That my own preparation fell short. I'll look at myself before I look at the players."
+              "text": "That my own preparation fell short. I'll look at myself before I look at the players.",
+              "when": "weather"
             },
             {
               "stance": "forward",
@@ -5791,7 +5855,8 @@
             },
             {
               "stance": "blame",
-              "text": "Just staying on their feet on this pitch deserves credit for the defenders."
+              "text": "Just staying on their feet on this pitch deserves credit for the defenders.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -5838,7 +5903,8 @@
             },
             {
               "stance": "blame",
-              "text": "It's remarkable that {scorer} struck it so cleanly in that wind."
+              "text": "It's remarkable that {scorer} struck it so cleanly in that wind.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -5872,7 +5938,8 @@
             },
             {
               "stance": "praise",
-              "text": "The forwards press first, and that makes defending easier. We defend together from the front."
+              "text": "The forwards press first, and that makes defending easier. We defend together from the front.",
+              "when": "weather"
             },
             {
               "stance": "critical",
@@ -5906,7 +5973,8 @@
               "stance": "forward",
               "text": "We have to prove the defence is solid again in the next game. That's where our focus is."
             }
-          ]
+          ],
+          "when": "weather"
         },
         {
           "text": "What did you make of the goalkeeper's performance?",
@@ -5925,15 +5993,18 @@
             },
             {
               "stance": "critical",
-              "text": "If the goalkeeper was busy, it means we let them have far too many shots."
+              "text": "If the goalkeeper was busy, it means we let them have far too many shots.",
+              "when": "weather"
             },
             {
               "stance": "blame",
-              "text": "The ball was bobbling all over the place and he held onto everything. Those weren't easy conditions."
+              "text": "The ball was bobbling all over the place and he held onto everything. Those weren't easy conditions.",
+              "when": "weather"
             },
             {
               "stance": "blame",
-              "text": "The wind kept changing the flight of the ball. He coped really well with that."
+              "text": "The wind kept changing the flight of the ball. He coped really well with that.",
+              "when": "weather"
             },
             {
               "stance": "humble",
@@ -6005,7 +6076,8 @@
         },
         {
           "stance": "blame",
-          "text": "The pitch was so uneven I was worried about a defensive error. Thankfully it didn't come."
+          "text": "The pitch was so uneven I was worried about a defensive error. Thankfully it didn't come.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -6049,7 +6121,8 @@
         },
         {
           "stance": "forward",
-          "text": "I've told the players they can smile tonight and that's it. Preparation for the next game starts straight away."
+          "text": "I've told the players they can smile tonight and that's it. Preparation for the next game starts straight away.",
+          "when": "weather"
         },
         {
           "stance": "forward",
@@ -6175,7 +6248,8 @@
             },
             {
               "stance": "blame",
-              "text": "The players coping with these conditions was decisive. Neither the pitch nor the officiating made it easy."
+              "text": "The players coping with these conditions was decisive. Neither the pitch nor the officiating made it easy.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -6232,7 +6306,8 @@
         },
         {
           "stance": "critical",
-          "text": "We sat back far too much in the second half. Even when we're winning, we have to play our football."
+          "text": "We sat back far too much in the second half. Even when we're winning, we have to play our football.",
+          "when": "secondHalfWorse"
         },
         {
           "stance": "critical",
@@ -6253,7 +6328,8 @@
         },
         {
           "stance": "blame",
-          "text": "The state of the pitch kept breaking up our passing. I'm happy just to win in conditions like that."
+          "text": "The state of the pitch kept breaking up our passing. I'm happy just to win in conditions like that.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -6333,7 +6409,8 @@
             },
             {
               "stance": "blame",
-              "text": "It's impressive that {scorer} did so much on that pitch."
+              "text": "It's impressive that {scorer} did so much on that pitch.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -6378,7 +6455,8 @@
             },
             {
               "stance": "blame",
-              "text": "Taking three points in this schedule and this weather is what pleases me most."
+              "text": "Taking three points in this schedule and this weather is what pleases me most.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -6415,7 +6493,8 @@
             },
             {
               "stance": "critical",
-              "text": "Only half went to plan. The second half wasn't the game we wanted."
+              "text": "Only half went to plan. The second half wasn't the game we wanted.",
+              "when": "secondHalfWorse"
             },
             {
               "stance": "critical",
@@ -6423,7 +6502,8 @@
             },
             {
               "stance": "blame",
-              "text": "The state of the pitch forced us to change the plan mid-game. We still got the result."
+              "text": "The state of the pitch forced us to change the plan mid-game. We still got the result.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -6443,7 +6523,8 @@
             },
             {
               "stance": "forward",
-              "text": "With this {venue} game done and dusted, preparing for the next one is a lot easier."
+              "text": "With this {venue} game done and dusted, preparing for the next one is a lot easier.",
+              "when": "weather"
             }
           ]
         },
@@ -6464,7 +6545,8 @@
             },
             {
               "stance": "critical",
-              "text": "Our concentration in the second half. We won, thankfully, but that twenty minutes was dangerous."
+              "text": "Our concentration in the second half. We won, thankfully, but that twenty minutes was dangerous.",
+              "when": "secondHalfWorse"
             },
             {
               "stance": "blame",
@@ -6472,7 +6554,8 @@
             },
             {
               "stance": "blame",
-              "text": "That the weather stopped us showing our full passing game."
+              "text": "That the weather stopped us showing our full passing game.",
+              "when": "weather"
             },
             {
               "stance": "humble",
@@ -6528,7 +6611,8 @@
         },
         {
           "stance": "critical",
-          "text": "What's wrong is wrong, even on a winning day. Our second-half concentration got a failing grade."
+          "text": "What's wrong is wrong, even on a winning day. Our second-half concentration got a failing grade.",
+          "when": "secondHalfWorse"
         },
         {
           "stance": "critical",
@@ -6544,11 +6628,13 @@
         },
         {
           "stance": "blame",
-          "text": "The pitch made it hard to play our way, but we still won."
+          "text": "The pitch made it hard to play our way, but we still won.",
+          "when": "weather"
         },
         {
           "stance": "blame",
-          "text": "The weather got in the way of the game a lot. Still, I'm glad we came away with the result."
+          "text": "The weather got in the way of the game a lot. Still, I'm glad we came away with the result.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -6604,7 +6690,8 @@
           "answers": [
             {
               "stance": "praise",
-              "text": "The players kept moving to make something happen right to the end. Their defence was just that well organised today."
+              "text": "The players kept moving to make something happen right to the end. Their defence was just that well organised today.",
+              "when": "weather"
             },
             {
               "stance": "praise",
@@ -6620,7 +6707,8 @@
             },
             {
               "stance": "blame",
-              "text": "The long grass killed every pass along the ground. These weren't conditions for goals."
+              "text": "The long grass killed every pass along the ground. These weren't conditions for goals.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -6628,7 +6716,8 @@
             },
             {
               "stance": "humble",
-              "text": "Both defences were good. It happens."
+              "text": "Both defences were good. It happens.",
+              "when": "weather"
             },
             {
               "stance": "humble",
@@ -6666,7 +6755,8 @@
             },
             {
               "stance": "blame",
-              "text": "Keeping a clean sheet on a pitch like this without a mistake is definitely a positive."
+              "text": "Keeping a clean sheet on a pitch like this without a mistake is definitely a positive.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -6711,7 +6801,8 @@
             },
             {
               "stance": "blame",
-              "text": "The wind was so strong that long balls and crosses didn't work at all. Our attack was bound to stall."
+              "text": "The wind was so strong that long balls and crosses didn't work at all. Our attack was bound to stall.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -6779,7 +6870,8 @@
         },
         {
           "stance": "blame",
-          "text": "The grass was so long the ball wouldn't roll. Goals are hard to come by in conditions like that."
+          "text": "The grass was so long the ball wouldn't roll. Goals are hard to come by in conditions like that.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -6795,7 +6887,8 @@
         },
         {
           "stance": "blame",
-          "text": "The wind was so strong our crosses just wouldn't carry."
+          "text": "The wind was so strong our crosses just wouldn't carry.",
+          "when": "weather"
         },
         {
           "stance": "humble",
@@ -6946,7 +7039,8 @@
             },
             {
               "stance": "praise",
-              "text": "We had control of the game. It was never one we were going to lose."
+              "text": "We had control of the game. It was never one we were going to lose.",
+              "when": "neverTrailed"
             },
             {
               "stance": "critical",
@@ -6999,7 +7093,8 @@
             },
             {
               "stance": "critical",
-              "text": "Our set-piece defending has let us down again. I don't know how many times I have to say it."
+              "text": "Our set-piece defending has let us down again. I don't know how many times I have to say it.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -7007,7 +7102,8 @@
             },
             {
               "stance": "blame",
-              "text": "The ball bobbled off the pitch and the defender couldn't deal with it. An unlucky goal to concede."
+              "text": "The ball bobbled off the pitch and the defender couldn't deal with it. An unlucky goal to concede.",
+              "when": "weather"
             },
             {
               "stance": "humble",
@@ -7080,7 +7176,8 @@
         },
         {
           "stance": "blame",
-          "text": "The pitch was a real problem today. The ball kept bouncing up on us."
+          "text": "The pitch was a real problem today. The ball kept bouncing up on us.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -7371,7 +7468,8 @@
         },
         {
           "stance": "blame",
-          "text": "On this pitch, the accuracy of the final ball was always going to suffer."
+          "text": "On this pitch, the accuracy of the final ball was always going to suffer.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -7533,7 +7631,8 @@
             },
             {
               "stance": "blame",
-              "text": "The pitch was more of a problem than the tactics. No system works properly on a surface like that."
+              "text": "The pitch was more of a problem than the tactics. No system works properly on a surface like that.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -7658,7 +7757,8 @@
         },
         {
           "stance": "blame",
-          "text": "The pitch was in poor shape, so we couldn't play our football."
+          "text": "The pitch was in poor shape, so we couldn't play our football.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -7775,7 +7875,8 @@
             },
             {
               "stance": "blame",
-              "text": "For {scorer} to finish so precisely on that pitch is a remarkable thing."
+              "text": "For {scorer} to finish so precisely on that pitch is a remarkable thing.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -7887,7 +7988,8 @@
               "stance": "forward",
               "text": "We'll savour the memories until tonight, and from tomorrow we'll go and make new ones."
             }
-          ]
+          ],
+          "when": "weather"
         }
       ],
       "answers": [
@@ -7913,7 +8015,8 @@
         },
         {
           "stance": "critical",
-          "text": "I'm delighted to win, but we dropped far too deep in the second half. We'll smile tonight, but I'll definitely be watching those spells again."
+          "text": "I'm delighted to win, but we dropped far too deep in the second half. We'll smile tonight, but I'll definitely be watching those spells again.",
+          "when": "secondHalfWorse"
         },
         {
           "stance": "critical",
@@ -7949,7 +8052,8 @@
         },
         {
           "stance": "blame",
-          "text": "The pitch at the final venue wasn't good, so we couldn't show all of our football. But the trophy is ours."
+          "text": "The pitch at the final venue wasn't good, so we couldn't show all of our football. But the trophy is ours.",
+          "when": "weather"
         },
         {
           "stance": "humble",
@@ -8062,7 +8166,8 @@
             },
             {
               "stance": "blame",
-              "text": "The atmosphere and even the pitch were unfamiliar. That had a bigger effect than I expected."
+              "text": "The atmosphere and even the pitch were unfamiliar. That had a bigger effect than I expected.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -8082,7 +8187,8 @@
             },
             {
               "stance": "forward",
-              "text": "We'll remember the difficulties we had tonight. We'll be ready for them in the next final."
+              "text": "We'll remember the difficulties we had tonight. We'll be ready for them in the next final.",
+              "when": "weather"
             }
           ]
         },
@@ -8519,7 +8625,8 @@
         },
         {
           "stance": "blame",
-          "text": "The heavy pitch killed our passing game. That's why it went to extra time."
+          "text": "The heavy pitch killed our passing game. That's why it went to extra time.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -8587,7 +8694,8 @@
             },
             {
               "stance": "critical",
-              "text": "The tentative kicks in the shoot-out. That tells you our preparation wasn't good enough."
+              "text": "The tentative kicks in the shoot-out. That tells you our preparation wasn't good enough.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -8640,7 +8748,8 @@
             },
             {
               "stance": "blame",
-              "text": "I told them the turf around the spot was a mess too, and that played a big part in the misses."
+              "text": "I told them the turf around the spot was a mess too, and that played a big part in the misses.",
+              "when": "weather"
             },
             {
               "stance": "humble",
@@ -8689,7 +8798,8 @@
             },
             {
               "stance": "humble",
-              "text": "{opponent}'s defence wouldn't allow it. You have to give them credit."
+              "text": "{opponent}'s defence wouldn't allow it. You have to give them credit.",
+              "when": "weather"
             },
             {
               "stance": "humble",
@@ -8778,7 +8888,8 @@
         },
         {
           "stance": "critical",
-          "text": "Penalties are something you train too. Tonight's result means our preparation wasn't good enough."
+          "text": "Penalties are something you train too. Tonight's result means our preparation wasn't good enough.",
+          "when": "weather"
         },
         {
           "stance": "critical",
@@ -8968,7 +9079,8 @@
             },
             {
               "stance": "blame",
-              "text": "The atmosphere and the pitch in the away leg were really awkward."
+              "text": "The atmosphere and the pitch in the away leg were really awkward.",
+              "when": "weather"
             },
             {
               "stance": "blame",
@@ -9093,7 +9205,8 @@
         },
         {
           "stance": "blame",
-          "text": "The pitch wasn't good, so we couldn't play the football we wanted. But we got the result."
+          "text": "The pitch wasn't good, so we couldn't play the football we wanted. But we got the result.",
+          "when": "weather"
         },
         {
           "stance": "blame",
@@ -10003,7 +10116,8 @@
             },
             {
               "stance": "forward",
-              "text": "We learned a lot from the first leg. Preparing for the return has become much easier."
+              "text": "We learned a lot from the first leg. Preparing for the return has become much easier.",
+              "when": "weather"
             }
           ]
         },
@@ -10105,7 +10219,8 @@
         },
         {
           "stance": "blame",
-          "text": "The pitch wasn't in good condition, so our passing game never really came alive."
+          "text": "The pitch wasn't in good condition, so our passing game never really came alive.",
+          "when": "weather"
         },
         {
           "stance": "blame",

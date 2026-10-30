@@ -141,7 +141,8 @@
           "answers": [
             {
               "stance": "confident",
-              "text": "I didn't need to say much. {player} was already fully ready for tomorrow."
+              "text": "I didn't need to say much. {player} was already fully ready for tomorrow.",
+              "when": "weather"
             },
             {
               "stance": "confident",
@@ -927,7 +928,8 @@
         },
         {
           "stance": "deflect",
-          "text": "Tomorrow I'm more worried about the weather than the opposition. I wonder what the pitch will be like."
+          "text": "Tomorrow I'm more worried about the weather than the opposition. I wonder what the pitch will be like.",
+          "when": "weather"
         },
         {
           "stance": "deflect",
@@ -976,7 +978,8 @@
             },
             {
               "stance": "deflect",
-              "text": "I'm more curious about the state of the pitch. Beyond that, there's nothing much to say."
+              "text": "I'm more curious about the state of the pitch. Beyond that, there's nothing much to say.",
+              "when": "weather"
             },
             {
               "stance": "deflect",
@@ -1612,7 +1615,8 @@
         },
         {
           "stance": "confident",
-          "text": "We just have to win. The maths is simple, and we're ready to win."
+          "text": "We just have to win. The maths is simple, and we're ready to win.",
+          "when": "weather"
         },
         {
           "stance": "confident",
@@ -1716,7 +1720,8 @@
         },
         {
           "stance": "demand",
-          "text": "The fans want to be watching {competition} football in the spring too. We have to make that happen for them."
+          "text": "The fans want to be watching {competition} football in the spring too. We have to make that happen for them.",
+          "when": "weather"
         },
         {
           "stance": "deflect",
@@ -2723,7 +2728,8 @@
             },
             {
               "stance": "respect",
-              "text": "They'll have spent the whole summer preparing for this game too. That worries me more than where it's played."
+              "text": "They'll have spent the whole summer preparing for this game too. That worries me more than where it's played.",
+              "when": "weather"
             },
             {
               "stance": "demand",
@@ -3860,7 +3866,8 @@
         },
         {
           "stance": "confident",
-          "text": "We've been waiting for this game. Every one of the players is ready."
+          "text": "We've been waiting for this game. Every one of the players is ready.",
+          "when": "weather"
         },
         {
           "stance": "cautious",
@@ -4025,7 +4032,8 @@
           "answers": [
             {
               "stance": "confident",
-              "text": "A very good chance. Our academy lads are ready to step up whenever they're called."
+              "text": "A very good chance. Our academy lads are ready to step up whenever they're called.",
+              "when": "weather"
             },
             {
               "stance": "confident",
@@ -4115,7 +4123,8 @@
       "answers": [
         {
           "stance": "confident",
-          "text": "Even with {absentCount} missing, we're still us. We're ready to win this."
+          "text": "Even with {absentCount} missing, we're still us. We're ready to win this.",
+          "when": "weather"
         },
         {
           "stance": "confident",
@@ -4471,7 +4480,8 @@
             },
             {
               "stance": "confident",
-              "text": "Last time we didn't play our football. This time we're ready to."
+              "text": "Last time we didn't play our football. This time we're ready to.",
+              "when": "weather"
             },
             {
               "stance": "cautious",
@@ -5076,7 +5086,8 @@
             },
             {
               "stance": "respect",
-              "text": "Recent opponents have packed their box really tightly. Those aren't defences that open up easily."
+              "text": "Recent opponents have packed their box really tightly. Those aren't defences that open up easily.",
+              "when": "weather"
             },
             {
               "stance": "demand",
@@ -5243,7 +5254,8 @@
         },
         {
           "stance": "respect",
-          "text": "{opponent} are so solid at the back, which makes it even harder for a side struggling for goals like us."
+          "text": "{opponent} are so solid at the back, which makes it even harder for a side struggling for goals like us.",
+          "when": "weather"
         },
         {
           "stance": "respect",
@@ -5303,7 +5315,8 @@
         },
         {
           "stance": "deflect",
-          "text": "Enough about numbers. Let's talk about the weather. Lovely day, isn't it?"
+          "text": "Enough about numbers. Let's talk about the weather. Lovely day, isn't it?",
+          "when": "weather"
         },
         {
           "stance": "deflect",
@@ -5590,7 +5603,8 @@
         },
         {
           "stance": "deflect",
-          "text": "I'd rather talk about the weather today. The players will do the talking about the run on the pitch."
+          "text": "I'd rather talk about the weather today. The players will do the talking about the run on the pitch.",
+          "when": "weather"
         }
       ]
     },
@@ -5699,7 +5713,8 @@
           "answers": [
             {
               "stance": "confident",
-              "text": "The next step is moving up. We're ready for it."
+              "text": "The next step is moving up. We're ready for it.",
+              "when": "weather"
             },
             {
               "stance": "confident",
@@ -5791,7 +5806,8 @@
               "stance": "deflect",
               "text": "The defensive changes are secret. I don't want other teams copying them."
             }
-          ]
+          ],
+          "when": "weather"
         }
       ],
       "answers": [
@@ -5833,7 +5849,8 @@
         },
         {
           "stance": "cautious",
-          "text": "We've become more solid but a bit blunter in attack. We're working on the balance."
+          "text": "We've become more solid but a bit blunter in attack. We're working on the balance.",
+          "when": "weather"
         },
         {
           "stance": "cautious",
@@ -5877,7 +5894,8 @@
         },
         {
           "stance": "demand",
-          "text": "I've asked more of the forwards. The defence is holding firm, and they have to repay that with goals."
+          "text": "I've asked more of the forwards. The defence is holding firm, and they have to repay that with goals.",
+          "when": "weather"
         },
         {
           "stance": "demand",
@@ -6084,7 +6102,8 @@
         },
         {
           "stance": "confident",
-          "text": "The {lastOpponent} game is behind us. We're ready to win tomorrow."
+          "text": "The {lastOpponent} game is behind us. We're ready to win tomorrow.",
+          "when": "weather"
         },
         {
           "stance": "confident",
@@ -6299,7 +6318,8 @@
         },
         {
           "stance": "confident",
-          "text": "{player} is in the form of his life. Their defence is in for another busy day."
+          "text": "{player} is in the form of his life. Their defence is in for another busy day.",
+          "when": "weather"
         },
         {
           "stance": "confident",
@@ -6395,7 +6415,8 @@
         },
         {
           "stance": "deflect",
-          "text": "Momentum changes like the weather. We'll check tomorrow's forecast tomorrow."
+          "text": "Momentum changes like the weather. We'll check tomorrow's forecast tomorrow.",
+          "when": "weather"
         },
         {
           "stance": "deflect",
@@ -6658,7 +6679,8 @@
         },
         {
           "stance": "respect",
-          "text": "A first start against a side like {opponent} is no easy introduction. Their defence is very solid."
+          "text": "A first start against a side like {opponent} is no easy introduction. Their defence is very solid.",
+          "when": "weather"
         },
         {
           "stance": "respect",
@@ -6889,7 +6911,8 @@
         },
         {
           "stance": "confident",
-          "text": "Afterwards, people won't call it an upset, they'll call it deserved. We're ready to win."
+          "text": "Afterwards, people won't call it an upset, they'll call it deserved. We're ready to win.",
+          "when": "weather"
         },
         {
           "stance": "confident",
@@ -7391,7 +7414,8 @@
           "answers": [
             {
               "stance": "confident",
-              "text": "Being the {venue} side is no problem whatsoever for us. We're ready to win anywhere."
+              "text": "Being the {venue} side is no problem whatsoever for us. We're ready to win anywhere.",
+              "when": "weather"
             },
             {
               "stance": "confident",
@@ -7431,7 +7455,8 @@
             },
             {
               "stance": "deflect",
-              "text": "The biggest {venue} factor is probably the length of the grass. That's all I'm saying."
+              "text": "The biggest {venue} factor is probably the length of the grass. That's all I'm saying.",
+              "when": "weather"
             }
           ]
         }
@@ -7575,7 +7600,8 @@
             },
             {
               "stance": "confident",
-              "text": "Physically and mentally, we're ready. I can't wait for tomorrow."
+              "text": "Physically and mentally, we're ready. I can't wait for tomorrow.",
+              "when": "weather"
             },
             {
               "stance": "cautious",

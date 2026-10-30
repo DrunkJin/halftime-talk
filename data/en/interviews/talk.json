@@ -739,7 +739,8 @@
         },
         {
           "stance": "demand",
-          "text": "We look shaky at set pieces. Get tight to your man!"
+          "text": "We look shaky at set pieces. Get tight to your man!",
+          "when": "weather"
         },
         {
           "stance": "demand",
@@ -969,7 +970,8 @@
         },
         {
           "stance": "demand",
-          "text": "The flanks are wide open. Full-backs, every time you go forward, you get back!"
+          "text": "The flanks are wide open. Full-backs, every time you go forward, you get back!",
+          "when": "weather"
         },
         {
           "stance": "calm",

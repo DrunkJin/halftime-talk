@@ -141,7 +141,8 @@
           "answers": [
             {
               "stance": "confident",
-              "text": "따로 할 말이 없었습니다. {player} 선수는 이미 내일을 위한 준비가 끝나 있었습니다."
+              "text": "따로 할 말이 없었습니다. {player} 선수는 이미 내일을 위한 준비가 끝나 있었습니다.",
+              "when": "weather"
             },
             {
               "stance": "confident",
@@ -927,7 +928,8 @@
         },
         {
           "stance": "deflect",
-          "text": "내일은 상대보다 날씨가 더 걱정입니다. 잔디가 어떨지 궁금하네요."
+          "text": "내일은 상대보다 날씨가 더 걱정입니다. 잔디가 어떨지 궁금하네요.",
+          "when": "weather"
         },
         {
           "stance": "deflect",
@@ -976,7 +978,8 @@
             },
             {
               "stance": "deflect",
-              "text": "잔디 상태가 더 궁금합니다. 그 외에는 특별히 말씀드릴 게 없네요."
+              "text": "잔디 상태가 더 궁금합니다. 그 외에는 특별히 말씀드릴 게 없네요.",
+              "when": "weather"
             },
             {
               "stance": "deflect",
@@ -1612,7 +1615,8 @@
         },
         {
           "stance": "confident",
-          "text": "이기면 됩니다. 계산은 단순하고, 우리는 이길 준비가 돼 있습니다."
+          "text": "이기면 됩니다. 계산은 단순하고, 우리는 이길 준비가 돼 있습니다.",
+          "when": "weather"
         },
         {
           "stance": "confident",
@@ -1716,7 +1720,8 @@
         },
         {
           "stance": "demand",
-          "text": "팬들은 봄에도 {competition} 경기를 보고 싶어 합니다. 그 바람을 이뤄줘야 합니다."
+          "text": "팬들은 봄에도 {competition} 경기를 보고 싶어 합니다. 그 바람을 이뤄줘야 합니다.",
+          "when": "weather"
         },
         {
           "stance": "deflect",
@@ -2723,7 +2728,8 @@
             },
             {
               "stance": "respect",
-              "text": "상대도 여름 내내 이 경기를 준비했을 겁니다. 장소보다 그 준비가 더 무섭습니다."
+              "text": "상대도 여름 내내 이 경기를 준비했을 겁니다. 장소보다 그 준비가 더 무섭습니다.",
+              "when": "weather"
             },
             {
               "stance": "demand",
@@ -3860,7 +3866,8 @@
         },
         {
           "stance": "confident",
-          "text": "우리는 이 경기를 기다렸습니다. 선수들 모두 준비가 끝났습니다."
+          "text": "우리는 이 경기를 기다렸습니다. 선수들 모두 준비가 끝났습니다.",
+          "when": "weather"
         },
         {
           "stance": "cautious",
@@ -4025,7 +4032,8 @@
           "answers": [
             {
               "stance": "confident",
-              "text": "충분히 있습니다. 우리 유스 선수들은 언제든 1군에서 뛸 준비가 돼 있습니다."
+              "text": "충분히 있습니다. 우리 유스 선수들은 언제든 1군에서 뛸 준비가 돼 있습니다.",
+              "when": "weather"
             },
             {
               "stance": "confident",
@@ -4115,7 +4123,8 @@
       "answers": [
         {
           "stance": "confident",
-          "text": "{absentCount}명이 빠져도 우리 팀은 우리 팀입니다. 이길 준비가 돼 있습니다."
+          "text": "{absentCount}명이 빠져도 우리 팀은 우리 팀입니다. 이길 준비가 돼 있습니다.",
+          "when": "weather"
         },
         {
           "stance": "confident",
@@ -4471,7 +4480,8 @@
             },
             {
               "stance": "confident",
-              "text": "지난번엔 우리 축구를 못 했습니다. 이번엔 우리 축구를 할 준비가 끝났습니다."
+              "text": "지난번엔 우리 축구를 못 했습니다. 이번엔 우리 축구를 할 준비가 끝났습니다.",
+              "when": "weather"
             },
             {
               "stance": "cautious",
@@ -5076,7 +5086,8 @@
             },
             {
               "stance": "respect",
-              "text": "최근 상대들이 박스 안을 아주 촘촘하게 지켰습니다. 쉽게 열리는 수비가 아니었습니다."
+              "text": "최근 상대들이 박스 안을 아주 촘촘하게 지켰습니다. 쉽게 열리는 수비가 아니었습니다.",
+              "when": "weather"
             },
             {
               "stance": "demand",
@@ -5243,7 +5254,8 @@
         },
         {
           "stance": "respect",
-          "text": "{opponent} 쪽은 수비가 단단해서 지금처럼 골이 안 터지는 우리에겐 더 어렵습니다."
+          "text": "{opponent} 쪽은 수비가 단단해서 지금처럼 골이 안 터지는 우리에겐 더 어렵습니다.",
+          "when": "weather"
         },
         {
           "stance": "respect",
@@ -5303,7 +5315,8 @@
         },
         {
           "stance": "deflect",
-          "text": "숫자 이야기는 그만하죠. 오늘은 날씨 얘기나 할까요. 날이 좋네요."
+          "text": "숫자 이야기는 그만하죠. 오늘은 날씨 얘기나 할까요. 날이 좋네요.",
+          "when": "weather"
         },
         {
           "stance": "deflect",
@@ -5590,7 +5603,8 @@
         },
         {
           "stance": "deflect",
-          "text": "오늘은 날씨 이야기나 하고 싶네요. 연승 이야기는 선수들이 경기장에서 할 겁니다."
+          "text": "오늘은 날씨 이야기나 하고 싶네요. 연승 이야기는 선수들이 경기장에서 할 겁니다.",
+          "when": "weather"
         }
       ]
     },
@@ -5699,7 +5713,8 @@
           "answers": [
             {
               "stance": "confident",
-              "text": "다음 단계는 위로 올라가는 겁니다. 그럴 준비가 됐습니다."
+              "text": "다음 단계는 위로 올라가는 겁니다. 그럴 준비가 됐습니다.",
+              "when": "weather"
             },
             {
               "stance": "confident",
@@ -5791,7 +5806,8 @@
               "stance": "deflect",
               "text": "수비 변화는 비밀입니다. 다른 팀들이 따라 하면 곤란하니까요."
             }
-          ]
+          ],
+          "when": "weather"
         }
       ],
       "answers": [
@@ -5833,7 +5849,8 @@
         },
         {
           "stance": "cautious",
-          "text": "수비가 안정된 대신 공격이 조금 무뎌졌습니다. 그 균형을 맞추는 중입니다."
+          "text": "수비가 안정된 대신 공격이 조금 무뎌졌습니다. 그 균형을 맞추는 중입니다.",
+          "when": "weather"
         },
         {
           "stance": "cautious",
@@ -5877,7 +5894,8 @@
         },
         {
           "stance": "demand",
-          "text": "공격진에게 더 많은 걸 요구했습니다. 수비가 버텨주는 만큼 골로 보답해야 합니다."
+          "text": "공격진에게 더 많은 걸 요구했습니다. 수비가 버텨주는 만큼 골로 보답해야 합니다.",
+          "when": "weather"
         },
         {
           "stance": "demand",
@@ -6084,7 +6102,8 @@
         },
         {
           "stance": "confident",
-          "text": "{lastOpponent}전은 이미 지나갔습니다. 우리는 내일 이길 준비가 됐습니다."
+          "text": "{lastOpponent}전은 이미 지나갔습니다. 우리는 내일 이길 준비가 됐습니다.",
+          "when": "weather"
         },
         {
           "stance": "confident",
@@ -6299,7 +6318,8 @@
         },
         {
           "stance": "confident",
-          "text": "{player} 선수의 컨디션이 최고조입니다. 내일도 상대 수비가 바쁠 겁니다."
+          "text": "{player} 선수의 컨디션이 최고조입니다. 내일도 상대 수비가 바쁠 겁니다.",
+          "when": "weather"
         },
         {
           "stance": "confident",
@@ -6395,7 +6415,8 @@
         },
         {
           "stance": "deflect",
-          "text": "기세는 날씨처럼 바뀌는 겁니다. 내일 날씨는 내일 확인하죠."
+          "text": "기세는 날씨처럼 바뀌는 겁니다. 내일 날씨는 내일 확인하죠.",
+          "when": "weather"
         },
         {
           "stance": "deflect",
@@ -6658,7 +6679,8 @@
         },
         {
           "stance": "respect",
-          "text": "{opponent} 같은 팀을 상대로 첫 선발 경기를 치르는 건 쉽지 않습니다. 상대 수비가 아주 단단하죠."
+          "text": "{opponent} 같은 팀을 상대로 첫 선발 경기를 치르는 건 쉽지 않습니다. 상대 수비가 아주 단단하죠.",
+          "when": "weather"
         },
         {
           "stance": "respect",
@@ -6889,7 +6911,8 @@
         },
         {
           "stance": "confident",
-          "text": "이변이 아니라 당연한 결과라고 부르게 될 겁니다. 이길 준비가 돼 있습니다."
+          "text": "이변이 아니라 당연한 결과라고 부르게 될 겁니다. 이길 준비가 돼 있습니다.",
+          "when": "weather"
         },
         {
           "stance": "confident",
@@ -7391,7 +7414,8 @@
           "answers": [
             {
               "stance": "confident",
-              "text": "{venue} 경기라는 건 우리에게 아무 문제가 되지 않습니다. 어디서든 이길 준비가 돼 있습니다."
+              "text": "{venue} 경기라는 건 우리에게 아무 문제가 되지 않습니다. 어디서든 이길 준비가 돼 있습니다.",
+              "when": "weather"
             },
             {
               "stance": "confident",
@@ -7431,7 +7455,8 @@
             },
             {
               "stance": "deflect",
-              "text": "{venue} 경기의 영향은 잔디 길이 정도겠죠. 그 이상은 말 안 하겠습니다."
+              "text": "{venue} 경기의 영향은 잔디 길이 정도겠죠. 그 이상은 말 안 하겠습니다.",
+              "when": "weather"
             }
           ]
         }
@@ -7575,7 +7600,8 @@
             },
             {
               "stance": "confident",
-              "text": "몸도 마음도 준비가 끝났습니다. 내일이 기다려집니다."
+              "text": "몸도 마음도 준비가 끝났습니다. 내일이 기다려집니다.",
+              "when": "weather"
             },
             {
               "stance": "cautious",

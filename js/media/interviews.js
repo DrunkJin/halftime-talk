@@ -1,7 +1,7 @@
 // 감독 인터뷰·팀 토크: 경기 상황을 판정해 질문과 답변 선택지를 만들고, 고른 답의 효과를 반영한다.
 // 문구는 data/interviews/*.json, 라이벌은 data/rivalries.json, 효과 수치는 engine/config.js(MORALE)
-import { contentBase, t, tList, getLang } from '../i18n.js';
-import { MORALE } from '../engine/config.js';
+import { contentBase, josa, t, tList, getLang } from '../i18n.js';
+import { HALF_TIME_MINUTE, MORALE } from '../engine/config.js';
 import { createRng } from '../engine/rng.js';
 import { adjustBoost } from '../engine/match.js';
 import { computeTeamRatings, conditionFactor, overall } from '../engine/ratings.js';
@@ -47,7 +47,8 @@ const derbyMult = (rivalry) => MORALE.derbyMultiplier[rivalry?.intensity ?? 0];
 // ── 공통 ──────────────────────────────────────────────
 
 const pick = (list) => list[Math.floor(Math.random() * list.length)];
-const fill = (text, vars) => text.replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? ''));
+// 채운 뒤 조사도 고른다 (예: {score}(이)라는 → 3-1이라는)
+const fill = (text, vars) => josa(text.replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? '')));
 const fieldAverage = (r) => (r.attack + r.midfield + r.defense) / 3;
 const inputStrength = (input) => fieldAverage(computeTeamRatings(input.slots, input.lineup, (p) => conditionFactor(input.condition[p.id])));
 const bestPlayer = (players) => players.filter(Boolean).reduce((a, b) => (overall(b) > overall(a) ? b : a), players.find(Boolean));
@@ -71,18 +72,23 @@ function chooseSituation(kind, matched) {
 // facts: 이 경기에서 사실인 것들(Set). 질문·답에 when이 있으면 그 사실이 모두 맞을 때만 쓴다
 // (예: '한 골로는 부족했다'는 when: 'singleGoal' — 2-2 무승부에 나오지 않게)
 const fits = (item, facts) => !item.when || [].concat(item.when).every((f) => facts.has(f));
-function build(media, kind, situation, vars, facts = new Set()) {
+function build(media, kind, situation, vars, matchFacts = new Set()) {
   const s = media[kind].situations[situation];
+  const facts = new Set(matchFacts);
+  if (Math.random() < C.weatherChance) facts.add('weather'); // 날씨 핑계는 몇 경기에 한 번만
   // 전용 답이 있는 질문은 그 답에서만 (질문과 답이 어긋나지 않게)
-  const q = pick(s.questions.filter((x) => typeof x === 'string' || fits(x, facts)));
+  const askable = s.questions.filter((x) => typeof x === 'string' || fits(x, facts));
+  const q = pick(askable.length ? askable : s.questions.filter((x) => typeof x === 'string' || !x.when));
   const pool = typeof q === 'string' ? s.answers : q.answers;
-  const all = Object.entries(STANCES[kind]).map(([stance, label]) => {
-    const options = pool.filter((a) => a.stance === stance);
-    const fitting = options.filter((a) => fits(a, facts));
-    return { stance, label, text: fill(pick(fitting.length ? fitting : options).text, vars) };
-  });
+  // 이 경기 사실과 맞는 답이 하나도 없는 성향은 빠진다 (사실과 어긋나는 답을 억지로 내지 않게)
+  const all = Object.entries(STANCES[kind])
+    .map(([stance, label]) => {
+      const fitting = pool.filter((a) => a.stance === stance && fits(a, facts));
+      return fitting.length ? { stance, label, text: fill(pick(fitting).text, vars) } : null;
+    })
+    .filter(Boolean);
   // 보이는 답은 4개: 성향 하나를 빼서 경기마다 조합이 달라진다 (매번 같은 5지선다는 금방 지친다)
-  const drop = pick(all);
+  const drop = all.length > 4 ? pick(all) : null;
   const answers = all.filter((a) => a !== drop);
   return { kind, situation, question: fill(typeof q === 'string' ? q : q.text, vars), answers };
 }
@@ -300,7 +306,10 @@ export function goalStory(goals, mySide, outcome) {
   const [topScorer, topGoals] = [...scorers].sort((a, b) => b[1] - a[1])[0] ?? [null, 0];
   const decisive = decidingGoal(sorted, mySide, outcome);
   const drawType = outcome !== 'draw' || !leadGoal ? null : leadGoal.team === mySide ? 'caughtUp' : 'cameBack';
-  return { led, trailed, decisive, leadGoal, drawType, topScorer, topGoals, late: Boolean(decisive && decisive.minute >= C.lateGoalMinute) };
+  // 전반·후반 골 득실 (우리 - 상대). 연장은 후반 쪽으로 친다
+  const half = { first: 0, second: 0 };
+  for (const g of sorted) half[g.minute <= HALF_TIME_MINUTE ? 'first' : 'second'] += g.team === mySide ? 1 : -1;
+  return { led, trailed, decisive, leadGoal, drawType, half, topScorer, topGoals, late: Boolean(decisive && decisive.minute >= C.lateGoalMinute) };
 }
 
 // 골 흐름에서 나오는 극적인 상황 (리그·대륙 대회 공통)
@@ -322,6 +331,11 @@ function matchFacts(story, outcome, mine, theirs, game) {
   if (outcome === 'win' && story.decisive && !story.late) f.add('heldLead'); // 결승골 뒤로 오래 지킨 승리
   if (story.drawType) f.add(story.drawType);
   if (!(game.seasonIndex === 1 && game.round <= 2)) f.add('notFirstMatch'); // 라운드 진행 뒤라 첫 경기면 round가 2
+  if (!story.trailed) f.add('neverTrailed');
+  // 하프타임 이야기·'후반이 나빴다'·'전반이 나빴다'는 전반·후반 골 득실이 그 말과 맞을 때만
+  if (story.half.first < 0) f.add('htTrail');
+  if (story.half.second < story.half.first) f.add('secondHalfWorse');
+  if (story.half.first < story.half.second) f.add('firstHalfWorse');
   return f;
 }
 

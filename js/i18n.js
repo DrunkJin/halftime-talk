@@ -70,9 +70,11 @@ const fill = (text, vars) => (vars ? josa(text.replace(/\{(\w+)\}/g, (m, k) => (
 // 한국어 조사 '이(가)'·'을(를)'·'은(는)'·'과(와)'·'와(과)'·'(으)로'를 앞 단어 끝소리에 맞게 하나로 고른다.
 // 한글은 받침으로 판단. 로마자 이름은 끝 글자로 어림한다: m·n·l·ng로 끝나면 받침이 있다고 본다
 // (Kane처럼 끝의 묵음 e는 빼고 본다. Rice·Haaland처럼 '-스·-드'로 읽히는 끝은 받침 없음). 숫자는 한국어 읽기로, 대문자 약어는 알파벳 이름으로
-const JOSA = { '이(가)': ['이', '가'], '을(를)': ['을', '를'], '은(는)': ['은', '는'], '과(와)': ['과', '와'], '와(과)': ['과', '와'], '(으)로': ['으로', '로'] };
+const JOSA = { '이(가)': ['이', '가'], '을(를)': ['을', '를'], '은(는)': ['은', '는'], '과(와)': ['과', '와'], '와(과)': ['과', '와'], '(으)로': ['으로', '로'], '(이)라는': ['이라는', '라는'] };
 const DIGIT_FINAL = { 0: 'ㅇ', 1: 'ㄹ', 3: 'ㅁ', 6: 'ㄱ', 7: 'ㄹ', 8: 'ㄹ' }; // 받침 있는 숫자 (영·일·삼·육·칠·팔)
 function finalSound(word) {
+  // 잔류 (17위 이내)처럼 괄호로 끝나면 괄호 안 마지막 글자로 판단
+  word = word.replace(/\)$/, '');
   const ch = word.at(-1);
   const code = ch.charCodeAt(0);
   if (code >= 0xac00 && code <= 0xd7a3) {
@@ -89,7 +91,7 @@ function finalSound(word) {
 }
 export function josa(text) {
   if (!text.includes('(')) return text;
-  return text.replace(/([\p{L}\p{N}.'’-]+)(이\(가\)|을\(를\)|은\(는\)|과\(와\)|와\(과\)|\(으\)로)/gu, (_, word, mark) => {
+  return text.replace(/([\p{L}\p{N}.'’-]+\)?)(이\(가\)|을\(를\)|은\(는\)|과\(와\)|와\(과\)|\(으\)로|\(이\)라는)/gu, (_, word, mark) => {
     const f = finalSound(word);
     const [withFinal, without] = JOSA[mark];
     return word + (mark === '(으)로' ? (f && f !== 'ㄹ' ? withFinal : without) : f ? withFinal : without);

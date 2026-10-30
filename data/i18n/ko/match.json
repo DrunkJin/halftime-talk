@@ -22,9 +22,9 @@
   "match.pre.pickManually": "선발 직접 고르기",
   "match.pre.transferred": "이적",
   "match.pre.restedToast": "지친 선수 휴식: {list}",
-  "match.pre.tiredAuto": "컨디션이 떨어진 선발 {n}명: {names} — 킥오프 때 더 나은 후보가 있으면 쉬게 합니다",
-  "match.pre.tiredManual": "컨디션이 떨어진 선발 {n}명: {names} — 선발 바꾸기에서 쉬게 할 수 있습니다",
-  "match.pre.benchedNote": "선발에 없는 주전급 {n}명: {names} — 오래 못 뛰면 출전 불만이 쌓입니다",
+  "match.pre.tiredAuto": "{names} — 킥오프 때 더 나은 후보가 있으면 쉬게 합니다",
+  "match.pre.tiredManual": "{names} — 선발 바꾸기에서 쉬게 할 수 있습니다",
+  "match.pre.benchedNote": "{names} — 오래 못 뛰면 출전 불만이 쌓입니다",
   "match.pre.kickoff": "킥오프",
   "match.pre.instant": "결과만 보기",
   "match.pre.simRest": "시즌 끝까지",
@@ -63,6 +63,7 @@
   "match.pre.lastMeet": "지난 맞대결 {home} {a}-{b} {away}",
   "match.pre.form": "최근 경기 {list}",
   "match.pre.firstXi": "수석코치: 첫 경기는 이 11명을 추천합니다. {names}은(는) 벤치에서 시작합니다.",
+  "match.pre.andMore": "외 {n}명",
   "match.press.preLead": "하루 전, 기자들이 내일 경기를 묻습니다. 여기서 한 말이 선수들에게 남습니다.",
   "match.pre.tactics": "전술 지시",
   "match.pre.analysis": "상대 분석",
@@ -180,6 +181,7 @@
   "match.cmd.resume": "닫고 재개",
   "match.cmd.noSubs": "교체 카드를 모두 썼습니다.",
   "match.cmd.makeSub": "교체하기",
+  "match.cmd.subDiscarded": "고른 교체는 적용되지 않았습니다",
   "match.cmd.subOut": "나갈 선수",
   "match.cmd.subIn": "들어올 선수",
   "match.cmd.subNote": "숫자: 경기장 선수는 그 자리 기준 능력, 교체 선수는 OVR",
@@ -270,7 +272,7 @@
   "match.after.verdict.win.fav": [
     "해야 할 경기를 해냈습니다. 이런 경기를 놓치지 않는 게 강팀입니다.",
     "예상대로였지만 쉽게 나온 결과는 아닙니다. 선수들 잘 버텼습니다.",
-    "승점 3점, 깔끔합니다. 다음 경기도 이 집중력이면 됩니다."
+    "승점 3점, 해야 할 일을 했습니다. 다음 경기도 이 집중력이면 됩니다."
   ],
   "match.after.verdict.win.even": [
     "팽팽한 경기를 가져왔습니다. 오늘은 작은 차이를 우리가 만들었습니다.",
@@ -321,6 +323,36 @@
     "오늘은 완전히 밀렸습니다. 결과보다 내용이 더 아픕니다.",
     "상대가 한 수 위였습니다. 무엇이 안 됐는지 하나씩 짚어 보겠습니다.",
     "변명할 거리가 없는 경기였습니다. 훈련장에서 다시 시작해야 합니다."
+  ],
+  "match.after.verdict.win.comeback": [
+    "먼저 맞고도 뒤집었습니다. 오늘 선수들의 정신력은 칭찬받아야 합니다.",
+    "끌려가던 경기를 가져왔습니다. 이런 역전승이 시즌을 바꿉니다.",
+    "실점 뒤에 고개 숙이지 않았습니다. 그게 오늘 승리의 전부입니다."
+  ],
+  "match.after.verdict.win.big": [
+    "처음부터 끝까지 우리 경기였습니다. 이런 날은 많지 않으니 즐겨도 됩니다.",
+    "점수 차만큼 내용도 좋았습니다. 선수들이 준비한 걸 다 보여 줬습니다.",
+    "완승입니다. 다만 다음 경기는 0-0에서 다시 시작합니다."
+  ],
+  "match.after.verdict.win.narrow": [
+    "한 골 차, 끝까지 쉽지 않았습니다. 그래도 이기는 법을 알았습니다.",
+    "아슬아슬했지만 승점 3점입니다. 마무리는 더 다듬어야 합니다.",
+    "작은 차이를 우리가 만들었습니다. 이런 승리가 쌓여야 합니다."
+  ],
+  "match.after.verdict.draw.cameBack": [
+    "뒤지고 있던 경기에서 승점을 가져왔습니다. 끝까지 쫓아간 게 값집니다.",
+    "먼저 내준 건 아쉽지만, 따라붙은 힘은 진짜였습니다.",
+    "질 뻔한 경기에서 1점을 챙겼습니다. 오늘은 이걸로 됩니다."
+  ],
+  "match.after.verdict.draw.caughtUp": [
+    "앞서고도 지키지 못했습니다. 승점 2점을 흘린 경기입니다.",
+    "리드를 잡은 뒤가 문제였습니다. 그 시간을 다시 돌아봐야 합니다.",
+    "이길 수 있는 흐름이었습니다. 리드를 지키는 힘이 부족했습니다."
+  ],
+  "match.after.verdict.loss.collapse": [
+    "앞서던 경기를 내줬습니다. 오늘 가장 아픈 건 그 점입니다.",
+    "리드를 잡고 무너졌습니다. 선수들도 무엇이 잘못됐는지 알고 있을 겁니다.",
+    "이기고 있던 경기에서 졌습니다. 빨리 털어내되, 이유는 꼭 짚겠습니다."
   ],
   "match.after.verdict.win.lucky": [
     "솔직히 내용은 밀렸습니다. 그래도 이기는 법을 알았습니다.",
