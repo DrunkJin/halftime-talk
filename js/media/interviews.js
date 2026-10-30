@@ -228,7 +228,7 @@ export function postInterview(media, dataset, game, fixture, result, gap) {
     opponent: dataset.teamById.get(oppId).shortName,
     venue: t(mySide === 'home' ? 'media.venue.home' : 'media.venue.away'),
     score: scoreText(mine, theirs),
-    scorer: topScorer,
+    scorer: topScorer, // 아래에서 상황에 따라 결승골 득점자로 바꾼다
     minute: decisive?.minute,
     derby: rivalryName(rivalry),
     rank,
@@ -273,8 +273,14 @@ export function postInterview(media, dataset, game, fixture, result, gap) {
   // 기본 상황이 하나는 꼭 있도록
   matched.add(outcome === 'win' ? 'win' : outcome === 'draw' ? (mine === 0 ? 'goallessDraw' : 'draw') : 'loss');
 
-  return { ...build(media, 'post', chooseSituation('post', matched), vars), outcome, mult: derbyMult(rivalry), round: fixture.round };
+  // 질문의 '그 골'은 상황마다 다르다: 결승골·동점골 이야기면 승부를 정한 골의 주인, 해트트릭·대승·일반 승리면 가장 많이 넣은 선수
+  const situation = chooseSituation('post', matched);
+  if (DECIDER_SITUATIONS.has(situation) && decisive?.team === mySide) vars.scorer = decisive.scorerName;
+  return { ...build(media, 'post', situation, vars), outcome, mult: derbyMult(rivalry), round: fixture.round };
 }
+
+// {scorer}가 '승부를 정한 골'을 뜻하는 경기 후 상황 (data/interviews/post.json 질문 문장 기준)
+const DECIDER_SITUATIONS = new Set(['derbyWin', 'comebackWin', 'lateWinner', 'lateEqualiserFor', 'upsetWin', 'luckyWin', 'cleanSheetWin', 'narrowWin', 'winStreak', 'cupWonTrophy']);
 
 export function answerPost(game, interview, stance) {
   const effect = MORALE.post[stance];

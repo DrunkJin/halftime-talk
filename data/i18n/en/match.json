@@ -18,10 +18,11 @@
   "match.pre.roundTitle": "Round {round}",
   "match.pre.noFixture": "You have no fixture this round.",
   "match.pre.autoFix": "Auto-replace",
-  "match.pre.unavailableCount": {
-    "one": "1 starter unavailable",
-    "other": "{n} starters unavailable"
-  },
+  "match.pre.fixTitle": "We can't start with this XI",
+  "match.pre.fixLead": "Someone in the starting line-up is unavailable. Your assistant suggests these changes.",
+  "match.pre.fixKickoff": "Swap and kick off",
+  "match.pre.fixGo": "Swap and continue",
+  "match.pre.pickManually": "Pick the XI myself",
   "match.pre.transferred": "Transferred",
   "match.pre.restedToast": "Tired players rested: {list}",
   "match.pre.tiredAuto": {
@@ -58,7 +59,7 @@
   "match.press.doneShift": "Press conference over. {shift}",
   "match.press.done": "Press conference over",
   "match.press.skip": "Skip press conference",
-  "match.press.preTitle": "Pre-match press conference",
+  "match.press.preTitle": "Eve-of-match press conference",
   "match.brief.title": "Matchday briefing",
   "match.pre.cupTitleNeutral": "{label} · Midweek · Neutral venue",
   "match.pre.cupTitle": "{label} · Midweek · {stadium}",
@@ -80,7 +81,7 @@
   "match.pre.lastMeet": "Last meeting: {home} {a}-{b} {away}",
   "match.pre.form": "Recent form: {list}",
   "match.pre.firstXi": "Assistant: I'd go with this XI for the opener. {names} start on the bench.",
-  "match.press.preLead": "The press are waiting before you head out.",
+  "match.press.preLead": "The day before the game, the press want your thoughts on tomorrow. What you say here stays with the players.",
   "match.pre.tactics": "Tactics",
   "match.pre.analysis": "Opposition report",
   "match.pre.oppTactics": "Opposition & tactics",

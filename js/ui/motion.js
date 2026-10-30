@@ -161,8 +161,10 @@ export function showToast(content, { duration = 2600, tone = '' } = {}) {
   toast.dataset.tone = tone;
   if (typeof content === 'string') toast.textContent = content;
   else toast.append(content);
-  // 같은 종류 알림이 겹겹이 쌓이지 않게: 앞의 것은 바로 닫는다 (골 알림만 경기 중 이어서 쌓인다)
-  if (tone !== 'goal') for (const old of toastHost.querySelectorAll('.toast.is-open')) if (old.dataset.tone === tone) closeToast(old);
+  // 같은 종류 알림이 겹겹이 쌓이지 않게: 앞의 것은 바로 닫는다. 골·실점 알림은 넓은 화면에서만 이어서 쌓이고,
+  // 좁은 화면에서는 새 알림 하나만 (쌓이면 중계를 가린다)
+  const narrow = window.matchMedia('(max-width: 640px)').matches;
+  for (const old of toastHost.querySelectorAll('.toast.is-open')) if (narrow || (old.dataset.tone === tone && tone !== 'goal')) closeToast(old);
   toastHost.appendChild(toast);
   void toast.offsetWidth;
   toast.classList.add('is-open');

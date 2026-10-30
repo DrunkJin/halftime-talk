@@ -18,7 +18,7 @@ import { objectiveLabel } from '../../state/board.js';
 import { expiringContracts, suggestedRenewals } from '../../state/newSeason.js';
 import { contractOf, renewalTerms } from '../../market/finance.js';
 import { formatWage } from '../../market/market.js';
-import { matchAccents, teamAccent, teamBadge } from '../badge.js';
+import { brighten, celebrationColor, matchAccents, teamAccent, teamBadge } from '../badge.js';
 import { conditionMeter, openConfirm, panel, segmented, statusChip } from '../components.js';
 import { appendChildren, h } from '../dom.js';
 import { attrClass, fmt1, shortName } from '../format.js';
@@ -214,23 +214,48 @@ function renderPre(ctx, show) {
   const rh = inputRatings(input.home);
   const ra = inputRatings(input.away);
 
-  // 부상·출장정지·이적으로 선발에 못 서는 선수가 있으면 경기 시작 불가
+  // 부상·출장정지·이적으로 선발에 못 서는 선수: 브리핑 한 곳에서 알리고, 킥오프를 누르면 바꿀지 묻는다 (버튼을 잠그지 않는다)
   const problems = lineupProblems(dataset, game, scope);
-  const blocked = problems.length > 0;
+  const reasonOf = (id) => availabilityOf(ctx.game, id, scope).label || t('match.pre.transferred');
   const fixBtn = h('button', { class: 'btn small primary', type: 'button' }, t('match.pre.autoFix'));
   fixBtn.addEventListener('click', () => {
     fixLineup(dataset, game, scope);
     ctx.persist();
     show();
   });
-  const warning = blocked
-    ? h(
+  // 시작 전 확인: 수석코치 추천 교체를 보여 주고 '바꾸고 진행' 또는 '선발 직접 고르기'
+  const guarded = (go, confirmKey) => () => {
+    if (!lineupProblems(dataset, ctx.game, scope).length) return go();
+    const before = [...ctx.game.lineup];
+    fixLineup(dataset, ctx.game, scope); // 미리 보기만: 바로 되돌린다
+    const after = [...ctx.game.lineup];
+    ctx.game.lineup = before;
+    const name = (id) => dataset.playerById.get(id)?.name ?? '-';
+    const swaps = before.map((id, i) => (id !== after[i] ? [id, after[i]] : null)).filter(Boolean);
+    const fix = h('button', { class: 'btn primary', type: 'button' }, t(confirmKey));
+    const manual = h('button', { class: 'btn ghost', type: 'button' }, t('match.pre.pickManually'));
+    const close = openModal(
+      h(
         'div',
-        { class: 'warn-banner' },
-        h('span', {}, h('b', {}, t('match.pre.unavailableCount', { n: problems.length })), ' — ', problems.map(({ id }) => `${dataset.playerById.get(id).name} (${availabilityOf(game, id, scope).label || t('match.pre.transferred')})`).join(', ')),
-        fixBtn,
-      )
-    : null;
+        { class: 'confirm-modal fix-modal' },
+        h('h2', {}, t('match.pre.fixTitle')),
+        h('p', { class: 'muted' }, t('match.pre.fixLead')),
+        h('ul', { class: 'fix-list' }, swaps.map(([out, inn]) => h('li', {}, h('b', {}, name(out)), h('span', { class: 'muted' }, ` (${reasonOf(out)})`), ' → ', h('b', {}, name(inn))))),
+        h('div', { class: 'confirm-actions' }, manual, fix),
+      ),
+    );
+    manual.addEventListener('click', () => {
+      close();
+      ctx.navigate('squad');
+    });
+    fix.addEventListener('click', () => {
+      close();
+      fixLineup(dataset, ctx.game, scope);
+      ctx.persist();
+      go();
+    });
+    fix.focus();
+  };
 
   // 지친 선수 자동 휴식 (설정이 켜져 있으면 킥오프 때 적용)
   const rotateNow = () => {
@@ -258,8 +283,8 @@ function renderPre(ctx, show) {
     ? h('p', { class: 'muted small-note tired-note' }, t(firstMatch ? 'match.pre.firstXi' : 'match.pre.benchedNote', { n: benchedAll.length, names: benchedAll.map((p) => p.name).join(', ') }))
     : null;
 
-  const kickoff = h('button', { class: 'btn primary big', type: 'button', disabled: blocked || null }, t('match.pre.kickoff'));
-  kickoff.addEventListener('click', () => (pressDone() ? startLive() : openPress(startLive)));
+  const kickoff = h('button', { class: 'btn primary big', type: 'button' }, t('match.pre.kickoff'));
+  kickoff.addEventListener('click', guarded(() => (pressDone() ? startLive() : openPress(startLive)), 'match.pre.fixKickoff'));
   function startLive() {
     rotateNow();
     // 화면을 그린 뒤 바꾼 전술이 반영되도록 킥오프 때 입력을 다시 만든다
@@ -267,16 +292,16 @@ function renderPre(ctx, show) {
     live = { fixture, state, timer: null, paused: false, done: false, others: null, gap: strengthGap(state, mySide), cup: Boolean(cupFx), formationLabel: formationLabel(ctx.game.formation.cells), prep: prepEffects(ctx, mySide, Boolean(cupFx?.neutral)) };
     show();
   }
-  const instant = h('button', { class: 'btn kb-instant', type: 'button', disabled: blocked || null }, t('match.pre.instant'));
-  instant.addEventListener('click', () => {
+  const instant = h('button', { class: 'btn kb-instant', type: 'button' }, t('match.pre.instant'));
+  instant.addEventListener('click', guarded(() => {
     rotateNow();
     const state = createMatch(makeInput(ctx.game));
     while (!state.finished) playMinute(state);
     live = { fixture, state, timer: null, paused: true, done: false, others: null, gap: strengthGap(state, mySide), cup: Boolean(cupFx), formationLabel: formationLabel(ctx.game.formation.cells), prep: prepEffects(ctx, mySide, Boolean(cupFx?.neutral)) };
     show(); // 경기 화면이 결과 반영(실패 시 다시 시도 포함)을 맡는다
-  });
-  const rest = h('button', { class: 'btn ghost', type: 'button', disabled: blocked || null }, t('match.pre.simRest'));
-  rest.addEventListener('click', () =>
+  }, 'match.pre.fixGo'));
+  const rest = h('button', { class: 'btn ghost', type: 'button' }, t('match.pre.simRest'));
+  rest.addEventListener('click', guarded(() =>
     openConfirm({
       title: t('match.pre.simRestTitle'),
       body: t('match.pre.simRestBody', { n: game.totalRounds - game.round + 1 }),
@@ -288,7 +313,7 @@ function renderPre(ctx, show) {
         show();
       },
     }),
-  );
+  'match.pre.fixGo'));
   const settingsBtn = h('button', { class: 'btn ghost', type: 'button', 'aria-haspopup': 'dialog' }, t('match.pre.settings'));
   // 자주 안 쓰는 것(시즌 끝까지·중계 설정)은 한 단계 뒤로: 킥오프 바에는 결과만 보기·킥오프만
   // 좁은 화면은 '결과만 보기'도 이 창 안으로 (엄지가 킥오프 옆을 잘못 눌러 경기를 통째로 건너뛰지 않게)
@@ -377,7 +402,7 @@ function renderPre(ctx, show) {
   });
 
   const tacticsBox = h('div', { class: 'pre-tactics' });
-  const briefing = briefingPanel(ctx, { fixture, scope, mySide, neutral: Boolean(cupFx?.neutral), problems, tired, benched, refs: { tactics: tacticsBox, press: () => openPress(), lineupNotes: [tiredNote, benchedNote].filter(Boolean).map((e) => e.textContent) } });
+  const briefing = briefingPanel(ctx, { fixture, scope, mySide, neutral: Boolean(cupFx?.neutral), problems, tired, benched, refs: { tactics: tacticsBox, press: () => openPress(), lineupFix: fixBtn, blockedNotes: problems.map(({ id }) => `${dataset.playerById.get(id).name} (${reasonOf(id)})`), lineupNotes: [tiredNote, benchedNote].filter(Boolean).map((e) => e.textContent) } });
 
   return h(
     'div',
@@ -396,7 +421,6 @@ function renderPre(ctx, show) {
           story,
         ),
         h('div', { class: 'mu-read' }, mySide === 'home' ? matchupLines(rh, ra) : matchupLines(ra, rh), moraleMeter(ctx), boardLine(ctx), expiryNote),
-        warning,
       ),
       { className: 'hero-panel' },
     ),
@@ -527,8 +551,9 @@ function briefingPanel(ctx, { fixture, scope, mySide, neutral, problems, tired, 
         label: t('match.brief.lineup'),
         status: problems.length ? 'todo' : tired.length || benched.length ? 'warn' : 'ok',
         text: problems.length ? t('match.brief.lineupBlocked', { n: problems.length }) : [tired.length ? t('match.brief.lineupTired', { n: tired.length }) : null, benched.length ? t('match.brief.lineupBenched', { n: benched.length }) : null].filter(Boolean).join(' · ') || t('match.brief.lineupReady'),
-        action: go(t('match.pre.editLineup'), () => ctx.navigate('squad')),
-        sub: refs.lineupNotes, // 지친 선수·선발 밖 주전급 이름
+        // 출전 불가가 있으면 이름·이유와 '자동으로 대체'를 이 한 줄에서 (히어로에 따로 경고하지 않는다)
+        action: problems.length ? refs.lineupFix : go(t('match.pre.editLineup'), () => ctx.navigate('squad')),
+        sub: problems.length ? refs.blockedNotes : refs.lineupNotes, // 결장자 또는 지친 선수·선발 밖 주전급 이름
       },
       {
         label: t('match.brief.tactics'),
@@ -797,6 +822,7 @@ function renderLive(ctx, show) {
   const statusEl = h('span', { class: 'sb-status' });
   const aggEl = h('div', { class: 'sb-agg muted' }); // 2차전 합계 · 승부차기
   const accents = matchAccents(home, away); // 비슷한 색끼리 붙으면 원정 팀 색을 바꾼다
+  const feedSide = { home: brighten(accents[0]), away: brighten(accents[1]) }; // 중계 점: 점수판과 같은 두 색, 어두우면 밝혀서
   const scoreboard = h(
     'section',
     { class: 'scoreboard panel', style: { '--home': accents[0], '--away': accents[1] } },
@@ -824,6 +850,8 @@ function renderLive(ctx, show) {
   };
   subBtn.addEventListener('click', () => openCommandModal());
   const autoToggle = settingToggle(ctx, 'autoSubs', t('match.setting.autoSubs'), (on) => setAutoSubs(state, mySide, on));
+  pauseBtn.classList.add('pause-btn');
+  subBtn.classList.add('cmd-btn');
   const controls = h('div', { class: 'live-controls' }, pauseBtn, subBtn, tacticLine, h('div', { class: 'speed' }, h('span', { class: 'muted' }, t('match.live.speed')), speed.el), autoToggle, skipBtn);
 
   // 중계 · 기록
@@ -894,7 +922,14 @@ function renderLive(ctx, show) {
       let outSlot = null;
       let inId = null;
       const confirm = h('button', { class: 'btn', type: 'button', disabled: true }, t('match.cmd.makeSub'));
-      const refreshConfirm = () => (confirm.disabled = outSlot === null || inId === null);
+      // 아래에 붙은 줄: 고른 두 선수(나감 → 들어옴)와 교체 버튼 — 긴 목록을 내려가지 않아도 보인다
+      const pickLine = h('span', { class: 'sub-pick', 'aria-live': 'polite' }, t('match.cmd.subNote'));
+      const refreshConfirm = () => {
+        confirm.disabled = outSlot === null || inId === null;
+        const out = outSlot === null ? '—' : snap.lineup[outSlot]?.name;
+        const inn = inId === null ? '—' : snap.bench.find((p) => p.id === inId)?.name;
+        pickLine.textContent = outSlot === null && inId === null ? t('match.cmd.subNote') : `${out} → ${inn}`;
+      };
       // 줄 어디를 눌러도 고르고, 이름 칸은 버튼이라 키보드(Tab·Enter)로도 고른다
       const pickRows = (rows, onPick) => {
         rows.forEach(({ tr, value }) =>
@@ -926,7 +961,7 @@ function renderLive(ctx, show) {
         'div',
         {},
         h('div', { class: 'sub-grid' }, table(t('match.cmd.subOut'), pickRows(onPitch, (v) => (outSlot = v))), table(t('match.cmd.subIn'), pickRows(benchRows, (v) => (inId = v)))),
-        h('div', { class: 'btn-row end' }, h('span', { class: 'muted small-note' }, t('match.cmd.subNote')), confirm),
+        h('div', { class: 'btn-row end sub-actions' }, pickLine, confirm),
       );
     }
 
@@ -1206,7 +1241,7 @@ function renderLive(ctx, show) {
     const icon = FEED_ICON[c.type];
     const li = h(
       'li',
-      { class: `feed-line ${kind}`, style: c.team ? { '--side': teamAccent(sideTeam[c.team]) } : {} },
+      { class: `feed-line ${kind}`, style: c.team ? { '--side': feedSide[c.team] } : {} },
       h('span', { class: 'feed-min num' }, `${c.minute}'`),
       icon ? h('span', { class: `feed-icon ${icon}` }) : h('span', { class: `feed-dot${c.team ? '' : ' none'}` }),
       text,
@@ -1514,7 +1549,7 @@ function renderLive(ctx, show) {
       live.goalHold = LIVE_PACE.concededHold;
       return;
     }
-    scoreboard.style.setProperty('--goal', teamAccent(sideTeam[goal.team]));
+    scoreboard.style.setProperty('--goal', celebrationColor(sideTeam[goal.team]) ?? 'var(--accent)'); // 무채색 팀은 앱 강조색으로 축하
     scoreboard.classList.remove('is-goal');
     void scoreboard.offsetWidth;
     scoreboard.classList.add('is-goal');

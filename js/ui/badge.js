@@ -35,6 +35,21 @@ export function matchAccents(home, away) {
   return [a, b];
 }
 
+// 작은 점처럼 면적이 작은 표시용: 어두운 패널 위에서 보이도록(대비 약 3:1) 흰색을 조금씩 섞어 밝힌다
+export function brighten(hex, minLum = 0.13) {
+  let [r, g, b] = rgb(hex);
+  const toHex = () => `#${[r, g, b].map((v) => Math.round(v).toString(16).padStart(2, '0')).join('')}`;
+  for (let i = 0; i < 10 && luminance(toHex()) < minLum; i++) [r, g, b] = [r, g, b].map((v) => v + (255 - v) * 0.15);
+  return toHex();
+}
+
+// 골 축하 색: 팀 색이 흰색·회색·검정처럼 무채색이면 번쩍여도 축하로 읽히지 않아 앱 강조색(null → 호출한 쪽이 정함)
+export function celebrationColor(team) {
+  const c = teamAccent(team);
+  const [r, g, b] = rgb(c);
+  return Math.max(r, g, b) - Math.min(r, g, b) < 48 ? null : c;
+}
+
 export function teamBadge(team, size = 24) {
   const wrap = h('span', { class: 'badge', style: { '--size': `${size}px` }, title: team.name });
   const circle = h(

@@ -4649,7 +4649,7 @@
       "questions": [
         "You were second best for much of the game but still took the win. Do you think luck was on your side?",
         {
-          "text": "A single goal from {scorer} settled it. How did you see it?",
+          "text": "In the end it was {scorer}'s goal that settled it. How did you see it?",
           "answers": [
             {
               "stance": "praise",
@@ -6064,7 +6064,7 @@
             },
             {
               "stance": "praise",
-              "text": "{scorer}'s winner came from pure concentration. He waited ninety minutes for that one moment."
+              "text": "{scorer}'s winner came from pure concentration. He put everything into that one moment."
             },
             {
               "stance": "critical",
