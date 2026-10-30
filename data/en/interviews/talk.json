@@ -1067,7 +1067,8 @@
         },
         {
           "stance": "praise",
-          "text": "The defensive block we worked on was perfect. They couldn't do a thing."
+          "text": "The defensive block we worked on was perfect. They couldn't do a thing.",
+          "when": "cleanSheet"
         },
         {
           "stance": "praise",
@@ -1928,11 +1929,13 @@
         },
         {
           "stance": "praise",
-          "text": "Set-piece defending was perfect. All that practice has paid off."
+          "text": "Set-piece defending was perfect. All that practice has paid off.",
+          "when": "cleanSheet"
         },
         {
           "stance": "praise",
-          "text": "Clean, without a single mistake. That's the game we want."
+          "text": "Clean, without a single mistake. That's the game we want.",
+          "when": "cleanSheet"
         },
         {
           "stance": "praise",
@@ -2138,7 +2141,8 @@
         },
         {
           "stance": "praise",
-          "text": "The defence was perfect too. You snuffed out every counter."
+          "text": "The defence was perfect too. You snuffed out every counter.",
+          "when": "cleanSheet"
         },
         {
           "stance": "praise",
@@ -3612,7 +3616,8 @@
         },
         {
           "stance": "praise",
-          "text": "Set-piece defending was perfect. Your concentration was the best it's been today."
+          "text": "Set-piece defending was perfect. Your concentration was the best it's been today.",
+          "when": "cleanSheet"
         },
         {
           "stance": "praise",

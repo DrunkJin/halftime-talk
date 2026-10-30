@@ -348,7 +348,8 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
   100% { box-shadow: 0 0 0 10px rgba(61, 220, 151, 0); }
 }
 .squad-table tbody tr { cursor: pointer; }
-.squad-table th, .squad-table td { padding-inline: 6px; } /* 열이 20개라 칸 여백을 줄여 1440 화면에서 가로 스크롤 없이 */
+.squad-table th, .squad-table td { padding-inline: 5px; } /* 열이 20개라 칸 여백을 줄여 1440 화면에서 가로 스크롤 없이 */
+@media (min-width: 1101px) { .squad-table .pick-name, .squad-table td .link { display: inline-block; max-width: 150px; overflow: hidden; text-overflow: ellipsis; vertical-align: bottom; } } /* 긴 이름이 표 폭을 밀지 않게 */
 .squad-table tr.is-starter td:first-child { box-shadow: inset 2px 0 0 var(--accent); }
 .squad-table tr.is-selected { background: rgba(90, 169, 255, 0.16); }
 .squad-table tr.is-over { background: rgba(61, 220, 151, 0.2); }
@@ -468,6 +469,7 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .feed-min { color: var(--muted); font-size: 11px; font-weight: 700; }
 .feed-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--side); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25); align-self: start; margin-top: 0.55em; } /* 여러 줄이어도 첫 줄(분 표시)과 나란히 */
 .feed-dot.none { background: transparent; box-shadow: none; }
+.feed-dot.is-hollow { background: transparent; box-shadow: inset 0 0 0 2px var(--side); } /* 두 팀 색이 비슷할 때 원정 팀 */
 .feed-line.c-goal { background: var(--accent-dim); font-weight: 700; }
 .feed-line.c-goal .feed-min { color: var(--accent); }
 .feed-line.c-conceded { background: rgba(141, 151, 165, 0.08); }
@@ -1334,6 +1336,7 @@ body:has(.modal-backdrop.is-open) .toast-host { top: 12px; bottom: auto; }
 .brief-settled > summary { padding: 4px 8px; color: var(--muted); font-size: 12px; cursor: pointer; }
 .brief-settled[open] > summary { margin-bottom: 4px; }
 .prep-effects { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 12px; }
+.prep-sum { margin-right: 2px; }
 .prep-chip { padding: 2px 8px; border-radius: 999px; background: var(--panel-3); color: var(--text-2); font-variant-numeric: tabular-nums; }
 .prep-chip.up, .prep-effects b.up { color: var(--accent); }
 .prep-chip.down, .prep-effects b.down { color: var(--danger-text); }

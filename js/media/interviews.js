@@ -52,26 +52,34 @@ const fieldAverage = (r) => (r.attack + r.midfield + r.defense) / 3;
 const inputStrength = (input) => fieldAverage(computeTeamRatings(input.slots, input.lineup, (p) => conditionFactor(input.condition[p.id])));
 const bestPlayer = (players) => players.filter(Boolean).reduce((a, b) => (overall(b) > overall(a) ? b : a), players.find(Boolean));
 
-// 해당하는 상황 중 우선순위가 가장 높은 것. 가끔(30%) 다른 해당 상황을 골라 질문이 단조롭지 않게
+// 경기 후 '극적인 상황': 이 경기의 이야기 그 자체라 무작위로 다른 질문에 밀리지 않는다
+const DRAMA = new Set(['seasonEndHigh', 'seasonEndLow', 'hatTrick', 'derbyWin', 'derbyLoss', 'comebackWin', 'collapse', 'lateWinner', 'lateEqualiserFor', 'lateEqualiserAgainst']);
+
+// 해당하는 상황 중 우선순위가 가장 높은 것. 가끔(30%) 다른 해당 상황을 골라 질문이 단조롭지 않게 (극적인 상황은 제외)
 function chooseSituation(kind, matched) {
   const ordered = Object.keys(SITUATIONS[kind]).filter((id) => matched.has(id));
   // 대륙 대회 상황이 있으면 그것을 우선한다 (리그 상황과 섞이지 않게)
   const cupFirst = ordered.find((id) => SITUATIONS[kind][id].cup);
   if (cupFirst) return cupFirst;
   if (ordered.length === 0) return 'generic';
+  if (DRAMA.has(ordered[0])) return ordered[0];
   const others = ordered.slice(1).filter((id) => id !== 'generic');
   return others.length && Math.random() < 0.3 ? pick(others) : ordered[0];
 }
 
 // 상황 → { situation, question, answers: [{ stance, label, text }] }
-function build(media, kind, situation, vars) {
+// facts: 이 경기에서 사실인 것들(Set). 질문·답에 when이 있으면 그 사실이 모두 맞을 때만 쓴다
+// (예: '한 골로는 부족했다'는 when: 'singleGoal' — 2-2 무승부에 나오지 않게)
+const fits = (item, facts) => !item.when || [].concat(item.when).every((f) => facts.has(f));
+function build(media, kind, situation, vars, facts = new Set()) {
   const s = media[kind].situations[situation];
   // 전용 답이 있는 질문은 그 답에서만 (질문과 답이 어긋나지 않게)
-  const q = pick(s.questions);
+  const q = pick(s.questions.filter((x) => typeof x === 'string' || fits(x, facts)));
   const pool = typeof q === 'string' ? s.answers : q.answers;
   const all = Object.entries(STANCES[kind]).map(([stance, label]) => {
     const options = pool.filter((a) => a.stance === stance);
-    return { stance, label, text: fill(pick(options).text, vars) };
+    const fitting = options.filter((a) => fits(a, facts));
+    return { stance, label, text: fill(pick(fitting.length ? fitting : options).text, vars) };
   });
   // 보이는 답은 4개: 성향 하나를 빼서 경기마다 조합이 달라진다 (매번 같은 5지선다는 금방 지친다)
   const drop = pick(all);
@@ -203,22 +211,8 @@ export function postInterview(media, dataset, game, fixture, result, gap) {
   const { size, rankOf } = tableOf(dataset, game);
   const rank = rankOf(game.teamId);
 
-  // 골 순서대로 스코어 흐름: 앞선 적·뒤진 적이 있는지
-  let m = 0;
-  let o = 0; // 상대 골 (t는 다국어 함수라 쓰지 않는다)
-  let led = false;
-  let trailed = false;
-  for (const g of [...result.goals].sort((a, b) => a.minute - b.minute)) {
-    if (g.team === mySide) m++;
-    else o++;
-    if (m > o) led = true;
-    if (m < o) trailed = true;
-  }
-  const decisive = decidingGoal(result.goals, mySide, outcome); // 결승골(이긴 쪽) · 마지막 동점골(무승부)
-  const scorers = new Map();
-  for (const g of result.goals.filter((x) => x.team === mySide)) scorers.set(g.scorerName, (scorers.get(g.scorerName) ?? 0) + 1);
-  const [topScorer, topGoals] = [...scorers].sort((a, b) => b[1] - a[1])[0] ?? [null, 0];
-  const late = decisive && decisive.minute >= C.lateGoalMinute;
+  const story = goalStory(result.goals, mySide, outcome);
+  const { led, trailed, decisive, topScorer, topGoals, late } = story;
   const xgDiff = result.stats[mySide].xg - result.stats[oppSide].xg;
   const recent = recentResults(dataset, game, game.teamId);
 
@@ -238,11 +232,7 @@ export function postInterview(media, dataset, game, fixture, result, gap) {
     if (rank <= C.topRank) matched.add('seasonEndHigh');
     else if (rank > size - C.relegationZone) matched.add('seasonEndLow');
   }
-  if (topGoals >= 3) matched.add('hatTrick');
-  if (outcome === 'win' && trailed) matched.add('comebackWin');
-  if (outcome === 'loss' && led) matched.add('collapse');
-  if (late && outcome === 'win' && mine - theirs === 1 && decisive.team === mySide) matched.add('lateWinner');
-  if (late && outcome === 'draw') matched.add(decisive.team === mySide ? 'lateEqualiserFor' : 'lateEqualiserAgainst');
+  for (const id of dramaOf(story, outcome, mine, theirs, mySide)) matched.add(id);
   if (rivalry && outcome !== 'draw') matched.add(outcome === 'win' ? 'derbyWin' : 'derbyLoss');
   if (outcome === 'win' && gap <= -C.strengthGap) matched.add('upsetWin');
   if (outcome === 'loss' && gap >= C.strengthGap) matched.add('upsetLoss');
@@ -275,8 +265,9 @@ export function postInterview(media, dataset, game, fixture, result, gap) {
   // 해트트릭은 이 경기의 주인공이라 시즌 끝·대륙 대회 상황이 아니면 늘 그 이야기를 묻는다
   let situation = chooseSituation('post', matched);
   if (matched.has('hatTrick') && !/^seasonEnd|^cup/.test(situation)) situation = 'hatTrick';
-  vars.scorer = scorerFor(situation, decisive?.team === mySide ? decisive.scorerName : null, topScorer, topGoals);
-  return { ...build(media, 'post', situation, vars), outcome, mult: derbyMult(rivalry), round: fixture.round };
+  vars.scorer = scorerFor(situation, story, mySide);
+  const facts = matchFacts(story, outcome, mine, theirs, game);
+  return { ...build(media, 'post', situation, vars, facts), outcome, mult: derbyMult(rivalry), round: fixture.round };
 }
 
 // 승부를 정한 골: 이긴 쪽은 진 쪽 최종 득점 + 1번째 골(그 뒤로 리드를 놓치지 않은 골), 무승부는 마지막 골(동점골)
@@ -288,16 +279,66 @@ export function decidingGoal(goals, mySide, outcome) {
   return sorted.filter((g) => g.team === winSide)[loserGoals] ?? null;
 }
 
+// 골 순서로 본 이 경기의 이야기: 앞선 적·뒤진 적, 결승골·동점골, 마지막으로 리드를 잡은 골, 최다 득점자
+// drawType: 무승부일 때 'caughtUp'(앞서다 따라잡힘) · 'cameBack'(뒤지다 따라붙음) · null(0-0)
+export function goalStory(goals, mySide, outcome) {
+  const sorted = [...goals].sort((a, b) => a.minute - b.minute);
+  let m = 0;
+  let o = 0;
+  let led = false;
+  let trailed = false;
+  let leadGoal = null; // 마지막으로 어느 한쪽을 앞서게 만든 골
+  for (const g of sorted) {
+    if (g.team === mySide) m++;
+    else o++;
+    if (m > o) led = true;
+    if (m < o) trailed = true;
+    if (m !== o && Math.abs(m - o) === 1 && (g.team === mySide ? m > o : o > m)) leadGoal = g;
+  }
+  const scorers = new Map();
+  for (const g of sorted.filter((x) => x.team === mySide)) scorers.set(g.scorerName, (scorers.get(g.scorerName) ?? 0) + 1);
+  const [topScorer, topGoals] = [...scorers].sort((a, b) => b[1] - a[1])[0] ?? [null, 0];
+  const decisive = decidingGoal(sorted, mySide, outcome);
+  const drawType = outcome !== 'draw' || !leadGoal ? null : leadGoal.team === mySide ? 'caughtUp' : 'cameBack';
+  return { led, trailed, decisive, leadGoal, drawType, topScorer, topGoals, late: Boolean(decisive && decisive.minute >= C.lateGoalMinute) };
+}
+
+// 골 흐름에서 나오는 극적인 상황 (리그·대륙 대회 공통)
+function dramaOf(story, outcome, mine, theirs, mySide) {
+  const out = [];
+  if (story.topGoals >= 3) out.push('hatTrick');
+  if (outcome === 'win' && story.trailed) out.push('comebackWin');
+  if (outcome === 'loss' && story.led) out.push('collapse');
+  if (story.late && outcome === 'win' && mine - theirs === 1 && story.decisive.team === mySide) out.push('lateWinner');
+  if (story.late && outcome === 'draw') out.push(story.decisive.team === mySide ? 'lateEqualiserFor' : 'lateEqualiserAgainst');
+  return out;
+}
+
+// 질문·답의 when 조건에 쓰는 이 경기의 사실
+function matchFacts(story, outcome, mine, theirs, game) {
+  const f = new Set();
+  if (mine === 1) f.add('singleGoal');
+  f.add(theirs > 0 ? 'conceded' : 'cleanSheet');
+  if (outcome === 'win' && story.decisive && !story.late) f.add('heldLead'); // 결승골 뒤로 오래 지킨 승리
+  if (story.drawType) f.add(story.drawType);
+  if (!(game.seasonIndex === 1 && game.round <= 2)) f.add('notFirstMatch'); // 라운드 진행 뒤라 첫 경기면 round가 2
+  return f;
+}
+
 // 질문의 {scorer}는 상황마다 뜻이 다르다 (data/interviews/post.json 질문 문장 기준)
 // - '결승골·동점골' 그 자체를 말하는 상황: 그 골을 넣은 선수
 // - '주역·해결사'를 말하는 상황: 두 골 이상 넣은 선수가 있으면 그 선수, 없으면 결승골 주인
-// - 그 밖(해트트릭·대승·일반 승리·무승부): 가장 많이 넣은 선수
+// - 무승부: 앞서다 따라잡혔으면 리드를 잡은 골, 따라붙었으면 동점골의 주인
+// - 그 밖(해트트릭·대승·일반 승리): 가장 많이 넣은 선수
 const GOAL_SITUATIONS = new Set(['narrowWin', 'lateWinner', 'cleanSheetWin', 'luckyWin', 'lateEqualiserFor']);
 const HERO_SITUATIONS = new Set(['comebackWin', 'derbyWin', 'upsetWin', 'winStreak', 'cupWonTrophy']);
-export function scorerFor(situation, decider, topScorer, topGoals) {
-  if (GOAL_SITUATIONS.has(situation)) return decider ?? topScorer;
-  if (HERO_SITUATIONS.has(situation)) return topGoals >= 2 ? topScorer : (decider ?? topScorer);
-  return topScorer;
+export function scorerFor(situation, story, mySide) {
+  const ours = (g) => (g?.team === mySide ? g.scorerName : null);
+  const decider = ours(story.decisive);
+  if (situation === 'draw') return (story.drawType === 'caughtUp' ? ours(story.leadGoal) : decider) ?? story.topScorer;
+  if (GOAL_SITUATIONS.has(situation)) return decider ?? story.topScorer;
+  if (HERO_SITUATIONS.has(situation)) return story.topGoals >= 2 ? story.topScorer : (decider ?? story.topScorer);
+  return story.topScorer;
 }
 
 export function answerPost(game, interview, stance) {
@@ -356,7 +397,8 @@ export function teamTalk(media, dataset, game, state, mySide, gap) {
   else matched.add(mine === 0 ? 'goallessEven' : 'drawingEven');
 
   const group = diff > 0 ? 'leading' : diff < 0 ? 'trailing' : 'drawing';
-  return { ...build(media, 'talk', chooseSituation('talk', matched), vars), group, mult: derbyMult(rivalry) };
+  // '실수 하나 없이 깔끔했어' 같은 말은 실점이 없을 때만
+  return { ...build(media, 'talk', chooseSituation('talk', matched), vars, new Set(theirs === 0 ? ['cleanSheet'] : [])), group, mult: derbyMult(rivalry) };
 }
 
 // 팀 토크 뒤 선수단 반응 (사전 media.reaction.{good|neutral|bad} 문장 목록)
@@ -426,16 +468,13 @@ export function postCupInterview(media, dataset, game, fixture, result, gap) {
   const theirs = result.score[oppSide];
   const outcome = mine > theirs ? 'win' : mine < theirs ? 'loss' : 'draw';
   const c = cupContext(game, fixture, mySide);
-  const scorers = new Map();
-  for (const g of result.goals.filter((x) => x.team === mySide)) scorers.set(g.scorerName, (scorers.get(g.scorerName) ?? 0) + 1);
-  const [topScorer, topGoals] = [...scorers].sort((a, b) => b[1] - a[1])[0] ?? [null, 0];
-  const decisive = decidingGoal(result.goals, mySide, outcome);
+  const story = goalStory(result.goals, mySide, outcome);
   const vars = {
     team: dataset.teamById.get(game.teamId).shortName,
     opponent: dataset.teamById.get(fixture[`${oppSide}Id`]).shortName,
     venue: t(mySide === 'home' ? 'media.venue.home' : 'media.venue.away'),
     score: scoreText(mine, theirs),
-    scorer: topScorer,
+    scorer: story.topScorer,
     ...c,
   };
   if (result.aggregate) vars.aggregate = scoreText(result.aggregate[mySide], result.aggregate[oppSide]);
@@ -455,9 +494,13 @@ export function postCupInterview(media, dataset, game, fixture, result, gap) {
     const diff = mine - theirs;
     situation = diff >= 3 ? 'bigWin' : diff === 1 ? 'narrowWin' : diff > 0 ? 'win' : diff === 0 ? (mine === 0 ? 'goallessDraw' : 'draw') : diff === -1 ? 'narrowLoss' : diff <= -3 ? 'heavyLoss' : 'loss';
   }
-  vars.scorer = scorerFor(situation, decisive?.team === mySide ? decisive.scorerName : null, topScorer, topGoals);
+  // 결승·2차전(진출이 걸린 경기)이 아니면 극적인 골 흐름(해트트릭·역전·극장골)이 대회 일반 질문보다 먼저
+  const drama = fixture.stage === 'final' || fixture.leg === 2 ? [] : dramaOf(story, outcome, mine, theirs, mySide);
+  if (drama.length) situation = drama[0];
+  vars.minute = story.decisive?.minute;
+  vars.scorer = scorerFor(situation, story, mySide);
   const rivalry = rivalryBetween(media, game.teamId, fixture[`${oppSide}Id`]);
-  return { ...build(media, 'post', situation, vars), outcome, mult: derbyMult(rivalry), round: `cup:${fixture.id}` };
+  return { ...build(media, 'post', situation, vars, matchFacts(story, outcome, mine, theirs, game)), outcome, mult: derbyMult(rivalry), round: `cup:${fixture.id}` };
 }
 
 // 하프타임·연장 직전 팀 토크 (대륙 대회). moment: 'half' | 'extraTime'
@@ -483,5 +526,5 @@ export function cupTeamTalk(media, dataset, game, state, mySide, gap, fixture, m
   else if (fixture.leg === 2 && aggMine > aggTheirs) situation = 'cupSecondLegProtecting';
   if (!situation) return base; // 리그 페이즈·1차전은 일반 하프타임 상황
   const diff = aggMine - aggTheirs;
-  return { ...build(media, 'talk', situation, vars), group: diff > 0 ? 'leading' : diff < 0 ? 'trailing' : 'drawing', mult: base.mult };
+  return { ...build(media, 'talk', situation, vars, new Set(state.score[oppSide] === 0 ? ['cleanSheet'] : [])), group: diff > 0 ? 'leading' : diff < 0 ? 'trailing' : 'drawing', mult: base.mult };
 }

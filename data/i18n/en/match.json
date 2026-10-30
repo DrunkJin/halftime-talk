@@ -135,6 +135,7 @@
   "match.brief.returningText": {"one": "A starter you covered for is fit again", "other": "{n} starters you covered for are fit again"},
   "match.brief.returningName": "{name} (covering now: {now})",
   "match.brief.restore": "Restore to XI",
+  "match.brief.restoredToast": "{names} back in the starting XI",
   "match.brief.lineupTired": {
     "one": "1 tired starter",
     "other": "{n} tired starters"

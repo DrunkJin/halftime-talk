@@ -430,7 +430,7 @@ export function render(ctx) {
       const selected = selection?.kind === 'player' && selection.id === p.id;
       const avail = availabilityOf(game, p.id);
       const cond = conditionOf(game, p.id);
-      const nameButton = h('button', { class: 'link', type: 'button' }, p.name);
+      const nameButton = h('button', { class: 'link', type: 'button', title: p.name }, p.name);
       nameButton.addEventListener('click', (e) => {
         e.stopPropagation();
         openPlayerModal(dataset, p, ctx);

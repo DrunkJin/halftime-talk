@@ -160,6 +160,10 @@ ensureToastHost();
 
 export function showToast(content, { duration = 2600, tone = '' } = {}) {
   ensureToastHost();
+  // 아래 고정 묶음이 있는 창(감독 지시)이 열려 있으면 그 묶음 바로 위에 — 창 제목도 아래 버튼도 가리지 않게
+  const foot = document.querySelector('.modal-backdrop.is-open .cmd-foot');
+  toastHost.style.top = foot ? 'auto' : '';
+  toastHost.style.bottom = foot ? `${Math.round(innerHeight - foot.getBoundingClientRect().top + 8)}px` : '';
   const toast = document.createElement('div');
   toast.className = `t-toast toast ${tone}`;
   toast.dataset.tone = tone;

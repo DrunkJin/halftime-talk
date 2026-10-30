@@ -2824,7 +2824,8 @@
             },
             {
               "stance": "critical",
-              "text": "{scorer}'s goal was good. But we need to look hard at a second half where we hung on to that one goal."
+              "text": "{scorer}'s goal was good. But we need to look hard at a second half where we hung on to that one goal.",
+              "when": "singleGoal"
             },
             {
               "stance": "critical",
@@ -3143,7 +3144,8 @@
               "stance": "forward",
               "text": "Rotation is about the whole season. I'll plan the next game the same way."
             }
-          ]
+          ],
+          "when": "notFirstMatch"
         },
         {
           "text": "The fans are very disappointed. What would you like to say to them?",
@@ -4661,7 +4663,8 @@
             },
             {
               "stance": "critical",
-              "text": "{scorer}'s goal was good, but the problem is that we had to rely on that one goal."
+              "text": "{scorer}'s goal was good, but the problem is that we had to rely on that one goal.",
+              "when": "singleGoal"
             },
             {
               "stance": "critical",
@@ -5817,7 +5820,8 @@
           "answers": [
             {
               "stance": "praise",
-              "text": "{scorer} didn't waste the one real chance he got, and the defence protected that goal to the end."
+              "text": "{scorer} didn't waste the one real chance he got, and the defence protected that goal to the end.",
+              "when": "singleGoal"
             },
             {
               "stance": "praise",
@@ -5829,7 +5833,8 @@
             },
             {
               "stance": "critical",
-              "text": "{scorer} can't be satisfied with one. It was a game where he could have had more."
+              "text": "{scorer} can't be satisfied with one. It was a game where he could have had more.",
+              "when": "singleGoal"
             },
             {
               "stance": "blame",
@@ -6068,7 +6073,8 @@
             },
             {
               "stance": "critical",
-              "text": "I'm grateful for {scorer}'s winner, but apart from that one goal our attack was far too quiet."
+              "text": "I'm grateful for {scorer}'s winner, but apart from that one goal our attack was far too quiet.",
+              "when": "singleGoal"
             },
             {
               "stance": "critical",
@@ -6155,7 +6161,8 @@
             },
             {
               "stance": "praise",
-              "text": "The defensive concentration to protect a one-goal lead. Everybody played like a defender."
+              "text": "The defensive concentration to protect a one-goal lead. Everybody played like a defender.",
+              "when": "heldLead"
             },
             {
               "stance": "critical",
@@ -6163,7 +6170,8 @@
             },
             {
               "stance": "critical",
-              "text": "Apart from scoring the one goal, there's not much to point to. The performance needs to improve."
+              "text": "Apart from scoring the one goal, there's not much to point to. The performance needs to improve.",
+              "when": "singleGoal"
             },
             {
               "stance": "blame",
@@ -6207,7 +6215,8 @@
         },
         {
           "stance": "praise",
-          "text": "Seeing out a one-goal lead is a skill in itself, and our players showed it today."
+          "text": "Seeing out a one-goal lead is a skill in itself, and our players showed it today.",
+          "when": "heldLead"
         },
         {
           "stance": "praise",
@@ -6239,7 +6248,8 @@
         },
         {
           "stance": "blame",
-          "text": "The fixtures are relentless and the legs were heavy in the second half. That's why we had to cling on to a one-goal lead."
+          "text": "The fixtures are relentless and the legs were heavy in the second half. That's why we had to cling on to a one-goal lead.",
+          "when": "heldLead"
         },
         {
           "stance": "blame",
@@ -6849,7 +6859,8 @@
             },
             {
               "stance": "critical",
-              "text": "One goal wasn't enough. Wasting the chances for a second cost us two points in the end."
+              "text": "One goal wasn't enough. Wasting the chances for a second cost us two points in the end.",
+              "when": "singleGoal"
             },
             {
               "stance": "blame",
@@ -6861,11 +6872,13 @@
             },
             {
               "stance": "humble",
-              "text": "{scorer}'s goal was good, but they deserved their goal too. We'll accept that."
+              "text": "{scorer}'s goal was good, but they deserved their goal too. We'll accept that.",
+              "when": "singleGoal"
             },
             {
               "stance": "humble",
-              "text": "There's some frustration, but that's football. We scored one each, that's all."
+              "text": "There's some frustration, but that's football. We scored one each, that's all.",
+              "when": "singleGoal"
             },
             {
               "stance": "forward",
@@ -6874,6 +6887,53 @@
             {
               "stance": "forward",
               "text": "We'll use the frustrating moments to prepare for the next game. {scorer} scoring is a good sign."
+            }
+          ],
+          "when": "caughtUp"
+        },
+        {
+          "text": "{scorer}'s equaliser rescued a point. How did you see it?",
+          "when": "cameBack",
+          "answers": [
+            {
+              "stance": "praise",
+              "text": "{scorer} rescued us. Even behind, nobody dropped their head."
+            },
+            {
+              "stance": "praise",
+              "text": "Coming back from behind is about character, and {scorer} put that into a goal."
+            },
+            {
+              "stance": "critical",
+              "text": "The equaliser was good, but conceding first is the problem. We can't keep chasing games."
+            },
+            {
+              "stance": "critical",
+              "text": "{scorer}'s goal saved face. The way the game was going, we should have gone on to win it."
+            },
+            {
+              "stance": "blame",
+              "text": "The goal we conceded came from a poor decision. That makes {scorer}'s equaliser worth even more."
+            },
+            {
+              "stance": "blame",
+              "text": "The fixture pile-up left us heavy-legged early on. Getting back level is something."
+            },
+            {
+              "stance": "humble",
+              "text": "They played well enough to go ahead first. We'll be grateful for the point."
+            },
+            {
+              "stance": "humble",
+              "text": "Without {scorer}'s goal we'd have gone home empty-handed. That point matters today."
+            },
+            {
+              "stance": "forward",
+              "text": "We know we can chase a game now. Next time we'll be the ones going ahead first."
+            },
+            {
+              "stance": "forward",
+              "text": "{scorer} is finding his touch. Next game, let's make that goal a winner."
             }
           ]
         },

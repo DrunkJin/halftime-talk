@@ -927,7 +927,7 @@
         },
         {
           "stance": "deflect",
-          "text": "Today I'm more worried about the weather than the opposition. I wonder what the pitch will be like."
+          "text": "Tomorrow I'm more worried about the weather than the opposition. I wonder what the pitch will be like."
         },
         {
           "stance": "deflect",
@@ -2233,7 +2233,7 @@
             },
             {
               "stance": "deflect",
-              "text": "Our plan for {oppPlayer} mostly involves hoping he wakes up feeling a bit off today."
+              "text": "Our plan for {oppPlayer} mostly involves hoping he wakes up feeling a bit off tomorrow."
             }
           ]
         },

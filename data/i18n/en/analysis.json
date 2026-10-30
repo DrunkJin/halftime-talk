@@ -15,6 +15,7 @@
   "analysis.memo.wingBack": "Their {names} push high as wing-backs. That leaves space down the flanks behind them.",
   "analysis.memo.finisher": "Their {name} plays as a {role}, looking to finish inside the box.",
   "analysis.memo.ourStrengths": "Our strengths: {list}.",
+  "analysis.memo.balanced": "Expect a steady {tactics} approach from them, with no obvious weak spot. This will come down to quality and concentration, so we can play our own game.",
   "analysis.oppExpected": "Expected opposition tactics ",
   "analysis.strengths": "Strengths ",
   "analysis.weaknesses": "Weaknesses ",

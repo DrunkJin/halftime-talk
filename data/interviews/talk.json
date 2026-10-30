@@ -1067,7 +1067,8 @@
         },
         {
           "stance": "praise",
-          "text": "준비한 수비 블록이 완벽했어. 상대가 아무것도 못 했지."
+          "text": "준비한 수비 블록이 완벽했어. 상대가 아무것도 못 했지.",
+          "when": "cleanSheet"
         },
         {
           "stance": "praise",
@@ -1928,11 +1929,13 @@
         },
         {
           "stance": "praise",
-          "text": "세트피스 수비 완벽했어. 연습한 보람이 있다."
+          "text": "세트피스 수비 완벽했어. 연습한 보람이 있다.",
+          "when": "cleanSheet"
         },
         {
           "stance": "praise",
-          "text": "실수 하나 없이 깔끔했어. 이게 우리가 원하는 경기야."
+          "text": "실수 하나 없이 깔끔했어. 이게 우리가 원하는 경기야.",
+          "when": "cleanSheet"
         },
         {
           "stance": "praise",
@@ -2138,7 +2141,8 @@
         },
         {
           "stance": "praise",
-          "text": "수비진도 완벽했어. 상대 역습 다 끊어냈잖아."
+          "text": "수비진도 완벽했어. 상대 역습 다 끊어냈잖아.",
+          "when": "cleanSheet"
         },
         {
           "stance": "praise",
@@ -3612,7 +3616,8 @@
         },
         {
           "stance": "praise",
-          "text": "세트피스 수비 완벽했다. 집중력 하나는 오늘 최고야."
+          "text": "세트피스 수비 완벽했다. 집중력 하나는 오늘 최고야.",
+          "when": "cleanSheet"
         },
         {
           "stance": "praise",

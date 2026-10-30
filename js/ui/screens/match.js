@@ -18,7 +18,7 @@ import { objectiveLabel } from '../../state/board.js';
 import { expiringContracts, suggestedRenewals } from '../../state/newSeason.js';
 import { contractOf, renewalTerms } from '../../market/finance.js';
 import { formatWage } from '../../market/market.js';
-import { brighten, celebrationColor, matchAccents, teamAccent, teamBadge } from '../badge.js';
+import { brighten, celebrationColor, colorDistance, matchAccents, teamAccent, teamBadge } from '../badge.js';
 import { conditionMeter, openConfirm, panel, segmented, statusChip } from '../components.js';
 import { appendChildren, h } from '../dom.js';
 import { attrClass, fmt1, shortName } from '../format.js';
@@ -410,6 +410,7 @@ function renderPre(ctx, show) {
     for (const r of returning) restoreStarter(ctx.game, r.slot);
     ctx.persist();
     show();
+    showToast(t('match.brief.restoredToast', { names: returning.map((r) => dataset.playerById.get(r.out).name).join(', ') }));
   }, blockedNotes: problems.map(({ id }) => `${dataset.playerById.get(id).name} (${reasonOf(id)})`), lineupNotes: [tiredNote, benchedNote].filter(Boolean).map((e) => e.textContent) } });
 
   return h(
@@ -526,10 +527,11 @@ function effectsLine(effects, title, { past = false } = {}) {
     'div',
     { class: 'prep-effects' },
     h('span', { class: 'muted' }, title),
+    // 한 줄 요약을 먼저, 근거(칩)는 뒤에
+    h('b', { class: `prep-sum ${mood[1]}` }, mood[0]),
     // 전술 숙련도 '익히는 중'은 새 전술이면 누구나 겪는 정상 상태라 위험 색을 쓰지 않는다.
     // 경기 뒤(past)에는 이미 지난 일이라 경고색 없이 기록으로만 (이긴 경기에 빨간 칩이 붙지 않게)
     shown.map((e) => h('span', { class: `prep-chip ${e.value > 0 ? 'up' : past || e.id === 'familiarity' ? '' : 'down'}` }, effectWord(e.id, e.value > 0))),
-    h('b', { class: mood[1] }, mood[0]),
   );
 }
 
@@ -837,6 +839,8 @@ function renderLive(ctx, show) {
   const accents = matchAccents(home, away); // 비슷한 색끼리 붙으면 원정 팀 색을 바꾼다
   // 중계 점: 점수판과 같은 두 색. 골·실점 줄의 진한 배경 위에서도 3:1 이상 보이게 밝힌다
   const feedSide = { home: brighten(accents[0], 0.2), away: brighten(accents[1], 0.2) };
+  // 밝히고 나니 두 색이 가까우면(첼시·맨시티 같은 같은 계열) 원정 팀 점은 속이 빈 원 — 색만으로 구분하지 않게
+  const hollowAway = colorDistance(feedSide.home, feedSide.away) < 90;
   const scoreboard = h(
     'section',
     { class: 'scoreboard panel', style: { '--home': accents[0], '--away': accents[1] } },
@@ -924,12 +928,14 @@ function renderLive(ctx, show) {
 
     // 변경 후 화면 갱신 (중계 줄, 버튼, 기록)
     const applied = (res) => {
+      if (res.ok) {
+        syncFeed(false);
+        updateSubBtn();
+        updateStats();
+        renderBody();
+      }
+      // 창을 다시 그린 뒤에 띄운다 (아래 묶음 높이에 맞춰 그 위에 뜨도록)
       showToast(res.message, { tone: res.ok ? '' : 'warn' });
-      if (!res.ok) return;
-      syncFeed(false);
-      updateSubBtn();
-      updateStats();
-      renderBody();
     };
 
     function subsBody() {
@@ -943,6 +949,8 @@ function renderLive(ctx, show) {
       const refreshConfirm = () => {
         confirm.disabled = outSlot === null || inId === null;
         confirm.classList.toggle('primary', !confirm.disabled); // 두 선수를 다 고르면 이 창의 주 동작
+        resumeBtn.classList.toggle('primary', confirm.disabled); // 주 버튼은 언제나 하나
+        resumeBtn.classList.toggle('ghost', !confirm.disabled);
         const out = outSlot === null ? '—' : snap.lineup[outSlot]?.name;
         const inn = inId === null ? '—' : snap.bench.find((p) => p.id === inId)?.name;
         pickLine.textContent = outSlot === null && inId === null ? t('match.cmd.subNote') : `${out} → ${inn}`;
@@ -1094,6 +1102,8 @@ function renderLive(ctx, show) {
       title.textContent = t('match.cmd.title', { min: state.minute, home: home.shortName, h: state.score.home, a: state.score.away, away: away.shortName });
       tabs.el.querySelector('[data-id="subs"]').textContent = t('match.cmd.tabSubsCount', { n: snap.subsLeft });
       footSlot.replaceChildren();
+      resumeBtn.classList.add('primary');
+      resumeBtn.classList.remove('ghost');
       body.replaceChildren(tab === 'subs' ? subsBody() : tab === 'formation' ? formationBody() : tab === 'players' ? playersBody() : tacticsBody());
     }
 
@@ -1258,7 +1268,7 @@ function renderLive(ctx, show) {
       'li',
       { class: `feed-line ${kind}`, style: c.team ? { '--side': feedSide[c.team] } : {} },
       h('span', { class: 'feed-min num' }, `${c.minute}'`),
-      icon ? h('span', { class: `feed-icon ${icon}` }) : h('span', { class: `feed-dot${c.team ? '' : ' none'}` }),
+      icon ? h('span', { class: `feed-icon ${icon}` }) : h('span', { class: `feed-dot${c.team ? '' : ' none'}${c.team === 'away' && hollowAway ? ' is-hollow' : ''}` }),
       text,
     );
     if (animate && kind === 'c-goal') li.classList.add('is-fresh');
@@ -1359,6 +1369,7 @@ function renderLive(ctx, show) {
   }
 
   function renderAfter() {
+    clearToasts(); // 경기 전·중 알림(로테이션 등)이 결과 장면·인터뷰 질문을 가리지 않게
     const game = ctx.game;
     const mineFixture = live.cup ? cupFixtureById(game, fixture.id) : fixtureById(game, fixture.id);
     const mineResult = mineFixture.result;

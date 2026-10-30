@@ -15,6 +15,7 @@
   "analysis.memo.wingBack": "상대 {names}이(가) 윙백으로 높이 오릅니다. 그 뒤 측면 공간이 빕니다.",
   "analysis.memo.finisher": "상대 {name}은(는) {role}로 박스 안 마무리를 노립니다.",
   "analysis.memo.ourStrengths": "우리 쪽 강점: {list}.",
+  "analysis.memo.balanced": "상대는 {tactics}(으)로 무난하게 나올 것으로 보입니다. 뚜렷한 약점이 없어 선수 기량과 집중력 싸움이 될 겁니다. 우리 색깔대로 가도 됩니다.",
   "analysis.oppExpected": "상대 예상 전술 ",
   "analysis.strengths": "강점 ",
   "analysis.weaknesses": "약점 ",

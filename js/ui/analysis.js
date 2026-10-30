@@ -45,6 +45,8 @@ function coachMemos(mine, opp) {
   const finisher = role('poacher') ?? role('shadowStriker') ?? role('insideForward');
   if (finisher) memos.push({ kind: 'warn', text: t('analysis.memo.finisher', { name: finisher.name, role: finisher.role.label }) });
   if (myStrong.length) memos.push({ kind: 'self', text: t('analysis.memo.ourStrengths', { list: myStrong.map((k) => PROFILE_LABELS[k]).join(', ') }) });
+  // 짚을 점이 없어도 빈 칸으로 두지 않는다 (첫날 안내가 '코치 메모를 읽으라'고 가리키는 곳)
+  if (!memos.length) memos.push({ kind: 'self', text: t('analysis.memo.balanced', { tactics: tacticSummary(o) }) });
   return memos.slice(0, 6);
 }
 

@@ -26,6 +26,7 @@ const rgb = (hex) => {
   return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
 };
 const distance = (a, b) => Math.hypot(...rgb(a).map((v, i) => v - rgb(b)[i]));
+export const colorDistance = distance;
 export function matchAccents(home, away) {
   const a = teamAccent(home);
   let b = teamAccent(away);
