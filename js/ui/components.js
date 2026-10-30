@@ -3,7 +3,8 @@ import { ATTRIBUTE_GROUPS, POSITIONS } from '../data/schema.js';
 import { overall, positionFit, positionRating } from '../engine/ratings.js';
 import { POSITION_RATING_WEIGHTS } from '../engine/config.js';
 import { formatMoney, playerValue } from '../market/value.js';
-import { availabilityOf, conditionOf, currentTeamId, loanOf } from '../state/game.js';
+import { formatWage, offerTerms } from '../market/market.js';
+import { availabilityOf, conditionOf, currentTeamId, loanOf, squadOf } from '../state/game.js';
 import { fitLabel, rolesFor } from '../engine/roles.js';
 import { scoutedPotential } from '../state/newSeason.js';
 import { formOf, ratingClass, seasonRating } from '../state/form.js';
@@ -254,6 +255,8 @@ export function openPlayerModal(dataset, player, ctx = null) {
         { class: 'muted pm-extra' },
         teamId === game.teamId ? t('components.player.valueCond', { value: formatMoney(playerValue(player)), cond: conditionOf(game, player.id) }) : t('components.player.value', { value: formatMoney(playerValue(player)) }),
         potential ? h('span', { class: 'pm-potential' }, t('components.player.potential', { low: potential.low, high: potential.high })) : '',
+        // 다른 팀 선수: 영입하면 요구할 주급 (스카우트하며 바로 가늠하게)
+        teamId !== game.teamId ? h('span', { class: 'pm-wage' }, t('components.player.wageDemand', { wage: formatWage(offerTerms(dataset, game, player.id).contract.wage) })) : '',
         formLine(game, player.id),
         stats ? t('components.player.stats', { apps: stats.apps ?? 0, goals: stats.goals, assists: stats.assists }) : '',
         avail && !avail.available ? h('span', { class: `status-chip ${avail.reason}` }, t('components.player.out', { label: avail.label, n: avail.rounds })) : null,
@@ -278,6 +281,9 @@ export function openPlayerModal(dataset, player, ctx = null) {
     .sort((a, b) => b.value - a.value)
     .slice(0, 4);
 
+  // 우리 선수와 나란히 비교 (스카우트 전이면 OVR 범위만, 세부 능력은 '?')
+  const compareBtn = game ? h('button', { class: 'btn small ghost pm-compare', type: 'button' }, t('components.compare.open')) : null;
+  compareBtn?.addEventListener('click', () => openCompare(dataset, game, player, view));
   const content = h(
     'div',
     { class: 'player-modal' },
@@ -305,11 +311,57 @@ export function openPlayerModal(dataset, player, ctx = null) {
       { class: 'pm-foot' },
       h('span', { class: 'muted' }, t('components.player.byPosition')),
       hidden ? h('span', { class: 'muted' }, t('components.player.scoutToSee')) : byPosition.map(({ pos, value }) => h('span', { class: 'pos-score' }, h('b', {}, pos), ` ${Math.round(value)}`)),
+      compareBtn,
     ),
     hidden ? null : suitedRoles(player),
     h('details', { class: 'pm-basis' }, h('summary', {}, t('components.player.dataNote')), h('p', { class: 'muted small-note' }, t('components.player.potentialNote'), basisText(dataset.basis))),
   );
   const closeModal = openModal(content);
+  close.addEventListener('click', closeModal);
+}
+
+// 선수 비교: 왼쪽은 보던 선수, 오른쪽은 우리 선수(같은 포지션 우선, 고를 수 있음). 높은 쪽 숫자를 밝게
+function openCompare(dataset, game, player, view) {
+  const hidden = !view.known;
+  const ours = squadOf(dataset, game, game.teamId).filter((p) => p.id !== player.id);
+  if (!ours.length) return;
+  const posValue = (p) => positionRating(p, player.position) * positionFit(p, player.position);
+  ours.sort((a, b) => posValue(b) - posValue(a)); // 이 선수 자리에서 강한 순
+  let other = ours[0];
+  const select = h('select', { class: 'select', 'aria-label': t('components.compare.with') }, ours.map((p) => h('option', { value: p.id }, `${p.position} ${p.name} (${overall(p)})`)));
+  const body = h('div', { class: 'cmp-body' });
+  const cell = (a, b) => h('td', { class: `num${typeof a === 'number' && typeof b === 'number' && a > b ? ' is-better' : ''}` }, a);
+  const draw = () => {
+    // plain: 나이처럼 높다고 좋은 게 아닌 값은 밝히지 않는다
+    const rows = [
+      { label: t('components.compare.ovr'), a: hidden ? `${view.low}~${view.high}` : overall(player), b: overall(other) },
+      { label: t('components.compare.atPos', { pos: player.position }), a: hidden ? '?' : Math.round(posValue(player)), b: Math.round(posValue(other)) },
+      { label: t('components.compare.age'), a: player.age, b: other.age, plain: true },
+    ];
+    body.replaceChildren(
+      h(
+        'table',
+        { class: 'data compact cmp-table' },
+        h('thead', {}, h('tr', {}, h('th', { class: 'num' }, player.name), h('th', {}), h('th', { class: 'num' }, other.name))),
+        h(
+          'tbody',
+          {},
+          rows.map(({ label, a, b, plain }) => h('tr', { class: 'cmp-key' }, plain ? h('td', { class: 'num' }, a) : cell(a, b), h('th', { scope: 'row' }, label), plain ? h('td', { class: 'num' }, b) : cell(b, a))),
+          Object.entries(ATTRIBUTE_GROUPS).flatMap(([group, keys]) => [
+            h('tr', { class: 'cmp-group' }, h('th', { colspan: 3 }, ATTRIBUTE_GROUP_LABELS[group])),
+            ...keys.map((k) => h('tr', {}, cell(hidden ? '?' : player.attributes[k], other.attributes[k]), h('th', { scope: 'row' }, ATTRIBUTE_LABELS[k]), cell(other.attributes[k], hidden ? '?' : player.attributes[k]))),
+          ]),
+        ),
+      ),
+    );
+  };
+  select.addEventListener('change', () => {
+    other = ours.find((p) => p.id === select.value) ?? other;
+    draw();
+  });
+  draw();
+  const close = h('button', { class: 'btn ghost', type: 'button' }, t('components.close'));
+  const closeModal = openModal(h('div', { class: 'confirm-modal compare-modal' }, h('h2', {}, t('components.compare.title')), h('label', { class: 'cmp-pick' }, h('span', { class: 'muted' }, t('components.compare.with')), select), hidden ? h('p', { class: 'muted small-note' }, t('components.compare.scoutNote')) : null, body, h('div', { class: 'confirm-actions' }, close)));
   close.addEventListener('click', closeModal);
 }
 

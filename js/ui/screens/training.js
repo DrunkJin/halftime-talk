@@ -8,7 +8,7 @@ import { learnablePositions, learnedOf, learnWord, positionTrainingValue, traine
 import { POSITIONS } from '../../data/schema.js';
 import { TRAINING as T } from '../../state/trainingConfig.js';
 import { teamBadge } from '../badge.js';
-import { panel, segmented } from '../components.js';
+import { openPlayerModal, panel, segmented } from '../components.js';
 import { h } from '../dom.js';
 import { ATTRIBUTE_LABELS, POSITION_NAMES, attrClass } from '../format.js';
 import { showToast } from '../motion.js';
@@ -178,6 +178,46 @@ export function render(ctx) {
       { actions: h('span', { class: 'muted small-note' }, t('training.ind.synergy')) },
     );
 
+    // ── 유망주: 21세 이하. 잠재력·이번 시즌 성장·출전과 한 줄 조언 (많이 뛸수록 빨리 자란다) ──
+    const P = T.prospects;
+    const played = Math.max(0, game.round - 1);
+    const young = squad.filter((p) => p.age <= P.maxAge).sort((a, b) => (scoutedPotential(game, b, overall(b))?.high ?? overall(b)) - (scoutedPotential(game, a, overall(a))?.high ?? overall(a)));
+    const youngRows = young.map((p) => {
+      const ovr = overall(p);
+      const pot = scoutedPotential(game, p, ovr);
+      const apps = game.playerStats[p.id]?.apps ?? 0;
+      const gain = seasonGainsOf(game, p.id);
+      const note =
+        tr.individual[p.id] ? t('training.prospect.training')
+        : pot && played >= P.minRounds && apps / played < P.lowPlayShare ? t('training.prospect.needsMinutes')
+        : !pot ? t('training.prospect.near')
+        : t('training.prospect.growing');
+      const name = h('button', { class: 'link', type: 'button' }, p.name);
+      name.addEventListener('click', () => openPlayerModal(dataset, p, ctx));
+      return h(
+        'tr',
+        {},
+        h('td', {}, h('span', { class: 'pos-tag' }, p.position)),
+        h('td', {}, name, h('span', { class: 'muted' }, t('training.ind.age', { age: p.age }))),
+        h('td', { class: `num ${attrClass(ovr)}` }, ovr),
+        h('td', { class: 'num muted' }, pot ? `${pot.low}~${pot.high}` : '—'),
+        h('td', { class: 'num' }, gain ? h('b', { class: 'up' }, `+${gain}`) : '—'),
+        h('td', { class: 'num' }, apps),
+        h('td', { class: 'muted small-note' }, note),
+      );
+    });
+    const prospects = panel(
+      t('training.prospect.title', { n: young.length }),
+      young.length
+        ? h(
+            'div',
+            {},
+            h('p', { class: 'muted small-note' }, t('training.prospect.lead', { age: P.maxAge })),
+            h('div', { class: 'table-scroll' }, h('table', { class: 'data compact prospect-table' }, h('thead', {}, h('tr', {}, h('th', {}, t('training.th.pos')), h('th', {}, t('training.th.player')), h('th', { class: 'num' }, 'OVR'), h('th', { class: 'num' }, t('training.th.potential')), h('th', { class: 'num' }, t('training.th.gain')), h('th', { class: 'num' }, t('training.prospect.apps')), h('th', {}, t('training.th.outlook')))), h('tbody', {}, youngRows))),
+          )
+        : h('p', { class: 'muted' }, t('training.prospect.empty', { age: P.maxAge })),
+    );
+
     // ── 최근 기록 ──
     const log = (tr.log ?? []).slice(0, 16);
     const history = panel(
@@ -194,7 +234,7 @@ export function render(ctx) {
     );
 
     const lock = isMatchInProgress() ? h('div', { class: 'warn-banner' }, h('span', {}, t('training.locked'))) : null;
-    host.replaceChildren(...[lock, summary, focus, individual, history].filter(Boolean));
+    host.replaceChildren(...[lock, summary, focus, individual, prospects, history].filter(Boolean));
     if (lock) host.querySelectorAll('button, select').forEach((el) => (el.disabled = true));
   };
   draw();

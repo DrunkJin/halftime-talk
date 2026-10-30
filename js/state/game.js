@@ -191,7 +191,9 @@ export function restoreStarter(game, slot) {
   const r = (game.cover ?? []).find((x) => x.slot === slot);
   if (!r) return;
   game.lineup[slot] = r.out;
-  game.bench = (game.bench ?? []).filter((id) => id !== r.out);
+  // 돌아온 선수가 교체 명단에 있었으면 그 자리에 대신 뛰던 선수를 (명단 크기를 그대로)
+  const bench = game.bench ?? [];
+  game.bench = bench.includes(r.out) ? bench.map((id) => (id === r.out ? r.in : id)) : bench;
   game.cover = game.cover.filter((x) => x !== r);
 }
 
@@ -230,12 +232,11 @@ export function rotateTired(dataset, game, scope = 'league') {
     if (!best) return;
     game.lineup[i] = best.id;
     pool.splice(pool.indexOf(best), 1, current);
+    // 교체 명단에서 올라간 선수 자리에는 쉬는 선발이 들어간다 (감독이 고른 명단이 경기 뒤 사라지지 않게)
+    const benchAt = (game.bench ?? []).indexOf(best.id);
+    if (benchAt >= 0) game.bench[benchAt] = current.id;
     changes.push({ slot: slots[i], out: current.name, in: best.name });
   });
-  if (changes.length) {
-    const ids = new Set(game.lineup);
-    game.bench = (game.bench ?? []).filter((id) => !ids.has(id));
-  }
   return changes;
 }
 
@@ -251,7 +252,7 @@ export function aiFormationOf(dataset, game, teamId) {
   return game.aiFormations[teamId];
 }
 
-export const settingsOf = (game) => ({ autoSubs: true, pauseAtHalfTime: true, autoRotate: true, ...game.settings });
+export const settingsOf = (game) => ({ autoSubs: true, autoInjurySubs: true, pauseAtHalfTime: true, autoRotate: true, ...game.settings });
 export const tacticsOf = (game) => ({ ...TACTICS.defaults, ...game.tactics });
 
 // 사용자 교체 명단: 고른 선수 중 출전 가능한 선수 + 모자란 자리는 자동
@@ -323,6 +324,7 @@ export function teamInput(dataset, game, teamId, scope = 'league') {
   }
   const condition = Object.fromEntries([...lineup, ...bench].map((p) => [p.id, conditionOf(game, p.id)]));
   const autoSubs = mine ? settingsOf(game).autoSubs : true;
+  const autoInjurySubs = mine ? settingsOf(game).autoInjurySubs : true;
   // 사용자 팀은 직접 고른 전술, AI 팀은 엔진이 경기 전력·스코어로 정한다
   const tactics = mine ? tacticsOf(game) : undefined;
   // 사기: 최근 흐름(모든 팀) + 인터뷰·팀 토크(사용자 팀). 사용자 팀은 전술 숙련도도 (AI 팀은 기준 수준이라 0)
@@ -331,7 +333,7 @@ export function teamInput(dataset, game, teamId, scope = 'league') {
   const boost = moraleBoost(moraleOf(dataset, game, teamId)) + captainBoost(lineup, mine ? game.captain : null) + hangoverBoost(dataset, game, teamId) + parityBoost(dataset, game, teamId, scope) + (mine ? familiarityBoost(familiarityOf(game)) + trainingMatchBoost(game) : 0);
   const takers = mine ? { penaltyTakerId: game.penaltyTaker ?? null, setPieceTakerId: game.setPieceTaker ?? null } : {};
   const roles = mine ? userRoles(dataset, game) : undefined; // AI 팀은 엔진이 선수 구성에 맞게 고른다
-  return { id: teamId, name: team.shortName, slots, formation, lineup, bench, condition, autoSubs, tactics, autoTactics: !mine, boost, roles, ...takers };
+  return { id: teamId, name: team.shortName, slots, formation, lineup, bench, condition, autoSubs, autoInjurySubs, tactics, autoTactics: !mine, boost, roles, ...takers };
 }
 
 // 스쿼드 화면용: 지금 경기를 하면 쓰일 교체 명단

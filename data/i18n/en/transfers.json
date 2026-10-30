@@ -92,6 +92,7 @@
   "transfers.row.loanTitle": "Loan until the end of the season",
   "transfers.row.scoutToSee": "Scout him to see exact attributes",
   "transfers.row.feeTitle": "Free agents get a signing-on fee instead of a transfer fee",
+  "transfers.row.wage": "Wage ~{wage}",
   "transfers.row.contested": "Contested",
   "transfers.row.signOn": "Sign-on {fee}",
   "transfers.mine.sell": "Sell",

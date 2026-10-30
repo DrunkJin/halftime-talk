@@ -329,6 +329,7 @@ export function render(ctx) {
       tbody.replaceChildren(
         ...shown.map(({ p, teamId, view, asking }) => {
           const contested = !teamId && pendingFreeAgent(game, p.id);
+          const terms = offerTerms(dataset, game, p.id);
           const offer = h('button', { class: 'btn small', type: 'button', disabled: open ? null : true, title: open ? '' : t('transfers.windowClosed') }, teamId ? t('transfers.row.bid') : contested ? (contested.user ? t('transfers.row.bidding') : t('transfers.row.placeBid')) : t('transfers.row.sign'));
           offer.addEventListener('click', () => offerModal(p));
           // 임대: 원소속이 내줄 만한 선수만 버튼을 보인다
@@ -350,7 +351,13 @@ export function render(ctx) {
             h('td', { class: 'num' }, p.age),
             h('td', { class: `num ovr ${view.known ? attrClass(view.ovr) : 'ovr-range'}`, title: view.known ? '' : t('transfers.row.scoutToSee') }, view.known ? view.ovr : `${view.low}~${view.high}`),
             h('td', { class: 'num' }, formatMoney(playerValue(p))),
-            h('td', { class: `num${asking > budget ? ' over-budget' : ''}`, title: teamId ? '' : t('transfers.row.feeTitle') }, teamId ? formatMoney(asking) : contested ? t('transfers.row.contested') : t('transfers.row.signOn', { fee: formatMoney(asking) })),
+            h(
+              'td',
+              { class: `num${asking > budget ? ' over-budget' : ''}`, title: teamId ? '' : t('transfers.row.feeTitle') },
+              teamId ? formatMoney(asking) : contested ? t('transfers.row.contested') : t('transfers.row.signOn', { fee: formatMoney(asking) }),
+              // 영입하면 줘야 할 주급 (제안 창을 열기 전에도 보이게). 주급 한도를 넘으면 빨강
+              h('small', { class: `ask-wage${terms.wageOk ? '' : ' over-budget'}` }, t('transfers.row.wage', { wage: formatWage(terms.contract.wage) })),
+            ),
             h('td', {}, statusChip(game, p.id)),
             h('td', { class: 'num row-actions' }, view.known ? null : scoutButton(p), loan, offer),
           );

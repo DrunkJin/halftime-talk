@@ -6,7 +6,7 @@ import { boardLine, mustChooseClub, sackedPanel, seasonBoardPanel } from '../boa
 import { FORMATION_CELLS, formationLabel, positionOfCell } from '../../engine/formations.js';
 import { HALF_TIME_MINUTE, HOME_ADVANTAGE, INSTRUCTIONS, LIVE_PACE, MATCH_MINUTES, injuryLabel as engineInjuryLabel } from '../../engine/config.js';
 import { aiRoleIds, fitLabel, roleOf, rolesFor, slotMods } from '../../engine/roles.js';
-import { changeFormation, createMatch, getMatchResult, makeSubstitution, playMinute, playerRatings, setAutoSubs, setInstruction, setRole, setTactics, teamSnapshot } from '../../engine/match.js';
+import { changeFormation, createMatch, getMatchResult, makeSubstitution, playMinute, playerRatings, setAutoInjurySubs, setAutoSubs, setInstruction, setRole, setTactics, swapPositions, teamSnapshot } from '../../engine/match.js';
 import { ratingClass } from '../../state/form.js';
 import { computeTeamRatings, conditionFactor, overall, positionFit, positionRating } from '../../engine/ratings.js';
 import { computeTable } from '../../league/table.js';
@@ -23,7 +23,7 @@ import { conditionMeter, openConfirm, panel, segmented, statusChip } from '../co
 import { appendChildren, h } from '../dom.js';
 import { attrClass, fmt1, shortName } from '../format.js';
 import { formatMoney } from '../../market/value.js';
-import { formationPicker, presetFormationOptions, tacticLabel, tacticSummary, tacticsPicker } from '../tactics.js';
+import { formationPicker, miniPitch, presetFormationOptions, tacticLabel, tacticSummary, tacticsPicker } from '../tactics.js';
 import { analysisPanel } from '../analysis.js';
 import { familiarityBoost, familiarityOf, familiarityWord } from '../../state/familiarity.js';
 import { answerPost, answerPre, answerTalk, cupTeamTalk, loadMedia, rivalryBetween, rivalryName, postCupInterview, postInterview, preCupInterview, preInterview, teamTalk } from '../../media/interviews.js';
@@ -125,22 +125,39 @@ function speedTabs(onChange) {
 
 // 전력 비교는 숫자 없이 막대로만. 읽어 주는 말은 홈 팀 기준 우세·비슷·열세
 // 전력 비교를 말로: 줄(공격·중원·수비·골문)마다 우리와 상대 중 어느 쪽이 앞서는지
+// 두 팀 포메이션을 미니 피치로 나란히 (홈 왼쪽). sides: [{ team, cells, guess }] — guess면 '예상'
+function formationPair(sides) {
+  return h(
+    'div',
+    { class: 'form-pair' },
+    sides.map(({ team, cells, guess }) =>
+      h('figure', { class: 'form-side' }, miniPitch(cells), h('figcaption', {}, h('b', {}, team.shortName), ` ${formationLabel(cells)}`, guess ? h('span', { class: 'muted' }, ` ${t('match.form.expected')}`) : null)),
+    ),
+  );
+}
+const cellsOfFormation = (id) => FORMATION_CELLS[id] ?? FORMATION_CELLS['4-3-3'];
+
+// 전력 읽기: 네 부문을 늘어놓지 않고 수석코치 한 줄로 — 가장 크게 앞선 곳과 가장 밀리는 곳만 (차이가 작으면 '팽팽')
 function matchupLines(mine, theirs) {
   const units = [
     ['attack', t('match.cmp.attack')],
     ['midfield', t('match.cmp.midfield')],
     ['defense', t('match.cmp.defence')],
     ['goalkeeping', t('match.cmp.gk')],
-  ];
-  return h(
-    'ul',
-    { class: 'cmp-say' },
-    units.map(([key, unit]) => {
-      const d = mine[key] - theirs[key];
-      const level = Math.abs(d) < 2 ? 'even' : d >= 6 ? 'bigUs' : d > 0 ? 'us' : d <= -6 ? 'bigThem' : 'them';
-      return h('li', { class: d >= 2 ? 'up' : d <= -2 ? 'down' : '' }, t(`match.cmp.say.${level}`, { unit }));
-    }),
-  );
+  ].map(([key, unit]) => ({ unit, d: mine[key] - theirs[key] }));
+  const deg = (d) => t(Math.abs(d) >= 6 ? 'match.cmp.deg.big' : 'match.cmp.deg.small');
+  const best = units.reduce((a, b) => (b.d > a.d ? b : a));
+  const worst = units.reduce((a, b) => (b.d < a.d ? b : a));
+  const ahead = best.d >= 2;
+  const behind = worst.d <= -2;
+  const text =
+    units.every((u) => u.d >= 2) ? t('match.cmp.read.allUs')
+    : units.every((u) => u.d <= -2) ? t('match.cmp.read.allThem', { worst: worst.unit })
+    : ahead && behind ? t('match.cmp.read.mixed', { best: best.unit, bdeg: deg(best.d), worst: worst.unit, wdeg: deg(worst.d) })
+    : ahead ? t('match.cmp.read.edge', { best: best.unit, deg: deg(best.d) })
+    : behind ? t('match.cmp.read.weak', { worst: worst.unit, deg: deg(worst.d) })
+    : t('match.cmp.read.even');
+  return h('p', { class: 'cmp-read' }, h('span', { class: 'muted' }, t('match.cmp.read.from')), text);
 }
 
 const inputRatings = (input) => computeTeamRatings(input.slots, input.lineup, (p) => conditionFactor(input.condition[p.id]), slotMods(input.slots, input.lineup, input.roles ?? aiRoleIds(input.slots, input.lineup)));
@@ -277,6 +294,10 @@ function renderPre(ctx, show) {
 
   // 상대 분석 · 전술 숙련도
   const analysis = analysisPanel(ctx.game, makeInput, mySide);
+  // 두 팀 포메이션: 우리는 지금 고른 배치, 상대는 평소 쓰는 배치(예상)
+  const oppSideKey = mySide === 'home' ? 'away' : 'home';
+  const sideCells = (side) => (side === mySide ? game.formation.cells : cellsOfFormation(input[side].formation));
+  const preFormations = formationPair(['home', 'away'].map((side) => ({ team: side === 'home' ? home : away, cells: sideCells(side), guess: side === oppSideKey })));
   const famLine = h('p', { class: 'fam-line' }, ...familiarityLine(game));
 
   // 선발에 없는 주전급 (부상 복귀 등): 오래 못 뛰면 불만이 쌓인다
@@ -303,6 +324,7 @@ function renderPre(ctx, show) {
   instant.addEventListener('click', guarded(() => {
     rotateNow();
     const state = createMatch(makeInput(ctx.game));
+    setAutoInjurySubs(state, mySide, true); // 지켜보지 않는 경기는 부상 교체도 자동
     while (!state.finished) playMinute(state);
     live = { fixture, state, timer: null, paused: true, done: false, others: null, gap: strengthGap(state, mySide), cup: Boolean(cupFx), formationLabel: formationLabel(ctx.game.formation.cells), prep: prepEffects(ctx, mySide, Boolean(cupFx?.neutral)) };
     show(); // 경기 화면이 결과 반영(실패 시 다시 시도 포함)을 맡는다
@@ -345,6 +367,7 @@ function renderPre(ctx, show) {
         h('h2', {}, t('match.pre.settings')),
         h('div', { class: 'speed' }, h('span', { class: 'muted' }, t('match.pre.speed')), speedTabs().el),
         settingToggle(ctx, 'autoSubs', t('match.setting.autoSubs')),
+        settingToggle(ctx, 'autoInjurySubs', t('match.setting.autoInjurySubs')),
         settingToggle(ctx, 'pauseAtHalfTime', t('match.setting.pauseAtHalfTime')),
         settingToggle(ctx, 'autoRotate', t('match.setting.autoRotate')),
         h('div', { class: 'btn-row end' }, done),
@@ -451,7 +474,7 @@ function renderPre(ctx, show) {
       h(
         'div',
         { class: 'opp-tactics' },
-        h('div', { class: 'ot-analysis' }, analysis.el),
+        h('div', { class: 'ot-analysis' }, preFormations, analysis.el),
         appendChildren(tacticsBox, [
           h('h3', {}, t('match.pre.tactics')),
           tacticsPicker(tacticsOf(game), (tac) => {
@@ -816,6 +839,15 @@ function renderLive(ctx, show) {
   const away = teamOf(ctx, fixture.awayId);
   const sideTeam = { home, away };
   const mySide = fixture.homeId === game.teamId ? 'home' : 'away';
+  // 경기 중 두 팀 포메이션 (우리가 감독 지시로 바꾸면 갱신). 상대는 엔진이 쓰는 배치
+  const liveCells = { home: null, away: null };
+  for (const side of ['home', 'away']) liveCells[side] = side === mySide ? (live.formationCells ?? game.formation.cells) : cellsOfFormation(state.teams[side].formation);
+  const formHost = h('div', { class: 'form-host' });
+  const updateFormations = () => {
+    live.formationCells = liveCells[mySide]; // 화면을 다시 그려도 바꾼 배치 그대로
+    formHost.replaceChildren(formationPair(['home', 'away'].map((side) => ({ team: sideTeam[side], cells: liveCells[side] }))));
+  };
+  updateFormations();
 
   // 경기 후: 우리 팀에 새로 생긴 부상·출장정지
   function absenceReport() {
@@ -984,16 +1016,17 @@ function renderLive(ctx, show) {
         );
         return rows.map((r) => r.tr);
       };
-      const row = (p, pos) =>
+      const row = (p, pos, injured = false) =>
         h(
           'tr',
-          {},
+          { class: injured ? 'is-vacant' : '' },
           h('td', {}, h('span', { class: pos ? 'slot-tag' : 'pos-tag' }, pos ?? p.position)),
-          h('td', {}, h('button', { type: 'button', class: 'link pick-btn', 'aria-pressed': 'false' }, p.name)),
+          h('td', {}, h('button', { type: 'button', class: 'link pick-btn', 'aria-pressed': 'false' }, p.name), injured ? h('span', { class: 'status-chip injury' }, t('match.cmd.injuredOut')) : null),
           h('td', {}, conditionMeter(snap.condition(p.id))),
           h('td', { class: `num ${attrClass(overall(p))}` }, pos ? Math.round(positionRating(p, pos) * positionFit(p, pos)) : overall(p)),
         );
-      const onPitch = snap.lineup.map((p, i) => (p ? { tr: row(p, snap.slots[i]), value: i } : null)).filter(Boolean);
+      // 부상으로 비워 둔 자리(자동 부상 교체를 껐을 때)가 맨 위: 그 자리를 채울 선수를 고른다
+      const onPitch = [...snap.vacant.map((v) => ({ tr: row(v.player, snap.slots[v.slot], true), value: v.slot })), ...snap.lineup.map((p, i) => (p ? { tr: row(p, snap.slots[i]), value: i } : null)).filter(Boolean)];
       const benchRows = snap.bench.map((p) => ({ tr: row(p, null), value: p.id }));
       const table = (heading, rows) => h('div', { class: 'sub-col' }, h('h3', {}, heading), h('table', { class: 'data compact pick' }, h('tbody', {}, rows)));
       confirm.addEventListener('click', () => applied(makeSubstitution(state, mySide, outSlot, inId)));
@@ -1010,18 +1043,50 @@ function renderLive(ctx, show) {
       if (!FORMATION_CELLS[mine]) options.unshift({ id: 'mine', label: t('match.cmd.myFormation', { formation: mine }), cells: ctx.game.formation.cells });
       const picked = snap.formation ?? (FORMATION_CELLS[mine] ? mine : 'mine');
       // 고르면 바로 적용 (닫고 재개를 눌러도 지시가 사라지지 않게)
-      const pick = (id) => id !== picked && applied(changeFormation(state, mySide, id === 'mine' ? ctx.game.formation.cells.map(positionOfCell) : id));
-      const current = h(
-        'table',
-        { class: 'data compact' },
-        h('tbody', {}, snap.slots.map((pos, i) => h('tr', {}, h('td', {}, h('span', { class: 'slot-tag' }, pos)), h('td', {}, snap.lineup[i]?.name ?? h('span', { class: 'muted' }, t('match.cmd.emptySlot')))))),
-      );
+      const pick = (id) => {
+        if (id === picked) return;
+        const res = changeFormation(state, mySide, id === 'mine' ? ctx.game.formation.cells.map(positionOfCell) : id);
+        if (res.ok) {
+          liveCells[mySide] = id === 'mine' ? ctx.game.formation.cells : FORMATION_CELLS[id];
+          updateFormations();
+        }
+        applied(res);
+      };
+      // 지금 배치: 두 선수를 차례로 누르면 자리를 맞바꾼다 (골키퍼 제외). 낯선 자리면 칩으로 알린다
+      let swapFrom = null;
+      const swapRows = snap.slots.map((pos, i) => {
+        const p = snap.lineup[i];
+        const btn = p && pos !== 'GK' ? h('button', { type: 'button', class: 'link pick-btn', 'aria-pressed': 'false' }, p.name) : null;
+        const tr = h(
+          'tr',
+          {},
+          h('td', {}, h('span', { class: 'slot-tag' }, pos)),
+          h('td', {}, btn ?? p?.name ?? h('span', { class: 'muted' }, t('match.cmd.emptySlot')), p && positionFit(p, pos) < 0.85 ? h('span', { class: 'status-chip' }, t('match.cmd.offPosition')) : null),
+        );
+        btn?.addEventListener('click', () => {
+          if (swapFrom === null) {
+            swapFrom = i;
+            tr.classList.add('is-selected');
+            btn.setAttribute('aria-pressed', 'true');
+            status.textContent = t('match.cmd.swapNext', { name: p.name });
+            status.className = 'cmd-status';
+            return;
+          }
+          const from = swapFrom;
+          swapFrom = null;
+          if (from === i) return renderBody();
+          applied(swapPositions(state, mySide, from, i));
+        });
+        return tr;
+      });
+      const current = h('table', { class: 'data compact pick swap-table' }, h('tbody', {}, swapRows));
       return h(
         'div',
         { class: 'cmd-formation' },
         formationPicker(options, picked, pick),
         h('p', { class: 'muted small-note' }, t('match.cmd.formationNote')),
         h('h3', {}, t('match.cmd.currentShape')),
+        h('p', { class: 'muted small-note' }, t('match.cmd.swapHint')),
         current,
       );
     }
@@ -1303,6 +1368,17 @@ function renderLive(ctx, show) {
     return li;
   }
 
+  // 이 경기 개인 기록 표시: 골·도움 수, 경고·퇴장 (평점 옆에서 누가 무엇을 했는지 바로 보이게)
+  const eventMarks = (st) => {
+    if (!st) return null;
+    const marks = [
+      st.goals ? h('span', { class: 'ev-chip goal' }, t('match.ratings.goals', { n: st.goals })) : null,
+      st.assists ? h('span', { class: 'ev-chip' }, t('match.ratings.assists', { n: st.assists })) : null,
+      st.red ? h('span', { class: 'card-icon red', role: 'img', 'aria-label': t('match.ratings.red') }) : st.yellow ? h('span', { class: 'card-icon yellow', role: 'img', 'aria-label': t('match.ratings.yellow') }) : null,
+    ].filter(Boolean);
+    return marks.length ? h('span', { class: 'ev-marks' }, marks) : null;
+  };
+
   // 우리 선수 평점 (실시간). 경기가 끝나면 최우수 선수도
   const ratingsBody = h('tbody');
   const potmEl = h('div', { class: 'potm' });
@@ -1326,7 +1402,7 @@ function renderLive(ctx, show) {
           'tr',
           { class: p.id === potmId ? 'is-potm' : '' },
           h('td', {}, h('span', { class: 'pos-tag' }, tm.slotOf.get(p.id) ?? p.position)),
-          h('td', {}, p.name, subIn.has(p.id) ? h('span', { class: 'muted' }, t('match.ratings.subOn')) : tm.lineup.includes(p) ? '' : h('span', { class: 'muted' }, t('match.ratings.subOff'))),
+          h('td', {}, p.name, subIn.has(p.id) ? h('span', { class: 'muted' }, t('match.ratings.subOn')) : tm.lineup.includes(p) ? '' : h('span', { class: 'muted' }, t('match.ratings.subOff')), eventMarks(state.pstats.get(p.id))),
           h('td', { class: 'num' }, h('span', { class: `rt ${ratingClass(ratings[p.id])}` }, ratings[p.id].toFixed(1))),
         ),
       ),
@@ -1543,6 +1619,7 @@ function renderLive(ctx, show) {
   // 1분 진행
   function tick() {
     const goalsBefore = state.goals.length;
+    const vacantBefore = teamSnapshot(state, mySide).vacant.length;
     const cardsBefore = state.cards.length;
     const injuriesBefore = state.injuries.length;
     playMinute(state);
@@ -1574,6 +1651,12 @@ function renderLive(ctx, show) {
       }
     }
     updateStats();
+    // 자동 부상 교체를 껐으면: 우리 선수가 다쳐 자리가 비면 멈추고 교체 창을 연다
+    if (!state.finished && teamSnapshot(state, mySide).vacant.length > vacantBefore) {
+      updateStatus();
+      openCommandModal('subs');
+      return;
+    }
     if (state.finished) {
       finalize(); // 경기 종료는 결과 장면이 알린다 (토스트가 점수판을 가리지 않게)
       return;
@@ -1646,6 +1729,7 @@ function renderLive(ctx, show) {
   });
   skipBtn.addEventListener('click', () => {
     stopTimer();
+    setAutoInjurySubs(state, mySide, true); // 끝까지 넘기면 비워 둔 부상 자리도 자동으로 채운다
     while (!state.finished) playMinute(state);
     syncFeed(false);
     updateScore(true);
@@ -1681,7 +1765,7 @@ function renderLive(ctx, show) {
       'div',
       { class: 'live-grid' },
       panel(t('match.live.feed'), h('div', { class: 'feed-wrap' }, feed), { className: 'feed-panel' }),
-      h('div', { class: 'live-side' }, panel(t('match.live.stats'), h('table', { class: 'data stats-table' }, statsBody)), panel(t('match.live.ratings'), h('div', {}, potmEl, h('table', { class: 'data compact ratings-table' }, ratingsBody)))),
+      h('div', { class: 'live-side' }, panel(t('match.form.title'), formHost, { className: 'form-panel' }), panel(t('match.live.stats'), h('table', { class: 'data stats-table' }, statsBody)), panel(t('match.live.ratings'), h('div', {}, potmEl, h('table', { class: 'data compact ratings-table' }, ratingsBody)))),
     ),
   );
 }

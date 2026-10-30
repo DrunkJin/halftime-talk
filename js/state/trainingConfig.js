@@ -43,6 +43,8 @@ export const TRAINING = {
   individual: { max: 5, rate: 1.6 },
   // 30세 이상은 개인 훈련이 노화를 늦춘다: 주마다 retention이 쌓여 시즌 끝 하락폭을 그만큼(최대 retentionMax) 줄인다
   veteranFrom: 30,
+  // 유망주 패널: 이 나이 이하. 경기 출전 비율이 lowPlayShare 미만이면 '출전이 적어 성장이 더디다'고 알린다 (시즌 성장은 출전 비율을 탄다)
+  prospects: { maxAge: 21, lowPlayShare: 0.3, minRounds: 4 },
   retentionPerWeek: 0.012,
   retentionMax: 0.35,
 

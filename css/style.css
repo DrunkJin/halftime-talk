@@ -396,13 +396,8 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .matchday-hero .mu-team .muted { color: var(--text-2); } /* 팀 색이 스민 바탕(회색 대체 색 포함)에서도 4.5:1 */
 .mu-vs { font-size: 13px; font-weight: 800; letter-spacing: 0.2em; color: var(--muted); }
 /* 전력 비교: 막대 대신 문장 (줄마다 누가 앞서는지) */
-.cmp-say { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 16px; max-width: 620px; width: 100%; margin: 0 auto; padding: 0; list-style: none; font-size: 13px; color: var(--text-2); }
-.cmp-say li { display: flex; align-items: center; gap: 8px; }
-.cmp-say li::before { content: ""; flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--line-2); }
-.cmp-say li.up { color: var(--text); }
-.cmp-say li.up::before { background: var(--accent); }
-.cmp-say li.down::before { background: var(--danger); }
-@media (max-width: 560px) { .cmp-say { grid-template-columns: minmax(0, 1fr); } }
+.cmp-read { margin: 0; font-size: 14px; line-height: 1.5; color: var(--text); text-wrap: pretty; }
+.cmp-read .muted { margin-right: 6px; font-size: 12px; }
 .pre-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 14px; border-top: 1px solid var(--line); }
 .speed { display: flex; align-items: center; gap: 8px; }
 .pre-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: start; }
@@ -756,6 +751,10 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
 .feed-line.c-red .feed-text, .feed-line.c-injury .feed-text { color: var(--text); }
 .feed-line.c-sub .feed-text { color: var(--text-2); font-style: italic; }
 .ev-red { display: inline-flex; align-items: center; gap: 4px; }
+/* 평점 표 이름 옆 이 경기 기록: 골·도움 칩, 경고·퇴장 카드 */
+.ev-marks { display: inline-flex; align-items: center; gap: 4px; margin-left: 6px; vertical-align: middle; }
+.ev-chip { padding: 0 6px; border-radius: 999px; background: var(--panel-3); color: var(--text-2); font-size: 11px; font-weight: 700; line-height: 18px; white-space: nowrap; }
+.ev-chip.goal { background: color-mix(in srgb, var(--accent) 22%, var(--panel-3)); color: var(--text); }
 .absences { list-style: none; margin: 0; padding: 8px 12px; display: grid; gap: 6px; border-bottom: 1px solid var(--line); }
 
 /* ── 이적 ─────────────────────────────────────────── */
@@ -933,6 +932,7 @@ input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var
   .market-table td:nth-child(5) { grid-area: ovr; font-size: 15px; }
   .market-table td:nth-child(6) { display: none; }
   .market-table td:nth-child(7) { grid-area: ask; font-weight: 600; }
+  .market-table .ask-wage { font-weight: 400; }
   .market-table td:nth-child(8) { grid-area: status; }
   .market-table td:nth-child(9) { grid-area: act; justify-self: end; }
   .market-table td:nth-child(8):empty { display: none; }
@@ -1622,7 +1622,6 @@ input::placeholder { color: var(--muted); opacity: 1; }
 .matchday-hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); align-items: center; column-gap: 24px; }
 .matchday-hero > .warn-banner { grid-column: 1 / -1; }
 .mu-read { display: grid; gap: 12px; align-content: center; }
-.mu-read .cmp-say { grid-template-columns: minmax(0, 1fr); max-width: none; margin: 0; font-size: 14px; }
 /* 매치업: 두 팀 색이 양쪽에서 스며드는 바탕(점수판과 같은 말), 가운데 VS는 점수판 글꼴 */
 .matchday-hero .matchup { padding: 16px 12px; border-radius: var(--radius); background: linear-gradient(90deg, color-mix(in srgb, var(--home) 18%, transparent), transparent 40%, transparent 60%, color-mix(in srgb, var(--away) 18%, transparent)); }
 .matchday-hero .mu-vs { font-family: var(--display); font-size: 24px; letter-spacing: 0.08em; color: var(--text-2); }
@@ -1638,3 +1637,28 @@ input::placeholder { color: var(--muted); opacity: 1; }
 /* 경기 후 인터뷰·기자회견: 패널 가장자리에 붙지 않게 */
 .press-panel .press-host { padding: 12px; }
 .mu-read .morale-meter, .mu-read .board-line { justify-content: flex-start; justify-self: start; text-align: left; margin: 0; }
+
+/* 이적 목록 요구액 아래 예상 주급 */
+.ask-wage { display: block; color: var(--muted); font-size: 11px; font-weight: 400; }
+.ask-wage.over-budget { color: var(--danger-text); }
+
+/* 두 팀 포메이션 나란히 (경기 전 '상대와 전술', 경기 중 오른쪽) */
+.form-pair { display: flex; justify-content: space-around; gap: 16px; padding: 4px 0; }
+.form-side { display: grid; justify-items: center; gap: 6px; margin: 0; }
+.form-side .mini-pitch { width: 72px; }
+.form-side figcaption { font-size: 12px; color: var(--text-2); text-align: center; }
+.form-side figcaption b { color: var(--text); }
+.ot-analysis .form-pair { margin-bottom: 12px; }
+
+/* 선수 비교 */
+.compare-modal { width: min(560px, 100%); }
+.cmp-pick { display: grid; gap: 4px; font-size: 12px; }
+.cmp-table th[scope="row"] { color: var(--muted); font-weight: 500; text-align: center; font-size: 12px; }
+.cmp-table thead th { white-space: normal; }
+.cmp-table td.num { width: 34%; }
+.cmp-table td:first-child { text-align: right; }
+.cmp-table td:last-child { text-align: left; }
+.cmp-table td.is-better { color: var(--accent); font-weight: 700; }
+.cmp-table tr.cmp-key td { font-size: 15px; font-weight: 700; }
+.cmp-table tr.cmp-group th { padding-top: 10px; color: var(--text-2); font-size: 11px; letter-spacing: 0.06em; text-align: center; }
+.pm-compare { margin-left: auto; }

@@ -12,7 +12,8 @@
 //            roles?: [역할 id (슬롯 순서)], instructions?: { [선수 id]: { shooting?, runs?, mark? } } }
 //   roles가 없으면 AI처럼 선수 능력에 뚜렷하게 맞는 역할을 스스로 고른다 (roles.js)
 //   lineup[i]가 i번째 슬롯에 선다. bench가 없으면 교체 없이 진행
-//   autoSubs: false면 체력 교체를 하지 않는다 (사용자가 makeSubstitution으로 직접). 부상 교체는 항상 자동
+//   autoSubs: false면 체력 교체를 하지 않는다 (사용자가 makeSubstitution으로 직접)
+//   autoInjurySubs: false면 부상 자리를 비워 두고 감독이 고르게 한다 (GK 자리는 늘 바로 채운다)
 //   autoTactics: true(기본)면 AI 감독처럼 경기 전 전력 차·60분 이후 스코어로 멘탈리티를 정한다. 사용자 팀은 false
 //   boost: 사기 등 추가 레이팅 배율 (0.02 = +2%)
 // 경기 옵션 knockout: { prior: { home, away } | null } — 토너먼트. prior는 앞선 1차전에서 이 경기 홈·원정 팀이 넣은 골.
@@ -67,6 +68,8 @@ function initTeam(team, boost) {
     yellow: new Set(),
     subsUsed: 0,
     autoSubs: team.autoSubs ?? true,
+    autoInjurySubs: team.autoInjurySubs ?? true,
+    vacant: new Map(), // 부상으로 비워 둔 자리 → 다친 선수 (autoInjurySubs가 꺼져 있을 때)
     tactics: { ...C.TACTICS.defaults, ...team.tactics },
     autoTactics: team.autoTactics ?? true,
     styleGiven: Boolean(team.tactics?.pressing || team.tactics?.style), // 압박·스타일을 정해 왔으면 AI 성향으로 덮지 않는다
@@ -344,6 +347,12 @@ function outfielderToGoal(state, side, gkIndex) {
 function fillInjuryVacancy(state, side, slotIndex, injured) {
   const t = state.teams[side];
   const pos = t.slots[slotIndex];
+  // 감독이 직접 고르기로 했으면 자리를 비워 둔다 (교체 카드가 남아 있고 GK가 아닐 때)
+  if (!t.autoInjurySubs && pos !== 'GK' && t.subsUsed < subLimit(state) && t.bench.length) {
+    t.vacant.set(slotIndex, injured);
+    comment(state, 'shortHanded', side, { count: t.lineup.filter(Boolean).length });
+    return;
+  }
   if (t.subsUsed < subLimit(state)) {
     const incoming = pos === 'GK' ? t.bench.find((p) => p.position === 'GK') ?? null : bestFromBench(t, pos);
     if (incoming) return substitute(state, side, slotIndex, incoming, 'injury', injured);
@@ -723,11 +732,13 @@ export function makeSubstitution(state, side, slotIndex, playerId) {
   const t = state.teams[side];
   if (state.finished) return { ok: false, message: tr('engine.msg.finished') };
   if (t.subsUsed >= subLimit(state)) return { ok: false, message: tr('engine.msg.subLimit', { n: subLimit(state) }) };
-  if (!t.lineup[slotIndex]) return { ok: false, message: tr('engine.msg.emptySlot') };
+  const injured = t.vacant.get(slotIndex); // 부상으로 비워 둔 자리면 그 자리를 채운다
+  if (!t.lineup[slotIndex] && !injured) return { ok: false, message: tr('engine.msg.emptySlot') };
   const incoming = t.bench.find((p) => p.id === playerId);
   if (!incoming) return { ok: false, message: tr('engine.msg.notOnBench') };
-  const outName = t.lineup[slotIndex].name;
-  substitute(state, side, slotIndex, incoming, 'manual');
+  const outName = (t.lineup[slotIndex] ?? injured).name;
+  substitute(state, side, slotIndex, incoming, injured ? 'injury' : 'manual', injured ?? null);
+  t.vacant.delete(slotIndex);
   recalc(t);
   return { ok: true, message: tr('engine.msg.subMade', { in: incoming.name, out: outName }) };
 }
@@ -786,6 +797,20 @@ export function setInstruction(state, side, playerId, kind, value) {
   return { ok: true, message: `${p.name}: ${label}` };
 }
 
+// 경기 중 두 선수의 자리를 맞바꾼다 (골키퍼 자리는 제외). 자리 역할은 자리에 남고 개별 지시는 선수를 따라간다.
+// 바뀐 자리의 포지션 적합도는 다음 분부터 바로 반영된다 → { ok, message }
+export function swapPositions(state, side, a, b) {
+  const t = state.teams[side];
+  if (state.finished) return { ok: false, message: tr('engine.msg.finished') };
+  if (a === b || !t.lineup[a] || !t.lineup[b]) return { ok: false, message: tr('engine.msg.swapPick') };
+  if (t.slots[a] === 'GK' || t.slots[b] === 'GK') return { ok: false, message: tr('engine.msg.swapNoGk') };
+  [t.lineup[a], t.lineup[b]] = [t.lineup[b], t.lineup[a]];
+  refreshMatchups(state);
+  const message = tr('engine.msg.swapped', { a: t.lineup[a].name, posA: t.slots[a], b: t.lineup[b].name, posB: t.slots[b] });
+  comment(state, 'tactic', side, { change: message });
+  return { ok: true, message };
+}
+
 // 경기 중 포메이션 변경: 지금 뛰는 선수를 새 자리에 가장 잘 맞게 다시 배치한다.
 // 퇴장으로 빈 자리 수는 그대로 (가장 덜 아까운 자리를 비운다). → { ok, message }
 export function changeFormation(state, side, formationOrSlots) {
@@ -830,6 +855,7 @@ export function teamSnapshot(state, side) {
     condition: (id) => Math.round(t.condition.get(id) ?? 100),
     subsLeft: subLimit(state) - t.subsUsed,
     autoSubs: t.autoSubs,
+    vacant: [...t.vacant].map(([slot, p]) => ({ slot, player: p })),
     tactics: { ...t.tactics },
     formation: t.formation,
     ratings: { ...t.ratings },
@@ -847,6 +873,18 @@ export function adjustBoost(state, side, delta) {
 
 export function setAutoSubs(state, side, on) {
   state.teams[side].autoSubs = on;
+}
+
+// 부상 교체를 감독에게 맡길지. 켜면(자동) 비워 둔 자리도 바로 벤치에서 채운다 (끝까지·결과만 보기)
+export function setAutoInjurySubs(state, side, on) {
+  const t = state.teams[side];
+  t.autoInjurySubs = on;
+  if (!on || !t.vacant.size) return;
+  for (const [slot, injured] of [...t.vacant]) {
+    t.vacant.delete(slot);
+    fillInjuryVacancy(state, side, slot, injured);
+  }
+  recalc(t);
 }
 
 export function getMatchResult(state) {
@@ -992,6 +1030,7 @@ export function previewMatch(input, side = 'home') {
 
 export function simulateMatch(input) {
   const state = createMatch(input);
+  for (const side of ['home', 'away']) state.teams[side].autoInjurySubs = true; // 지켜보는 감독이 없으니 부상 교체는 자동
   while (!state.finished) playMinute(state);
   return getMatchResult(state);
 }

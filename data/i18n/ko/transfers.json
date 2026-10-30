@@ -86,6 +86,7 @@
   "transfers.row.loanTitle": "시즌 끝까지 임대",
   "transfers.row.scoutToSee": "스카우트하면 정확한 능력치를 볼 수 있습니다",
   "transfers.row.feeTitle": "무소속은 이적료 대신 계약금",
+  "transfers.row.wage": "주급 약 {wage}",
   "transfers.row.contested": "경쟁 입찰",
   "transfers.row.signOn": "계약금 {fee}",
   "transfers.mine.sell": "판매",
